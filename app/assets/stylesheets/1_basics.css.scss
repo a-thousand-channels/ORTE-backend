@@ -1,0 +1,22 @@
+a.disabled {
+   cursor: not-allowed;
+}
+div.small {
+    font-size: 0.8rem;
+}
+/* -------------------- */
+/* foundation adapations */
+.callout {
+    border: 0px;
+    margin: 20px 0 1rem;
+}
+div.panel {
+    border: 5px solid #bbc;
+    margin: 20px 40px;
+    padding: 20px;
+}
+div.columns.borderless {padding: 0;}
+
+main {
+  padding: 21px;
+}
