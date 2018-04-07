@@ -1,0 +1,16 @@
+= simple_form_for(@<%= singular_table_name %>) do |f|
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x
+    .large-3.cell
+      &nbsp;
+    .large-6.medium-12.cell
+      .form-inputs
+      <%- attributes.each do |attribute| -%>
+        = f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %>
+      <%- end -%>
+      .form-actions
+        = f.button :submit, :class => "button"
+    .large-3.cell
+      &nbsp;

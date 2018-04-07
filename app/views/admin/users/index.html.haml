@@ -1,0 +1,25 @@
+%h1 Listing admin_users
+
+%table
+  %thead
+    %tr
+      %th Email
+      %th Role
+      %th
+      %th
+      %th
+
+  %tbody
+    - @admin_users.each do |admin_user|
+      %tr
+        %td= admin_user.email
+        %td= admin_user.role
+        %td= link_to 'Show', [:admin, admin_user ]
+        %td= link_to 'Edit', edit_admin_user_path(admin_user)
+        %td= link_to 'Destroy', [:admin, admin_user ], :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+    = paginate @admin_users
+
+%br
+
+= link_to 'New User', new_admin_user_path
