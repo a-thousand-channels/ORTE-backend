@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
 
+  resources :icons
+  resources :iconsets
+  resources :places
+  resources :layers
+  resources :maps
+  resources :groups
   devise_for :users
   root 'start#index'
   match 'preferences' => 'preferences#edit', :as => :preferences, via: [:get, :patch]

@@ -10,7 +10,73 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180105182809) do
+ActiveRecord::Schema.define(version: 2018_04_27_185021) do
+
+  create_table "groups", force: :cascade do |t|
+    t.string "title"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_groups_on_user_id"
+  end
+
+  create_table "icons", force: :cascade do |t|
+    t.string "title"
+    t.string "image"
+    t.integer "iconset_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["iconset_id"], name: "index_icons_on_iconset_id"
+  end
+
+  create_table "iconsets", force: :cascade do |t|
+    t.string "title"
+    t.text "text"
+    t.string "image"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "layers", force: :cascade do |t|
+    t.string "title"
+    t.string "text"
+    t.boolean "published"
+    t.integer "map_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["map_id"], name: "index_layers_on_map_id"
+  end
+
+  create_table "maps", force: :cascade do |t|
+    t.string "title"
+    t.string "text"
+    t.boolean "published"
+    t.integer "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id"], name: "index_maps_on_group_id"
+  end
+
+  create_table "places", force: :cascade do |t|
+    t.string "title"
+    t.text "teaser"
+    t.text "text"
+    t.string "link"
+    t.datetime "startdate"
+    t.datetime "enddate"
+    t.string "lat"
+    t.string "lon"
+    t.string "location"
+    t.string "address"
+    t.string "zip"
+    t.string "city"
+    t.string "country"
+    t.boolean "published"
+    t.integer "layer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["layer_id"], name: "index_places_on_layer_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
