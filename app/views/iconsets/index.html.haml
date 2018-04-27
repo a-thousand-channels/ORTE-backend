@@ -1,0 +1,25 @@
+%h1 Listing iconsets
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th Text
+      %th Image
+      %th
+      %th
+      %th
+
+  %tbody
+    - @iconsets.each do |iconset|
+      %tr
+        %td= iconset.title
+        %td= iconset.text
+        %td= iconset.image
+        %td= link_to 'Show', iconset
+        %td= link_to 'Edit', edit_iconset_path(iconset)
+        %td= link_to 'Destroy', iconset, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Iconset', new_iconset_path

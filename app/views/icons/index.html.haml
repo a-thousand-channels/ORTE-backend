@@ -1,0 +1,25 @@
+%h1 Listing icons
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th Image
+      %th Iconset
+      %th
+      %th
+      %th
+
+  %tbody
+    - @icons.each do |icon|
+      %tr
+        %td= icon.title
+        %td= icon.image
+        %td= icon.iconset
+        %td= link_to 'Show', icon
+        %td= link_to 'Edit', edit_icon_path(icon)
+        %td= link_to 'Destroy', icon, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Icon', new_icon_path

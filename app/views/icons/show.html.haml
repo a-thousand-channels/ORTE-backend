@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @icon.title
+%p
+  %b Image:
+  = @icon.image
+%p
+  %b Iconset:
+  = @icon.iconset
+
+= link_to 'Edit', edit_icon_path(@icon)
+\|
+= link_to 'Back', icons_path

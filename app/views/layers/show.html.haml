@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @layer.title
+%p
+  %b Text:
+  = @layer.text
+%p
+  %b Published:
+  = @layer.published
+%p
+  %b Map:
+  = @layer.map
+
+= link_to 'Edit', edit_layer_path(@layer)
+\|
+= link_to 'Back', layers_path

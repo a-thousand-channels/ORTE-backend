@@ -1,0 +1,2 @@
+class Iconset < ApplicationRecord
+end
