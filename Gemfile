@@ -37,7 +37,7 @@ gem 'settingslogic'
 gem 'simple_form'
 
 group :staging, :production do
-  gem 'pg', '~> 0.0'
+  gem 'pg'
 end
 
 group :development, :test do
