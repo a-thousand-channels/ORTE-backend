@@ -1,5 +1,7 @@
 {
-  "name": "EmptyApp5",
+  "name": "OrteBackend",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "leaflet": "^1.3.1"
+  }
 }
