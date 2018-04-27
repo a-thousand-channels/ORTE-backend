@@ -1,0 +1,27 @@
+%h1 Listing layers
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th Text
+      %th Published
+      %th Map
+      %th
+      %th
+      %th
+
+  %tbody
+    - @layers.each do |layer|
+      %tr
+        %td= layer.title
+        %td= layer.text
+        %td= layer.published
+        %td= layer.map
+        %td= link_to 'Show', layer
+        %td= link_to 'Edit', edit_layer_path(layer)
+        %td= link_to 'Destroy', layer, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Layer', new_layer_path

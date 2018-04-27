@@ -2,14 +2,33 @@
   .top-bar-left
     %ul.menu
       %li.name= link_to "#{Settings.app_name}", root_path
+      - if user_signed_in?
+        %li
+          %a{:href => maps_path}
+            %i.fi-map
+            Maps
+        %li
+          %a{:href => layers_path}
+            %i.fi-page-multiple
+            Layers
+        %li
+          %a{:href => iconsets_path}
+            %i.fi-marker
+            Iconsets
+
+
   - if user_signed_in?
     .top-bar-right
       %ul.menu
         - if admin?
           %li
             %a{:href => admin_users_path}
-              %i.fi-torso
+              %i.fi-torsos-all
               Users
+          %li
+            %a{:href => groups_path}
+              %i.fi-torsos-all
+              Groups
         %li
           %a{:href => edit_user_registration_path}
             %i.fi-torso

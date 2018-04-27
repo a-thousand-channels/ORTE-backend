@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @map.title
+%p
+  %b Text:
+  = @map.text
+%p
+  %b Published:
+  = @map.published
+%p
+  %b Group:
+  = @map.group
+
+= link_to 'Edit', edit_map_path(@map)
+\|
+= link_to 'Back', maps_path
