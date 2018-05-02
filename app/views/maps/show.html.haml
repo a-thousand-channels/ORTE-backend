@@ -8,7 +8,7 @@
           .input-group-label
             %i.fi-map.fi-24
           = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => false, input_html: {:class => 'nav-selector'}
-          .input-group-button
+          .input-group-button.hide
             = link_to new_map_path, :class => 'button secondary' do
               %i.fi-plus.fi-24
 
@@ -21,7 +21,7 @@
               %i.fi-page-multiple.fi-24
             = f.input "id", :collection => @map_layers.map { |m| ["#{m.title}", "/maps/#{@map.id}/layers/#{m.id}", :class => "layer-#{m.id} input-group-field"] }, :label => false, :include_blank => 'Select a layer...', input_html: {:class => 'nav-selector'}
             .input-group-button
-              = link_to new_map_layer_path(@map), :class => 'button secondary' do
+              = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do
                 %i.fi-plus.fi-24
       - else
         = link_to new_map_layer_path(@map), :class => 'button info' do

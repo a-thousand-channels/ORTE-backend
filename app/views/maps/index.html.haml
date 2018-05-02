@@ -8,9 +8,9 @@
           .input-group
             .input-group-label
               %i.fi-map.fi-24
-            = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => 'Select a layer...', input_html: {:class => 'nav-selector'}
+            = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => 'Select a map...', input_html: {:class => 'nav-selector'}
             .input-group-button
-              = link_to new_map_path, :class => 'button secondary' do
+              = link_to new_map_path, :class => 'button secondary', :title => 'Create a new map' do
                 %i.fi-plus.fi-24
 
     - else

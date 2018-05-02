@@ -1,28 +1,44 @@
-= simple_form_for(@place) do |f|
-  .grid-x
+= simple_form_for([@map,@layer,@place]) do |f|
+  .grid-x.grid-padding-x
     .large-12.cell
       = f.error_notification
-  .grid-x
-    .large-3.cell
-      &nbsp;
+      = f.input :title
+  .grid-x.grid-padding-x
     .large-6.medium-12.cell
       .form-inputs
-        = f.input :title
-        = f.input :teaser
-        = f.input :text
-        = f.input :link
-        = f.input :startdate
-        = f.input :enddate
-        = f.input :lat
-        = f.input :lon
+        = f.input :teaser, :input_html => {:rows => 3, class: 'large-text'}
+        .grid-x.grid-padding-x
+          .large-6.cell
+            = f.input :startdate, as: :date, html5: true
+          .large-6.cell
+            = f.input :enddate, as: :date, html5: true
+        %hr
+        = f.input :text, :input_html => {:rows => 5, class: 'large-text'}
+        = f.input :link, :placeholder => 'http://'
+        - #= f.input :country
+
+    .large-6.medium-12.cell
+      .form-inputs
+        .grid-x.grid-padding-x
+          .large-4.cell
+            = f.input :published
+          .large-8.cell
+            = f.association :layer
+        %hr
         = f.input :location
         = f.input :address
-        = f.input :zip
-        = f.input :city
-        = f.input :country
-        = f.input :published
-        = f.association :layer
+        .grid-x.grid-padding-x
+          .large-4.cell
+            = f.input :zip
+          .large-8.cell
+            = f.input :city
+        %hr
+        .grid-x.grid-padding-x
+          .large-6.cell
+            = f.input :lat
+          .large-6.cell
+            = f.input :lon
+  .grid-x.grid-padding-x
+    .large-12.cell
       .form-actions
         = f.button :submit, :class => "button"
-    .large-3.cell
-      &nbsp;
