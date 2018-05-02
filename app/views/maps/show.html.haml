@@ -2,20 +2,28 @@
 
 #selection
   .grid-x
-    .cell.medium-10
-      = select_tag "maps", options_from_collection_for_select(@maps, "id", "title"), include_blank: false
-    .cell.medium-2
-      = link_to new_map_path, :class => 'button info' do
-        %i.fi-plus
-      = link_to edit_map_path(@map), :class => 'button secondary' do
-        %i.fi-pencil
+    .cell.medium-12
+      = simple_form_for :navselector, url: '/maps/' do |f|
+        .input-group
+          .input-group-label
+            %i.fi-map.fi-24
+          = f.input :id, :collection => @maps.map { |m| ["#{m.title} by #{m.group.title}", m.id, :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => false
+          .input-group-button
+            = f.button :submit, "Go!", :class => "button"
+            = link_to new_map_path, :class => 'button secondary' do
+              %i.fi-plus.fi-24
+
   .grid-x
     - if @map_layers.count > 0
-      .cell.medium-10
-        = select_tag "map_layers", options_from_collection_for_select(@map_layers, "id", "title")
-      .cell.medium-2
-        = link_to new_map_layer_path(@map), :class => 'button info' do
-          %i.fi-plus
+      = simple_form_for :navselector, url: '/maps/layers' do |f|
+        .input-group
+          .input-group-label
+            %i.fi-page-multiple.fi-24
+          = f.input :id, :collection => @map_layers.map { |m| ["#{m.title} for #{m.map.title}", m.id, :class => "layer-#{m.id} input-group-field"] }, :label => false, :include_blank => 'Select a layer...'
+          .input-group-button
+            = f.button :submit, "Go!", :class => "button"
+            = link_to new_map_layer_path(@map), :class => 'button secondary' do
+              %i.fi-plus.fi-24
     - else
       .cell.medium-12
         = link_to new_map_layer_path(@map), :class => 'button info' do

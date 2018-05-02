@@ -17,6 +17,29 @@ div.panel {
 }
 div.columns.borderless {padding: 0;}
 
+
+a.button {
+  color: white !important;
+}
+
+select {
+  margin: 0;
+  -moz-appearance: none;
+  -webkit-appearance: none  ;
+}
+/* -------------------- */
+div.input-group {
+  select {
+    margin: 0;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+  }
+  div.input-group-button a.button {
+      padding: 0.4em 1em 0 1em;
+  }
+}
+/* -------------------- */
 main {
   padding: 21px;
 }
