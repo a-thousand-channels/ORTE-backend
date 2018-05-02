@@ -7,24 +7,25 @@
       = simple_form_for :navselector, url: '/maps/' do |f|
         .input-group
           .input-group-label
-            %i.fi-map.fi-24
+            = link_to map_path(@map) do
+              %i.fi-map.fi-24
           = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => false, input_html: {:class => 'nav-selector'}
-          .input-group-button
-            = link_to new_map_path, :class => 'button secondary' do
+          .input-group-button.hide
+            = link_to new_map_path, :class => 'button secondary', :title => 'Create a new map' do
               %i.fi-plus.fi-24
 
   .grid-x
     .cell.medium-12
       - if @map_layers.count > 0
-        = simple_form_for :navselector, url: '' do |f|
-          .input-group
-            .input-group-label
-              = link_to map_layers_path(@map) do
-                %i.fi-page-multiple.fi-24
+        .input-group
+          .input-group-label
+            = link_to map_layers_path(@map) do
+              %i.fi-page-multiple.fi-24
+          = simple_form_for :navselector, url: '' do |f|
             = f.input :id, :collection => @map_layers.map { |m| ["#{m.title}", "/maps/#{@map.id}/layers/#{m.id}", :class => "layer-#{m.id} input-group-field"] }, :label => false, :selected => @layer, :include_blank => false, input_html: {:class => 'nav-selector'}
-            .input-group-button
-              = link_to new_map_layer_path(@map), :class => 'button secondary' do
-                %i.fi-plus.fi-24
+          .input-group-button.hide
+            = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do
+              %i.fi-plus.fi-24
       - else
         = link_to new_map_layer_path(@map), :class => 'button info' do
           %i.fi-plus
@@ -36,10 +37,13 @@
       = simple_form_for :addresslookup, url: '' do |f|
         .input-group
           .input-group-label
-            %i.fi-magnifying-glass.fi-24
+            %i.fi-marker.fi-24
           = f.input :address, :label => false, :placeholder => 'Name, Street + Number...', input_html: {:class => "address-lookup-field input-group-field"}
           .input-group-button
-      %p Type an adress or click on the map to create a plae
+            = link_to new_map_layer_place_path(@map,@layer), :class => 'button secondary', :title => 'Lookup for address' do
+              %i.fi-magnifying-glass.fi-24
+
+      %p Type an adress or click on the map to create a place
 
 
 

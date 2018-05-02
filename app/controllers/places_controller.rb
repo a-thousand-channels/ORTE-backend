@@ -15,6 +15,8 @@ class PlacesController < ApplicationController
   # GET /places/new
   def new
     @place = Place.new
+    @map = Map.find(params[:map_id])
+    @layer = Layer.find(params[:layer_id])
   end
 
   # GET /places/1/edit
@@ -64,6 +66,8 @@ class PlacesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_place
+      @map = Map.find(params[:map_id])
+      @layer = Layer.find(params[:layer_id])
       @place = Place.find(params[:id])
     end
 
