@@ -1,27 +1,35 @@
-%h1 Listing layers
 
-%table
-  %thead
-    %tr
-      %th Title
-      %th Text
-      %th Published
-      %th Map
-      %th
-      %th
-      %th
+#table-wraper
+  %h1
+    = link_to map_path(@map) do
+      = @map.title
 
-  %tbody
-    - @layers.each do |layer|
+
+  %table
+    %thead
       %tr
-        %td= layer.title
-        %td= layer.text
-        %td= layer.published
-        %td= layer.map
-        %td= link_to 'Show', layer
-        %td= link_to 'Edit', edit_layer_path(layer)
-        %td= link_to 'Destroy', layer, method: :delete, data: { confirm: 'Are you sure?' }
+        %th Layer
+        %th Published?
+        %th
+        %th
 
-%br
+    %tbody
+      - @layers.each do |layer|
+        %tr
+          %td
+            %h4= layer.title
+            - if layer.text.present?
+              %p= layer.text
+          %td
+            - if layer.published
+              %i.fi-check.fi-24
+            - else
+              %i.fi-x.fi-24
+          %td= link_to 'Edit', edit_map_layer_path(@map, layer)
+          %td= link_to 'Destroy', map_layer_path(@map, layer), method: :delete, data: { confirm: 'Are you sure?' }
 
-= link_to 'New Layer', new_layer_path
+  %p
+
+    = link_to new_map_layer_path(@map), :class=>'button' do
+      %i.fi-plus.fi-24
+      New Layer

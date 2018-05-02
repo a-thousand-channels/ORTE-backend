@@ -12,8 +12,10 @@
  *
 
  *= require_self
- *= require 1_basics
  *= require foundation_and_overrides
+ *= require 1_basics
+ *= require 2_styles
+ *= require leaflet/dist/leaflet
 
 
  */

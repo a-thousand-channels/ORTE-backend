@@ -1,0 +1,26 @@
+/* -------------------- */
+#map {
+  height: 100vh;
+  z-index: 1;
+}
+main {
+ padding: 21px;
+  display: block;
+  z-index: 9999;
+  position: absolute;
+  top: 0;
+  margin: 100px 0 0 70px;
+}
+
+/* -------------------- */
+
+#nav-selector {
+
+}
+
+#table-wraper,
+#form-wrapper {
+  background-color: rgba(255,255,255,0.8);
+  padding: 10px 20px;
+  min-width: 400px;
+}

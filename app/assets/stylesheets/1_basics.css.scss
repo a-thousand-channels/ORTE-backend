@@ -4,6 +4,7 @@ a.disabled {
 div.small {
     font-size: 0.8rem;
 }
+
 /* -------------------- */
 /* foundation adapations */
 .callout {
@@ -39,7 +40,7 @@ div.input-group {
       padding: 0.4em 1em 0 1em;
   }
 }
-/* -------------------- */
-main {
-  padding: 21px;
+.form-actions {
+  margin-top: 25px;
 }
+/* -------------------- */

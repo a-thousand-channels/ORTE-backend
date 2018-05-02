@@ -29,7 +29,7 @@ SecureHeaders::Configuration.default do |config|
     font_src: %w('self' 'unsafe-inline'),
     form_action: %w('self'),
     frame_ancestors: %w('none'),
-    img_src: %w('self' 'unsafe-inline' 'unsafe-eval' data:),
+    img_src: %w(* data:),
     manifest_src: %w('self'),
     media_src: %w('self'),
     object_src: %w('self' 'unsafe-eval'),

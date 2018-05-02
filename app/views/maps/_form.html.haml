@@ -3,9 +3,7 @@
     .large-12.cell
       = f.error_notification
   .grid-x
-    .large-3.cell
-      &nbsp;
-    .large-6.medium-12.cell
+    .large-12.cell
       .form-inputs
         = f.input :title
         = f.input :text
@@ -13,5 +11,3 @@
         = f.association :group
       .form-actions
         = f.button :submit, :class => "button"
-    .large-3.cell
-      &nbsp;
