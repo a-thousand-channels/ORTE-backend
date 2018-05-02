@@ -1,25 +1,30 @@
-%h1 Listing iconsets
 
-%table
-  %thead
-    %tr
-      %th Title
-      %th Text
-      %th Image
-      %th
-      %th
-      %th
+#table-wraper
 
-  %tbody
-    - @iconsets.each do |iconset|
+  %h1 Listing iconsets
+
+  %table
+    %thead
       %tr
-        %td= iconset.title
-        %td= iconset.text
-        %td= iconset.image
-        %td= link_to 'Show', iconset
-        %td= link_to 'Edit', edit_iconset_path(iconset)
-        %td= link_to 'Destroy', iconset, method: :delete, data: { confirm: 'Are you sure?' }
+        %th Title
+        %th Image
+        %th
+        %th
+        %th
 
-%br
+    %tbody
+      - @iconsets.each do |iconset|
+        %tr
+          %td
+            %h4= iconset.title
+            - if iconset.text.present?
+              %p= iconset.text
+          %td= iconset.image
+          %td= link_to 'Show', iconset
+          %td= link_to 'Edit', edit_iconset_path(iconset)
+          %td= link_to 'Destroy', iconset, method: :delete, data: { confirm: 'Are you sure?' }
 
-= link_to 'New Iconset', new_iconset_path
+  %p
+    = link_to new_iconset_path, :class=>'button' do
+      %i.fi-plus.fi-24
+      New Iconset

@@ -4,7 +4,8 @@ class LayersController < ApplicationController
   # GET /layers
   # GET /layers.json
   def index
-    @layers = Layer.all
+    @map = Map.find(params[:map_id])
+    @layers = @map.layers
   end
 
   # GET /layers/1
