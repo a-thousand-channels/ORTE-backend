@@ -10,6 +10,8 @@ class MapsController < ApplicationController
   # GET /maps/1
   # GET /maps/1.json
   def show
+    @maps = Map.all
+    @map_layers = @map.layers
   end
 
   # GET /maps/new
