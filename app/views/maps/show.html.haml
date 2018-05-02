@@ -1,18 +1,28 @@
 %p#notice= notice
 
-%p
-  %b Title:
-  = @map.title
-%p
-  %b Text:
-  = @map.text
-%p
-  %b Published:
-  = @map.published
-%p
-  %b Group:
-  = @map.group
+#selection
+  .grid-x
+    .cell.medium-10
+      = select_tag "maps", options_from_collection_for_select(@maps, "id", "title"), include_blank: false
+    .cell.medium-2
+      = link_to new_map_path, :class => 'button info' do
+        %i.fi-plus
+      = link_to edit_map_path(@map), :class => 'button secondary' do
+        %i.fi-pencil
+  .grid-x
+    - if @map_layers.count > 0
+      .cell.medium-10
+        = select_tag "map_layers", options_from_collection_for_select(@map_layers, "id", "title")
+      .cell.medium-2
+        = link_to new_map_layer_path(@map), :class => 'button info' do
+          %i.fi-plus
+    - else
+      .cell.medium-12
+        = link_to new_map_layer_path(@map), :class => 'button info' do
+          %i.fi-plus
+          Create a layer for this map
 
-= link_to 'Edit', edit_map_path(@map)
-\|
-= link_to 'Back', maps_path
+
+
+
+

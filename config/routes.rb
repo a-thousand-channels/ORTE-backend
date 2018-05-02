@@ -1,13 +1,10 @@
 Rails.application.routes.draw do
 
-  resources :icons
-  resources :iconsets
-  resources :places
-  resources :layers
-  resources :maps
   resources :groups
   devise_for :users
-  root 'start#index'
+
+  root 'maps#index'
+
   match 'preferences' => 'preferences#edit', :as => :preferences, via: [:get, :patch]
 
   get "bomb",        to: "application#bomb"
@@ -17,6 +14,13 @@ Rails.application.routes.draw do
   get   'edit_profile',    to: "start#edit_profile"
   patch 'update_profile',  to: "start#update_profile"
 
+  resources :iconsets
+  resources :icons
+  resources :maps do
+    resources :layers do
+      resources :places
+    end
+  end
 
   namespace :admin do
     resources :users
