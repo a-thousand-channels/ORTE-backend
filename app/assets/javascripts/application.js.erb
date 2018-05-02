@@ -24,9 +24,14 @@ $(document).on('turbolinks:load', function() {
     $(document).foundation();
 
 
-    $('.nav-selector').change(function(){
-
-      $('#this_form').submit();
+    $('.nav-selector').change(function(e){
+      e.preventDefault();
+      $(this).parent('form').prop( "disabled", true );
+      if ( $(this).val() !== '') {
+        var url = $(this).val()
+        console.log(url);
+        window.location = url;
+      }
     });
 
 

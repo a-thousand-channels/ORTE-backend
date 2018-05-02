@@ -11,6 +11,8 @@ class LayersController < ApplicationController
   # GET /layers/1
   # GET /layers/1.json
   def show
+    @maps = Map.all
+    @map_layers = @map.layers
   end
 
   # GET /layers/new
@@ -58,7 +60,7 @@ class LayersController < ApplicationController
   def destroy
     @layer.destroy
     respond_to do |format|
-      format.html { redirect_to layers_url, notice: 'Layer was successfully destroyed.' }
+      format.html { redirect_to map_path(@map), notice: 'Layer was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

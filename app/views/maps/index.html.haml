@@ -1,16 +1,15 @@
 
 
-#nav-selector
+#selection
   .grid-x
     - if @maps.count > 0
       .cell.medium-12
-        = simple_form_for :navselector, url: '/maps/' do |f|
+        = simple_form_for :navselector, url: '' do |f|
           .input-group
             .input-group-label
               %i.fi-map.fi-24
-            = f.input :id, :collection => @maps.map { |m| ["#{m.title} by #{m.group.title}", m.id, :class => "map-#{m.id} input-group-field"] }, :label => false, :include_blank => 'Select a map...'
+            = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => 'Select a layer...', input_html: {:class => 'nav-selector'}
             .input-group-button
-              = f.button :submit, "Go!", :class => "button"
               = link_to new_map_path, :class => 'button secondary' do
                 %i.fi-plus.fi-24
 
