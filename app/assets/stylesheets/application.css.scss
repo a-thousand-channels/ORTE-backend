@@ -10,9 +10,10 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
+
  *= require_self
-//= require foundation_and_overrides
+ *= require 1_basics
+ *= require foundation_and_overrides
 
 
  */
@@ -33,3 +34,7 @@ footer {
     bottom: 0;
     width: 100vw;
 }
+
+
+.fi-21 { font-size: 24px; }
+.fi-24 { font-size: 24px; }

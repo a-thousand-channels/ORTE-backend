@@ -22,6 +22,11 @@ $(document).on('turbolinks:load', function() {
     $(document).foundation();
 
 
+    $('.nav-selector').change(function(){
+
+      $('#this_form').submit();
+    });
+
     // this should be at the very end of this script :) and with test env only!
     <% if ( Rails.env == "test" ) %>
       $('footer').append("Javascript enabled");

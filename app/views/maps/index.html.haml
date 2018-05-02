@@ -1,8 +1,21 @@
 
 
-.grid-x#selection
-  .cell.medium-10
-    = select_tag "maps", options_from_collection_for_select(@maps, "id", "title"), include_blank: false
-  .cell.medium-2
-    = link_to new_map_path, :class => 'button info' do
-      %i.fi-plus
+#nav-selector
+  .grid-x
+    - if @maps.count > 0
+      .cell.medium-12
+        = simple_form_for :navselector, url: '/maps/' do |f|
+          .input-group
+            .input-group-label
+              %i.fi-map.fi-24
+            = f.input :id, :collection => @maps.map { |m| ["#{m.title} by #{m.group.title}", m.id, :class => "map-#{m.id} input-group-field"] }, :label => false, :include_blank => 'Select a map...'
+            .input-group-button
+              = f.button :submit, "Go!", :class => "button"
+              = link_to new_map_path, :class => 'button secondary' do
+                %i.fi-plus.fi-24
+
+    - else
+      .cell.medium-12
+        = link_to new_map_path, :class => 'button info' do
+          %i.fi-plus.fi-24
+          Create a map
