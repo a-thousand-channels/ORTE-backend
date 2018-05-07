@@ -14,7 +14,17 @@ class PlacesController < ApplicationController
 
   # GET /places/new
   def new
+    # puts place_params.inspect
+    puts params.inspect
     @place = Place.new
+    puts "------------ #{params[:city]}"
+    @place.location = params[:location]
+    @place.address = params[:address]
+    @place.zip = params[:zip]
+    @place.city = params[:city]
+    @place.lat = params[:lat]
+    @place.lon = params[:lon]
+    @place.layer_id = params[:layer_id]
     @map = Map.find(params[:map_id])
     @layer = Layer.find(params[:layer_id])
   end

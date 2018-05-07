@@ -18,9 +18,35 @@ main {
 
 }
 
-#selection p  {
+#selection p#selection-hint {
   background-color: rgba(200,200,200,0.5);
   padding: 0 5px;
+}
+#selection p#selection-hint.active {
+  background-color: rgba(200,200,200,0.8);
+  color: #522;
+}
+
+#selection ul#response {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  li  {
+
+    margin: 0 0 1rem 0;
+
+    a {
+      display: block;
+      padding: 0.4rem;
+      background-color: rgba(255,255,255,0.7);
+      border: 1px solid white;
+    }
+    a:hover {
+      border: 1px solid red;
+      background-color: rgba(255,255,255,1);
+    }
+  }
+
 }
 
 #table-wrapper,
@@ -34,4 +60,7 @@ main {
 #form-wrapper.large-wrapper {
   min-width: 700px;
 }
+
+
+/* -------------------- */
 

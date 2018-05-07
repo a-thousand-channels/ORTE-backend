@@ -24,6 +24,7 @@ $(document).on('turbolinks:load', function() {
     $(document).foundation();
 
 
+    // navigate by dropdown
     $('.nav-selector').change(function(e){
       e.preventDefault();
       $(this).parent('form').prop( "disabled", true );
@@ -34,6 +35,12 @@ $(document).on('turbolinks:load', function() {
       }
     });
 
+    $('input#addresslookup_address').change(function(e) {
+        e.preventDefault();
+        LookupNominatim($(this).val(),$(this).data('url'));
+    });
+
+    // baselayer map
 
     var map = L.map('map').setView([53.55, 9.99], 13);
 
@@ -42,7 +49,7 @@ $(document).on('turbolinks:load', function() {
   }).addTo(map);
 
 
-    // this should be at the very end of this script :) and with test env only!
+    // this should be at the very end of this script :) and for test env only!
     <% if ( Rails.env == "test" ) %>
       $('footer').append("Javascript enabled");
     <% end %>
@@ -52,4 +59,5 @@ $(document).on('turbolinks:load', function() {
 });
 
 
-$(function(){ $(document).foundation(); });
+// $(function(){ $(document).foundation(); });
+
