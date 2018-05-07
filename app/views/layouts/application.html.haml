@@ -11,7 +11,16 @@
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tag
 
-  %body
+  - klass = ""
+  - if current_user
+    - klass = "logged_in "
+  - if Rails.env == 'staging' || Rails.env == 'developement'
+    - klass = klass + "#{Rails.env.parameterize}"
+  - id = ''
+  - if controller_name
+    - id = "#{controller_name.parameterize}"
+
+  %body{:id=>"#{id}", :class=>"#{klass}"}
     %header
       = render 'layouts/navigation'
 

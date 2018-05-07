@@ -1,5 +1,5 @@
 
-#selection
+#selection{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}.json" }}
   .grid-x
     .cell.medium-12
       %p#notice= notice
@@ -9,7 +9,7 @@
           .input-group-label
             = link_to map_path(@map) do
               %i.fi-map.fi-24
-          = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => false, input_html: {:class => 'nav-selector'}
+          = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button.hide
             = link_to new_map_path, :class => 'button secondary', :title => 'Create a new map' do
               %i.fi-plus.fi-24
@@ -22,7 +22,7 @@
             = link_to map_layers_path(@map) do
               %i.fi-page-multiple.fi-24
           = simple_form_for :navselector, url: '', html: { method: :get }  do |f|
-            = f.input :id, :collection => @map_layers.map { |m| ["#{m.title}", "/maps/#{@map.id}/layers/#{m.id}", :class => "layer-#{m.id} input-group-field"] }, :label => false, :selected => @layer, :include_blank => false, input_html: {:class => 'nav-selector'}
+            = f.input :id, :collection => @map_layers.map { |l| ["#{l.title}", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}/layers/#{@layer.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button.hide
             = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do
               %i.fi-plus.fi-24

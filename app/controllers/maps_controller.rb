@@ -12,6 +12,10 @@ class MapsController < ApplicationController
   def show
     @maps = Map.all
     @map_layers = @map.layers
+    respond_to do |format|
+      format.html { render :show }
+      format.json { render json: @map_layers.to_json(:include => :places) }
+    end
   end
 
   # GET /maps/new
