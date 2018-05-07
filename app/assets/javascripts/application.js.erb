@@ -41,17 +41,32 @@ $(document).on('turbolinks:load', function() {
         LookupNominatim($(this).val(),$(this).data('url'));
     });
 
+
+    // ---------------
     // baselayer map
 
-    var map = L.map('map').setView([53.55, 9.99], 13);
+    var map = L.map('map').setView([53.55, 9.99], 12);
 
     var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-  attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-  }).addTo(map);
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    }).addTo(map);
 
 
-    // this should be at the very end of this script :) and for test env only!
+    // layers: show all places
+
+    if ( $('body').attr('id') === 'layers' )  {
+      ShowPlacesForLayer(map);
+    }
+    if ( $('body').attr('id') === 'maps' )  {
+      // todo: omit/handle layer!
+      // each layer different color!
+      ShowPlacesForLayer(map);
+    }
+
+    // ---------------
+
     <% if ( Rails.env == "test" ) %>
+      // this should be at the very end of this script :) and for test env only!
       $('footer').append("Javascript enabled");
     <% end %>
 

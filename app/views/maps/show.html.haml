@@ -1,5 +1,5 @@
 
-#selection
+#selection{:data => { 'url' => "/maps/#{@map.id}.json" }}
   .grid-x
     .cell.medium-12
       %p#notice= notice
@@ -7,7 +7,7 @@
         .input-group
           .input-group-label
             %i.fi-map.fi-24
-          = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => false, input_html: {:class => 'nav-selector'}
+          = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button.hide
             = link_to new_map_path, :class => 'button secondary' do
               %i.fi-plus.fi-24

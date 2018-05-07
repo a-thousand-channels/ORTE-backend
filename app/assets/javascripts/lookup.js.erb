@@ -28,7 +28,7 @@ function LookupNominatim(address,url) {
     $.each( data, function( key, val ) {
       console.log('Lookup:: Data val');
       console.log(val.class);
-      var regexp = /amenity|building/gi;
+      var regexp = /amenity|building|highway/gi;
       var label = ''
       if ( val.class === 'building') {
         label = 'Adresse:';

@@ -1,6 +1,8 @@
 class LayersController < ApplicationController
   before_action :set_layer, only: [:show, :edit, :update, :destroy]
 
+  protect_from_forgery :except => :show
+
   # GET /layers
   # GET /layers.json
   def index
@@ -13,6 +15,7 @@ class LayersController < ApplicationController
   def show
     @maps = Map.all
     @map_layers = @map.layers
+    @places =  @layer.places
     respond_to do |format|
       format.html { render :show }
       # format.json { render json: @layer.errors, status: :unprocessable_entity }
