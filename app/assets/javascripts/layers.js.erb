@@ -1,34 +1,21 @@
 function ShowPlacesForLayer(map) {
 
-    var layer_json_url = $('#selection').data('json-url');
-      // '/maps/1/layers/1.json';
-    // var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
-    var request = $.getJSON(layer_json_url, function(data) {
+  var layer_json_url = $('#selection').data('json-url');
+    // '/maps/1/layers/1.json';
+  // var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
+  var request = $.getJSON(layer_json_url, function(data) {
 
-      console.log("-----------------------------");
-      console.log(data);
+    console.log("-----------------------------");
+    console.log(data);
 
-      $.each(data.places, function(key,places) {
-        console.log(key);
-        console.log(places.title);
-        console.log(places.lat);
-        console.log(places.lon);
-        var marker = L.marker([places.lat, places.lon], {icon: redIcon}).addTo(map);
-        marker.bindPopup("<h4>"+places.title+"</h4>");
+    $.each(data.places, function(key,places) {
+      console.log(key);
+      console.log(places.title);
+      console.log(places.lat);
+      console.log(places.lon);
+      var marker = L.marker([places.lat, places.lon], {icon: redIcon}).addTo(map);
+      marker.bindPopup("<h4>"+places.title+"</h4>");
 
-      });
     });
-
-    var popup = L.popup();
-
-    function onMapClick(e) {
-      popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map);
-    }
-
-    map.on('click', onMapClick);
-
-
+  });
 }
