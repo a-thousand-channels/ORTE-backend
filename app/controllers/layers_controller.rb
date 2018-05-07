@@ -13,6 +13,11 @@ class LayersController < ApplicationController
   def show
     @maps = Map.all
     @map_layers = @map.layers
+    respond_to do |format|
+      format.html { render :show }
+      # format.json { render json: @layer.errors, status: :unprocessable_entity }
+      format.json { render json: @layer.to_json(:include => :places) }
+    end
   end
 
   # GET /layers/new
