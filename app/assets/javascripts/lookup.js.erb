@@ -1,0 +1,101 @@
+function LookupNominatim(address,url) {
+
+  if ( address.length < 5 ) {
+    console.log('Lookup:: Value too short!');
+    $('#selection-hint').html("Input too short. Please type in a complete address ('Street Number, City')");
+    $('#selection-hint').addClass('active');
+
+  } else {
+    console.log('Lookup:: '+address);
+    //example
+    // https://nominatim.openstreetmap.org/search?q=135+pilkington+avenue,+birmingham&format=xml&polygon=1&addressdetails=1
+    var nominatium_url = 'https://nominatim.openstreetmap.org/search';
+    var nominatium_url_params = '&format=json&addressdetails=1'
+
+    var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
+
+    // headers: {"User-Agent": "ORTE-backend"}
+
+    // if no result
+    if ( !data ) {
+      console.log('Lookup:: No result');
+      $('#selection-hint').html("Nothing found. Please try another adress ('Street Number, City')");
+      $('#selection-hint').addClass('active');
+      return;
+    }
+
+    var items = [];
+    $.each( data, function( key, val ) {
+      console.log('Lookup:: Data val');
+      console.log(val.class);
+      var regexp = /amenity|building/gi;
+      var label = ''
+      if ( val.class === 'building') {
+        label = 'Adresse:';
+      }
+
+      var href = url+'?address='+val.display_name+'&lat='+val.lat+'&lon='+val.lon;
+
+
+      // OR better get address details
+/*
+      pub Café Treibeis
+      house_number  25
+      road  Gaußstraße
+      suburb  Ottensen
+      city_district Altona
+      state Hamburg
+      postcode  22765
+      country Germany
+      country_code  de*/
+
+      if ( val.address ) {
+
+        var location;
+        location = val.address[Object.keys(val.address)[0]];
+        console.log("////////////////"+location);
+        if ( val.class === 'building') {
+          location = val.address.road+" "+val.address.house_number
+        }
+
+        // TODO verify all values
+        // FIXME hamburg as state
+        href = url+'?location='+location+"&address="+val.address.road+" "+val.address.house_number+"&zip="+val.address.postcode+"&city="+val.address.state+'&lat='+val.lat+'&lon='+val.lon;
+
+      }
+
+
+
+
+      if ( val.class.match(regexp) ) {
+        console.log('Lookup:: Using entry');
+        items.push( "<li id='" + key + "'><a href='"+href+"'>" + label + " " + val.display_name + "</a></li>" );
+      }
+    });
+
+    $( "<ul/>", {
+        "id": "response",
+        html: items.join( "" ),
+      }).appendTo( "#selection" );
+    }).done(function() {
+      console.log( "success" );
+      $('#selection-hint').html("Please select one of the addresses below or try another input.");
+      $('#selection-hint').addClass('active');
+    })
+    .fail(function() {
+      console.log( "error" );
+      $('#selection-hint').html("Nothing found. Please try another input.");
+      $('#selection-hint').addClass('active');
+    })
+    .always(function() {
+      console.log( "complete" );
+    });
+  }
+
+}
+
+function ReverseLookupNominatim(lat,lon) {
+
+  console.log('Lookup:: Lat '+lat+'/Lon '+lon);
+  var nominatium_reverse_url = 'https://nominatim.openstreetmap.org/reverse';
+}

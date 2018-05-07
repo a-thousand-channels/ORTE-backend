@@ -4,7 +4,7 @@
     .cell.medium-12
       %p#notice= notice
 
-      = simple_form_for :navselector, url: '/maps/' do |f|
+      = simple_form_for :navselector, url: '/maps/', html: { method: :get }  do |f|
         .input-group
           .input-group-label
             = link_to map_path(@map) do
@@ -21,7 +21,7 @@
           .input-group-label
             = link_to map_layers_path(@map) do
               %i.fi-page-multiple.fi-24
-          = simple_form_for :navselector, url: '' do |f|
+          = simple_form_for :navselector, url: '', html: { method: :get }  do |f|
             = f.input :id, :collection => @map_layers.map { |m| ["#{m.title}", "/maps/#{@map.id}/layers/#{m.id}", :class => "layer-#{m.id} input-group-field"] }, :label => false, :selected => @layer, :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button.hide
             = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do
@@ -34,16 +34,16 @@
 
   .grid-x
     .cell.medium-12
-      = simple_form_for :addresslookup, url: '' do |f|
+      = simple_form_for :addresslookup, url: '', html: { method: :get } do |f|
         .input-group
           .input-group-label
             %i.fi-marker.fi-24
-          = f.input :address, :label => false, :placeholder => 'Name, Street + Number...', input_html: {:class => "address-lookup-field input-group-field"}
+          = f.input :address, :label => false, :placeholder => 'Name, Street + Number...', input_html: {:class => "address-lookup-field input-group-field", :data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/new" }}
           .input-group-button
             = link_to new_map_layer_place_path(@map,@layer), :class => 'button secondary', :title => 'Lookup for address' do
               %i.fi-magnifying-glass.fi-24
 
-      %p Type an adress or click on the map to create a place
+      %p#selection-hint Type an address or click on the map to create a place
 
 
 
