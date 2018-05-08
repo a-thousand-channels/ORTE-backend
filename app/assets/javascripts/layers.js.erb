@@ -1,14 +1,16 @@
 function ShowPlacesForLayer(map) {
 
-  var layer_json_url = $('#selection').data('json-url');
+  var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
-  // var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
+  console.log("drawing placmarks w/data from "+layer_json_url);
+
   var request = $.getJSON(layer_json_url, function(data) {
 
     console.log("-----------------------------");
     console.log(data);
 
     $.each(data.places, function(key,places) {
+      console.log("Place////////");
       console.log(key);
       console.log(places.title);
       console.log(places.lat);

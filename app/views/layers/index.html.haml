@@ -1,5 +1,5 @@
 
-#table-wraper
+#table-wrapper
   %h1
     = link_to map_path(@map) do
       = @map.title
@@ -17,7 +17,10 @@
       - @layers.each do |layer|
         %tr
           %td
-            %h4= layer.title
+            %h4
+              = link_to map_layer_url(layer.map,layer) do
+                = layer.title
+                (#{layer.places.count})
             - if layer.text.present?
               %p= layer.text
           %td
