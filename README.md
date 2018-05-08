@@ -6,6 +6,8 @@ Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
 
 This application is a its very beginning, work in progress.
 
+![preview](https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-backend-dev-002.jpg)
+
 ## Credits
 
 Ulf Treger <ulf.treger@googlemail.com>
