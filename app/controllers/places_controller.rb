@@ -38,10 +38,12 @@ class PlacesController < ApplicationController
   # POST /places.json
   def create
     @place = Place.new(place_params)
+    @layer = Layer.find(@place.layer_id)
+    @map = @layer.map
 
     respond_to do |format|
       if @place.save
-        format.html { redirect_to map_layers_path([@place.layer.map.id,@place.layer.id]), notice: 'Place was successfully created.' }
+        format.html { redirect_to map_layers_url([@map,@layer,@place]), notice: 'Place was successfully created.' }
         format.json { render :show, status: :created, location: @place }
       else
         format.html { render :new }
@@ -53,9 +55,12 @@ class PlacesController < ApplicationController
   # PATCH/PUT /places/1
   # PATCH/PUT /places/1.json
   def update
+    @layer = Layer.find(@place.layer_id)
+    @map = @layer.map
+
     respond_to do |format|
       if @place.update(place_params)
-        format.html { redirect_to @place, notice: 'Place was successfully updated.' }
+        format.html { redirect_to map_layers_url([@map,@layer,@place]), notice: 'Place was successfully updated.' }
         format.json { render :show, status: :ok, location: @place }
       else
         format.html { render :edit }

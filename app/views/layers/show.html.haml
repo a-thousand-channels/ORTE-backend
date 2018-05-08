@@ -37,7 +37,8 @@
       = simple_form_for :addresslookup, url: '', html: { method: :get } do |f|
         .input-group
           .input-group-label
-            %i.fi-marker.fi-24
+            = link_to map_layer_places_path(@map,@layer) do
+              %i.fi-marker.fi-24
           = f.input :address, :label => false, :placeholder => 'Name, Street + Number...', input_html: {:class => "address-lookup-field input-group-field", :data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/new" }}
           .input-group-button
             = link_to new_map_layer_place_path(@map,@layer), :class => 'button secondary', :title => 'Lookup for address' do
