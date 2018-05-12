@@ -1,6 +1,6 @@
 defaults: &defaults
   app_name:          "ORTE Backend"
-  app_fullname:      "Managing places on a map"
+  app_fullname:      "Mnaging places on a map"
   app_version:       0.1
   app_credits:       ""
   app_host:          "127.0.0.1:3000"

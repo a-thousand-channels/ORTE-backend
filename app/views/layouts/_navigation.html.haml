@@ -13,9 +13,9 @@
             Iconsets
 
 
-  - if user_signed_in?
-    .top-bar-right
-      %ul.menu
+  .top-bar-right
+    %ul.menu
+      - if user_signed_in?
         - if admin?
           %li
             %a{:href => groups_path}
@@ -29,3 +29,7 @@
           = link_to destroy_user_session_path, method: :delete, :id => 'logout' do
             %i.fi-power
             = t(".sign_out")
+      - else
+        %li
+          = link_to new_user_session_path, :id => 'login' do
+            = t(".sign_in")

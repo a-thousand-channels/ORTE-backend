@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class StartController < ApplicationController
+
+
+  skip_before_action :authenticate_user!, only: [:index]
+
   def index; end
 
   def edit_profile
