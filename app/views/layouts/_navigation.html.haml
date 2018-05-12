@@ -18,13 +18,14 @@
       - if user_signed_in?
         - if admin?
           %li
-            %a{:href => groups_path}
+            %a{:href => admin_users_path}
+              %i.fi-torsos-all
+              Users
+          %li
+            %a{:href => admin_groups_path}
               %i.fi-torsos-all
               Groups
-        %li
-          %a{:href => edit_user_registration_path}
-            %i.fi-torso
-            Profile
+
         %li
           = link_to destroy_user_session_path, method: :delete, :id => 'logout' do
             %i.fi-power

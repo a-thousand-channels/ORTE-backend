@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :groups
   devise_for :users
 
   root 'start#index'
@@ -14,8 +13,9 @@ Rails.application.routes.draw do
   get   'edit_profile',    to: "start#edit_profile"
   patch 'update_profile',  to: "start#update_profile"
 
-  resources :iconsets
-  resources :icons
+  resources :iconsets do
+    resources :icons
+  end
   resources :maps do
     resources :layers do
       resources :places
@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :users
+    resources :groups
   end
 
 end
