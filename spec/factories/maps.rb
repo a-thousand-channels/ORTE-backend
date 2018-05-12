@@ -3,6 +3,6 @@ FactoryBot.define do
     title "MyString"
     text "MyString"
     published false
-    group nil
+    group
   end
 end
