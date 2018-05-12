@@ -1,0 +1,49 @@
+#table-wrapper
+  %h1 Groups
+
+  %table
+    %thead
+      %tr
+        %th Title
+        %th Users
+        %th Maps
+        %th
+        %th
+
+    %tbody
+      - @admin_groups.each do |group|
+        %tr
+          %td= group.title
+          %td
+            - if group.users.count > 0
+              %ul
+                - group.users.each do |user|
+                  %li=user.email
+
+            - else
+              No users defined yet
+          %td
+            - if group.maps.count > 0
+              %ul
+                - group.maps.each do |map|
+                  %li=map.title
+
+            - else
+              %p
+                = link_to maps_path do
+                  No maps defined yet
+
+          %td
+            = link_to edit_admin_group_path(group), :class => 'button' do
+              %i.fi.fi-pencil
+              Edit
+          %td
+            = link_to [:admin, group ], :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
+              %i.fi.fi-x
+              Destroy
+
+  %br
+
+  = link_to new_admin_group_path, :class => "button secondary" do
+    %i.fi.fi-plus
+    New Group
