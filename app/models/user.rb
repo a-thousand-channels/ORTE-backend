@@ -12,6 +12,8 @@ class User < ApplicationRecord
   validates :role,  presence: true,
                     inclusion: { in: Ability.role_symbols.map(&:to_s) }
 
+  belongs_to :group
+
   def admin?
     role == 'admin'
   end

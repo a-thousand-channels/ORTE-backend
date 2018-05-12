@@ -1,25 +1,36 @@
-%h1 Listing admin_users
 
-%table
-  %thead
-    %tr
-      %th Email
-      %th Role
-      %th
-      %th
-      %th
 
-  %tbody
-    - @admin_users.each do |admin_user|
+#table-wrapper
+  %h1 Users
+
+  %table
+    %thead
       %tr
-        %td= admin_user.email
-        %td= admin_user.role
-        %td= link_to 'Show', [:admin, admin_user ]
-        %td= link_to 'Edit', edit_admin_user_path(admin_user)
-        %td= link_to 'Destroy', [:admin, admin_user ], :method => :delete, :data => { :confirm => 'Are you sure?' }
+        %th Email
+        %th Role
+        %th Group
+        %th
+        %th
 
-    = paginate @admin_users
+    %tbody
+      - @admin_users.each do |admin_user|
+        %tr
+          %td= admin_user.email
+          %td= admin_user.role
+          %td= admin_user.group.title
+          %td
+            = link_to edit_admin_user_path(admin_user), :class => 'button' do
+              %i.fi.fi-pencil
+              Edit
+          %td
+            = link_to [:admin, admin_user ], :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
+              %i.fi.fi-x
+              Destroy
 
-%br
+      = paginate @admin_users
 
-= link_to 'New User', new_admin_user_path
+  %br
+
+  = link_to new_admin_user_path, :class => "button secondary" do
+    %i.fi.fi-plus
+    New User
