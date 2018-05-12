@@ -1,3 +1,12 @@
-%h1 #{Settings.app_name} #{Settings.app_version}
-%h3 #{Settings.app_fullname}
-%p This template lives in view/start/index.html.haml
+
+#info-wrapper
+  %h1 #{Settings.app_name}
+  %h3 #{Settings.app_fullname}
+  %p
+    About this application:
+    = link_to 'https://github.com/ut/ORTE-backend' do
+      ORTE Backend at GitHub
+  %p
+    = link_to 'users/sign_in', :class => 'button'  do
+      Sign in
+

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :groups
   devise_for :users
 
-  root 'maps#index'
+  root 'start#index'
 
   match 'preferences' => 'preferences#edit', :as => :preferences, via: [:get, :patch]
 
