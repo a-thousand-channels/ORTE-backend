@@ -9,11 +9,13 @@ FactoryBot.define do
     email
     password 'password12345'
     password_confirmation 'password12345'
+    group
   end
 
   factory :admin_user, class: User do
     # TODO: cancancan
     email
     password 'password'
+    group
   end
 end

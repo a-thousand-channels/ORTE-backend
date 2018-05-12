@@ -1,6 +1,8 @@
 FactoryBot.define do
   factory :group do
     title "MyString"
-    user nil
+    trait :invalid do
+      title nil
+    end
   end
 end
