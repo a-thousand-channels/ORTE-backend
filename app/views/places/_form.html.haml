@@ -1,30 +1,45 @@
 = simple_form_for([@map,@layer,@place]) do |f|
+
+  .grid-x.grid-padding-x
+    .large-6.cell
+      %h1 Place
+    .large-6.cell
+      .grid-x.grid-padding-x
+        .large-4.cell
+          %br
+          = f.input :published
+        .large-8.cell
+          %br
+          - if @place.layer.title
+            Layer:
+            = @place.layer.title
+            = f.association :layer, as: :hidden
+          - else
+            = f.association :layer
+      .grid-x.grid-padding-x
+        .large-4.cell
+          %br
+        .large-8.cell
+          Coordinates:
+          #{@place.lat[0..6]}/#{@place.lon[0..6]}
+          = f.input :lat, as: :hidden
+          = f.input :lon, as: :hidden
+
   .grid-x.grid-padding-x
     .large-12.cell
       = f.error_notification
       = f.input :title
+
   .grid-x.grid-padding-x
     .large-6.medium-12.cell
       .form-inputs
-        = f.input :teaser, :input_html => {:rows => 3, class: 'large-text'}
-        .grid-x.grid-padding-x
-          .large-6.cell
-            = f.input :startdate, as: :date, html5: true
-          .large-6.cell
-            = f.input :enddate, as: :date, html5: true
-        %hr
-        = f.input :text, :input_html => {:rows => 5, class: 'large-text'}
-        = f.input :link, :placeholder => 'http://'
-        - #= f.input :country
+        = f.input :teaser, :input_html => {:rows => 4, class: 'large-text'}
+        = f.input :startdate
+        = f.input :enddate
+
 
     .large-6.medium-12.cell
       .form-inputs
-        .grid-x.grid-padding-x
-          .large-4.cell
-            = f.input :published
-          .large-8.cell
-            = f.association :layer
-        %hr
         = f.input :location
         = f.input :address
         .grid-x.grid-padding-x
@@ -33,11 +48,8 @@
           .large-8.cell
             = f.input :city
         %hr
-        .grid-x.grid-padding-x
-          .large-6.cell
-            = f.input :lat
-          .large-6.cell
-            = f.input :lon
+        = f.input :link, :placeholder => 'http://'
+        - #= f.input :country
   .grid-x.grid-padding-x
     .large-12.cell
       .form-actions

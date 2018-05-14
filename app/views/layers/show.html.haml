@@ -40,11 +40,11 @@
             = link_to map_layer_places_path(@map,@layer) do
               %i.fi-marker.fi-24
           = f.input :address, :label => false, :placeholder => 'Name, Street + Number...', input_html: {:class => "address-lookup-field input-group-field", :data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/new" }}
-          .input-group-button
+          .input-group-button.hide
             = link_to new_map_layer_place_path(@map,@layer), :class => 'button secondary', :title => 'Lookup for address' do
               %i.fi-magnifying-glass.fi-24
 
-      %p#selection-hint Type an address or click on the map to create a place
+      %p#selection-hint Type an address or double-click on the map to create a place
 
 
 
