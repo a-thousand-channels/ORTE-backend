@@ -34,7 +34,8 @@ function LookupNominatim(address,url) {
         label = 'Adresse:';
       }
 
-      var href = url+'?address='+val.display_name+'&lat='+val.lat+'&lon='+val.lon;
+    // call places/new
+    var href = url+'?address='+val.display_name+'&lat='+val.lat+'&lon='+val.lon;
 
 
       // OR better get address details
@@ -94,8 +95,14 @@ function LookupNominatim(address,url) {
 
 }
 
-function ReverseLookupNominatim(lat,lon) {
+function ReverseLookupNominatim(lat,lon,url) {
 
   console.log('Lookup:: Lat '+lat+'/Lon '+lon);
+
+  // TODO: reverse lookup
   var nominatium_reverse_url = 'https://nominatim.openstreetmap.org/reverse';
+  // url = url+'?location='+location+"&address="+val.address.road+" "+val.address.house_number+"&zip="+val.address.postcode+"&city="+val.address.state+'&lat='+val.lat+'&lon='+val.lon;
+  url = url+'?lat='+lat+'&lon='+lon;
+  console.log(url);
+  window.location = url;
 }
