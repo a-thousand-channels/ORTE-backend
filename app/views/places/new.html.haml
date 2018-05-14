@@ -1,4 +1,6 @@
 
 #form-wrapper.large-wrapper
-  %h1 New place
+  = link_to map_layer_url(@map,@layer), :class=>"close-button button small", "aria-label"=>"Close back",:type=>"button" do
+    %span{"aria-hidden"=>"true"}
+      %i.fi.fi-x
   = render 'form'
