@@ -63,6 +63,13 @@ $(document).on('turbolinks:load', function() {
       ShowPlacesForLayer(map);
     }
 
+    // map click to get latlon
+
+    map.on('dblclick', function(e){
+      L.popup().setLatLng(e.latlng).setContent("Coordinates of this place: " + e.latlng.toString()).openOn(map);
+      ReverseLookupNominatim(e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
+    });
+
     // ---------------
 
     <% if ( Rails.env == "test" ) %>
