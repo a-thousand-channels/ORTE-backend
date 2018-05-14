@@ -55,18 +55,18 @@ $(document).on('turbolinks:load', function() {
     // layers: show all places
 
     if ( $('body').attr('id') === 'layers' )  {
-      ShowPlacesForLayer(map);
+      ShowPlacesForLayer(map,'layers');
     }
     if ( $('body').attr('id') === 'maps' )  {
       // todo: omit/handle layer!
       // each layer different color!
-      ShowPlacesForLayer(map);
+      ShowPlacesForLayer(map,'maps');
     }
 
     // map click to get latlon
 
     map.on('dblclick', function(e){
-      L.popup().setLatLng(e.latlng).setContent("Coordinates of this place: " + e.latlng.toString()).openOn(map);
+      L.popup().setLatLng(e.latlng).setContent("Coordinates of this place: " + e.latlng.lat +"/"+e.latlng.lng()).openOn(map);
       ReverseLookupNominatim(e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
     });
 

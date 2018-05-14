@@ -19,7 +19,7 @@ class LayersController < ApplicationController
     respond_to do |format|
       format.html { render :show }
       # format.json { render json: @layer.errors, status: :unprocessable_entity }
-      format.json { render json: @layer.to_json(:include => :places) }
+      format.json { render json: @layer.to_json(:include => { :places => { :methods => [:date, :edit_link] }} ) }
     end
   end
 
