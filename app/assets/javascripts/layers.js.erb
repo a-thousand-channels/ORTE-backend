@@ -1,23 +1,44 @@
-function ShowPlacesForLayer(map) {
+function ShowPlacesForLayer(map,level) {
 
   var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
-  console.log("drawing placmarks w/data from "+layer_json_url);
+  console.log("drawing placemarks w/data from "+layer_json_url);
 
   var request = $.getJSON(layer_json_url, function(data) {
 
     console.log("-----------------------------");
     console.log(data);
 
-    $.each(data.places, function(key,places) {
+    if ( level === 'layers') {
+      console.log("Render one layer");
+      DrawMarkers(map,data.places);
+    } else  {
+      $.each(data, function(key,places) {
+        console.log("Render layer "+key);
+        DrawMarkers(map,data[key].places);
+      });
+    }
+  });
+}
+function DrawMarkers(map,places) {
+
+    $.each(places, function(key,place) {
       console.log("Place////////");
       console.log(key);
-      console.log(places.title);
-      console.log(places.lat);
-      console.log(places.lon);
-      var marker = L.marker([places.lat, places.lon], {icon: redIcon}).addTo(map);
-      marker.bindPopup("<h4>"+places.title+"</h4>");
+      console.log(place.title);
+      console.log(place.lat);
+      console.log(place.lon);
+      var marker = L.marker([place.lat, place.lon], {icon: greyIcon}).addTo(map);
+      var content = '';
+      if ( place.date ) {
+        content += "<p>"+place.date+"</p>";
+      }
+      content += "<h4>"+place.title+"</h4><p>"+place.teaser+"</p>";
+      if ( place.edit_link ) {
+        content += place.edit_link
+      }
+      marker.bindPopup(content);
 
     });
-  });
+
 }

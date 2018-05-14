@@ -14,7 +14,7 @@ class MapsController < ApplicationController
     @map_layers = @map.layers
     respond_to do |format|
       format.html { render :show }
-      format.json { render json: @map_layers.to_json(:include => :places) }
+      format.json { render json: @map_layers.to_json(:include => { :places => { :methods => [:date, :edit_link] }} ) }
     end
   end
 
