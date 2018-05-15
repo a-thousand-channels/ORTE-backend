@@ -10,7 +10,7 @@ This application is a its very beginning, work in progress.
 
 ## Credits
 
-Ulf Treger <ulf.treger@googlemail.com>
+Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects.
 
 ## Contributions
 
