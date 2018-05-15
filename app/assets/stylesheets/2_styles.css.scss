@@ -12,6 +12,18 @@ main {
   margin: 100px 0 0 70px;
   min-height: none;
 }
+@media screen and (max-width: 63.9375em) {
+  main {
+      padding: 10px;
+      top: 0;
+      margin: 0;
+      min-height: none;
+      right: 0;
+      left: 0;
+      max-width: 99%;
+      min-height: auto;
+  }
+}
 
 
 /* -------------------- */
@@ -62,6 +74,17 @@ main {
 #table-wrapper.large-wrapper,
 #form-wrapper.large-wrapper {
   min-width: 700px;
+}
+@media screen and (max-width: 63.9375em) {
+  #info-wrapper,
+  #table-wrapper,
+  #form-wrapper {
+    min-width: auto;
+  }
+  #table-wrapper.large-wrapper,
+  #form-wrapper.large-wrapper {
+    min-width: auto;
+  }
 }
 
 

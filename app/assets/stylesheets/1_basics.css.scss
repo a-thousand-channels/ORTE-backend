@@ -32,6 +32,22 @@ select {
 .top-bar, .top-bar ul {
     background-color: #333;
 }
+
+@media screen and (max-width: 63.9375em) {
+  .top-bar .top-bar-left, .top-bar .top-bar-right {
+      flex: 0 0 100%;
+      max-width: 50%;
+  }
+  #maps header,
+  #layers header {
+    display: none;
+  }
+}
+
+
+
+
+/* -------------------- */
 footer {
   background-color: #333;
   z-index: 15;

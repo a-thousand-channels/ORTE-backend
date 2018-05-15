@@ -1,6 +1,6 @@
 .top-bar
   .top-bar-left
-    %ul.menu
+    %ul.menu.show-for-large
       %li.name= link_to "#{Settings.app_name}", root_path
       - if user_signed_in?
         %li
@@ -20,13 +20,15 @@
           %li
             %a{:href => admin_users_path}
               %i.fi-torsos-all
-              Users
+              %span.show-for-large
+                Users
           %li
             %a{:href => admin_groups_path}
               %i.fi-torsos-all
-              Groups
+              %span.show-for-large
+                Groups
 
-        %li
+        %li.show-for-large
           = link_to destroy_user_session_path, method: :delete, :id => 'logout' do
             %i.fi-power
             = t(".sign_out")
