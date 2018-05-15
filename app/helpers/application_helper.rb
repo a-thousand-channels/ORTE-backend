@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+
+  def after_sign_in_path_for(resource)
+    maps_path
+  end
+
+
   def admin?
     current_user&.admin?
   end
