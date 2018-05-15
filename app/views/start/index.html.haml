@@ -7,6 +7,10 @@
     = link_to 'https://github.com/ut/ORTE-backend' do
       ORTE Backend at GitHub
   %p
-    = link_to 'users/sign_in', :class => 'button'  do
-      Sign in
+    - if current_user
+      = link_to maps_path, :class => 'button' do
+        Maps
+    - else
+      = link_to 'users/sign_in', :class => 'button'  do
+        Sign in
 

@@ -7,11 +7,9 @@
         - @admin_user.errors.full_messages.each do |msg|
           %li= msg
   %p
-    = f.label :email
-    = f.text_field :email
+    = f.input :email
   %p
-    = f.label :password
-    = f.text_field :password
+    = f.input :password
   %p
     = f.label :role
     = f.select :role, Ability.role_symbols, include_blank: false

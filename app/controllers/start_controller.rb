@@ -2,10 +2,14 @@
 
 class StartController < ApplicationController
 
-
   skip_before_action :authenticate_user!, only: [:index]
 
-  def index; end
+  def index
+    if current_user
+      redirect_to maps_path
+    end
+
+  end
 
   def edit_profile
     @user = current_user
