@@ -1,3 +1,4 @@
 = Settings.app_name
 = Settings.app_version
-= "#{DEPLOY_REVISION}@#{Rails.env} (#{DEPLOY_DATE})"
+%span.show-for-large
+  = "#{DEPLOY_REVISION}@#{Rails.env} (#{I18n.l DEPLOY_DATE})"
