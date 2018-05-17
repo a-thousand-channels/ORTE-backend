@@ -7,7 +7,9 @@
       .grid-x.grid-padding-x
         .large-4.cell
           %br
-          = f.input :published
+          = f.input :published, :label => 'Publish!'
+          %p.shy This publishes this place on the public map!
+
         .large-8.cell
           %br
           - if @place.layer.title
@@ -33,7 +35,7 @@
   .grid-x.grid-padding-x
     .large-6.medium-12.cell
       .form-inputs
-        = f.input :teaser, :input_html => {:rows => 4, class: 'large-text'}
+        = f.input :teaser, :input_html => {:rows => 4, :label => 'Text', class: 'large-text'}
         = f.input :startdate
         = f.input :enddate
 
