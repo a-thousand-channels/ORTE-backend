@@ -1,8 +1,12 @@
 function LookupNominatim(address,url) {
 
+  if ( address === '' ) {
+    $('#selection-hint').html("<strong>No input!</strong> Please type in a complete address ('Street Number, City')");
+    $('#selection-hint').addClass('active');
+  }
   if ( address.length < 5 ) {
     console.log('Lookup:: Value too short!');
-    $('#selection-hint').html("Input too short. Please type in a complete address ('Street Number, City')");
+    $('#selection-hint').html("<strong>Input too short.</strong> Please type in a complete address ('Street Number, City')");
     $('#selection-hint').addClass('active');
 
   } else {

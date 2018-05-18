@@ -36,9 +36,29 @@ $(document).on('turbolinks:load', function() {
       }
     });
 
+    // address lookup
+    $('form#addresslookup').submit(function(e) {
+      e.preventDefault();
+    });
+    $('form#addresslookup input').on('keypress', function(e) {
+        // return e.which !== 13;
+        if ( e.which === 13 ) {
+          console.log("enter");
+          LookupNominatim($('input#addresslookup_address').val(),$('input#addresslookup_address').data('url'));
+        } else {
+          return;
+        }
+    });
+
     $('input#addresslookup_address').change(function(e) {
         e.preventDefault();
         LookupNominatim($(this).val(),$(this).data('url'));
+    });
+    $('button#addresslookup_button').click(function(e) {
+      e.preventDefault();
+      var val = $('input#addresslookup_address').val();
+      LookupNominatim(val,$('input#addresslookup_address').data('url'));
+
     });
 
 
