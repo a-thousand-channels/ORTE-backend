@@ -58,7 +58,14 @@ class PlacesController < ApplicationController
   def update
     @layer = Layer.find(@place.layer_id)
     @map = @layer.map
-
+      # quirks, because foundation switch generats 'on'/'off' values,
+      # rails expect true/false
+      # TODO: render this at generating the form
+      if params[:place][:published] == 'on'
+        params[:place][:published] = true
+      else
+        params[:place][:published] = false
+      end
     respond_to do |format|
       if @place.update(place_params)
         format.html { redirect_to map_layers_url([@map,@layer,@place]), notice: 'Place was successfully updated.' }
