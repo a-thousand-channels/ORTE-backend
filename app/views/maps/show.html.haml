@@ -5,7 +5,8 @@
       = simple_form_for :navselector, url: '' do |f|
         .input-group
           .input-group-label
-            %i.fi-map.fi-24
+            = link_to map_path(@map) do
+              %i.fi-map.fi-24
           = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button.hide
             = link_to new_map_path, :class => 'button secondary' do
