@@ -1,31 +1,36 @@
 = simple_form_for([@map,@layer,@place]) do |f|
 
   .grid-x.grid-padding-x
-    .large-6.cell
+    .large-12.medium-12.cell
       %h1 Place
-    .large-6.cell
-      .grid-x.grid-padding-x
-        .large-4.cell
-          %br
-          = f.input :published, :label => 'Publish!'
+  .grid-x.grid-padding-x
+    .large-4.medium-6.cell
+      .grid-x
+        .small-4.cell
+          %p Publish?
+        .small-8.cell
+          .switch
+            %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox" }
+            %label.switch-paddle{:for=>"place_published"}
+              %span.show-for-sr
+                Publish
+              %span.switch-active{:aria-hidden=>"true"} Yes
+              %span.switch-inactive{:aria-hidden=>"true"} No
           %p.shy This publishes this place on the public map!
 
-        .large-8.cell
-          %br
-          - if @place.layer.title
-            Layer:
-            = @place.layer.title
-            = f.association :layer, as: :hidden
-          - else
-            = f.association :layer
-      .grid-x.grid-padding-x
-        .large-4.cell
-          %br
-        .large-8.cell
-          Coordinates:
-          #{@place.lat[0..6]}/#{@place.lon[0..6]}
-          = f.input :lat, as: :hidden
-          = f.input :lon, as: :hidden
+    .large-8.medium-6.cell
+      %p
+        - if @place.layer.title
+          %span.name Layer:
+          = @place.layer.title
+          = f.association :layer, as: :hidden
+        - else
+          = f.association :layer
+      %p
+        %span.name Coordinates:
+        #{@place.lat[0..6]}/#{@place.lon[0..6]}
+        = f.input :lat, as: :hidden
+        = f.input :lon, as: :hidden
 
   .grid-x.grid-padding-x
     .large-12.cell
@@ -42,12 +47,13 @@
 
     .large-6.medium-12.cell
       .form-inputs
-        = f.input :location
-        = f.input :address
+        %hr
+        = f.input :location, :input_html => {:placeholder => 'Name' }
+        = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
-          .large-4.cell
+          .small-4.cell
             = f.input :zip
-          .large-8.cell
+          .small-8.cell
             = f.input :city
         %hr
         = f.input :link, :placeholder => 'http://'

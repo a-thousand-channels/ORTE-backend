@@ -4,8 +4,9 @@ class PlacesController < ApplicationController
   # GET /places
   # GET /places.json
   def index
-    @places = Place.all
-    @layer = @places.first.layer
+    @layer = Layer.find(params[:layer_id])
+    @map = @layer.map
+    @places = @layer.places
   end
 
   # GET /places/1

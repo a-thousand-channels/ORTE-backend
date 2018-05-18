@@ -1,25 +1,25 @@
 
 #table-wrapper
-  %h1
+  = link_to map_layer_url(@map,@layer), :class=>"close-button button small", "aria-label"=>"Close back",:type=>"button" do
+    %span{"aria-hidden"=>"true"}
+      %i.fi.fi-x
+  %h3
     = link_to map_path(@layer.map) do
       = @layer.map.title
     \>
     = link_to map_layer_path(@layer.map,@layer) do
       = @layer.title
+    (#{@places.count})
 
 
   %table
     %thead
       %tr
         %th Title/Link
-        %th Startdate
-        %th Enddate
+        %th Date
         %th Location
-        %th Address
         %th Zip/City
-        %th Layer
         %th Published
-        %th
         %th
 
     %tbody
@@ -28,14 +28,15 @@
           %td
             %h4= place.title
             %p= place.link
-          %td= place.startdate
-          %td= place.enddate
-          %td= place.location
-          %td= place.address
           %td
+            = smart_date_display(place.startdate, place.enddate)
+          %td
+            = place.location
+            %br
+            = place.address
+            %br
             = place.zip
             = place.city
-          %td= place.layer.title
           %td
             - if place.published
               %i.fi-check.fi-24
