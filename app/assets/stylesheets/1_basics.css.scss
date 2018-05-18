@@ -5,6 +5,18 @@ div.small {
     font-size: 0.8rem;
 }
 .hide {display: none;}
+.shy {
+
+    color: #888;
+    font-size: 90%;
+
+}
+span.name, label {
+    color: #888;
+    font-size: 90%;
+    text-transform: uppercase;
+    font-weight: bold;
+}
 /* -------------------- */
 /* foundation adapations */
 .callout {

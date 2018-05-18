@@ -28,7 +28,12 @@ function DrawMarkers(map,places) {
       console.log(place.title);
       console.log(place.lat);
       console.log(place.lon);
-      var marker = L.marker([place.lat, place.lon], {icon: blueIcon}).addTo(map);
+      if ( place.published === true ) {
+        var icon = blueIcon;
+      } else {
+        var icon = greyIcon;
+      }
+      var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(map);
       var content = '';
       if ( place.date ) {
         content += "<p>"+place.date+"</p>";
