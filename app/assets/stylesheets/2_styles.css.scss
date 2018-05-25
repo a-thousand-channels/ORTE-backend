@@ -113,7 +113,8 @@ form#addresslookup {
 /* -------------------- */
 
 select.datetime {
-    width: 100px;
+  width: 100px;
+  padding: 0.3rem;
 }
 select#place_startdate_1i,
 select#place_enddate_1i  {
@@ -121,14 +122,14 @@ select#place_enddate_1i  {
 }
 select#place_startdate_3i,
 select#place_enddate_3i  {
-  width: 60px;
+  width: 56px;
 }
 select#place_startdate_4i,
 select#place_enddate_4i
  {
-  width: 60px;
+  width: 56px;
 }
 select#place_startdate_5i,
 select#place_enddate_5i  {
-  width: 60px;
+  width: 56px;
 }

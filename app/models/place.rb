@@ -12,5 +12,9 @@ class Place < ApplicationRecord
     ApplicationController.helpers.edit_link(self.layer.map.id,self.layer.id,id)
   end
 
+  def full_address
+    "#{self.location} #{self.address}"
+  end
+
 
 end

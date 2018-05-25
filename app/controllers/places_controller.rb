@@ -44,7 +44,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
       if @place.save
-        format.html { redirect_to map_layers_url([@map,@layer,@place]), notice: 'Place was successfully created.' }
+        format.html { redirect_to map_layers_url(@map,@place.layer), notice: 'Place was successfully created.' }
         format.json { render :show, status: :created, location: @place }
       else
         format.html { render :new }
@@ -56,19 +56,20 @@ class PlacesController < ApplicationController
   # PATCH/PUT /places/1
   # PATCH/PUT /places/1.json
   def update
-    @layer = Layer.find(@place.layer_id)
-    @map = @layer.map
-      # quirks, because foundation switch generats 'on'/'off' values,
-      # rails expect true/false
-      # TODO: render this at generating the form
-      if params[:place][:published] == 'on'
-        params[:place][:published] = true
-      else
-        params[:place][:published] = false
-      end
+    @layer = @place.layer
+    @map = @place.layer.map
+
+    # quirks, because foundation switch generats 'on'/'off' values,
+    # rails expect true/false
+    # TODO: render this at generating the form
+    if params[:place][:published] == 'on'
+      params[:place][:published] = true
+    else
+      params[:place][:published] = false
+    end
     respond_to do |format|
       if @place.update(place_params)
-        format.html { redirect_to map_layers_url([@map,@layer,@place]), notice: 'Place was successfully updated.' }
+        format.html { redirect_to map_layer_url(@map.id,@layer.id), notice: 'Place was successfully updated.' }
         format.json { render :show, status: :ok, location: @place }
       else
         format.html { render :edit }
