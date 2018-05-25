@@ -15,21 +15,21 @@
   %table
     %thead
       %tr
-        %th Title/Link
         %th Date
-        %th Location
-        %th Zip/City
-        %th Published
+        %th Title/Link
+        %th Address
+        %th Published?
+        %th
         %th
 
     %tbody
       - @places.each do |place|
         %tr
           %td
+            = smart_date_display(place.startdate, place.enddate)
+          %td
             %h4= place.title
             %p= place.link
-          %td
-            = smart_date_display(place.startdate, place.enddate)
           %td
             = place.location
             %br
@@ -41,6 +41,6 @@
             - if place.published
               %i.fi-check.fi-24
             - else
-              %i.fi-x.fi-24
+              %i.fi-lock.fi-24
           %td= link_to 'Edit', edit_map_layer_place_path(place.layer.map,place.layer,place)
           %td= link_to 'Destroy',  map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm: 'Are you sure?' }

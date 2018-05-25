@@ -2,32 +2,36 @@
 
   .grid-x.grid-padding-x
     .large-12.medium-12.cell
-      %h1 Place
+
   .grid-x.grid-padding-x
     .large-4.medium-6.cell
+      %h1 Place
       .grid-x
         .small-4.cell
-          %p Publish?
+
+          %p{:title=>"This settings publishes this place on the map!"}
+            Publish?
         .small-8.cell
           .switch
-            %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox" }
+            %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
             %label.switch-paddle{:for=>"place_published"}
               %span.show-for-sr
                 Publish
               %span.switch-active{:aria-hidden=>"true"} Yes
               %span.switch-inactive{:aria-hidden=>"true"} No
-          %p.shy This publishes this place on the public map!
 
     .large-8.medium-6.cell
       %p
+        %br
         - if @place.layer.title
           %span.name Layer:
-          = @place.layer.title
+          = link_to map_layer_url(@place.layer.map,@place.layer) do
+            = @place.layer.title
           = f.association :layer, as: :hidden
         - else
           = f.association :layer
       %p
-        %span.name Coordinates:
+        %span.name Coordinates (Lat/Lon):
         #{@place.lat[0..6]}/#{@place.lon[0..6]}
         = f.input :lat, as: :hidden
         = f.input :lon, as: :hidden
@@ -40,15 +44,16 @@
   .grid-x.grid-padding-x
     .large-6.medium-12.cell
       .form-inputs
-        = f.input :teaser, :input_html => {:rows => 4, :label => 'Text', class: 'large-text'}
         = f.input :startdate
         = f.input :enddate
+        %hr
+        = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text'}
 
 
     .large-6.medium-12.cell
       .form-inputs
         %hr
-        = f.input :location, :input_html => {:placeholder => 'Name' }
+        = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
@@ -56,7 +61,7 @@
           .small-8.cell
             = f.input :city
         %hr
-        = f.input :link, :placeholder => 'http://'
+        = f.input :link, :label => 'Weblink', :placeholder => 'http://'
         - #= f.input :country
   .grid-x.grid-padding-x
     .large-12.cell

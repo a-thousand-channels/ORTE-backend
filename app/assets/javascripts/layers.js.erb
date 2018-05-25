@@ -36,13 +36,22 @@ function DrawMarkers(map,places) {
       var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(map);
       var content = '';
       if ( place.date ) {
-        content += "<p>"+place.date+"</p>";
+        content += "<p>"+place.date;
+        if ( place.address ) {
+          content += " // "+place.address;
+        }
+        content += "</p>";
       }
-      content += "<h4>"+place.title+"</h4><p>"+place.teaser+"</p>";
+      console.log(content);
+      content += "<h4>"+place.title;
       if ( place.edit_link ) {
-        content += place.edit_link
+        content += place.edit_link;
       }
+      content += "</h4>";
+      content += "<p>"+place.teaser+"</p>";
+
       marker.bindPopup(content);
+      console.log(content);
 
     });
 

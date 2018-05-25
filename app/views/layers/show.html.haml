@@ -2,8 +2,6 @@
 #selection{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}.json" }}
   .grid-x
     .cell.medium-12
-      %p#notice= notice
-
       = simple_form_for :navselector, url: '/maps/', html: { method: :get }  do |f|
         .input-group
           .input-group-label
