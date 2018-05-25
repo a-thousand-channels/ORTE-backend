@@ -25,7 +25,7 @@ SecureHeaders::Configuration.default do |config|
     base_uri: %w('self'),
     block_all_mixed_content: true, # see http://www.w3.org/TR/mixed-content/
     child_src: %w('self' 'unsafe-inline' https://player.vimeo.com), # if child-src isn't supported, the value for frame-src will be set.
-    connect_src: %w('self' https://nominatim.openstreetmap.org/search),
+    connect_src: %w('self' https://nominatim.openstreetmap.org/search https://nominatim.openstreetmap.org/reverse),
     font_src: %w('self' 'unsafe-inline'),
     form_action: %w('self'),
     frame_ancestors: %w('none'),

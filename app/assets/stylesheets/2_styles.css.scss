@@ -38,13 +38,31 @@ form#addresslookup {
   }
 }
 /* -------------------- */
+#map .leaflet-popup-content-wrapper, #map  .leaflet-popup-tip {
+    background: rgba(255,255,255,0.7);
+    color: #333;
+    box-shadow: 0;
+    border-radius: 0;
+
+    p {
+      margin: 8px 0;
+
+      a {
+        color: black;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    }
+}
+/* -------------------- */
 
 #selection {
 
 }
 #selection p#selection-hint {
   background-color: rgba(200,200,200,0.5);
-  padding: 0 5px;
+  padding: 5px 10px;
   margin: 0;
   max-width: 310px;
   display: block;
@@ -65,7 +83,7 @@ form#addresslookup {
 #selection ul#response {
   list-style-type: none;
   padding: 0;
-  margin: 0;
+  margin: 10px 0 0 0;
   li  {
 
     margin: 0 0 1rem 0;
@@ -74,11 +92,11 @@ form#addresslookup {
       display: block;
       padding: 0.4rem;
       background-color: rgba(255,255,255,0.7);
-      border: 1px solid white;
+      border: 1px solid rgba(255,255,255,0.7);
     }
     a:hover {
       border: 1px solid red;
-      background-color: rgba(255,255,255,1);
+      background-color: rgba(255,255,255,0.9);
     }
   }
 
