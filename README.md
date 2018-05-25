@@ -8,9 +8,13 @@ This application is a its very beginning, work in progress.
 
 ![preview](https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-backend-dev-002.jpg)
 
+## Address and geolocation lookup
+
+This application uses [Nominatim](https://nominatim.openstreetmap.org/), a search engine for OpenStreetMap data to look up address and geolocation data. By implementing this application you should respect the [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/)!
+
 ## Credits
 
-Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects.
+Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and Treffentotal (acceptance testing)
 
 ## Contributions
 

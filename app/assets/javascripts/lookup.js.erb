@@ -1,5 +1,13 @@
-function LookupNominatim(address,url) {
+function PrepareXHRHeaderBeforeLookup() {
+  $.ajaxSetup({
+    headers : {
+      'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)'
+    }
+  });
+}
 
+function LookupNominatim(address,url) {
+  PrepareXHRHeaderBeforeLookup;
   if ( address === '' ) {
     $('#selection-hint').html("<strong>No input!</strong> Please type in a complete address ('Street Number, City')");
     $('#selection-hint').addClass('active');
@@ -18,8 +26,6 @@ function LookupNominatim(address,url) {
 
     var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
 
-    // headers: {"User-Agent": "ORTE-backend"}
-
     // if no result
     if ( !data ) {
       console.log('Lookup:: No result');
@@ -27,7 +33,7 @@ function LookupNominatim(address,url) {
       $('#selection-hint').addClass('active');
       return;
     }
-
+    // if results
     var items = [];
     $.each( data, function( key, val ) {
       console.log('Lookup:: Data val');
@@ -38,12 +44,12 @@ function LookupNominatim(address,url) {
         label = 'Adresse:';
       }
 
-    // call places/new
+    // call "places/new"
     var href = url+'?address='+val.display_name+'&lat='+val.lat+'&lon='+val.lon;
 
 
       // OR better get address details
-/*
+      /*
       pub Café Treibeis
       house_number  25
       road  Gaußstraße
@@ -52,7 +58,8 @@ function LookupNominatim(address,url) {
       state Hamburg
       postcode  22765
       country Germany
-      country_code  de*/
+      country_code  de
+      */
 
       if ( val.address ) {
 
@@ -99,14 +106,74 @@ function LookupNominatim(address,url) {
 
 }
 
-function ReverseLookupNominatim(lat,lon,url) {
+function ReverseLookupNominatim(map,latlng,lat,lon,url) {
 
-  console.log('Lookup:: Lat '+lat+'/Lon '+lon);
+  console.log('Reverse Lookup:: Lat '+lat+'/Lon '+lon);
+  PrepareXHRHeaderBeforeLookup();
 
-  // TODO: reverse lookup
-  var nominatium_reverse_url = 'https://nominatim.openstreetmap.org/reverse';
-  // url = url+'?location='+location+"&address="+val.address.road+" "+val.address.house_number+"&zip="+val.address.postcode+"&city="+val.address.state+'&lat='+val.lat+'&lon='+val.lon;
-  url = url+'?lat='+lat+'&lon='+lon;
-  console.log(url);
-  window.location = url;
+  if ( lat === '' ) {
+    $('#selection-hint').html("<strong>No input!</strong> Please try again");
+    $('#selection-hint').addClass('active');
+  } else {
+    console.log('Reverse Lookup:: '+lat+"/"+lon);
+    //example
+    // https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=-34.44076&lon=-58.70521
+    var nominatium_reverse_url = 'https://nominatim.openstreetmap.org/reverse';
+    var nominatium_url_params = '&format=jsonv2'
+
+    var request = $.getJSON( nominatium_reverse_url+"?lat="+lat+"&lon="+lon+nominatium_url_params, function( data ) {
+
+      // if no result
+      if ( !data ) {
+        console.log('Lookup:: No result');
+        $('#selection-hint').html("Nothing found. Please try another place on the map");
+        $('#selection-hint').addClass('active');
+        return;
+      }
+      // if results
+      var items = [];
+      // empty container
+      $('#resonse').html(' ');
+      console.log(data);
+      console.log('Reverse Lookup:: Data val');
+      console.log(data.display_name);
+      var location = ' '
+      if ( data.name && data.name.length > 0 ) {
+          location = data.name;
+      }
+      // call "places/new"
+      var house_number = '';
+      if ( data.address.house_number ) {
+        house_number = ' '+data.address.house_number ;
+      }
+      full_address = location+" "+data.address.road+house_number+", "+data.address.postcode+' '+data.address.state+' ('+data.address.suburb+")"
+      var href = url+'?location='+location+'&address='+data.address.road+house_number+'&zip='+data.address.postcode+'&city='+data.address.state+' ('+data.address.suburb+')&lat='+lat+'&lon='+lon;
+      console.log(href);
+      // that would be a direct call
+      // window.location = href;
+
+      // show found place instead
+      items.push( "<li id='1'><a href='"+href+"'>"+full_address + "</a></li>" );
+    /*  $( "<ul/>", {
+          "id": "response",
+          html: items.join( "" ),
+        }).appendTo( "#selection" );
+*/
+      L.popup().setLatLng(latlng).setContent("<p><a href='"+href+"'>"+full_address +"</a></p>").openOn(map);
+    }).done(function() {
+      console.log( "success" );
+      $('#selection-hint').html("Please select the address shown in the popup or try another input.");
+      $('#selection-hint').addClass('active');
+
+    })
+    .fail(function() {
+      console.log( "error" );
+      $('#selection-hint').html("Nothing found. Please try another input.");
+      $('#selection-hint').addClass('active');
+    })
+    .always(function() {
+      console.log( "complete" );
+    });
+  }
+
 }

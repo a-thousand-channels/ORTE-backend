@@ -93,8 +93,7 @@ $(document).on('turbolinks:load', function() {
     map.on('dblclick', function(e){
       console.log(e.latlng);
       console.log(e.latlng.lat);
-      L.popup().setLatLng(e.latlng).setContent("Coordinates of this place: " + e.latlng.lat +"/"+e.latlng.lng).openOn(map);
-      ReverseLookupNominatim(e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
+      ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
     });
 
     // ---------------
