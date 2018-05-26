@@ -1,13 +1,12 @@
 = simple_form_for([@map,@layer,@place]) do |f|
   .grid-x.grid-padding-x
-    .large-4.medium-6.cell
+    .large-3.medium-6.cell
       %h1 Place
       .grid-x
-        .small-4.cell
-
+        .small-5.cell
           %p{:title=>"This settings publishes this place on the map!"}
             Publish?
-        .small-8.cell
+        .small-7.cell
           .switch
             %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
             %label.switch-paddle{:for=>"place_published"}
@@ -16,7 +15,7 @@
               %span.switch-active{:aria-hidden=>"true"} Yes
               %span.switch-inactive{:aria-hidden=>"true"} No
 
-    .large-8.medium-6.cell
+    .large-7.medium-6.cell
       %p
         %br
         - if @place.layer.title
@@ -29,9 +28,9 @@
       %p
         %span.name Coordinates (Lat/Lon):
         - if @old_place
-          #{@old_place.lat[0..6]}/#{@old_place.lon[0..6]}
+          #{@old_place.lat[0..4]}/#{@old_place.lon[0..4]}
           \-->
-        #{@place.lat[0..6]}/#{@place.lon[0..6]}
+        #{@place.lat[0..4]}/#{@place.lon[0..4]}
         = f.input :lat, as: :hidden
         = f.input :lon, as: :hidden
       %p
@@ -40,9 +39,11 @@
           = @old_place.full_address
           \-->
         = @place.full_address
+    .large-2.medium-6.cell
+
       %p
 
-        = link_to map_layer_path(@place.layer.map,@place.layer,remap: true,place: @place.id), :class =>"button" do
+        = link_to map_layer_path(@place.layer.map,@place.layer,remap: true,place: @place.id), :class =>"button secondary small" do
           Re-Map
 
   .grid-x.grid-padding-x
