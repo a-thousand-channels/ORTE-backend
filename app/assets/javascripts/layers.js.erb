@@ -4,31 +4,36 @@ function ShowPlacesForLayer(map,level) {
     // '/maps/1/layers/1.json';
   console.log("drawing placemarks w/data from "+layer_json_url);
 
+
+
   var request = $.getJSON(layer_json_url, function(data) {
 
     console.log("-----------------------------");
     console.log(data);
 
+    // read params, place id is given, render this place special
+    console.log("check for params");
+    var params = getParams();
     if ( level === 'layers') {
       console.log("Render one layer");
-      DrawMarkers(map,data.places);
+      DrawMarkers(map,params,data.places);
     } else  {
       $.each(data, function(key,places) {
         console.log("Render layer "+key);
-        DrawMarkers(map,data[key].places);
+        DrawMarkers(map,params,data[key].places);
       });
     }
   });
 }
-function DrawMarkers(map,places) {
+function DrawMarkers(map,params,places) {
 
     $.each(places, function(key,place) {
-      console.log("Place////////");
-      console.log(key);
-      console.log(place.title);
-      console.log(place.lat);
-      console.log(place.lon);
-      if ( place.published === true ) {
+      console.log("Place ID "+place.id+"////////");
+      console.log(place.title+" @ "+place.lat+"/"+place.lon);
+      if ( parseInt(place.id) === parseInt(params.place) ) {
+        var icon = redIcon;
+        console.log("PLACE FOR RE_MAP FOUND");
+      } else if ( place.published === true ) {
         var icon = blueIcon;
       } else {
         var icon = greyIcon;
@@ -42,7 +47,7 @@ function DrawMarkers(map,places) {
         }
         content += "</p>";
       }
-      console.log(content);
+      // console.log(content);
       content += "<h4>"+place.title;
       if ( place.edit_link ) {
         content += place.edit_link;
@@ -51,8 +56,22 @@ function DrawMarkers(map,places) {
       content += "<p>"+place.teaser+"</p>";
 
       marker.bindPopup(content);
-      console.log(content);
+      // console.log(content);
 
     });
 
+}
+function getParams() {
+  var url = window.location.href
+  var vars = {};
+  var hashes = url.split("?")[1];
+  if ( hashes ) {
+    var hash = hashes.split('&');
+
+    for (var i = 0; i < hash.length; i++) {
+      params=hash[i].split("=");
+      vars[params[0]] = params[1];
+    }
+  }
+  return vars;
 }
