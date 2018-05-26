@@ -16,9 +16,11 @@ class LayersController < ApplicationController
     @maps = Map.all
     @map_layers = @map.layers
     @places =  @layer.places
+    if params[:remap]
+      @place = Place.find(params[:place])
+    end
     respond_to do |format|
       format.html { render :show }
-      # format.json { render json: @layer.errors, status: :unprocessable_entity }
       format.json { render json: @layer.to_json(:include => { :places => { :methods => [:date, :edit_link] }} ) }
     end
   end

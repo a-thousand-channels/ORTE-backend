@@ -13,7 +13,14 @@ class Place < ApplicationRecord
   end
 
   def full_address
-    "#{self.location} #{self.address}"
+    if self.location.present? && self.address.present?
+      "#{self.location} #{self.address}"
+    elsif self.location.present?
+      "#{self.location}"
+    else
+      "#{self.address}"
+    end
+
   end
 
 

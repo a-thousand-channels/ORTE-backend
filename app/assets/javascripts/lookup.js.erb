@@ -1,13 +1,28 @@
-function PrepareXHRHeaderBeforeLookup() {
+function PrepareBeforeLookup(url) {
   $.ajaxSetup({
     headers : {
       'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)'
     }
   });
+    var params = getParams();
+
+    // url is provided via data-attr
+    // alter this url if there are "remap" and "place" params
+    if ( params.place )  {
+      // call URL + "edit"
+      console.log('Lookup:: Alter URL for edit');
+      url = url+'/places/'+params.place+"/edit";
+    } else {
+     // call URL + "new"
+      console.log('Lookup:: Alter URL for new');
+      url = url+'/new'
+    }
+    return url;
 }
 
 function LookupNominatim(address,url) {
-  PrepareXHRHeaderBeforeLookup;
+  console.log("check for params");
+  var url = PrepareBeforeLookup(url);
   if ( address === '' ) {
     $('#selection-hint').html("<strong>No input!</strong> Please type in a complete address ('Street Number, City')");
     $('#selection-hint').addClass('active');
@@ -43,9 +58,8 @@ function LookupNominatim(address,url) {
       if ( val.class === 'building') {
         label = 'Adresse:';
       }
-
-    // call "places/new"
     var href = url+'?address='+val.display_name+'&lat='+val.lat+'&lon='+val.lon;
+
 
 
       // OR better get address details
@@ -109,7 +123,7 @@ function LookupNominatim(address,url) {
 function ReverseLookupNominatim(map,latlng,lat,lon,url) {
 
   console.log('Reverse Lookup:: Lat '+lat+'/Lon '+lon);
-  PrepareXHRHeaderBeforeLookup();
+  var url = PrepareBeforeLookup(url);
 
   if ( lat === '' ) {
     $('#selection-hint').html("<strong>No input!</strong> Please try again");

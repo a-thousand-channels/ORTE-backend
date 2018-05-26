@@ -39,6 +39,14 @@ div.columns.borderless {padding: 0;}
 a.button {
   color: white !important;
 }
+.close-button.small {
+    right: 0.66rem;
+    top: auto;
+    font-size: 1em;
+    line-height: 1;
+    position: absolute;
+}
+
 
 select {
   margin: 0;

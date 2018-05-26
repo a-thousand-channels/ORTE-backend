@@ -1,8 +1,4 @@
 = simple_form_for([@map,@layer,@place]) do |f|
-
-  .grid-x.grid-padding-x
-    .large-12.medium-12.cell
-
   .grid-x.grid-padding-x
     .large-4.medium-6.cell
       %h1 Place
@@ -32,9 +28,22 @@
           = f.association :layer
       %p
         %span.name Coordinates (Lat/Lon):
+        - if @old_place
+          #{@old_place.lat[0..6]}/#{@old_place.lon[0..6]}
+          \-->
         #{@place.lat[0..6]}/#{@place.lon[0..6]}
         = f.input :lat, as: :hidden
         = f.input :lon, as: :hidden
+      %p
+        %span.name Address:
+        - if @old_place
+          = @old_place.full_address
+          \-->
+        = @place.full_address
+      %p
+
+        = link_to map_layer_path(@place.layer.map,@place.layer,remap: true,place: @place.id), :class =>"button" do
+          Re-Map
 
   .grid-x.grid-padding-x
     .large-12.cell
