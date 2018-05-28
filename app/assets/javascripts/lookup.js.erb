@@ -15,7 +15,7 @@ function PrepareBeforeLookup(url) {
     } else {
      // call URL + "new"
       console.log('Lookup:: Alter URL for new');
-      url = url+'/new'
+      url = url+'/places/new';
     }
     return url;
 }
@@ -105,7 +105,7 @@ function LookupNominatim(address,url) {
       }).appendTo( "#selection" );
     }).done(function() {
       console.log( "success" );
-      $('#selection-hint').html("Please select one of the addresses below or try another input.");
+      $('#selection-hint').html("Please select one of the addresses below or give in another address.");
       $('#selection-hint').addClass('active');
     })
     .fail(function() {
