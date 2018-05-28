@@ -1,7 +1,5 @@
-%h1 Editing group
-
-= render 'form'
-
-= link_to 'Show', @group
-\|
-= link_to 'Back', groups_path
+#form-wrapper
+  %h1 Editing group
+  = render 'form'
+  %hr
+  = link_to 'All groups', admin_groups_path
