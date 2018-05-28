@@ -1,5 +1,6 @@
-%h1 New group
+#form-wrapper
+  %h1 New group
 
-= render 'form'
-
-= link_to 'Back', groups_path
+  = render 'form'
+  %hr
+  = link_to 'Back', admin_groups_path, :class => 'button'

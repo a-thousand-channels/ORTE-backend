@@ -8,9 +8,9 @@
             = link_to map_path(@map) do
               %i.fi-map.fi-24
           = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
-          .input-group-button.hide
-            = link_to new_map_path, :class => 'button secondary' do
-              %i.fi-plus.fi-24
+          .input-group-button
+            = link_to edit_map_path, :class => 'button secondary' do
+              %i.fi-pencil.fi-24
 
   .grid-x
     .cell.medium-12
