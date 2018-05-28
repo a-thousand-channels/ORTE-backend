@@ -37,7 +37,8 @@ gem 'settingslogic'
 gem 'simple_form'
 
 group :staging, :production do
-  gem 'pg'
+  # gem 'pg'
+  gem 'mysql2'
 end
 
 group :development, :test do
