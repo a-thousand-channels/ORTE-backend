@@ -19,7 +19,7 @@ class Admin::GroupsController < ApplicationController
 
     respond_to do |format|
       if @admin_group.save
-        format.html { redirect_to  [:admin, @admin_group], notice: 'Group was successfully created.' }
+        format.html { redirect_to admin_groups_url, notice: 'Group was successfully created.' }
       else
         format.html { render :new }
         format.json { render json: @admin_group.errors, status: :unprocessable_entity }
