@@ -17,7 +17,9 @@
         %tr
           %td= admin_user.email
           %td= admin_user.role
-          %td= admin_user.group.title
+          %td
+            - if admin_user.group
+              = admin_user.group.title
           %td
             = link_to edit_admin_user_path(admin_user), :class => 'button' do
               %i.fi.fi-pencil

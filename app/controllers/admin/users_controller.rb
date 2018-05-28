@@ -43,7 +43,7 @@ class Admin::UsersController < ApplicationController
 
     respond_to do |format|
       if @admin_user.update(sanitized_params)
-        format.html { redirect_to [:admin, @admin_user], notice: 'User was successfully updated.' }
+        format.html { redirect_to admin_users_url, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @admin_user }
       else
         format.html { render :edit }
