@@ -35,7 +35,7 @@ SecureHeaders::Configuration.default do |config|
     object_src: %w('self' 'unsafe-eval'),
     sandbox: true, # true and [] will set a maximally restrictive setting
     plugin_types: %w(),
-    script_src: %w('self'),
+    script_src: %w('self' 'unsafe-inline'),
     style_src: %w('self' 'unsafe-inline'),
     worker_src: %w('self'),
     upgrade_insecure_requests: true, # see https://www.w3.org/TR/upgrade-insecure-requests/

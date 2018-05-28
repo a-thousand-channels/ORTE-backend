@@ -1,13 +1,10 @@
 # frozen_string_literal: true
 
 class Admin::GroupsController < ApplicationController
-  before_action :set_admin_group, only: [:show, :edit, :update, :destroy]
+  before_action :set_admin_group, only: [:edit, :update, :destroy]
 
   def index
     @admin_groups = Group.all
-  end
-
-  def show
   end
 
   def new
@@ -23,7 +20,6 @@ class Admin::GroupsController < ApplicationController
     respond_to do |format|
       if @admin_group.save
         format.html { redirect_to  [:admin, @admin_group], notice: 'Group was successfully created.' }
-        format.json { render :show, status: :created, location: @admin_group }
       else
         format.html { render :new }
         format.json { render json: @admin_group.errors, status: :unprocessable_entity }
@@ -36,7 +32,7 @@ class Admin::GroupsController < ApplicationController
   def update
     respond_to do |format|
       if @admin_group.update(admin_group_params)
-        format.html { redirect_to  [:admin, @admin_group], notice: 'Group was successfully updated.' }
+        format.html { redirect_to admin_groups_url, notice: 'Group was successfully updated.' }
         format.json { render :show, status: :ok, location: @admin_group }
       else
         format.html { render :edit }
