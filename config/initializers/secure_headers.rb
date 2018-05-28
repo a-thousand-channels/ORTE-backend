@@ -42,7 +42,7 @@ SecureHeaders::Configuration.default do |config|
     report_uri: %w(/report_csp)
   }
 
-  if Rails.env.development? || Rails.env.test?
+  if Rails.env.development? || Rails.env.test? || Rails.env.staging?
     # get rid off the https
     config.csp = default_csp_config.merge({
         default_src: %w('self'),
