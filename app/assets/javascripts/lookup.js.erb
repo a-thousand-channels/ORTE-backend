@@ -8,10 +8,10 @@ function PrepareBeforeLookup(url) {
 
     // url is provided via data-attr
     // alter this url if there are "remap" and "place" params
-    if ( params.place )  {
+    if ( params.remap )  {
       // call URL + "edit"
       console.log('Lookup:: Alter URL for edit');
-      url = url+'/places/'+params.place+"/edit";
+      url = url+'/places/'+params.place_id+"/edit";
     } else {
      // call URL + "new"
       console.log('Lookup:: Alter URL for new');
