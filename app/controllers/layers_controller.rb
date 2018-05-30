@@ -17,7 +17,7 @@ class LayersController < ApplicationController
     @map_layers = @map.layers
     @places =  @layer.places
     if params[:remap]
-      @place = Place.find(params[:place])
+      @place = Place.find(params[:place_id])
     end
     respond_to do |format|
       format.html { render :show }
