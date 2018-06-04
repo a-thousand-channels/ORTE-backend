@@ -32,6 +32,8 @@ Rails.application.configure do
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
   # Prevent host header injection
   # TODO: fill in host name of production server
   # config.action_controller.default_url_options = {host: "www.yoursite.com"}
