@@ -6,7 +6,6 @@ module ApplicationHelper
     maps_path
   end
 
-
   def admin?
     current_user&.admin?
   end

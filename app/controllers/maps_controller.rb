@@ -4,13 +4,13 @@ class MapsController < ApplicationController
   # GET /maps
   # GET /maps.json
   def index
-    @maps = Map.all
+    @maps = Map.by_user(current_user)
   end
 
   # GET /maps/1
   # GET /maps/1.json
   def show
-    @maps = Map.all
+    @maps = Map.by_user(current_user)
     @map_layers = @map.layers
     respond_to do |format|
       format.html { render :show }
@@ -70,7 +70,7 @@ class MapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_map
-      @map = Map.find(params[:id])
+      @map = Map.by_user(current_user).find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -6,14 +6,14 @@ class LayersController < ApplicationController
   # GET /layers
   # GET /layers.json
   def index
-    @map = Map.find(params[:map_id])
+    @map = Map.by_user(current_user).find(params[:map_id])
     @layers = @map.layers
   end
 
   # GET /layers/1
   # GET /layers/1.json
   def show
-    @maps = Map.all
+    @maps = Map.by_user(current_user)
     @map_layers = @map.layers
     @places =  @layer.places
     if params[:remap]
@@ -28,7 +28,7 @@ class LayersController < ApplicationController
   # GET /layers/new
   def new
     @layer = Layer.new
-    @map = Map.find(params[:map_id])
+    @map = Map.by_user(current_user).find(params[:map_id])
   end
 
   # GET /layers/1/edit
@@ -39,7 +39,7 @@ class LayersController < ApplicationController
   # POST /layers.json
   def create
     @layer = Layer.new(layer_params)
-    @map = Map.find(params[:map_id])
+    @map = Map.by_user(current_user).find(params[:map_id])
     respond_to do |format|
       if @layer.save
         format.html { redirect_to map_path(@map), notice: 'Layer was successfully created.' }
@@ -78,7 +78,7 @@ class LayersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_layer
-      @map = Map.find(params[:map_id])
+      @map = @map = Map.by_user(current_user).find(params[:map_id])
       @layer = Layer.find(params[:id])
     end
 
