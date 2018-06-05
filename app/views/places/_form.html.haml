@@ -55,7 +55,7 @@
       .form-inputs
         = f.input :startdate
         = f.input :enddate
-        = f.input :teaser, :label => 'Text', :input_html => {:rows => 6, class: 'large-text'}
+        = f.input :teaser, :label => 'Text', :input_html => {:rows => 9, class: 'large-text'}
 
 
     .large-6.medium-6.cell
@@ -68,7 +68,7 @@
           .small-8.cell
             = f.input :city
         = f.input :link, :label => 'Weblink', :placeholder => 'http://'
-        - #= f.input :country
+        = f.input :imagelink, :input_html => {:placeholder => 'http://' }
   .grid-x.grid-padding-x
     .large-12.cell
       .form-actions

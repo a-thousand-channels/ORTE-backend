@@ -54,6 +54,9 @@ function DrawMarkers(map,params,places) {
         content += place.edit_link;
       }
       content += "</h4>";
+      if ( place.imagelink ) {
+        content += "<img src='"+place.imagelink+"' />";
+      }
       content += "<p>"+place.teaser+"</p>";
 
       marker.bindPopup(content);
