@@ -24,7 +24,7 @@ class PlacesController < ApplicationController
     @place.lat = params[:lat]
     @place.lon = params[:lon]
     @place.layer_id = params[:layer_id]
-    @map = Map.find(params[:map_id])
+    @map = Map.by_user(current_user).find(params[:map_id])
     @layer = Layer.find(params[:layer_id])
   end
 
@@ -41,7 +41,7 @@ class PlacesController < ApplicationController
       @place.lat = params[:lat]
       @place.lon = params[:lon]
       @place.layer_id = params[:layer_id]
-      @map = Map.find(params[:map_id])
+      @map = Map.by_user(current_user).find(params[:map_id])
       @layer = Layer.find(params[:layer_id])
     end
   end
@@ -102,7 +102,7 @@ class PlacesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_place
-      @map = Map.find(params[:map_id])
+      @map = Map.by_user(current_user).find(params[:map_id])
       @layer = Layer.find(params[:layer_id])
       @place = Place.find(params[:id])
     end
