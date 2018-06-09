@@ -32,7 +32,7 @@ class PlacesController < ApplicationController
   def edit
 
     if params[:lat].present?
-      flash[:notice] = "Re-Map: Got new coordinates and address data"
+      flash[:notice] = "Re-Map: Got new coordinates and address data. Please check all fields and click 'Update place'"
       @old_place = @place.dup
       @place.location = params[:location]
       @place.address = params[:address]
