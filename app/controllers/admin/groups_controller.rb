@@ -4,7 +4,7 @@ class Admin::GroupsController < ApplicationController
   before_action :set_admin_group, only: [:edit, :update, :destroy]
 
   def index
-    @admin_groups = Group.all
+    @admin_groups = Group.by_user(current_user)
   end
 
   def new
@@ -12,6 +12,9 @@ class Admin::GroupsController < ApplicationController
   end
 
   def edit
+    unless @admin_group
+      redirect_to admin_groups_path, notice: "You can't edit this group."
+    end
   end
 
   def create
@@ -54,7 +57,7 @@ class Admin::GroupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_admin_group
-      @admin_group = Group.find(params[:id])
+      @admin_group = Group.by_user(current_user).find_by_id(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

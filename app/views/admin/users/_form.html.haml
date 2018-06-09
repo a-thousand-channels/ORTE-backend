@@ -14,7 +14,7 @@
     = f.label :role
     = f.select :role, Ability.role_symbols, include_blank: false
   %p
-    = f.association :group, include_blank: false
+    = f.association :group, collection: Group.by_user(current_user), include_blank: false
 
   %p.actions
     = f.submit 'Save', :class => 'button'

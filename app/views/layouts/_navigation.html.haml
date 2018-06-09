@@ -3,19 +3,25 @@
     %ul.menu.show-for-large
       %li.name= link_to "#{Settings.app_name}", root_path
       - if user_signed_in?
-        %li
-          %a{:href => maps_path}
-            %i.fi-map
-            Maps
-        %li
-          %a{:href => iconsets_path}
-            %i.fi-marker
-            Iconsets
+        - if admin?
+          %li
+            %a{:href => maps_path}
+              %i.fi-map
+              Maps
+          %li
+            %a{:href => iconsets_path}
+              %i.fi-marker
+              Iconsets
 
 
   .top-bar-right
     %ul.menu
       - if user_signed_in?
+        %li
+          %a{:href => edit_user_password_path}
+            #{current_user.email} (#{current_user.group.title})
+
+
         - if admin?
           %li
             %a{:href => admin_users_path}
