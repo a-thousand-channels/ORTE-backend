@@ -55,7 +55,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
       if @place.save
-        format.html { redirect_to map_layers_url(@map,@place.layer), notice: 'Place was successfully created.' }
+        format.html { redirect_to map_layer_url(@map,@layer), notice: 'Place was successfully created.' }
         format.json { render :show, status: :created, location: @place }
       else
         format.html { render :new }
