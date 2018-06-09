@@ -8,6 +8,6 @@
         = f.input :title
         = f.input :text
         = f.input :published
-        = f.association :group
+        = f.association :group, collection: Group.by_user(current_user), include_blank: false
       .form-actions
         = f.button :submit, :class => "button"

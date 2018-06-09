@@ -16,6 +16,11 @@ class User < ApplicationRecord
 
   belongs_to :group
 
+  # call me: User.by_group(current_user).find(params[:id])
+  scope :by_group, lambda { |user|
+    where(:group_id => user.group.id) unless user.group.title == 'Admins'
+  }
+
   def admin?
     role == 'admin'
   end

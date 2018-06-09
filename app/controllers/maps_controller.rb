@@ -11,16 +11,21 @@ class MapsController < ApplicationController
   # GET /maps/1.json
   def show
     @maps = Map.by_user(current_user)
-    @map_layers = @map.layers
-    respond_to do |format|
-      format.html { render :show }
-      format.json { render json: @map_layers.to_json(:include => { :places => { :methods => [:date, :edit_link] }} ) }
+    if @map
+      @map_layers = @map.layers
+      respond_to do |format|
+        format.html { render :show }
+        format.json { render json: @map_layers.to_json(:include => { :places => { :methods => [:date, :edit_link] }} ) }
+      end
+    else
+      redirect_to maps_path
     end
   end
 
   # GET /maps/new
   def new
     @map = Map.new
+    @groups = Group.last
   end
 
   # GET /maps/1/edit
@@ -70,7 +75,7 @@ class MapsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_map
-      @map = Map.by_user(current_user).find(params[:id])
+      @map = Map.by_user(current_user).find_by_id(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
