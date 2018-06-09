@@ -1,17 +1,19 @@
 .top-bar
   .top-bar-left
-    %ul.menu.show-for-large
+    %ul.menu.show-for-medium
       %li.name= link_to "#{Settings.app_name}", root_path
       - if user_signed_in?
         - if admin?
           %li
             %a{:href => maps_path}
               %i.fi-map
-              Maps
+              %span.show-for-large
+                Maps
           %li
             %a{:href => iconsets_path}
               %i.fi-marker
-              Iconsets
+              %span.show-for-large
+                Iconsets
 
 
   .top-bar-right
