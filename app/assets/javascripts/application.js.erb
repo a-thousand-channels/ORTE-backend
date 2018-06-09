@@ -93,7 +93,11 @@ $(document).on('turbolinks:load', function() {
     map.on('dblclick', function(e){
       console.log(e.latlng);
       console.log(e.latlng.lat);
-      ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
+      if ( $('#addresslookup_address').length > 0 ) {
+        ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
+      } else {
+        console.log("No lookup possible. Please select a map and a layer first");
+      }
     });
 
     // ---------------

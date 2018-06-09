@@ -173,7 +173,13 @@ function ReverseLookupNominatim(map,latlng,lat,lon,url) {
           html: items.join( "" ),
         }).appendTo( "#selection" );
 */
-      L.popup().setLatLng(latlng).setContent("<p><a href='"+href+"'>"+full_address +"</a></p>").openOn(map);
+      var params = getParams();
+      if ( params.remap )  {
+        var hint = 'Re-map this address: ';
+      } else {
+        var hint = 'Map this address: ';
+      }
+      L.popup().setLatLng(latlng).setContent("<p>"+hint+" <a href='"+href+"'>"+full_address +"</a></p>").openOn(map);
     }).done(function() {
       console.log( "success" );
       $('#selection-hint').html("Please select the address shown in the popup or try another input.");
