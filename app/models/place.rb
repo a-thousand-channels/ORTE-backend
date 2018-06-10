@@ -3,6 +3,7 @@ class Place < ApplicationRecord
 
   validates :title,  presence: true
 
+  scope :published, -> { where(published: true) }
 
   def date
     ApplicationController.helpers.smart_date_display(self.startdate,self.enddate)
@@ -14,14 +15,26 @@ class Place < ApplicationRecord
 
   def full_address
     if self.location.present? && self.address.present?
-      "#{self.location} #{self.address}"
+      if self.location == self.address
+        "#{self.location}"
+      else
+        "#{self.location} #{self.address}"
+      end
     elsif self.location.present?
       "#{self.location}"
     else
       "#{self.address}"
     end
-
   end
+
+  def full_address_with_city
+    c = ''
+    if self.zip && self.city
+      c = ", #{self.zip} #{self.city}"
+    end
+    "#{self.full_address}#{c}"
+  end
+
 
 
 end

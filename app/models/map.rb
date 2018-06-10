@@ -7,4 +7,7 @@ class Map < ApplicationRecord
   scope :by_user, lambda { |user|
     where(:group_id => user.group.id) unless user.group.title == 'Admins'
   }
+
+  scope :published, -> { where(published: true) }
+
 end
