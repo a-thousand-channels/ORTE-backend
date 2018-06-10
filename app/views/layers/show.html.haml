@@ -20,7 +20,8 @@
             = link_to map_layers_path(@map) do
               %i.fi-page-multiple.fi-24
           = simple_form_for :navselector, url: '', html: { method: :get }  do |f|
-            = f.input :id, :collection => @map_layers.map { |l| ["#{l.title}", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}/layers/#{@layer.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
+            = f.input :id, :collection => @map_layers.map { |l| ["#{l.title} (#{l.places.count})", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}/layers/#{@layer.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
+
           .input-group-button.hide
             = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do
               %i.fi-plus.fi-24
