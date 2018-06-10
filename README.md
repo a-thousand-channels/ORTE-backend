@@ -14,7 +14,7 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 
 ## Credits
 
-Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and Treffentotal (acceptance testing)
+Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and Treffentotal (acceptance testing and first use case)
 
 ## Contributions
 
