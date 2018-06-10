@@ -7,6 +7,9 @@
           .input-group-label
             = link_to map_path(@map) do
               %i.fi-map.fi-24
+
+          - icon = '<i class="fi-lock fi-21">'
+          - # #{m.published ? '' : icon}
           = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button
             = link_to edit_map_path, :class => 'button secondary' do

@@ -28,7 +28,8 @@ class Public::MapsController  < ActionController::Base
         if @map.present?
           format.json { render :show, location: @map }
         else
-          format.json { head :no_content }
+          # format.json { head :no_content }
+          format.json { render json: {error: 'Map not accessible'}, status: :forbidden }
         end
       end
     end
