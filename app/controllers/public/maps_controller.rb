@@ -2,7 +2,7 @@
 
 class Public::MapsController  < ActionController::Base
 
-  before_filter :cors_set_access_control_headers
+  before_action :cors_set_access_control_headers
 
   # For all responses in this controller, return the CORS access control headers.
 
