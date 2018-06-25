@@ -80,7 +80,7 @@ class PlacesController < ApplicationController
     end
     respond_to do |format|
       if @place.update(place_params)
-        format.html { redirect_to map_layer_url(@map.id,@layer.id), notice: 'Place was successfully updated.' }
+        format.html { redirect_to map_layer_url(@map.id,@place.layer.id), notice: 'Place was successfully updated.' }
         format.json { render :show, status: :ok, location: @place }
       else
         format.html { render :edit }

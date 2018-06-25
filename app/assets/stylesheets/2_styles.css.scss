@@ -136,6 +136,23 @@ form#addresslookup {
 
 
 /* -------------------- */
+.form-actions {
+    margin-top: 0;
+}
+/* -------------------- */
+
+div.place_layer {
+  padding-top: 5px;
+  padding-bottom: 10px;
+  label {
+    display: inline;
+  }
+  select#place_layer_id {
+    display: inline;
+    width: 80%;
+    margin-left: 20px;
+  }
+}
 
 select.datetime {
   width: 100px;
