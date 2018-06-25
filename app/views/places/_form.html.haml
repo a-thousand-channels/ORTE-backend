@@ -16,15 +16,15 @@
               %span.switch-inactive{:aria-hidden=>"true"} No
 
     .large-7.medium-7.cell
-      %p
-        %br
-        - if @place.layer.title
+
+      - if @place.layer.title && params[:action] == 'new'
+        %p
           %span.name Layer:
           = link_to map_layer_url(@place.layer.map,@place.layer) do
             = @place.layer.title
           = f.association :layer, as: :hidden
-        - else
-          = f.association :layer
+      - else
+        = f.association :layer, include_blank: false
       %p
         %span.name Coordinates (Lat/Lon):
         - if @old_place
