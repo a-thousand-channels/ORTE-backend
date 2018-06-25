@@ -21,7 +21,12 @@ function PrepareBeforeLookup(url) {
 }
 
 function LookupNominatim(address,url) {
-  console.log("check for params");
+  $('#response').remove();
+  $('#selection-hint').html('Searching...');
+  var items = [];
+  console.log("---------------------");
+  console.log("LookupNominatim");
+  console.log("Checking for params...");
   var url = PrepareBeforeLookup(url);
   if ( address === '' ) {
     $('#selection-hint').html("<strong>No input!</strong> Please type in a complete address ('Street Number, City')");
@@ -41,15 +46,17 @@ function LookupNominatim(address,url) {
 
     var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
 
+    console.log(data);
     // if no result
-    if ( !data ) {
+    if ( !data || data.length === 0) {
       console.log('Lookup:: No result');
-      $('#selection-hint').html("Nothing found. Please try another adress ('Street Number, City')");
+      $('#selection-hint').html("Nothing found. Please try another adress!  (Type 'Street Number, City')");
       $('#selection-hint').addClass('active');
       return;
     }
     // if results
-    var items = [];
+    console.log("items: "+items.length);
+    console.log("response: "+$('#response').length);
     $.each( data, function( key, val ) {
       console.log('Lookup:: Data val');
       console.log(val.class);
@@ -59,8 +66,6 @@ function LookupNominatim(address,url) {
         label = 'Adresse:';
       }
     var href = url+'?address='+val.display_name+'&lat='+val.lat+'&lon='+val.lon;
-
-
 
       // OR better get address details
       /*
@@ -79,7 +84,7 @@ function LookupNominatim(address,url) {
 
         var location;
         location = val.address[Object.keys(val.address)[0]];
-        console.log("////////////////"+location);
+        console.log("Lookup:: Location "+location);
         if ( val.class === 'building') {
           location = val.address.road+" "+val.address.house_number
         }
@@ -87,10 +92,7 @@ function LookupNominatim(address,url) {
         // TODO verify all values
         // FIXME hamburg as state
         href = url+'?location='+location+"&address="+val.address.road+" "+val.address.house_number+"&zip="+val.address.postcode+"&city="+val.address.state+'&lat='+val.lat+'&lon='+val.lon;
-
       }
-
-
 
 
       if ( val.class.match(regexp) ) {
@@ -103,18 +105,17 @@ function LookupNominatim(address,url) {
         "id": "response",
         html: items.join( "" ),
       }).appendTo( "#selection" );
+    console.log( "Success" );
+    $('#selection-hint').html("Please select one of the addresses below or give in another address.");
+    $('#selection-hint').addClass('active');
     }).done(function() {
-      console.log( "success" );
-      $('#selection-hint').html("Please select one of the addresses below or give in another address.");
-      $('#selection-hint').addClass('active');
-    })
-    .fail(function() {
+
+    }).fail(function() {
       console.log( "error" );
       $('#selection-hint').html("Nothing found. Please try another input.");
       $('#selection-hint').addClass('active');
-    })
-    .always(function() {
-      console.log( "complete" );
+    }).always(function() {
+      console.log( "Complete" );
     });
   }
 
