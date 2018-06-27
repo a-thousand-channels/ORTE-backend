@@ -9,6 +9,7 @@
         = f.input :text
         = f.input :published
         = f.association :group, collection: Group.by_user(current_user), include_blank: false
+        = f.input :script
       .form-actions
         %p
           = f.button :submit, :class => "button"
