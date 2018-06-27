@@ -36,6 +36,8 @@ gem 'secure_headers'
 gem 'settingslogic'
 gem 'simple_form'
 
+gem 'redis'
+
 group :staging, :production do
   # gem 'pg'
   gem 'mysql2'

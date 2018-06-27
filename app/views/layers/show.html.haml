@@ -1,5 +1,9 @@
+- if @map.script && @map.script.present?
+  %script
+    = raw(@map.script)
 
-#selection{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}.json" }}
+
+#selection{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}.json", 'map_id' => "#{@map.id}" }}
   .grid-x
     .cell.medium-12
       = simple_form_for :navselector, url: '/maps/', html: { method: :get }  do |f|
