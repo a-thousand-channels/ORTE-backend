@@ -1,6 +1,8 @@
 - if @map.script && @map.script.present?
-  %script
-    = raw(@map.script)
+  :javascript
+    $(document).on('turbolinks:load', function() {
+        #{raw(@map.script)}
+    });
 
 
 #selection{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}.json", 'map_id' => "#{@map.id}" }}

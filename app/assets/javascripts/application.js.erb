@@ -99,12 +99,6 @@ $(document).on('turbolinks:load', function() {
         console.log("No lookup possible. Please select a map and a layer first");
       }
     });
-      // kampnagel as image overlay  //
-      var imageUrl = 'https://map.treffentotal.de/kampnagel_raumplan_by_hand_2000px.png',
-          imageBounds = [[53.583839104119935, 10.020486116409304], [53.58267779635204, 10.023055034408571]];
-          options =  {opacity: 1, className: ' kampnagel baselayer', interactive: true, attribution: 'Kampnagel'};
-      var kampnagel_map = new L.imageOverlay(imageUrl, imageBounds, options);
-      kampnagel_map.addTo(map);
 
     // ---------------
 
