@@ -24,7 +24,7 @@
         %th
 
     %tbody
-      - @places.each do |place|
+      - @places.order(:startdate).each do |place|
         %tr
           %td
             = smart_date_display(place.startdate, place.enddate)
