@@ -2,11 +2,7 @@ require 'rails_helper'
 
 RSpec.describe LayersController, type: :controller do
 
-  # This should return the minimal set of attributes required to create a valid
-  # Layer. As you add validations to Layer, be sure to
-  # adjust the attributes here as well.
   describe "functionalities with logged in user with role 'admin'" do
-
 
     before do
       group = FactoryBot.create(:group)
@@ -18,7 +14,6 @@ RSpec.describe LayersController, type: :controller do
     let(:layer) {
       FactoryBot.create(:layer, :map_id => @map.id)
     }
-
 
     let(:valid_attributes) {
       FactoryBot.build(:layer, :map_id => @map.id).attributes
@@ -37,7 +32,7 @@ RSpec.describe LayersController, type: :controller do
       it "returns a success response" do
         layer = Layer.create! valid_attributes
         get :index, params: { map_id: @map.id }, session: valid_session
-        expect(response).to be_success
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -45,14 +40,14 @@ RSpec.describe LayersController, type: :controller do
       it "returns a success response" do
         layer = Layer.create! valid_attributes
         get :show, params: { map_id: @map.id, id: layer.to_param}, session: valid_session
-        expect(response).to be_success
+        expect(response).to have_http_status(200)
       end
     end
 
     describe "GET #new" do
       it "returns a success response" do
         get :new, params: {map_id: @map.id }, session: valid_session
-        expect(response).to be_success
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -60,7 +55,7 @@ RSpec.describe LayersController, type: :controller do
       it "returns a success response" do
         layer = Layer.create! valid_attributes
         get :edit, params: {map_id: @map.id, id: layer.to_param}, session: valid_session
-        expect(response).to be_success
+        expect(response).to have_http_status(200)
       end
     end
 

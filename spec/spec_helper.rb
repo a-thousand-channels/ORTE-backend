@@ -26,6 +26,17 @@ Capybara.register_driver :headless_chrome do |app|
                                  desired_capabilities: capabilities
 end
 
+
+Capybara::Webkit.configure do |config|
+  # Enable debug mode. Prints a log of everything the driver is doing.
+  config.debug = false
+
+  # By default, requests to outside domains (anything besides localhost) will
+  # result in a warning. Several methods allow you to change this behavior.
+  # Silently return an empty 200 response for any requests to unknown URLs.
+  config.block_unknown_urls
+end
+
 RSpec.configure do |config|
   config.color = true
 
@@ -97,7 +108,7 @@ RSpec.configure do |config|
   # Print the 10 slowest examples and example groups at the
   # end of the spec run, to help surface which specs are running
   # particularly slow.
-  config.profile_examples = 10
+  # config.profile_examples = 10
 
   # Run specs in random order to surface order dependencies. If you find an
   # order dependency and want to debug it, you can fix the order by providing

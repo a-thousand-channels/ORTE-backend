@@ -17,6 +17,6 @@ FactoryBot.define do
     email
     password { 'password' }
     group
-    role 'admin'
+    role { 'admin' }
   end
 end

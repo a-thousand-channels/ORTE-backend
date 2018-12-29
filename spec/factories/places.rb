@@ -15,5 +15,8 @@ FactoryBot.define do
     country { "MyString" }
     published { false }
     layer
+    trait :invalid do
+      title { nil }
+    end
   end
 end

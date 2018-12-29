@@ -3,5 +3,8 @@ FactoryBot.define do
     title { "MyString" }
     image { "MyString" }
     iconset
+    trait :invalid do
+      iconset { nil }
+    end
   end
 end
