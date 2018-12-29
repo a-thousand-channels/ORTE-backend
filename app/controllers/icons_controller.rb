@@ -25,10 +25,11 @@ class IconsController < ApplicationController
   # POST /icons.json
   def create
     @icon = Icon.new(icon_params)
+    @iconset = @icon.iconset
 
     respond_to do |format|
       if @icon.save
-        format.html { redirect_to @icon, notice: 'Icon was successfully created.' }
+        format.html { redirect_to iconset_url(@iconset), notice: 'Icon was successfully created.' }
         format.json { render :show, status: :created, location: @icon }
       else
         format.html { render :new }
@@ -40,9 +41,10 @@ class IconsController < ApplicationController
   # PATCH/PUT /icons/1
   # PATCH/PUT /icons/1.json
   def update
+    @iconset = @icon.iconset
     respond_to do |format|
       if @icon.update(icon_params)
-        format.html { redirect_to @icon, notice: 'Icon was successfully updated.' }
+        format.html { redirect_to iconset_url(@iconset), notice: 'Icon was successfully updated.' }
         format.json { render :show, status: :ok, location: @icon }
       else
         format.html { render :edit }
@@ -54,9 +56,10 @@ class IconsController < ApplicationController
   # DELETE /icons/1
   # DELETE /icons/1.json
   def destroy
+    @iconset = @icon.iconset
     @icon.destroy
     respond_to do |format|
-      format.html { redirect_to icons_url, notice: 'Icon was successfully destroyed.' }
+      format.html { redirect_to iconset_url(@iconset), notice: 'Icon was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

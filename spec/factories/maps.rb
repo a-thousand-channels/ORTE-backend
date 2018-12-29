@@ -4,5 +4,8 @@ FactoryBot.define do
     text { "MyString" }
     published { false }
     group
+    trait :invalid do
+      title { nil }
+    end
   end
 end
