@@ -44,6 +44,8 @@ group :staging, :production do
   gem 'mysql2'
 end
 
+gem 'coveralls_reborn', '~> 0.12.0', require: false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
@@ -59,6 +61,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'sqlite3'
 end
+
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
