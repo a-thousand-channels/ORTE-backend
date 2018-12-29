@@ -17,7 +17,7 @@
         %td= icon.image
         %td= icon.iconset
         %td= link_to 'Show', icon
-        %td= link_to 'Edit', edit_icon_path(icon)
+        %td= link_to 'Edit', edit_iconset_icon_path(@iconset,icon)
         %td= link_to 'Destroy', icon, method: :delete, data: { confirm: 'Are you sure?' }
 
 %br

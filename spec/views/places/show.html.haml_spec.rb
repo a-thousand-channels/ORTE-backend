@@ -2,21 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "places/show", type: :view do
   before(:each) do
-    @place = assign(:place, Place.create!(
-      :title => "Title",
-      :teaser => "MyText",
-      :text => "MyText",
-      :link => "Link",
-      :lat => "Lat",
-      :lon => "Lon",
-      :location => "Location",
-      :address => "Address",
-      :zip => "Zip",
-      :city => "City",
-      :country => "Country",
-      :published => false,
-      :layer => nil
-    ))
+    @map = FactoryBot.create(:map)
+    @layer = FactoryBot.create(:layer, :map_id=> @map.id)
+    @place = FactoryBot.create(:place, :layer_id => @layer.id)
   end
 
   it "renders attributes in <p>" do

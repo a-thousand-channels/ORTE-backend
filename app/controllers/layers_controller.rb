@@ -78,7 +78,7 @@ class LayersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_layer
-      @map = @map = Map.by_user(current_user).find(params[:map_id])
+      @map = Map.by_user(current_user).find(params[:map_id])
       @layer = Layer.find(params[:id])
     end
 
