@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :icon do
-    title "MyString"
-    image "MyString"
-    iconset nil
+    title { "MyString" }
+    image { "MyString" }
+    iconset
   end
 end
