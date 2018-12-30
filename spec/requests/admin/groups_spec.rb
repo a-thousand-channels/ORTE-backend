@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Groups", type: :request do
-  describe "GET /groups" do
-    it "works! (now write some real specs)" do
-      get groups_path
-      expect(response).to have_http_status(200)
+  describe "GET /admin/groups" do
+    it "gets redirected to login" do
+      get admin_groups_path
+      expect(response).to have_http_status(302)
     end
   end
 end
