@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe "Icons", type: :request do
-  describe "GET /icons" do
-    it "works! (now write some real specs)" do
-      get icons_path
-      expect(response).to have_http_status(200)
+  describe "GET /iconsets/1/icons" do
+    it "gets redirected to login" do
+      get iconset_icons_path(1)
+      expect(response).to have_http_status(302)
     end
   end
 end
