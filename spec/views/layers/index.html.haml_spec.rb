@@ -2,27 +2,29 @@ require 'rails_helper'
 
 RSpec.describe "layers/index", type: :view do
   before(:each) do
+    group = FactoryBot.create(:group)
+    user = FactoryBot.create(:admin_user, :group_id => group.id)
+    sign_in user
+    @map = FactoryBot.create(:map, :group_id => group.id)
     assign(:layers, [
       Layer.create!(
-        :title => "Title",
+        :title => "Title1",
         :text => "Text",
         :published => false,
-        :map => nil
+        :map => @map
       ),
       Layer.create!(
-        :title => "Title",
+        :title => "Title2",
         :text => "Text",
         :published => false,
-        :map => nil
+        :map => @map
       )
     ])
   end
 
   it "renders a list of layers" do
     render
-    assert_select "tr>td", :text => "Title".to_s, :count => 2
-    assert_select "tr>td", :text => "Text".to_s, :count => 2
-    assert_select "tr>td", :text => false.to_s, :count => 2
-    assert_select "tr>td", :text => nil.to_s, :count => 2
+    expect(rendered).to match(/Title1/)
+    expect(rendered).to match(/Title2/)
   end
 end
