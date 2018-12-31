@@ -1,22 +1,20 @@
 require 'rails_helper'
 
-RSpec.describe "groups/index", type: :view do
+RSpec.describe "admin/groups/index", type: :view do
   before(:each) do
-    assign(:groups, [
+    @admin_groups = assign(:groups, [
       Group.create!(
-        :title => "Title",
-        :user => nil
+        :title => "Title1"
       ),
       Group.create!(
-        :title => "Title",
-        :user => nil
+        :title => "Title2"
       )
     ])
   end
 
   it "renders a list of groups" do
     render
-    assert_select "tr>td", :text => "Title".to_s, :count => 2
-    assert_select "tr>td", :text => nil.to_s, :count => 2
+    expect(rendered).to match(/Title1/)
+    expect(rendered).to match(/Title2/)
   end
 end

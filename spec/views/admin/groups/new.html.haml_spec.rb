@@ -1,21 +1,21 @@
 require 'rails_helper'
 
-RSpec.describe "groups/new", type: :view do
+RSpec.describe "admin/groups/new", type: :view do
   before(:each) do
-    assign(:group, Group.new(
-      :title => "MyString",
-      :user => nil
+
+    @admin_group = assign(:group, Group.new(
+      :title => "MyString"
     ))
+
   end
 
   it "renders new group form" do
     render
 
-    assert_select "form[action=?][method=?]", groups_path, "post" do
+    assert_select "form[action=?][method=?]", admin_groups_path, "post" do
 
-      assert_select "input[name=?]", "group[title]"
+      assert_select "input[name=?]", "admin_group[title]"
 
-      assert_select "input[name=?]", "group[user_id]"
     end
   end
 end
