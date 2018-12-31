@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=master)](https://coveralls.io/github/ut/ORTE-backend?branch=master)
+[![Build Status](https://travis-ci.org/ut/ORTE-backend.svg?branch=master)](https://travis-ci.org/ut/ORTE-backend)[![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=master)](https://coveralls.io/github/ut/ORTE-backend?branch=master)
 
 # ORTE-backend
 
