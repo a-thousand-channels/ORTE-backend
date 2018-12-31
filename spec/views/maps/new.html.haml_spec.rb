@@ -2,11 +2,14 @@ require 'rails_helper'
 
 RSpec.describe "maps/new", type: :view do
   before(:each) do
+    group = FactoryBot.create(:group)
+    user = FactoryBot.create(:admin_user, :group_id => group.id)
+    sign_in user
     assign(:map, Map.new(
       :title => "MyString",
       :text => "MyString",
       :published => false,
-      :group => nil
+      :group => group
     ))
   end
 
@@ -19,9 +22,6 @@ RSpec.describe "maps/new", type: :view do
 
       assert_select "input[name=?]", "map[text]"
 
-      assert_select "input[name=?]", "map[published]"
-
-      assert_select "input[name=?]", "map[group_id]"
     end
   end
 end

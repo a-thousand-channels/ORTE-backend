@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "places/new", type: :view do
   before(:each) do
+    @map = FactoryBot.create(:map)
+    @layer = FactoryBot.create(:layer, :map_id=> @map.id)
+
     assign(:place, Place.new(
       :title => "MyString",
       :teaser => "MyText",
@@ -15,20 +18,19 @@ RSpec.describe "places/new", type: :view do
       :city => "MyString",
       :country => "MyString",
       :published => false,
-      :layer => nil
+      :layer => @layer
     ))
   end
 
   it "renders new place form" do
     render
 
-    assert_select "form[action=?][method=?]", places_path, "post" do
+    assert_select "form[action=?][method=?]", map_layer_places_path(@layer,@map), "post" do
 
       assert_select "input[name=?]", "place[title]"
 
       assert_select "textarea[name=?]", "place[teaser]"
 
-      assert_select "textarea[name=?]", "place[text]"
 
       assert_select "input[name=?]", "place[link]"
 
@@ -44,11 +46,8 @@ RSpec.describe "places/new", type: :view do
 
       assert_select "input[name=?]", "place[city]"
 
-      assert_select "input[name=?]", "place[country]"
 
-      assert_select "input[name=?]", "place[published]"
 
-      assert_select "input[name=?]", "place[layer_id]"
     end
   end
 end

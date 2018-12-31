@@ -4,12 +4,12 @@ RSpec.describe "iconsets/index", type: :view do
   before(:each) do
     assign(:iconsets, [
       Iconset.create!(
-        :title => "Title",
+        :title => "Title1",
         :text => "MyText",
         :image => "Image"
       ),
       Iconset.create!(
-        :title => "Title",
+        :title => "Title2",
         :text => "MyText",
         :image => "Image"
       )
@@ -18,8 +18,8 @@ RSpec.describe "iconsets/index", type: :view do
 
   it "renders a list of iconsets" do
     render
-    assert_select "tr>td", :text => "Title".to_s, :count => 2
-    assert_select "tr>td", :text => "MyText".to_s, :count => 2
-    assert_select "tr>td", :text => "Image".to_s, :count => 2
+    expect(rendered).to match(/Title1/)
+    expect(rendered).to match(/Title2/)
+
   end
 end

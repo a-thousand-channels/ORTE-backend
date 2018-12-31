@@ -2,19 +2,22 @@ require 'rails_helper'
 
 RSpec.describe "maps/show", type: :view do
   before(:each) do
+    group = FactoryBot.create(:group)
+    user = FactoryBot.create(:admin_user, :group_id => group.id)
+    sign_in user
+    @maps = FactoryBot.create_list(:map,3)
     @map = assign(:map, Map.create!(
       :title => "Title",
       :text => "Text",
       :published => false,
-      :group => nil
+      :group => group
     ))
+    @layer = FactoryBot.create(:layer, :map_id => @map.id)
+    @map_layers = @map.layers
   end
 
   it "renders attributes in <p>" do
     render
-    expect(rendered).to match(/Title/)
-    expect(rendered).to match(/Text/)
-    expect(rendered).to match(/false/)
-    expect(rendered).to match(//)
+    expect(rendered).to match(/Create new layer/)
   end
 end
