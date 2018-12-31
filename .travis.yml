@@ -1,0 +1,8 @@
+dist: trusty
+language: ruby
+rvm:
+  - 2.4.3
+sudo: required
+addons:
+  chrome: stable
+
