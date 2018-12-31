@@ -38,7 +38,7 @@
               %i.fi.fi-pencil
               Edit
           %td
-            = link_to [:admin, group ], :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
+            = link_to admin_group_path(group), :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
               %i.fi.fi-x
               Destroy
 
