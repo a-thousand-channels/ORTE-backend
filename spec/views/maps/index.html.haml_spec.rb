@@ -2,27 +2,27 @@ require 'rails_helper'
 
 RSpec.describe "maps/index", type: :view do
   before(:each) do
+    group = FactoryBot.create(:group)
+
     assign(:maps, [
       Map.create!(
-        :title => "Title",
+        :title => "Title1",
         :text => "Text",
         :published => false,
-        :group => nil
+        :group => group
       ),
       Map.create!(
-        :title => "Title",
+        :title => "Title2",
         :text => "Text",
         :published => false,
-        :group => nil
+        :group => group
       )
     ])
   end
 
   it "renders a list of maps" do
     render
-    assert_select "tr>td", :text => "Title".to_s, :count => 2
-    assert_select "tr>td", :text => "Text".to_s, :count => 2
-    assert_select "tr>td", :text => false.to_s, :count => 2
-    assert_select "tr>td", :text => nil.to_s, :count => 2
+    expect(rendered).to match(/Title1/)
+    expect(rendered).to match(/Title2/)
   end
 end
