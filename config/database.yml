@@ -32,8 +32,8 @@ psql: &psql
 
 staging:
   <<: *psql
-  database: empty_app_staging
+  database: orte_staging
 
 production:
   <<: *psql
-  database: empty_app_production
+  database: orte_production
