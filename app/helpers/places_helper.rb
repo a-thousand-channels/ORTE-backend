@@ -11,7 +11,4 @@ module PlacesHelper
 
   end
 
-  def edit_link_icon
-    haml_tag :i, 'aria-hidden': 'true', class: 'fa fa-pencil'
-  end
 end

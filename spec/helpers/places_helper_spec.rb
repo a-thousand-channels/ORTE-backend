@@ -1,15 +1,12 @@
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the PlacesHelper. For example:
-#
-# describe PlacesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
+
 RSpec.describe PlacesHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+  describe "edit_link" do
+    it 'it returns a visual edit link' do
+      expect(helper.edit_link(1,2,3)).to eq(" <a href='/maps/1/layers/2/places/3/edit' class='button1 tiny1'><i class='fi fi-pencil'></a>")
+    end
+  end
+
 end
