@@ -42,6 +42,7 @@ gem 'redis'
 group :staging, :production do
   # gem 'pg'
   gem 'mysql2'
+  gem 'passenger'
 end
 
 gem 'coveralls_reborn', '~> 0.12.0', require: false
