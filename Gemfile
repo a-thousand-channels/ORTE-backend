@@ -11,7 +11,7 @@ gem 'rails', '~> 5.2.2'
 gem 'puma', '~> 3.7'
 gem 'sass-rails'
 gem 'uglifier'
-gem 'mini_racer', platforms: :ruby
+# gem 'mini_racer', platforms: :ruby
 
 gem 'coffee-rails'
 gem 'turbolinks'
