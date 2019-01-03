@@ -61,6 +61,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'simplecov'
   gem 'sqlite3'
+  gem 'mini_racer', platforms: :ruby
 end
 
 
@@ -85,5 +86,5 @@ group :development do
 end
 
 group :test do
-  gem 'mini_racer', platforms: :ruby
+
 end
