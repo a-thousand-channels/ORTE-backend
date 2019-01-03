@@ -84,7 +84,3 @@ group :development do
   gem 'brakeman', require: false
   gem 'rubycritic', require: false
 end
-
-group :test do
-
-end
