@@ -12,20 +12,14 @@ end
 require 'capybara/rspec'
 require 'selenium/webdriver'
 
+require 'capybara'
 Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
+  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu])
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
 end
 
-Capybara.register_driver :headless_chrome do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w[headless disable-gpu] }
-  )
-
-  Capybara::Selenium::Driver.new app,
-                                 browser: :chrome,
-                                 desired_capabilities: capabilities
-end
-
+Capybara.javascript_driver = :chrome
 
 Capybara::Webkit.configure do |config|
   # Enable debug mode. Prints a log of everything the driver is doing.
@@ -42,7 +36,7 @@ RSpec.configure do |config|
 
   config.include Capybara::DSL
   # Capybara.javascript_driver = :webkit
-  Capybara.javascript_driver = :headless_chrome
+  # Capybara.javascript_driver = :headless_chrome
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
