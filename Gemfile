@@ -36,7 +36,7 @@ gem 'rack-attack'
 gem 'secure_headers'
 gem 'settingslogic'
 gem 'simple_form'
-
+gem 'mini_racer', platforms: :ruby
 gem 'redis'
 
 group :staging, :production do
@@ -61,7 +61,6 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'simplecov'
   gem 'sqlite3'
-  gem 'mini_racer', platforms: :ruby
 end
 
 
