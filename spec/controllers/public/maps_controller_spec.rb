@@ -35,7 +35,6 @@ RSpec.describe Public::MapsController, type: :controller do
       it "returns a success response for unpublished resources" do
         map = Map.create! invalid_attributes
         get :index, params: { :format => 'json' }, session: valid_session
-        puts response.body
         expect(response).to have_http_status(200)
       end
 
@@ -44,6 +43,7 @@ RSpec.describe Public::MapsController, type: :controller do
     end
 
     describe "GET #show" do
+
       it "returns a success response for a published map" do
         map = Map.create! valid_attributes
         get :show, params: {id: map.to_param, :format => 'json'}, session: valid_session
@@ -53,12 +53,26 @@ RSpec.describe Public::MapsController, type: :controller do
       it "returns json for a published map" do
         map = Map.create! valid_attributes
         get :show, params: {id: map.to_param, :format => 'json'}, session: valid_session
-        puts response.body
         expect(response).to have_http_status(200)
+        expect(response.status).to eq 200
         expect(response.content_type).to eq("application/json")
       end
 
-     it "returns a no content response for unpublished resources" do
+      it "returns json with a valid scheme" do
+        map = Map.create! valid_attributes
+        layer = FactoryBot.create(:layer, :map_id => map.id, :published => 1)
+        place = FactoryBot.create(:place, :layer_id => map.id, :published => 1)
+        puts map.layers.published.count
+        puts map.layers.published.first.places.count
+        request.accept = "application/json"
+        get :show, params: {id: map.to_param, :format => 'json'}, session: valid_session
+        puts "response body:"
+        puts response.body
+        expect(response).to match_response_schema("map")
+      end
+
+
+     it "returns an 403 + error response for unpublished resources" do
         map = Map.create! invalid_attributes
         get :show, params: {id: map.to_param, :format => 'json'}, session: valid_session
         expect(response).to have_http_status(403)

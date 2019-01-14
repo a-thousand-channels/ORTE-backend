@@ -31,14 +31,18 @@ class Public::MapsController  < ActionController::Base
   def show
     @map = Map.published.find_by_id(params[:id])
 
+
     respond_to do |format|
       if @map
         @map_layers = @map.layers.published
+        puts "add layers to extra object w/#{@map_layers.count} layers"
       end
       if @map_layers.present?
+        puts "print json w/#{@map_layers.count} layers for #{@map.title}"
         format.json { render :show, location: @map }
       else
         if @map.present?
+          puts "print json w/no layers for #{@map.title}"
           format.json { render :show, location: @map }
         else
           # format.json { head :no_content }

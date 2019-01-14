@@ -1,0 +1,354 @@
+{
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "map"
+  ],
+  "properties": {
+    "map": {
+      "type": "object",
+      "title": "The Map Schema",
+      "required": [
+        "id",
+        "title",
+        "text",
+        "created_at",
+        "updated_at",
+        "published",
+        "owner",
+        "layer"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "title": "The Id Schema",
+          "default": 0,
+          "examples": [
+            2
+          ]
+        },
+        "title": {
+          "type": "string",
+          "title": "The Title Schema",
+          "default": "",
+          "examples": [
+            "Treffen Total 2018"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "text": {
+          "type": "string",
+          "title": "The Text Schema",
+          "default": "",
+          "examples": [
+            ""
+          ],
+          "pattern": "^(.*)$"
+        },
+        "created_at": {
+          "type": "string",
+          "title": "The Created_at Schema",
+          "default": "",
+          "examples": [
+            "2018-05-08T12:01:56.192Z"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "updated_at": {
+          "type": "string",
+          "title": "The Updated_at Schema",
+          "default": "",
+          "examples": [
+            "2018-06-09T17:45:05.990Z"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "published": {
+          "type": "boolean",
+          "title": "The Published Schema",
+          "default": false,
+          "examples": [
+            true
+          ]
+        },
+        "owner": {
+          "type": "string",
+          "title": "The Owner Schema",
+          "default": "",
+          "examples": [
+            "Treffen Total"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "layer": {
+          "type": "array",
+          "title": "The Layer Schema",
+          "items": {
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "id",
+              "title",
+              "text",
+              "created_at",
+              "updated_at",
+              "published",
+              "places"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "title": "The Id Schema",
+                "default": 0,
+                "examples": [
+                  3
+                ]
+              },
+              "title": {
+                "type": "string",
+                "title": "The Title Schema",
+                "default": "",
+                "examples": [
+                  "Events in public space"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "text": {
+                "type": "string",
+                "title": "The Text Schema",
+                "default": "",
+                "examples": [
+                  ""
+                ],
+                "pattern": "^(.*)$"
+              },
+              "created_at": {
+                "type": "string",
+                "title": "The Created_at Schema",
+                "default": "",
+                "examples": [
+                  "2018-05-08T12:02:18.823Z"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "updated_at": {
+                "type": "string",
+                "title": "The Updated_at Schema",
+                "default": "",
+                "examples": [
+                  "2018-05-08T12:02:18.823Z"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "published": {
+                "type": "boolean",
+                "title": "The Published Schema",
+                "default": false,
+                "examples": [
+                  true
+                ]
+              },
+              "places": {
+                "type": "array",
+                "title": "The Places Schema",
+                "items": {
+                  "type": "object",
+                  "title": "The Items Schema",
+                  "required": [
+                    "id",
+                    "title",
+                    "teaser",
+                    "link",
+                    "imagelink",
+                    "published",
+                    "startdate",
+                    "enddate",
+                    "date",
+                    "lat",
+                    "lon",
+                    "location",
+                    "address",
+                    "zip",
+                    "city",
+                    "full_address",
+                    "full_address_with_city",
+                    "country",
+                    "layer_id"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "title": "The Id Schema",
+                      "default": 0,
+                      "examples": [
+                        4
+                      ]
+                    },
+                    "title": {
+                      "type": "string",
+                      "title": "The Title Schema",
+                      "default": "",
+                      "examples": [
+                        "Session am Deich"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "teaser": {
+                      "type": "string",
+                      "title": "The Teaser Schema",
+                      "default": "",
+                      "examples": [
+                        ""
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "link": {
+                      "type": "string",
+                      "title": "The Link Schema",
+                      "default": "",
+                      "examples": [
+                        ""
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "imagelink": {
+                      "type": "null",
+                      "title": "The Imagelink Schema",
+                      "default": null,
+                      "examples": [
+                        null
+                      ]
+                    },
+                    "published": {
+                      "type": "boolean",
+                      "title": "The Published Schema",
+                      "default": false,
+                      "examples": [
+                        true
+                      ]
+                    },
+                    "startdate": {
+                      "type": "string",
+                      "title": "The Startdate Schema",
+                      "default": "",
+                      "examples": [
+                        "2018-05-18T17:57:00.000Z"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "enddate": {
+                      "type": "string",
+                      "title": "The Enddate Schema",
+                      "default": "",
+                      "examples": [
+                        "2018-05-18T17:57:00.000Z"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "date": {
+                      "type": "string",
+                      "title": "The Date Schema",
+                      "default": "",
+                      "examples": [
+                        "18.05.18, 17:57"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "lat": {
+                      "type": "string",
+                      "title": "The Lat Schema",
+                      "default": "",
+                      "examples": [
+                        "53.532969"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "lon": {
+                      "type": "string",
+                      "title": "The Lon Schema",
+                      "default": "",
+                      "examples": [
+                        "10.0367449"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "location": {
+                      "type": "string",
+                      "title": "The Location Schema",
+                      "default": "",
+                      "examples": [
+                        "Billwerder Neuer Deich"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "address": {
+                      "type": "string",
+                      "title": "The Address Schema",
+                      "default": "",
+                      "examples": [
+                        "Billwerder Neuer Deich undefined"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "zip": {
+                      "type": "string",
+                      "title": "The Zip Schema",
+                      "default": "",
+                      "examples": [
+                        "20539"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "city": {
+                      "type": "string",
+                      "title": "The City Schema",
+                      "default": "",
+                      "examples": [
+                        "Hamburg"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "full_address": {
+                      "type": "string",
+                      "title": "The Full_address Schema",
+                      "default": "",
+                      "examples": [
+                        "Billwerder Neuer Deich Billwerder Neuer Deich undefined"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "full_address_with_city": {
+                      "type": "string",
+                      "title": "The Full_address_with_city Schema",
+                      "default": "",
+                      "examples": [
+                        "Billwerder Neuer Deich Billwerder Neuer Deich undefined, 20539 Hamburg"
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                    "country": {
+                      "type": "null",
+                      "title": "The Country Schema",
+                      "default": null,
+                      "examples": [
+                        null
+                      ]
+                    },
+                    "layer_id": {
+                      "type": "integer",
+                      "title": "The Layer_id Schema",
+                      "default": 0,
+                      "examples": [
+                        3
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
