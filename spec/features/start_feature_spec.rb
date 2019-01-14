@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe 'some stuff which requires js', js: true do
-  it 'will use the specific js driver (webkit headless)', driver: :webkit do
+  it 'will use the specific js driver (webkit headless)', driver: :chrome do
     visit root_path
-    page.should have_content('Javascript enabled')
+    save_and_open_page
+    expect(page).to have_content('Javascript enabled')
   end
 end
 
