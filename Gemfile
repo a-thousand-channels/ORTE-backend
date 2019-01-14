@@ -61,6 +61,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'simplecov'
   gem 'sqlite3'
+  gem 'json-schema'
 end
 
 
