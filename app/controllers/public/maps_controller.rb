@@ -2,6 +2,8 @@
 
 class Public::MapsController  < ActionController::Base
 
+
+
   before_action :cors_set_access_control_headers
 
   # For all responses in this controller, return the CORS access control headers.
@@ -33,17 +35,14 @@ class Public::MapsController  < ActionController::Base
 
 
     respond_to do |format|
-      if @map
-        @map_layers = @map.layers.published
-        puts "add layers to extra object w/#{@map_layers.count} layers"
+      if @map && @map.layers
+        @map_layers = @map.layers
       end
       if @map_layers.present?
-        puts "print json w/#{@map_layers.count} layers for #{@map.title}"
         format.json { render :show, location: @map }
       else
         if @map.present?
-          puts "print json w/no layers for #{@map.title}"
-          format.json { render :show, location: @map }
+          format.json { render :show, location: @map  }
         else
           # format.json { head :no_content }
           format.json { render json: {error: 'Map not accessible'}, status: :forbidden }

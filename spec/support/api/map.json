@@ -1,4 +1,5 @@
 {
+  "definitions": {},
   "type": "object",
   "title": "The Root Schema",
   "required": [
@@ -6,6 +7,7 @@
   ],
   "properties": {
     "map": {
+      "$id": "#/properties/map",
       "type": "object",
       "title": "The Map Schema",
       "required": [
@@ -20,6 +22,7 @@
       ],
       "properties": {
         "id": {
+          "$id": "#/properties/map/properties/id",
           "type": "integer",
           "title": "The Id Schema",
           "default": 0,
@@ -28,6 +31,7 @@
           ]
         },
         "title": {
+          "$id": "#/properties/map/properties/title",
           "type": "string",
           "title": "The Title Schema",
           "default": "",
@@ -37,6 +41,7 @@
           "pattern": "^(.*)$"
         },
         "text": {
+          "$id": "#/properties/map/properties/text",
           "type": "string",
           "title": "The Text Schema",
           "default": "",
@@ -46,6 +51,7 @@
           "pattern": "^(.*)$"
         },
         "created_at": {
+          "$id": "#/properties/map/properties/created_at",
           "type": "string",
           "title": "The Created_at Schema",
           "default": "",
@@ -55,6 +61,7 @@
           "pattern": "^(.*)$"
         },
         "updated_at": {
+          "$id": "#/properties/map/properties/updated_at",
           "type": "string",
           "title": "The Updated_at Schema",
           "default": "",
@@ -64,6 +71,7 @@
           "pattern": "^(.*)$"
         },
         "published": {
+          "$id": "#/properties/map/properties/published",
           "type": "boolean",
           "title": "The Published Schema",
           "default": false,
@@ -72,6 +80,7 @@
           ]
         },
         "owner": {
+          "$id": "#/properties/map/properties/owner",
           "type": "string",
           "title": "The Owner Schema",
           "default": "",
@@ -81,9 +90,11 @@
           "pattern": "^(.*)$"
         },
         "layer": {
+          "$id": "#/properties/map/properties/layer",
           "type": "array",
           "title": "The Layer Schema",
           "items": {
+            "$id": "#/properties/map/properties/layer/items",
             "type": "object",
             "title": "The Items Schema",
             "required": [
@@ -97,6 +108,7 @@
             ],
             "properties": {
               "id": {
+                "$id": "#/properties/map/properties/layer/items/properties/id",
                 "type": "integer",
                 "title": "The Id Schema",
                 "default": 0,
@@ -105,6 +117,7 @@
                 ]
               },
               "title": {
+                "$id": "#/properties/map/properties/layer/items/properties/title",
                 "type": "string",
                 "title": "The Title Schema",
                 "default": "",
@@ -114,6 +127,7 @@
                 "pattern": "^(.*)$"
               },
               "text": {
+                "$id": "#/properties/map/properties/layer/items/properties/text",
                 "type": "string",
                 "title": "The Text Schema",
                 "default": "",
@@ -123,6 +137,7 @@
                 "pattern": "^(.*)$"
               },
               "created_at": {
+                "$id": "#/properties/map/properties/layer/items/properties/created_at",
                 "type": "string",
                 "title": "The Created_at Schema",
                 "default": "",
@@ -132,6 +147,7 @@
                 "pattern": "^(.*)$"
               },
               "updated_at": {
+                "$id": "#/properties/map/properties/layer/items/properties/updated_at",
                 "type": "string",
                 "title": "The Updated_at Schema",
                 "default": "",
@@ -141,6 +157,7 @@
                 "pattern": "^(.*)$"
               },
               "published": {
+                "$id": "#/properties/map/properties/layer/items/properties/published",
                 "type": "boolean",
                 "title": "The Published Schema",
                 "default": false,
@@ -149,9 +166,11 @@
                 ]
               },
               "places": {
+                "$id": "#/properties/map/properties/layer/items/properties/places",
                 "type": "array",
                 "title": "The Places Schema",
                 "items": {
+                  "$id": "#/properties/map/properties/layer/items/properties/places/items",
                   "type": "object",
                   "title": "The Items Schema",
                   "required": [
@@ -163,20 +182,18 @@
                     "published",
                     "startdate",
                     "enddate",
-                    "date",
                     "lat",
                     "lon",
                     "location",
                     "address",
                     "zip",
                     "city",
-                    "full_address",
-                    "full_address_with_city",
                     "country",
                     "layer_id"
                   ],
                   "properties": {
                     "id": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/id",
                       "type": "integer",
                       "title": "The Id Schema",
                       "default": 0,
@@ -185,6 +202,7 @@
                       ]
                     },
                     "title": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/title",
                       "type": "string",
                       "title": "The Title Schema",
                       "default": "",
@@ -194,6 +212,7 @@
                       "pattern": "^(.*)$"
                     },
                     "teaser": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/teaser",
                       "type": "string",
                       "title": "The Teaser Schema",
                       "default": "",
@@ -202,7 +221,17 @@
                       ],
                       "pattern": "^(.*)$"
                     },
+                    "text": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/text",
+                      "type": "string",
+                      "title": "The Text Schema",
+                      "default": "",
+                      "examples": [
+                        ""
+                      ]
+                    },
                     "link": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/link",
                       "type": "string",
                       "title": "The Link Schema",
                       "default": "",
@@ -212,6 +241,7 @@
                       "pattern": "^(.*)$"
                     },
                     "imagelink": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/imagelink",
                       "type": "null",
                       "title": "The Imagelink Schema",
                       "default": null,
@@ -220,6 +250,7 @@
                       ]
                     },
                     "published": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/published",
                       "type": "boolean",
                       "title": "The Published Schema",
                       "default": false,
@@ -228,6 +259,7 @@
                       ]
                     },
                     "startdate": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/startdate",
                       "type": "string",
                       "title": "The Startdate Schema",
                       "default": "",
@@ -237,6 +269,7 @@
                       "pattern": "^(.*)$"
                     },
                     "enddate": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/enddate",
                       "type": "string",
                       "title": "The Enddate Schema",
                       "default": "",
@@ -245,16 +278,8 @@
                       ],
                       "pattern": "^(.*)$"
                     },
-                    "date": {
-                      "type": "string",
-                      "title": "The Date Schema",
-                      "default": "",
-                      "examples": [
-                        "18.05.18, 17:57"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
                     "lat": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/lat",
                       "type": "string",
                       "title": "The Lat Schema",
                       "default": "",
@@ -264,6 +289,7 @@
                       "pattern": "^(.*)$"
                     },
                     "lon": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/lon",
                       "type": "string",
                       "title": "The Lon Schema",
                       "default": "",
@@ -273,6 +299,7 @@
                       "pattern": "^(.*)$"
                     },
                     "location": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/location",
                       "type": "string",
                       "title": "The Location Schema",
                       "default": "",
@@ -282,6 +309,7 @@
                       "pattern": "^(.*)$"
                     },
                     "address": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/address",
                       "type": "string",
                       "title": "The Address Schema",
                       "default": "",
@@ -291,6 +319,7 @@
                       "pattern": "^(.*)$"
                     },
                     "zip": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/zip",
                       "type": "string",
                       "title": "The Zip Schema",
                       "default": "",
@@ -300,6 +329,7 @@
                       "pattern": "^(.*)$"
                     },
                     "city": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/city",
                       "type": "string",
                       "title": "The City Schema",
                       "default": "",
@@ -308,33 +338,17 @@
                       ],
                       "pattern": "^(.*)$"
                     },
-                    "full_address": {
-                      "type": "string",
-                      "title": "The Full_address Schema",
-                      "default": "",
-                      "examples": [
-                        "Billwerder Neuer Deich Billwerder Neuer Deich undefined"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "full_address_with_city": {
-                      "type": "string",
-                      "title": "The Full_address_with_city Schema",
-                      "default": "",
-                      "examples": [
-                        "Billwerder Neuer Deich Billwerder Neuer Deich undefined, 20539 Hamburg"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
                     "country": {
-                      "type": "null",
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/country",
+                      "type": "string",
                       "title": "The Country Schema",
-                      "default": null,
+                      "default": "",
                       "examples": [
-                        null
+                        ""
                       ]
                     },
                     "layer_id": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/layer_id",
                       "type": "integer",
                       "title": "The Layer_id Schema",
                       "default": 0,

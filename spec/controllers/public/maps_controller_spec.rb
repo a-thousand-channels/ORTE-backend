@@ -4,6 +4,8 @@ require 'rails_helper'
 
 RSpec.describe Public::MapsController, type: :controller do
 
+  render_views
+
   describe "functionalities with logged in user with role 'admin'" do
 
     before do
@@ -60,11 +62,8 @@ RSpec.describe Public::MapsController, type: :controller do
 
       it "returns json with a valid scheme" do
         map = Map.create! valid_attributes
-        layer = FactoryBot.create(:layer, :map_id => map.id, :published => 1)
-        place = FactoryBot.create(:place, :layer_id => map.id, :published => 1)
-        puts map.layers.published.count
-        puts map.layers.published.first.places.count
-        request.accept = "application/json"
+        layer = FactoryBot.create(:layer, :map_id => map.id, :published => true)
+        place = FactoryBot.create(:place, :layer_id => layer.id, :published => true)
         get :show, params: {id: map.to_param, :format => 'json'}, session: valid_session
         puts "response body:"
         puts response.body
