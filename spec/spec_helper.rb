@@ -9,34 +9,42 @@ else
   puts 'Collecting coverage data'
 end
 
+require 'capybara'
 require 'capybara/rspec'
 require 'selenium/webdriver'
 
-require 'capybara'
 Capybara.register_driver :chrome do |app|
-  options = Selenium::WebDriver::Chrome::Options.new(args: %w[no-sandbox headless disable-gpu])
-
-  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
 
+Capybara.register_driver :headless_chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w(headless disable-gpu) },
+    loggingPrefs: {
+      browser: 'ALL'
+    }
+  )
+
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+end
+
+Capybara.default_driver = :chrome
 Capybara.javascript_driver = :chrome
 
-Capybara::Webkit.configure do |config|
-  # Enable debug mode. Prints a log of everything the driver is doing.
-  config.debug = false
-
-  # By default, requests to outside domains (anything besides localhost) will
-  # result in a warning. Several methods allow you to change this behavior.
-  # Silently return an empty 200 response for any requests to unknown URLs.
-  config.block_unknown_urls
+Capybara.configure do |config|
+  config.default_max_wait_time = 4 # seconds
+  config.default_driver        = :chrome
 end
+
+Capybara::Chromedriver::Logger::TestHooks.for_rspec!
 
 RSpec.configure do |config|
   config.color = true
 
   config.include Capybara::DSL
-  # Capybara.javascript_driver = :webkit
-  # Capybara.javascript_driver = :headless_chrome
+
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
