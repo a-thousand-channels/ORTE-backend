@@ -7,5 +7,8 @@ FactoryBot.define do
     trait :invalid do
       title { nil }
     end
+    trait :update do
+      title { "MyNewString" }
+    end
   end
 end

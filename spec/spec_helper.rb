@@ -30,12 +30,13 @@ Capybara.register_driver :headless_chrome do |app|
     desired_capabilities: capabilities
 end
 
-Capybara.default_driver = :chrome
-Capybara.javascript_driver = :chrome
+# switch to :chrome for watching the tests in browser
+Capybara.default_driver = :headless_chrome
+Capybara.javascript_driver = :headless_chrome
 
 Capybara.configure do |config|
   config.default_max_wait_time = 4 # seconds
-  config.default_driver        = :chrome
+  config.default_driver        = :headless_chrome
 end
 
 Capybara::Chromedriver::Logger::TestHooks.for_rspec!
