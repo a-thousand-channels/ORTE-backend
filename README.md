@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/ut/ORTE-backend.svg?branch=master)](https://travis-ci.org/ut/ORTE-backend) [![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=master)](https://coveralls.io/github/ut/ORTE-backend?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
+[![Build Status](https://travis-ci.org/ut/ORTE-backend.svg?branch=master)](https://travis-ci.org/ut/ORTE-backend) ![Release](https://img.shields.io/badge/tag-v0.22-blue.svg) [![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=master)](https://coveralls.io/github/ut/ORTE-backend?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
+
 
 # ORTE-backend
 
