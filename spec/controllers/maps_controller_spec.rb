@@ -38,6 +38,13 @@ RSpec.describe MapsController, type: :controller do
         get :show, params: {id: map.to_param}, session: valid_session
         expect(response).to have_http_status(200)
       end
+
+      it "returns a no success response" do
+        another_group = FactoryBot.create(:group)
+        map = FactoryBot.create(:map, :group_id => another_group.id)
+        get :show, params: {id: map.to_param}, session: valid_session
+        expect(response).to have_http_status(302)
+      end
     end
 
     describe "GET #new" do
@@ -80,14 +87,14 @@ RSpec.describe MapsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          FactoryBot.attributes_for(:map, :update)
         }
 
         it "updates the requested map" do
           map = Map.create! valid_attributes
           put :update, params: {id: map.to_param, map: new_attributes}, session: valid_session
           map.reload
-          skip("Add assertions for updated state")
+          expect(map.title).to eq "MyNewString"
         end
 
         it "redirects to the map" do

@@ -52,9 +52,8 @@ RSpec.describe Admin::GroupsController, type: :controller do
 
     describe "GET #edit" do
       it "returns a success response" do
-        admin_group = Group.create! valid_attributes
         get :edit, params: {id: admin_group.to_param}, session: valid_session
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -73,7 +72,7 @@ RSpec.describe Admin::GroupsController, type: :controller do
       end
 
       context "with invalid params" do
-        xit "returns a success response (i.e. to display the 'new' template)" do
+        it "returns a success response (i.e. to display the 'new' template)" do
           post :create, params: {admin_group: invalid_attributes}, session: valid_session
           expect(response).to have_http_status(302)
         end
@@ -83,43 +82,38 @@ RSpec.describe Admin::GroupsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          FactoryBot.attributes_for(:group, :update)
         }
 
         it "updates the requested group" do
-          admin_group = Group.create! valid_attributes
-          put :update, params: {id: admin_group.to_param, admin_group: new_attributes}, session: valid_session
-          admin_group.reload
-          skip("Add assertions for updated state")
+          put :update, params: {id: @admin_group.to_param, admin_group: new_attributes}, session: valid_session
+          @admin_group.reload
+          expect(@admin_group.title).to eq "MyNewString"
         end
 
-        xit "redirects to the group" do
-          admin_group = Group.create! valid_attributes
-          put :update, params: {id: admin_group.to_param, admin_group: valid_attributes}, session: valid_session
-          expect(response).to redirect_to([:admin, admin_group])
+        it "redirects to the group" do
+          put :update, params: {id: @admin_group.to_param, admin_group: valid_attributes}, session: valid_session
+          expect(response).to redirect_to(admin_groups_url)
         end
       end
 
       context "with invalid params" do
-        xit "returns a success response (i.e. to display the 'edit' template)" do
-          admin_group = Group.create! valid_attributes
-          put :update, params: {id: admin_group.to_param, admin_group: invalid_attributes}, session: valid_session
-          expect(response).to have_http_status(200)
+        it "returns a success response (i.e. to display the 'edit' template)" do
+          put :update, params: {id: @admin_group.to_param, admin_group: invalid_attributes}, session: valid_session
+          expect(response).to have_http_status(302)
         end
       end
     end
 
     describe "DELETE #destroy" do
-      xit "destroys the requested group" do
-        admin_group = Group.create! valid_attributes
+      it "destroys the requested group" do
         expect {
-          delete :destroy, params: {id: admin_group.to_param}, session: valid_session
+          delete :destroy, params: {id: @admin_group.to_param}, session: valid_session
         }.to change(Group, :count).by(-1)
       end
 
-      xit "redirects to the groups list" do
-        admin_group = Group.create! valid_attributes
-        delete :destroy, params: {id: admin_group.to_param}, session: valid_session
+      it "redirects to the groups list" do
+        delete :destroy, params: {id: @admin_group.to_param}, session: valid_session
         expect(response).to redirect_to(admin_groups_url)
       end
     end
