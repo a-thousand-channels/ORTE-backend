@@ -65,8 +65,7 @@ RSpec.describe Public::MapsController, type: :controller do
         layer = FactoryBot.create(:layer, :map_id => map.id, :published => true)
         place = FactoryBot.create(:place, :layer_id => layer.id, :published => true)
         get :show, params: {id: map.to_param, :format => 'json'}, session: valid_session
-        puts "response body:"
-        puts response.body
+        # puts response.body
         expect(response).to match_response_schema("map")
       end
 
