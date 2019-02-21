@@ -62,7 +62,7 @@ GEM
     bindex (0.5.0)
     brakeman (4.4.0)
     builder (3.2.3)
-    byebug (10.0.2)
+    byebug (11.0.0)
     cancancan (2.3.0)
     capistrano (3.11.0)
       airbrussh (>= 1.0.0)
@@ -133,7 +133,7 @@ GEM
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
     execjs (2.7.0)
-    factory_bot (5.0.0)
+    factory_bot (5.0.1)
       activesupport (>= 4.2.0)
     factory_bot_rails (5.0.1)
       factory_bot (~> 5.0.0)
@@ -450,3 +450,6 @@ DEPENDENCIES
   turbolinks
   uglifier
   web-console (>= 3.3.0)
+
+BUNDLED WITH
+   1.17.3
