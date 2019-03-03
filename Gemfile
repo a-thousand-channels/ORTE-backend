@@ -9,7 +9,8 @@ end
 
 gem 'rails', '~> 5.2.2'
 gem 'puma', '~> 3.7'
-gem 'sass-rails'
+# gem 'sass-rails'
+gem 'sassc-rails'
 gem 'uglifier'
 
 
