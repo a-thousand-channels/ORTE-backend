@@ -82,14 +82,14 @@ RSpec.describe IconsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          FactoryBot.attributes_for(:icon, :changed, :iconset_id => @iconset.id )
         }
 
         it "updates the requested icon" do
           icon = Icon.create! valid_attributes
           put :update, params: {id: icon.to_param, icon: new_attributes, :iconset_id => @iconset.id }, session: valid_session
           icon.reload
-          skip("Add assertions for updated state")
+          expect(icon.title).to eq('OtherTitle')
         end
 
         it "redirects to the iconset" do
