@@ -1,13 +1,4 @@
 # frozen_string_literal: true
-if !ENV["COVERAGE"]
-  require 'coveralls'
-  Coveralls.wear!
-else
-  # cli: try  COVERAGE=true rspec spec
-  require 'simplecov'
-  SimpleCov.start 'rails'
-  puts 'Collecting coverage data'
-end
 
 require 'capybara'
 require 'capybara/rspec'
