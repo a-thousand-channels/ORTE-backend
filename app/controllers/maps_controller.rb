@@ -25,7 +25,7 @@ class MapsController < ApplicationController
   # GET /maps/new
   def new
     @map = Map.new
-    @groups = Group.last
+    @groups = Group.by_user(current_user)
   end
 
   # GET /maps/1/edit

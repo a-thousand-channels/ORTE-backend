@@ -25,7 +25,13 @@ class Admin::UsersController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    if current_user.admin?
+      @groups = Group.all
+    else
+      @groups = Group.by_user(current_user)
+    end
+  end
 
   def index
     @admin_users = User.by_group(current_user).order(:email).page params[:page]
