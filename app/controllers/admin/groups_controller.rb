@@ -4,7 +4,11 @@ class Admin::GroupsController < ApplicationController
   before_action :set_admin_group, only: [:edit, :update, :destroy]
 
   def index
-    @admin_groups = Group.by_user(current_user)
+    if current_user.admin?
+      @admin_groups = Group.all
+    else
+      @admin_groups = Group.by_user(current_user)
+    end
   end
 
   def new
