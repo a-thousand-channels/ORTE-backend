@@ -19,9 +19,13 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 
 Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and Treffentotal (acceptance testing and first use case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from OTRTE backend via JSON)
 
-## Contributions
+## Feedback & Contributions
+
+Feedback, bug reports and code contributions are most welcome.
 
 Please file bugs to our Github Repository at https://github.com/ut/ORTE-backend
+
+For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 
 ## Licence
 
