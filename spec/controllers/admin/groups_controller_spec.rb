@@ -12,6 +12,59 @@ RSpec.describe Admin::GroupsController, type: :controller do
     end
   end
 
+
+  describe "functionalities with logged in user with role 'user'" do
+    before(:all) do
+      User.destroy_all
+      @group = FactoryBot.create(:group)
+      @user = FactoryBot.create(:user, :group_id => @group.id)
+    end
+
+    before(:each) do
+      sign_in(@user)
+    end
+
+    let(:group) {
+      @group
+    }
+    let(:valid_attributes) {
+      FactoryBot.build(:group).attributes
+    }
+    let(:invalid_attributes) {
+      FactoryBot.attributes_for(:group, :invalid)
+    }
+
+    let(:valid_session) { {} }
+
+    describe "GET #index" do
+      it "returns a success response" do
+        get :index, params: {}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+      it "returns a valid array" do
+        @admin_groups = FactoryBot.create_list(:group,3)
+        @admin_groups.push(@group)
+        puts @admin_groups.count
+        get :index, params: {}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    describe "GET #edit" do
+      it "returns a success response (if its the user's group" do
+        get :edit, params: {id: @group.to_param}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+      it "returns a error response (if its NOT the user's group" do
+        @group_not_related_to_user = FactoryBot.create(:group)
+        get :edit, params: {id: @group_not_related_to_user.to_param}, session: valid_session
+        expect(response).to have_http_status(302)
+        expect(flash[:notice]).to match 'You can\'t edit this group.'
+
+      end
+    end
+
+  end
   describe "functionalities with logged in user with role 'admin'" do
     before(:all) do
       User.destroy_all

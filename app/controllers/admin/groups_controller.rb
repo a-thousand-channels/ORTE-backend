@@ -9,6 +9,7 @@ class Admin::GroupsController < ApplicationController
     else
       @admin_groups = Group.by_user(current_user)
     end
+    puts "group size #{@admin_groups}"
   end
 
   def new
