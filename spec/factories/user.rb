@@ -15,7 +15,8 @@ FactoryBot.define do
   factory :admin_user, class: User do
     # TODO: cancancan
     email
-    password { 'password' }
+    password { 'password12345' }
+    password_confirmation { 'password12345' }
     group
     role { 'admin' }
   end

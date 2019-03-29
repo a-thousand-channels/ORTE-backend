@@ -7,7 +7,7 @@ class Admin::UsersController < ApplicationController
     @admin_user = User.new(admin_user_params)
 
     respond_to do |format|
-      if @admin_user.save
+      if @admin_user.save!
         format.html { redirect_to admin_users_url, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @admin_user }
       else
@@ -70,6 +70,6 @@ class Admin::UsersController < ApplicationController
     permitted_attributes = %i[email password group_id]
     permitted_attributes << :role if current_user.try(:admin?)
 
-    params.require(:admin_user).permit(*permitted_attributes)
-end
+    params.require(:admin_user).permit(permitted_attributes)
+  end
 end
