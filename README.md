@@ -7,7 +7,7 @@ Simple, straightforward backend for creating and managing places/POIs (or in ger
 
 Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
 
-This application is a its very beginning, work in progress. 
+This application is as its very beginning, work in progress. 
 
 ![preview](https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-backend-dev-002.jpg)
 
