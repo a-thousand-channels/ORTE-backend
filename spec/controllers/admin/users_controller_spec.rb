@@ -77,11 +77,9 @@ RSpec.describe Admin::UsersController, type: :controller do
       context 'with valid params' do
         it 'creates a new Admin::User', focus: true do
           puts "group #{@admin_group}"
-          v = FactoryBot.build(:admin_user, :group_id => @admin_group.id, :password => "1234567890").attributes
-          v = FactoryBot.attributes_for(:user)
-          puts v.inspect
+          user = FactoryBot.attributes_for(:user, :group_id => @admin_group.id)
           expect do
-            post :create, params: { admin_user: v }, session: valid_session
+            post :create, params: { admin_user: user }, session: valid_session
           end.to change(User, :count).by(1)
         end
 
