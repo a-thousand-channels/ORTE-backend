@@ -55,6 +55,11 @@ RSpec.describe PlacesController, type: :controller do
         get :edit, params: {id: place.to_param, layer_id: @layer.id, map_id: @map.id}, session: valid_session
         expect(response).to have_http_status(200)
       end
+      it "returns a success response (with new coords to reposition)" do
+        place = Place.create! valid_attributes
+        get :edit, params: {id: place.to_param, layer_id: @layer.id, map_id: @map.id, lat: 10, lng: 10}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
     end
 
     describe "POST #create" do
@@ -84,12 +89,23 @@ RSpec.describe PlacesController, type: :controller do
         let(:new_attributes) {
           FactoryBot.build(:place, :changed, :layer_id => @layer.id).attributes
         }
+        let(:new_attributes_with_published) {
+          FactoryBot.build(:place, :changed_and_published, :layer_id => @layer.id).attributes
+        }
 
         it "updates the requested place" do
           place = Place.create! valid_attributes
           put :update, params: {id: place.to_param, place: new_attributes, layer_id: @layer.id, map_id: @map.id}, session: valid_session
           place.reload
           expect(place.title).to eq('OtherTitle')
+        end
+
+        it "updates the requested place (with published 'on')" do
+          place = Place.create! valid_attributes
+          put :update, params: {id: place.to_param, place: new_attributes_with_published, layer_id: @layer.id, map_id: @map.id}, session: valid_session
+          place.reload
+          expect(place.title).to eq('OtherTitle')
+          expect(place.published).to eq(true)
         end
 
         it "redirects to the place" do
