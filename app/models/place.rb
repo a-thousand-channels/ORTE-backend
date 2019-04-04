@@ -5,6 +5,46 @@ class Place < ApplicationRecord
 
   scope :published, -> { where(published: true) }
 
+  attr_accessor :startdate_date
+  attr_accessor :startdate_time
+  attr_accessor :enddate_date
+  attr_accessor :enddate_time
+
+  before_create do
+    if startdate_time
+      self.startdate = "#{startdate_date} #{"T"} #{startdate_time}"
+    else
+      self.startdate = "#{startdate_date} #{"T"} 00:00"
+    end
+    if startdate_time
+      self.enddate = "#{enddate_date} #{"T"} #{startdate_time}"
+    else
+      self.enddate = "#{enddate_date} #{"T"} 00:00"
+    end
+  end
+
+
+  def startdate_date
+    if self.startdate
+      self.startdate.to_date
+    end
+  end
+  def startdate_time
+    if self.startdate
+      self.startdate.to_time
+    end
+  end
+  def enddate_date
+    if self.enddate
+      self.enddate.to_date
+    end
+  end
+  def enddate_time
+    if self.enddate
+      self.enddate.to_date
+    end
+  end
+
   def date
     ApplicationController.helpers.smart_date_display(self.startdate,self.enddate)
   end
