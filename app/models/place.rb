@@ -10,16 +10,16 @@ class Place < ApplicationRecord
   attr_accessor :enddate_date
   attr_accessor :enddate_time
 
-  before_create do
+  before_save do
     if startdate_time
       self.startdate = "#{startdate_date} #{"T"} #{startdate_time}"
     else
-      self.startdate = "#{startdate_date} #{"T"} 00:00"
+      self.startdate = "#{startdate_date} #{"T"} 00:00:00"
     end
-    if startdate_time
-      self.enddate = "#{enddate_date} #{"T"} #{startdate_time}"
+    if enddate_time
+      self.enddate = "#{enddate_date} #{"T"} #{enddate_time}"
     else
-      self.enddate = "#{enddate_date} #{"T"} 00:00"
+      self.enddate = "#{enddate_date} #{"T"} 00:00:00"
     end
   end
 
