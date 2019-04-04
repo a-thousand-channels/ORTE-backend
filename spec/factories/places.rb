@@ -21,5 +21,9 @@ FactoryBot.define do
     trait :changed do
       title { "OtherTitle" }
     end
+    trait :changed_and_published do
+      title { "OtherTitle" }
+      published { true }
+    end
   end
 end
