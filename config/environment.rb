@@ -11,12 +11,14 @@ ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
 
       enable_starttls_auto: true,
-      address: "domain.org",
+      address: "sslout.de",
       port: '465',
       ssl: true,
-      domain: "domain.org",
+      domain: "3plusx.de",
       authentication: :login,
-      user_name: "sender@domain.org",
-      password: "abcdefgh"
-
+      user_name: "pm@3plusx.de",
+      password: "Test4o"
 }
+
+
+
