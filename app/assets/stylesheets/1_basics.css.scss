@@ -51,7 +51,7 @@ a.button {
 select {
   margin: 0;
   -moz-appearance: none;
-  -webkit-appearance: none  ;
+  -webkit-appearance: none;
 }
 /* -------------------- */
 .top-bar, .top-bar ul {
@@ -93,7 +93,23 @@ div.input-group {
       padding: 0.4em 1em 0 1em;
   }
 }
+input[type="time"] {
+    width: 88px;
+}
+input[type="date"] {
+    width: 137px;
+}
+
 .form-actions {
   margin-top: 25px;
+}
+
+p.hint {
+  font-size: 0.8em;
+  color: grey;
+  margin-top: -15px;
+}
+p#remap {
+  margin-right: 30px;
 }
 /* -------------------- */

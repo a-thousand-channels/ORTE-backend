@@ -5,10 +5,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  def bomb
-    raise 'BOOOOMBA - raised on purpose!'
-  end
-
   def report_csp
     # do nothing right now...
   end

@@ -73,13 +73,16 @@ class PlacesController < ApplicationController
     # quirks, because foundation switch generats 'on'/'off' values,
     # rails expect true/false
     # TODO: render this at generating the form
-    if params[:place][:published] == 'on'
+    puts params[:place][:published]
+    if params[:place][:published] == 'on' || params[:place][:published] == 'true'
       params[:place][:published] = true
     else
       params[:place][:published] = false
     end
+    params[:place][:published]
     respond_to do |format|
       if @place.update(place_params)
+        @place.update({"published"=>params[:place][:published]})
         format.html { redirect_to map_layer_url(@map.id,@place.layer.id), notice: 'Place was successfully updated.' }
         format.json { render :show, status: :ok, location: @place }
       else
@@ -109,6 +112,6 @@ class PlacesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def place_params
-      params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :enddate, :lat, :lon, :location, :address, :zip, :city, :country, :published, :imagelink, :layer_id)
+      params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :imagelink, :layer_id)
     end
 end

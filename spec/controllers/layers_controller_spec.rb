@@ -84,14 +84,14 @@ RSpec.describe LayersController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          FactoryBot.build(:layer, :changed, :map_id => @map.id).attributes
         }
 
         it "updates the requested layer" do
           layer = Layer.create! valid_attributes
           put :update, params: {map_id: @map.id, id: layer.to_param, layer: new_attributes}, session: valid_session
           layer.reload
-          skip("Add assertions for updated state")
+          expect(layer.title).to eq('OtherTitle')
         end
 
         it "redirects to the layer" do

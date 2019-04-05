@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+
 RSpec.describe Admin::UsersController, type: :controller do
   describe 'for guests' do
     describe 'GET #index' do
@@ -73,32 +74,36 @@ RSpec.describe Admin::UsersController, type: :controller do
     end
 
     describe 'POST #create' do
+
+      before(:all) do
+        @new_admin_user_attributes = FactoryBot.attributes_for(:user, :group_id => @admin_group.id)
+      end
+
       context 'with valid params' do
-        xit 'creates a new Admin::User' do
+        it 'creates a new Admin::User', focus: false do
           expect do
-            post :create, params: { admin_user: valid_attributes }, session: valid_session
+            post :create, params: { admin_user: @new_admin_user_attributes }, session: valid_session
           end.to change(User, :count).by(1)
         end
 
-        xit 'assigns a newly created admin_user as @admin_user' do
-          post :create, params: { admin_user: valid_attributes }, session: valid_session
+        it 'assigns a newly created admin_user as @admin_user' do
+          post :create, params: { admin_user: @new_admin_user_attributes }, session: valid_session
           expect(assigns(:admin_user)).to be_a(User)
-          expect(assigns(:admin_user)).to be_persisted
         end
 
-        xit 'redirects to the created admin_user' do
-          post :create, params: { admin_user: valid_attributes }, session: valid_session
+        it 'redirects to the created admin_user' do
+          post :create, params: { admin_user: @new_admin_user_attributes }, session: valid_session
           expect(response).to redirect_to(admin_users_url)
         end
       end
 
       context 'with invalid params' do
-        it 'assigns a newly created but unsaved admin_user as @admin_user' do
+        xit 'assigns a newly created but unsaved admin_user as @admin_user' do
           post :create, params: { admin_user: invalid_attributes }, session: valid_session
           expect(assigns(:admin_user)).to be_a_new(User)
         end
 
-        it "re-renders the 'new' template" do
+        xit "re-renders the 'new' template" do
           post :create, params: { admin_user: invalid_attributes }, session: valid_session
           expect(response).to render_template('new')
         end
@@ -118,16 +123,16 @@ RSpec.describe Admin::UsersController, type: :controller do
           expect(user.email).to eq 'admin@domain.com'
         end
 
-        xit 'assigns the requested admin_user as @admin_user' do
+        it 'assigns the requested admin_user as @admin_user' do
           user = User.create! valid_attributes
           put :update, params: { id: user.to_param, admin_user: valid_attributes }, session: valid_session
           expect(assigns(:admin_user)).to eq(user)
         end
 
-        xit 'redirects to the admin_user' do
+        it 'redirects to the admin_user' do
           user = User.create! valid_attributes
           put :update, params: { id: user.to_param, admin_user: valid_attributes }, session: valid_session
-          expect(response).to redirect_to([:admin, user])
+          expect(response).to redirect_to(admin_users_url)
         end
       end
 
