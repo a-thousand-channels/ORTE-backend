@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/ut/ORTE-backend.svg?branch=master)](https://travis-ci.org/ut/ORTE-backend) [![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=master)](https://coveralls.io/github/ut/ORTE-backend?branch=master)
+[![Build Status](https://travis-ci.org/ut/ORTE-backend.svg?branch=master)](https://travis-ci.org/ut/ORTE-backend) ![Release](https://img.shields.io/badge/tag-v0.22-blue.svg) [![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=master)](https://coveralls.io/github/ut/ORTE-backend?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
+
 
 # ORTE-backend
 
@@ -6,7 +7,7 @@ Simple, straightforward backend for creating and managing places/POIs (or in ger
 
 Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
 
-This application is a its very beginning, work in progress. 
+This application is as its very beginning, work in progress. 
 
 ![preview](https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-backend-dev-002.jpg)
 
@@ -18,9 +19,13 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 
 Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and Treffentotal (acceptance testing and first use case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from OTRTE backend via JSON)
 
-## Contributions
+## Feedback & Contributions
+
+Feedback, bug reports and code contributions are most welcome.
 
 Please file bugs to our Github Repository at https://github.com/ut/ORTE-backend
+
+For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 
 ## Licence
 

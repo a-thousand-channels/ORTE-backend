@@ -7,11 +7,12 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 5.2.3'
 gem 'puma', '~> 3.7'
-gem 'sass-rails'
+# gem 'sass-rails'
+gem 'sassc-rails'
 gem 'uglifier'
-# gem 'mini_racer', platforms: :ruby
+
 
 gem 'coffee-rails'
 gem 'turbolinks'
@@ -27,6 +28,7 @@ gem 'devise'
 gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
 gem 'foundation-rails', '~> 6'
+gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 gem 'haml-rails', '~> 1.0'
 gem 'jquery-rails'
@@ -36,7 +38,7 @@ gem 'rack-attack'
 gem 'secure_headers'
 gem 'settingslogic'
 gem 'simple_form'
-
+gem 'mini_racer', platforms: :ruby
 gem 'redis'
 
 group :staging, :production do
@@ -52,15 +54,16 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3'
-  gem 'capybara-webkit'
+  gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'capybara-chromedriver-logger'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
-  gem 'selenium-webdriver'
   gem 'simplecov'
   gem 'sqlite3'
+  gem 'json-schema'
 end
 
 
@@ -81,5 +84,5 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   gem 'brakeman', require: false
-  gem 'rubycritic', require: false
+  # gem 'rubycritic', require: false
 end

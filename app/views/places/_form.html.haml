@@ -26,6 +26,12 @@
       - else
         = f.association :layer, include_blank: false
       %p
+        %span.name Address:
+        - if @old_place
+          = @old_place.full_address
+          \-->
+        = @place.full_address
+        %br
         %span.name Coordinates (Lat/Lon):
         - if @old_place
           #{@old_place.lat[0..4]}/#{@old_place.lon[0..4]}
@@ -33,15 +39,9 @@
         #{@place.lat[0..4]}/#{@place.lon[0..4]}
         = f.input :lat, as: :hidden
         = f.input :lon, as: :hidden
-      %p
-        %span.name Address:
-        - if @old_place
-          = @old_place.full_address
-          \-->
-        = @place.full_address
     .large-2.medium-2.cell
       - if params[:action] == 'edit'
-        %p
+        %p#remap
           = link_to map_layer_path(@place.layer.map,@place.layer,remap: true, place_id: @place.id), :class =>"button secondary small" do
             Re-Map
 
@@ -53,22 +53,33 @@
   .grid-x.grid-padding-x
     .large-6.medium-6.cell
       .form-inputs
-        = f.input :startdate
-        = f.input :enddate
+        .grid-x
+          .large-6.medium-6.cell
+            = f.input :startdate, as: :hidden
+            = f.input :startdate_date, as: :date, html5: true, :label => 'Start date'
+          .large-6.medium-6.cell
+            = f.input :startdate_time, as: :time, html5: true, :label => 'Start time', :input_html => {:size => 5, class: 'input-time'}
+        .grid-x
+          .large-6.medium-6.cell
+            = f.input :enddate, as: :hidden
+            = f.input :enddate_date, as: :date, html5: true, :label => 'End date'
+          .large-6.medium-6.cell
+            = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 9, class: 'large-text'}
 
 
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
+        %p.hint (Only if different to the title)
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
             = f.input :zip
           .small-8.cell
             = f.input :city
-        = f.input :link, :label => 'Weblink', :placeholder => 'http://'
-        = f.input :imagelink, :input_html => {:placeholder => 'http://' }
+        = f.input :link, :label => 'Weblink', :placeholder => 'https://'
+        = f.input :imagelink, :input_html => {:placeholder => 'https://' }
   .grid-x.grid-padding-x
     .large-12.cell
       .form-actions

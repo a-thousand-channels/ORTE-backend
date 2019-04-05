@@ -10,9 +10,7 @@ RSpec.describe Ability, type: :model do
       let(:user) { nil }
 
       context '... when guest' do
-        # TODO: definie abilities for guests
-        # it{ should be_able_to(:read, User.new) }
-        # it{ should_not be_able_to(:create, Post.new) }
+        it { is_expected.not_to be_able_to(:manage, User.new) }
       end
 
       context '... when normal user' do
@@ -20,14 +18,13 @@ RSpec.describe Ability, type: :model do
         let(:user) { FactoryBot.create(:user) }
 
         it { is_expected.not_to be_able_to(:manage, User.new) }
-        # it{ should be_able_to(:manage, Post.new) }
       end
 
       context '... when admin' do
         User.destroy_all
         let(:user) { FactoryBot.create(:admin_user) }
-        xit { is_expected.not_to be_able_to(:manage, User.new) }
-        # it{ should be_able_to(:manage, Post.new) }
+        it { should be_able_to(:manage, User.new) }
+
       end
     end
   end

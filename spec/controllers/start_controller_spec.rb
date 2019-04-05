@@ -25,7 +25,7 @@ RSpec.describe StartController, type: :controller do
 
     it 'edit response should be success' do
       get :edit_profile, params: { id: User.first.id }
-      response.should be_success
+      expect(response).to have_http_status(200)
     end
 
     xit 'update response should be success' do

@@ -10,7 +10,7 @@ json.map do
       json.places do
         json.array! layer.places.published do |place|
           next unless place.published
-          json.(place, :id, :title, :teaser, :link, :imagelink, :published, :startdate, :enddate, :date, :lat, :lon, :location, :address, :zip, :city, :full_address, :full_address_with_city, :country, :layer_id)
+          json.(place, :id, :title, :teaser, :link, :imagelink, :published, :startdate, :enddate, :lat, :lon, :location, :address, :zip, :city, :text, :country, :layer_id)
         end
       end
     end

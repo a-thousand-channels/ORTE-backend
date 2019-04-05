@@ -12,6 +12,59 @@ RSpec.describe Admin::GroupsController, type: :controller do
     end
   end
 
+
+  describe "functionalities with logged in user with role 'user'" do
+    before(:all) do
+      User.destroy_all
+      @group = FactoryBot.create(:group)
+      @user = FactoryBot.create(:user, :group_id => @group.id)
+    end
+
+    before(:each) do
+      sign_in(@user)
+    end
+
+    let(:group) {
+      @group
+    }
+    let(:valid_attributes) {
+      FactoryBot.build(:group).attributes
+    }
+    let(:invalid_attributes) {
+      FactoryBot.attributes_for(:group, :invalid)
+    }
+
+    let(:valid_session) { {} }
+
+    describe "GET #index" do
+      it "returns a success response" do
+        get :index, params: {}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+      it "returns a valid array" do
+        @admin_groups = FactoryBot.create_list(:group,3)
+        @admin_groups.push(@group)
+        puts @admin_groups.count
+        get :index, params: {}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    describe "GET #edit" do
+      it "returns a success response (if its the user's group" do
+        get :edit, params: {id: @group.to_param}, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+      it "returns a error response (if its NOT the user's group" do
+        @group_not_related_to_user = FactoryBot.create(:group)
+        get :edit, params: {id: @group_not_related_to_user.to_param}, session: valid_session
+        expect(response).to have_http_status(302)
+        expect(flash[:notice]).to match 'You can\'t edit this group.'
+
+      end
+    end
+
+  end
   describe "functionalities with logged in user with role 'admin'" do
     before(:all) do
       User.destroy_all
@@ -52,9 +105,8 @@ RSpec.describe Admin::GroupsController, type: :controller do
 
     describe "GET #edit" do
       it "returns a success response" do
-        admin_group = Group.create! valid_attributes
         get :edit, params: {id: admin_group.to_param}, session: valid_session
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(200)
       end
     end
 
@@ -73,7 +125,7 @@ RSpec.describe Admin::GroupsController, type: :controller do
       end
 
       context "with invalid params" do
-        xit "returns a success response (i.e. to display the 'new' template)" do
+        it "returns a success response (i.e. to display the 'new' template)" do
           post :create, params: {admin_group: invalid_attributes}, session: valid_session
           expect(response).to have_http_status(302)
         end
@@ -83,43 +135,38 @@ RSpec.describe Admin::GroupsController, type: :controller do
     describe "PUT #update" do
       context "with valid params" do
         let(:new_attributes) {
-          skip("Add a hash of attributes valid for your model")
+          FactoryBot.attributes_for(:group, :update)
         }
 
         it "updates the requested group" do
-          admin_group = Group.create! valid_attributes
-          put :update, params: {id: admin_group.to_param, admin_group: new_attributes}, session: valid_session
-          admin_group.reload
-          skip("Add assertions for updated state")
+          put :update, params: {id: @admin_group.to_param, admin_group: new_attributes}, session: valid_session
+          @admin_group.reload
+          expect(@admin_group.title).to eq "MyNewString"
         end
 
-        xit "redirects to the group" do
-          admin_group = Group.create! valid_attributes
-          put :update, params: {id: admin_group.to_param, admin_group: valid_attributes}, session: valid_session
-          expect(response).to redirect_to([:admin, admin_group])
+        it "redirects to the group" do
+          put :update, params: {id: @admin_group.to_param, admin_group: valid_attributes}, session: valid_session
+          expect(response).to redirect_to(admin_groups_url)
         end
       end
 
       context "with invalid params" do
-        xit "returns a success response (i.e. to display the 'edit' template)" do
-          admin_group = Group.create! valid_attributes
-          put :update, params: {id: admin_group.to_param, admin_group: invalid_attributes}, session: valid_session
-          expect(response).to have_http_status(200)
+        it "returns a success response (i.e. to display the 'edit' template)" do
+          put :update, params: {id: @admin_group.to_param, admin_group: invalid_attributes}, session: valid_session
+          expect(response).to have_http_status(302)
         end
       end
     end
 
     describe "DELETE #destroy" do
-      xit "destroys the requested group" do
-        admin_group = Group.create! valid_attributes
+      it "destroys the requested group" do
         expect {
-          delete :destroy, params: {id: admin_group.to_param}, session: valid_session
+          delete :destroy, params: {id: @admin_group.to_param}, session: valid_session
         }.to change(Group, :count).by(-1)
       end
 
-      xit "redirects to the groups list" do
-        admin_group = Group.create! valid_attributes
-        delete :destroy, params: {id: admin_group.to_param}, session: valid_session
+      it "redirects to the groups list" do
+        delete :destroy, params: {id: @admin_group.to_param}, session: valid_session
         expect(response).to redirect_to(admin_groups_url)
       end
     end
