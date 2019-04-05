@@ -20,20 +20,12 @@ test:
   <<: *default
   database: db/test.sqlite3
 
-
-psql: &psql
-  adapter: postgresql
-  host: localhost
-  encoding: utf8
-  username: ea
-  password: ea00
-  pool:  30
-  min_messages: WARNING
-
 staging:
-  <<: *psql
-  database: orte_staging
+  adapter: mysql2
+  database: orte
+  host: localhost
+  username: orte
+  password: nozim7abie5ZoQuA
+  encoding: utf8
 
-production:
-  <<: *psql
-  database: orte_production
+
