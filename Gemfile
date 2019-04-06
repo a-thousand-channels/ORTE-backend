@@ -38,8 +38,9 @@ gem 'rack-attack'
 gem 'secure_headers'
 gem 'settingslogic'
 gem 'simple_form'
+gem 'libv8', '6.3.292.48.1'
+# gem 'redis'
 gem 'mini_racer', platforms: :ruby
-gem 'redis'
 
 group :staging, :production do
   # gem 'pg'
