@@ -74,6 +74,24 @@ RSpec.describe PlacesController, type: :controller do
           post :create, params: {place: valid_attributes, layer_id: @layer.id, map_id: @map.id}, session: valid_session
           expect(response).to redirect_to(map_layer_url(@map,@layer))
         end
+
+        it "saves date and time (as one string) correctly" do
+          startdate = '2018-04-29 20:15:11'
+          attributes = FactoryBot.build(:place, :layer_id => @layer.id, :startdate => startdate).attributes
+          post :create, params: {place: attributes, layer_id: @layer.id, map_id: @map.id}, session: valid_session
+          expect(Place.last.startdate).to eq(startdate)
+        end
+
+        xit "saves date and time (as seperate date and time strings) correctly" do
+          # TODO: fixme: saving date and time put together doest not work
+          startdate = '2018-04-29 20:30:00'
+          startdate_date = '2010-04-29'
+          startdate_time = '20:30:00'
+          attributes = FactoryBot.build(:place, :layer_id => @layer.id, :startdate_date => startdate_date, :startdate_time => startdate_time).attributes
+          puts attributes.inspect
+          post :create, params: {place: attributes, layer_id: @layer.id, map_id: @map.id}, session: valid_session
+          expect(Place.last.startdate).to eq(startdate)
+        end
       end
 
       context "with invalid params" do
