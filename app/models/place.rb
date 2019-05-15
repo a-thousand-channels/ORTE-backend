@@ -1,4 +1,7 @@
 class Place < ApplicationRecord
+
+  self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
+
   belongs_to :layer
 
   validates :title,  presence: true
@@ -11,10 +14,12 @@ class Place < ApplicationRecord
   attr_accessor :enddate_time
 
   before_save do
-    if startdate_time
+    if startdate_time.present?
       self.startdate = "#{startdate_date} #{"T"} #{startdate_time}"
-    else
+      puts "w/time #{self.startdate} -- #{startdate_date} #{startdate_time}"
+    elsif startdate_date
       self.startdate = "#{startdate_date} #{"T"} 00:00:00"
+      puts "w/date #{self.startdate}"
     end
     if enddate_time
       self.enddate = "#{enddate_date} #{"T"} #{enddate_time}"
