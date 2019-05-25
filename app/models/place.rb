@@ -1,6 +1,6 @@
 class Place < ApplicationRecord
 
-  self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
+  # self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
 
   belongs_to :layer
 
@@ -14,41 +14,19 @@ class Place < ApplicationRecord
   attr_accessor :enddate_time
 
   before_save do
-    if startdate_time.present?
+    if startdate_time
       self.startdate = "#{startdate_date} #{"T"} #{startdate_time}"
-      puts "w/time #{self.startdate} -- #{startdate_date} #{startdate_time}"
     elsif startdate_date
       self.startdate = "#{startdate_date} #{"T"} 00:00:00"
-      puts "w/date #{self.startdate}"
     end
     if enddate_time
       self.enddate = "#{enddate_date} #{"T"} #{enddate_time}"
-    else
+    elsif enddate_date
       self.enddate = "#{enddate_date} #{"T"} 00:00:00"
     end
   end
 
 
-  def startdate_date
-    if self.startdate
-      self.startdate.to_date
-    end
-  end
-  def startdate_time
-    if self.startdate
-      self.startdate.to_time
-    end
-  end
-  def enddate_date
-    if self.enddate
-      self.enddate.to_date
-    end
-  end
-  def enddate_time
-    if self.enddate
-      self.enddate.to_date
-    end
-  end
 
   def date
     ApplicationController.helpers.smart_date_display(self.startdate,self.enddate)
