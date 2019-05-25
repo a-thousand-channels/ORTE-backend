@@ -7,7 +7,27 @@ RSpec.describe Place, type: :model do
 
   it 'returns date' do
     p = FactoryBot.create(:place, startdate: '2018-01-01', enddate: '2018-01-02')
-    expect(p.date).to eq('01.01.18, 00:00 ‒ 02.01.18, 00:00')
+    expect(p.date).to eq('01.01.18 ‒ 02.01.18')
+  end
+
+  it 'returns full startdate' do
+    p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '20:30', enddate: '')
+    expect(p.date).to eq('01.01.18, 20:30')
+  end
+
+  it 'returns full startdate without time' do
+    p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '', enddate: '')
+    expect(p.date).to eq('01.01.18')
+  end
+
+  it 'returns full date range with time' do
+    p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '12:00', enddate_date: '2018-01-01', enddate_time: '18:00')
+    expect(p.date).to eq('01.01.18, 12:00 ‒ 18:00')
+  end
+
+  it 'returns full date range without time' do
+    p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '', enddate_date: '2018-10-15')
+    expect(p.date).to eq('01.01.18 ‒ 15.10.18')
   end
 
   it 'edit_link' do

@@ -12,11 +12,14 @@ module ApplicationHelper
 
   def smart_date_display(startdate,enddate)
     if !startdate
-      '?'
       return
     end
     if !enddate
-      "#{startdate.strftime("%d.%m.%y, %H:%M")}"
+      if startdate.strftime("%H:%M") == '00:00'
+        "#{startdate.strftime("%d.%m.%y")}"
+      else
+        "#{startdate.strftime("%d.%m.%y, %H:%M")}"
+      end
     elsif startdate > enddate
       "#{startdate.strftime("%d.%m.%y, %H:%M")}"
     elsif  startdate == enddate
@@ -24,7 +27,11 @@ module ApplicationHelper
     elsif startdate.to_date == enddate.to_date
       "#{startdate.strftime("%d.%m.%y, %H:%M")} ‒ #{enddate.strftime("%H:%M")}"
     else
-      "#{startdate.strftime("%d.%m.%y, %H:%M")} ‒ #{enddate.strftime("%d.%m.%y, %H:%M")}"
+      if startdate.strftime("%H:%M") == '00:00'
+        "#{startdate.strftime("%d.%m.%y")} ‒ #{enddate.strftime("%d.%m.%y")}"
+      else
+        "#{startdate.strftime("%d.%m.%y, %H:%M")} ‒ #{enddate.strftime("%d.%m.%y, %H:%M")}"
+      end
     end
   end
 end
