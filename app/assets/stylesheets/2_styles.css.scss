@@ -42,6 +42,10 @@ form#addresslookup {
     margin: 0;
   }
 }
+input#addresslookup_address {
+    margin: 0;
+    padding: 0.5rem;
+}
 /* -------------------- */
 #map .leaflet-popup-content-wrapper, #map  .leaflet-popup-tip {
     background: rgba(255,255,255,0.7);
