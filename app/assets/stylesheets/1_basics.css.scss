@@ -93,6 +93,10 @@ div.input-group {
       padding: 0.4em 1em 0 1em;
   }
 }
+[type="text"], [type="password"], [type="date"], [type="datetime"], [type="datetime-local"], [type="month"], [type="week"], [type="email"], [type="number"], [type="search"], [type="tel"], [type="time"], [type="url"], [type="color"], textarea {
+    margin: 0 0 0.3rem;
+    padding: 0.2rem;
+}
 input[type="time"] {
     width: 88px;
 }
@@ -107,7 +111,8 @@ input[type="date"] {
 p.hint {
   font-size: 0.8em;
   color: grey;
-  margin-top: -15px;
+  margin-bottom: 0;
+  text-align: right;
 }
 p#remap {
   margin-right: 30px;

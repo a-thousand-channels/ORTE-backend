@@ -2,19 +2,6 @@
   .grid-x.grid-padding-x
     .large-3.medium-3.cell
       %h1 Place
-      .grid-x
-        .small-5.cell
-          %p{:title=>"This settings publishes this place on the map!"}
-            Publish?
-        .small-7.cell
-          .switch
-            %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
-            %label.switch-paddle{:for=>"place_published"}
-              %span.show-for-sr
-                Publish
-              %span.switch-active{:aria-hidden=>"true"} Yes
-              %span.switch-inactive{:aria-hidden=>"true"} No
-
     .large-7.medium-7.cell
 
       - if @place.layer.title && params[:action] == 'new'
@@ -25,8 +12,18 @@
           = f.association :layer, as: :hidden
       - else
         = f.association :layer, include_blank: false
+      %p{:title=>"This settings publishes this place on the map!"}
+        .switch
+          %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
+          %label.switch-paddle{:for=>"place_published"}
+            %span.show-for-sr
+              Publish
+            %span.switch-active{:aria-hidden=>"true"} Publish
+            %span.switch-inactive{:aria-hidden=>"true"} Publish?
+
+
       %p
-        %span.name Address:
+        %span.name Address (Street + Number)
         - if @old_place
           = @old_place.full_address
           \-->
