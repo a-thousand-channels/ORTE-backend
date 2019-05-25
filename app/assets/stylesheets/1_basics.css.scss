@@ -9,18 +9,27 @@ a.disabled {
 div.small {
     font-size: 0.8rem;
 }
-.hide {display: none;}
+.hide, .hidden {display: none;}
 .shy {
 
     color: #888;
     font-size: 90%;
 
 }
+.clear { clear: both; }
+p.inline, div.inline {
+  float: left; margin: 0;
+}
 span.name, label {
     color: #888;
     font-size: 90%;
     text-transform: uppercase;
     font-weight: bold;
+    padding-right: 10px;
+}
+span.name.middle {
+  padding-top: 7px;
+  display: inline-block;
 }
 /* -------------------- */
 /* foundation adapations */
@@ -76,6 +85,8 @@ select {
 
 
 /* -------------------- */
+
+/* -------------------- */
 footer {
   background-color: #333;
   z-index: 15;
@@ -114,7 +125,13 @@ p.hint {
   margin-bottom: 0;
   text-align: right;
 }
+
+div#switch {
+    height: initial;
+    position: static;
+    margin-bottom: 0;
+}
 p#remap {
-  margin-right: 30px;
+  margin: 10px 0 0 0;
 }
 /* -------------------- */

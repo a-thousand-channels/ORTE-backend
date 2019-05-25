@@ -2,45 +2,56 @@
   .grid-x.grid-padding-x
     .large-3.medium-3.cell
       %h1 Place
-    .large-7.medium-7.cell
-
-      - if @place.layer.title && params[:action] == 'new'
-        %p
-          %span.name Layer:
-          = link_to map_layer_url(@place.layer.map,@place.layer) do
+    .large-4.medium-4.cell
+      %div
+        - if @place.layer.title && params[:action] == 'new'
+          %p.inline
+            %span.name Layer
+            = link_to map_layer_url(@place.layer.map,@place.layer) do
+              = @place.layer.title
+            = f.association :layer, as: :hidden
+        - else
+          %p.inline= f.label :layer
+          %div.inline#layer_selector.hide
+            = f.association :layer, label: false, include_blank: false
+          %div.inline#layer_display
             = @place.layer.title
-          = f.association :layer, as: :hidden
-      - else
-        = f.association :layer, include_blank: false
-      %p{:title=>"This settings publishes this place on the map!"}
-        .switch
-          %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
-          %label.switch-paddle{:for=>"place_published"}
-            %span.show-for-sr
-              Publish
-            %span.switch-active{:aria-hidden=>"true"} Publish
-            %span.switch-inactive{:aria-hidden=>"true"} Publish?
-
-
-      %p
-        %span.name Address (Street + Number)
+      %p.clear
+        %span.name Address
         - if @old_place
           = @old_place.full_address
-          \-->
+          \->
         = @place.full_address
         %br
-        %span.name Coordinates (Lat/Lon):
+        %span.name Coordinates:
         - if @old_place
           #{@old_place.lat[0..4]}/#{@old_place.lon[0..4]}
           \-->
         #{@place.lat[0..4]}/#{@place.lon[0..4]}
         = f.input :lat, as: :hidden
         = f.input :lon, as: :hidden
-    .large-2.medium-2.cell
-      - if params[:action] == 'edit'
-        %p#remap
-          = link_to map_layer_path(@place.layer.map,@place.layer,remap: true, place_id: @place.id), :class =>"button secondary small" do
-            Re-Map
+
+    .large-5.medium-5.cell
+      .grid-x
+        .large-6.medium-6.small-6.cell
+          %p.text-right{:title=>"This settings publishes this place on the map!"}
+            %span.name.middle Publish?
+          - if params[:action] == 'edit'
+            %p.text-right
+              %span.name.middle New position?
+        .large-6.medium-6.small-6.cell
+          #switch.switch.inline
+            %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
+            %label.switch-paddle{:for=>"place_published"}
+              %span.show-for-sr
+                Publish
+              %span.switch-active{:aria-hidden=>"true"} Yes
+              %span.switch-inactive{:aria-hidden=>"true"} No
+
+          - if params[:action] == 'edit'
+            %p#remap.clear
+              = link_to map_layer_path(@place.layer.map,@place.layer,remap: true, place_id: @place.id), :class =>"button small" do
+                %strong RE-MAP
 
   .grid-x.grid-padding-x
     .large-12.cell
@@ -62,13 +73,13 @@
             = f.input :enddate_date, as: :date, html5: true, :label => 'End date'
           .large-6.medium-6.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
-        = f.input :teaser, :label => 'Text', :input_html => {:rows => 9, class: 'large-text'}
+        = f.input :teaser, :label => 'Text', :input_html => {:rows => 6, class: 'large-text'}
 
 
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
-        %p.hint (Only if different to the title)
+        %p.hint Only if different to the title
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
