@@ -75,23 +75,40 @@ RSpec.describe PlacesController, type: :controller do
           expect(response).to redirect_to(map_layer_url(@map,@layer))
         end
 
-        it "saves date and time (as one string) correctly" do
-          startdate = '2018-04-29 20:15:11'
-          attributes = FactoryBot.build(:place, :layer_id => @layer.id, :startdate => startdate).attributes
+
+        it "saves startdate date without time (as seperate date and time strings) correctly" do
+          startdate = '2010-04-29 00:00:00.000000000 +0000'
+          startdate_date = '2010-04-29'
+          startdate_time = ''
+          attributes = FactoryBot.attributes_for(:place, :date_and_time, :layer_id => @layer.id, :startdate_date => startdate_date, :startdate_time => startdate_time)
           post :create, params: {place: attributes, layer_id: @layer.id, map_id: @map.id}, session: valid_session
           expect(Place.last.startdate).to eq(startdate)
         end
 
-        xit "saves date and time (as seperate date and time strings) correctly" do
-          # TODO: fixme: saving date and time put together doest not work
-          startdate = '2018-04-29 20:30:00'
+        it "saves startdate date and time (as seperate date and time strings) correctly" do
+          startdate = '2010-04-29 20:30:00.000000000 +0000'
           startdate_date = '2010-04-29'
-          startdate_time = '20:30:00'
-          attributes = FactoryBot.build(:place, :layer_id => @layer.id, :startdate_date => startdate_date, :startdate_time => startdate_time).attributes
-          puts attributes.inspect
+          startdate_time = '20:30'
+          # ups, FactoryBot.build did not handel the attr_accessor values startdate_date...
+          attributes = FactoryBot.attributes_for(:place, :date_and_time, :layer_id => @layer.id, :startdate_date => startdate_date, :startdate_time => startdate_time)
           post :create, params: {place: attributes, layer_id: @layer.id, map_id: @map.id}, session: valid_session
           expect(Place.last.startdate).to eq(startdate)
         end
+
+        it "saves startdate and enddate date and time (as seperate date and time strings) correctly" do
+          startdate = '2010-04-29 18:30:00.000000000 +0000'
+          enddate = '2010-04-29 20:30:00.000000000 +0000'
+          startdate_date = '2010-04-29'
+          enddate_date = '2010-04-29'
+          startdate_time = '18:30'
+          enddate_time = '20:30'
+          attributes = FactoryBot.attributes_for(:place, :date_and_time, :layer_id => @layer.id, :startdate_date => startdate_date, :startdate_time => startdate_time, :enddate_date => enddate_date, :enddate_time => enddate_time )
+          post :create, params: {place: attributes, layer_id: @layer.id, map_id: @map.id}, session: valid_session
+          expect(Place.last.startdate).to eq(startdate)
+          expect(Place.last.enddate).to eq(enddate)
+        end
+
+
       end
 
       context "with invalid params" do

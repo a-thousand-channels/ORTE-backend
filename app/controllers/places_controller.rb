@@ -31,6 +31,16 @@ class PlacesController < ApplicationController
   # GET /places/1/edit
   def edit
 
+    if @place.startdate
+      @place.startdate_date = @place.startdate.to_date
+      @place.startdate_time = @place.startdate.to_time
+    end
+
+    if @place.enddate
+      @place.enddate_date = @place.enddate.to_date
+      @place.enddate_time = @place.enddate.to_time
+    end
+
     if params[:lat].present?
       flash[:notice] = "Re-Map: Got new coordinates and address data. Please check all fields and click 'Update place'"
       @old_place = @place.dup

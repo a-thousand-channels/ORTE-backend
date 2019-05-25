@@ -15,6 +15,10 @@ FactoryBot.define do
     country { "MyString" }
     published { false }
     layer
+    trait :date_and_time do
+      startdate_date { '2018-04-30'}
+      startdate_time { '11:45'}
+    end
     trait :invalid do
       title { nil }
     end
