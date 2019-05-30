@@ -40,6 +40,7 @@ gem 'settingslogic'
 gem 'simple_form'
 # gem 'libv8', '6.3.292.48.1'
 gem 'mini_racer', platforms: :ruby
+gem 'image_processing', '~> 1.2'
 
 group :staging, :production do
   # gem 'pg'
