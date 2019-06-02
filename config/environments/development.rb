@@ -26,6 +26,10 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  # active storage
+  config.active_storage.service = :local
+  config.active_storage.variant_processor = :vips
+
   # Don't care if the mailer can't send.
   config.action_mailer.delivery_method = :letter_opener
 

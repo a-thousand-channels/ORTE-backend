@@ -4,6 +4,8 @@ class Place < ApplicationRecord
 
   belongs_to :layer
 
+  has_many_attached :images
+
   validates :title,  presence: true
 
   scope :published, -> { where(published: true) }

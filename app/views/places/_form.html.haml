@@ -88,6 +88,10 @@
             = f.input :city
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         = f.input :imagelink, :input_html => {:placeholder => 'https://' }
+        = f.file_field :images, multiple: true
+        - if @place.images.count > 0
+          - @place.images.each do |img|
+            = image_tag img.preview(resize_to_limit: [100, 100])
   .grid-x.grid-padding-x
     .large-12.cell
       .form-actions
