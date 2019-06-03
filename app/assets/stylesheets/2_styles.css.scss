@@ -157,6 +157,14 @@ div.place_layer {
   }
 }
 
+#layer_selector {
+
+  .input.select {
+    display: inline;
+  }
+}
+
+
 select.datetime {
   width: 100px;
   padding: 0.3rem;

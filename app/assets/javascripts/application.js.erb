@@ -25,6 +25,8 @@ $(document).on('turbolinks:load', function() {
     $(document).foundation();
 
 
+
+
     // navigate by dropdown
     $('.nav-selector').change(function(e){
       e.preventDefault();
@@ -61,6 +63,12 @@ $(document).on('turbolinks:load', function() {
 
     });
 
+
+    // places > form: toggle layer dropdown
+    $('#layer_display').click(function(e){
+      $('#layer_selector').removeClass('hide');
+      $('#layer_display').hide();
+    });
 
     // ---------------
     // baselayer map
@@ -101,11 +109,12 @@ $(document).on('turbolinks:load', function() {
     });
 
 
+    /*
     var imageUrl = 'https://map.treffentotal.de/kampnagel_raumplan_by_hand_2000px.png',
         imageBounds = [[53.583839104119935, 10.020486116409304], [53.58267779635204, 10.023055034408571]];
         options =  {opacity: 1, className: 'baselayer', interactive: true, attribution: 'Kampnagel'};
     var kampnagel_map = new L.imageOverlay(imageUrl, imageBounds, options);
-    kampnagel_map.addTo(map);
+    kampnagel_map.addTo(map);*/
 
     // ---------------
 
