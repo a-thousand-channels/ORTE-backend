@@ -75,6 +75,12 @@ RSpec.describe PlacesController, type: :controller do
           expect(response).to redirect_to(map_layer_url(@map,@layer))
         end
 
+        xit 'attaches an uploaded image' do
+          valid_attributes_with_image = FactoryBot.build(:place, :with_images, :layer_id => @layer.id ).attributes
+          expect {
+            post :create, params: { place: valid_attributes_with_image, layer_id: @layer.id, map_id: @map.id}, session: valid_session
+          }.to change(ActiveStorage::Attachment, :count).by(1)
+        end
 
         it "saves startdate date without time (as seperate date and time strings) correctly" do
           startdate = '2010-04-29 00:00:00.000000000 +0000'
