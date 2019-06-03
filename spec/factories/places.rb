@@ -29,5 +29,8 @@ FactoryBot.define do
       title { "OtherTitle" }
       published { true }
     end
+    trait :with_images do
+      images { [fixture_file_upload(Rails.root.join('public', 'apple-touch-icon.png'), 'image/png')] }
+    end
   end
 end
