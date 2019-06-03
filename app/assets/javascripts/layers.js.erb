@@ -59,13 +59,13 @@ function DrawMarkers(map,params,places) {
       }
       content += "<p>"+place.teaser+"</p>";
 
-      marker.bindPopup(content);
-      // console.log(content);
+      marker.bindPopup(content).on('click', function(){ map.panTo(marker.getLatLng()) });
       c++;
     });
     console.log(c+" Marker added to map!");
 
 }
+
 function getParams() {
   var url = window.location.href
   var vars = {};

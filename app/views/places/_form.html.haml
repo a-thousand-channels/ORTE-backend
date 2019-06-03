@@ -74,8 +74,9 @@
           .large-6.medium-6.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 6, class: 'large-text'}
-
-
+        %hr
+        .form-actions
+          = f.button :submit, :class => "button"
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
@@ -87,14 +88,9 @@
           .small-8.cell
             = f.input :city
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
-        = f.input :imagelink, :input_html => {:placeholder => 'https://' }
         = f.input :images, multiple: true, input_html: { accept: ('image') }
         - if @place.images.count > 0
           - @place.images.each do |img|
             - # = image_tag img.variant(resize_to_limit: [100, 100]).processed
-            = image_tag url_for(img)
-
-  .grid-x.grid-padding-x
-    .large-12.cell
-      .form-actions
-        = f.button :submit, :class => "button"
+            = link_to url_for(img) do
+              = image_tag url_for(img)
