@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe LayersController, type: :controller do
 
+  # needed for json builder test, since json builder files are handled as views
+  render_views
+
   describe "functionalities with logged in user with role 'admin'" do
 
     before do
@@ -42,6 +45,29 @@ RSpec.describe LayersController, type: :controller do
         get :show, params: { map_id: @map.id, id: layer.to_param}, session: valid_session
         expect(response).to have_http_status(200)
       end
+    end
+
+    describe "GET #show as json" do
+
+      it "returns a success reponse" do
+        layer = Layer.create! valid_attributes
+        get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
+        expect(response).to have_http_status(200)
+      end
+
+      it "layer a layer w/title" do
+        place = Layer.create! valid_attributes
+        get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        puts json
+        expect(json['title']).to eq layer.title
+      end
+
+      xit "layer a layer with places" do
+      end
+      xit "layer a layer with places and attached images" do
+      end
+
     end
 
     describe "GET #new" do

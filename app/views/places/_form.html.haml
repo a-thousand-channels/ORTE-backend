@@ -27,7 +27,8 @@
         - if @old_place
           #{@old_place.lat[0..4]}/#{@old_place.lon[0..4]}
           \-->
-        #{@place.lat[0..4]}/#{@place.lon[0..4]}
+        - if @place.lat && @place.lon
+          #{@place.lat[0..4]}/#{@place.lon[0..4]}
         = f.input :lat, as: :hidden
         = f.input :lon, as: :hidden
 

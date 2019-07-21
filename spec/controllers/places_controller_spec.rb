@@ -2,6 +2,10 @@ require 'rails_helper'
 
 RSpec.describe PlacesController, type: :controller do
 
+  # needed for json builder test, since json builder files are handled as views
+  render_views
+
+
   describe "functionalities with logged in user with role 'admin'" do
 
     before do
@@ -41,6 +45,24 @@ RSpec.describe PlacesController, type: :controller do
         expect(response).to have_http_status(200)
       end
     end
+
+    describe "GET #show as json" do
+
+      it "returns a success reponse" do
+        place = Place.create! valid_attributes
+        get :show, params: {id: place.to_param, layer_id: @layer.id, map_id: @map.id}, session: valid_session, format: 'json'
+        expect(response).to have_http_status(200)
+      end
+
+      it "returns a placemark w/title" do
+        place = Place.create! valid_attributes
+        get :show, params: {id: place.to_param, layer_id: @layer.id, map_id: @map.id}, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        expect(json['title']).to eq place.title
+      end
+
+    end
+
 
     describe "GET #new" do
       it "returns a success response" do
