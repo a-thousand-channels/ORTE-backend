@@ -1,3 +1,6 @@
+
+
+
 p {
   font-size: 16px;
   line-height: 1.33;
@@ -47,6 +50,10 @@ div.panel {
 }
 div.columns.borderless {padding: 0;}
 
+.tooltip {
+    z-index: 12000;
+    font-size: 100%;
+}
 
 a.button {
   color: white !important;

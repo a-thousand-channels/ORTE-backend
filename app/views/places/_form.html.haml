@@ -64,13 +64,19 @@
         .grid-x
           .large-6.medium-6.cell
             = f.input :startdate, as: :hidden
-            = f.input :startdate_date, as: :date, html5: true, :label => 'Start date'
+            = f.label :startdate_data do
+              Start date
+              %i.fi.fi-info{"data-tooltip"=>true, :title=>"If you just want to define the year, like \"1995\", type in the date 1.1.1995"}
+            = f.input :startdate_date, as: :date, html5: true, :label => false
           .large-6.medium-6.cell
             = f.input :startdate_time, as: :time, html5: true, :label => 'Start time', :input_html => {:size => 5, class: 'input-time'}
         .grid-x
           .large-6.medium-6.cell
             = f.input :enddate, as: :hidden
-            = f.input :enddate_date, as: :date, html5: true, :label => 'End date'
+            = f.label :enddate_data do
+              End date
+              %i.fi.fi-info{"data-tooltip"=>true, :title=>"If you just want to define the year, like \"1995\", type in the date 1.1.1995"}
+            = f.input :enddate_date, as: :date, html5: true, :label => false
           .large-6.medium-6.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 6, class: 'large-text'}
@@ -80,7 +86,7 @@
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
-        %p.hint Only if different to the title
+        %p.hint Only needed, if different to the title
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
@@ -88,6 +94,7 @@
           .small-8.cell
             = f.input :city
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
+        %p.hint Does this place (or location) has a website?
         = f.input :images, multiple: true, input_html: { accept: ('image') }
         - if @place.images.count > 0
           - @place.images.each do |img|
