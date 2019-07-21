@@ -57,7 +57,14 @@ function DrawMarkers(map,params,places) {
       if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
       }
-      content += "<p>"+place.teaser+"</p>";
+      if ( place.images[0] ) {
+        $.each(place.images, function(kkey, image) {
+          content += "<a href='"+image.image_url+"' target='_blank'><img src='"+image.image_url+"' /></a>";
+        });
+      }
+
+      content += "<p>"+place.teaser.trim()    // remove leading and trailing spaces
+    .substring(0, 200).split(" ").slice(0, -1).join(" ") + "...";
 
       marker.bindPopup(content).on('click', function(){ map.panTo(marker.getLatLng()) });
       c++;
