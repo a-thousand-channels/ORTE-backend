@@ -25,7 +25,7 @@ RSpec.describe Place, type: :model do
 
     it 'returns full startdate without time' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '', enddate: '')
-      expect(p.date).to eq('01.01.18')
+      expect(p.date).to eq('2018')
     end
 
     it 'returns full date range with time' do
@@ -36,6 +36,11 @@ RSpec.describe Place, type: :model do
     it 'returns full date range without time' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '', enddate_date: '2018-10-15')
       expect(p.date).to eq('01.01.18 ‒ 15.10.18')
+    end
+
+    it 'returns year range' do
+      p = FactoryBot.create(:place, startdate_date: '2015-01-01', startdate_time: '', enddate_date: '2018-01-01')
+      expect(p.date).to eq('2015 ‒ 2018')
     end
   end
 
