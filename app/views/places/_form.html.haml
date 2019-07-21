@@ -95,7 +95,7 @@
             = f.input :city
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
-        = f.input :images, multiple: true, input_html: { accept: ('image') }
+        = f.input :images, input_html: { accept: ('image'), multiple: true  }
         - if @place.images.count > 0
           - @place.images.each do |img|
             - # = image_tag img.variant(resize_to_limit: [100, 100]).processed
