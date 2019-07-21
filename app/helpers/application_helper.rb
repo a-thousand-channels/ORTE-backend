@@ -16,7 +16,11 @@ module ApplicationHelper
     end
     if !enddate
       if startdate.strftime("%H:%M") == '00:00'
-        "#{startdate.strftime("%d.%m.%y")}"
+        if startdate.strftime("%d.%m") == '01.01'
+          "#{startdate.strftime("%Y")}"
+        else
+          "#{startdate.strftime("%d.%m.%y")}"
+        end
       else
         "#{startdate.strftime("%d.%m.%y, %H:%M")}"
       end
@@ -28,7 +32,11 @@ module ApplicationHelper
       "#{startdate.strftime("%d.%m.%y, %H:%M")} ‒ #{enddate.strftime("%H:%M")}"
     else
       if startdate.strftime("%H:%M") == '00:00'
-        "#{startdate.strftime("%d.%m.%y")} ‒ #{enddate.strftime("%d.%m.%y")}"
+        if startdate.strftime("%d.%m") == '01.01' && enddate.strftime("%d.%m") == '01.01'
+          "#{startdate.strftime("%Y")} ‒ #{enddate.strftime("%Y")}"
+        else
+          "#{startdate.strftime("%d.%m.%y")} ‒ #{enddate.strftime("%d.%m.%y")}"
+        end
       else
         "#{startdate.strftime("%d.%m.%y, %H:%M")} ‒ #{enddate.strftime("%d.%m.%y, %H:%M")}"
       end

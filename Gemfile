@@ -9,7 +9,6 @@ end
 
 gem 'rails', '~> 5.2.3'
 gem 'puma', '~> 3.7'
-# gem 'sass-rails'
 gem 'sassc-rails'
 gem 'uglifier'
 
@@ -38,9 +37,7 @@ gem 'rack-attack'
 gem 'secure_headers'
 gem 'settingslogic'
 gem 'simple_form'
-# gem 'libv8', '6.3.292.48.1'
 gem 'mini_racer', platforms: :ruby
-# gem 'mini_magick'
 gem 'image_processing', '~> 1.2'
 
 
