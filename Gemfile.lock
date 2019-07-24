@@ -97,6 +97,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
+    color-generator (0.0.4)
     colorize (0.8.1)
     concurrent-ruby (1.1.5)
     coveralls_reborn (0.12.0)
@@ -377,6 +378,7 @@ DEPENDENCIES
   capybara-chromedriver-logger
   chromedriver-helper
   coffee-rails
+  color-generator
   coveralls_reborn (~> 0.12.0)
   database_cleaner
   devise
