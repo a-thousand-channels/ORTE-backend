@@ -40,6 +40,8 @@ gem 'simple_form'
 gem 'mini_racer', platforms: :ruby
 gem 'image_processing', '~> 1.2'
 
+gem 'color-generator'
+
 
 group :staging, :production do
   # gem 'pg'

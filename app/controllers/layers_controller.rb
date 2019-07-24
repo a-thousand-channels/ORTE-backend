@@ -3,6 +3,8 @@ class LayersController < ApplicationController
 
   protect_from_forgery :except => :show
 
+  require 'color-generator'
+
   # GET /layers
   # GET /layers.json
   def index
@@ -30,11 +32,19 @@ class LayersController < ApplicationController
   # GET /layers/new
   def new
     @layer = Layer.new
+    generator = ColorGenerator.new saturation: 0.8, value: 1.0
+    @layer.color = generator.create_hex
     @map = Map.by_user(current_user).find(params[:map_id])
   end
 
   # GET /layers/1/edit
   def edit
+    # generator = ColorGenerator.new saturation: 0.8, value: 1.0
+    generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
+    @layer.color = generator.create_hex
+
+
+
   end
 
   # POST /layers
@@ -86,6 +96,6 @@ class LayersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def layer_params
-      params.require(:layer).permit(:title, :text, :published, :map_id)
+      params.require(:layer).permit(:title, :text, :published, :map_id, :color)
     end
 end
