@@ -10,8 +10,19 @@
         = f.input :title
         = f.input :text
         = f.input :published
+        .grid-x
+          .small-6.cell
+            = f.label :color, "Marker color"
+            = f.input :color, :label => false
+          .small-2.cell
+            &nbsp;
+          .small-4.cell
+            %svg{height:50,width:50,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
+              %circle{cx:"25",cy:"25",r:"25",fill:"##{@layer.color}"}
+
         = f.association :map, collection: Map.by_user(current_user), include_blank: false
       .form-actions
+        %br
         = f.button :submit, :class => "button"
     .large-3.cell
       &nbsp;
