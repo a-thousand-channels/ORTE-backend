@@ -37,7 +37,9 @@ gem 'rack-attack'
 gem 'secure_headers'
 gem 'settingslogic'
 gem 'simple_form'
-gem 'mini_racer', platforms: :ruby
+
+gem 'libv8', '6.3.292.48.1'
+gem 'mini_racer', '0.2.4',platforms: :ruby
 gem 'image_processing', '~> 1.2'
 
 gem 'color-generator'
