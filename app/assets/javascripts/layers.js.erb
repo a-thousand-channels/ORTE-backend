@@ -16,27 +16,43 @@ function ShowPlacesForLayer(map,level) {
     var params = getParams();
     if ( level === 'layers') {
       console.log("Render places of  one layer");
-      DrawMarkers(map,params,data.places);
+      DrawMarkers(map,params,data.color,data.places);
     } else  {
       $.each(data, function(key,places) {
         console.log("Render places of layer "+key+" on map");
-        DrawMarkers(map,params,data[key].places);
+        DrawMarkers(map,params,data[key].color,data[key].places);
       });
     }
   });
 }
-function DrawMarkers(map,params,places) {
+function DrawMarkers(map,params,color,places) {
     var c = 0;
+    var CustomIcon = L.Icon.extend({
+      options: {
+        iconSize:     [30, 30],
+        iconAnchor:   [15, 15],
+        popupAnchor:  [-3, -76]
+      }
+    });
+
     $.each(places, function(key,place) {
       console.log("Place ID "+place.id+"////////");
       console.log(place.title+" @ "+place.lat+"/"+place.lon);
-      if ( parseInt(place.id) === parseInt(params.place) ) {
-        var icon = redIcon;
-        console.log("PLACE FOR RE_MAP FOUND");
-      } else if ( place.published === true ) {
-        var icon = blueIcon;
+      if ( color ) {
+        var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='#"+color+"' shape-rendering='geometricPrecision'></circle></svg>";
+          var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
+          console.log(url);
+        var icon =new CustomIcon({iconUrl: url})
       } else {
-        var icon = greyIcon;
+        if ( parseInt(place.id) === parseInt(params.place) ) {
+          var icon = redIcon;
+          console.log("PLACE FOR RE_MAP FOUND");
+        } else if ( place.published === true ) {
+          var icon = blueIcon;
+        } else {
+          var icon = greyIcon;
+        }
+
       }
       // TODO: add to layer, not map
       var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(map);
@@ -57,7 +73,7 @@ function DrawMarkers(map,params,places) {
       if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
       }
-      if ( place.images[0] ) {
+      if ( place.images && place.images[0] ) {
         $.each(place.images, function(kkey, image) {
           content += "<a href='"+image.image_url+"' target='_blank'><img src='"+image.image_url+"' /></a>";
         });
