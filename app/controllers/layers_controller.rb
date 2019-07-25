@@ -32,16 +32,17 @@ class LayersController < ApplicationController
   # GET /layers/new
   def new
     @layer = Layer.new
-    generator = ColorGenerator.new saturation: 0.8, value: 1.0
+    generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
     @layer.color = generator.create_hex
     @map = Map.by_user(current_user).find(params[:map_id])
   end
 
   # GET /layers/1/edit
   def edit
-    # generator = ColorGenerator.new saturation: 0.8, value: 1.0
     generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
-    @layer.color = generator.create_hex
+    unless @layer.color || params[:recolor]
+      @layer.color = generator.create_hex
+    end
 
 
 
