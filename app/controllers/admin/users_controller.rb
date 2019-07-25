@@ -39,6 +39,11 @@ class Admin::UsersController < ApplicationController
 
   def new
     @admin_user = User.new
+    if current_user.admin?
+      @groups = Group.all
+    else
+      @groups = Group.by_user(current_user)
+    end
   end
 
   def show; end
