@@ -40,7 +40,7 @@ class LayersController < ApplicationController
   # GET /layers/1/edit
   def edit
     generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
-    unless @layer.color || params[:recolor]
+    if !@layer.color || params[:recolor]
       @layer.color = generator.create_hex
     end
 
