@@ -85,7 +85,7 @@ function DrawMarkers(map,params,color,places) {
       }
 
       content += "<p>"+place.teaser.trim()    // remove leading and trailing spaces
-    .substring(0, 200).split(" ").slice(0, -1).join(" ") + "...";
+    .substring(0, 300).split(" ").slice(0, -1).join(" ") + "...";
 
       marker.bindPopup(content).on('click', function(){ map.panTo(marker.getLatLng()) });
       c++;
