@@ -44,7 +44,6 @@ RSpec.describe Admin::GroupsController, type: :controller do
       it "returns a valid array" do
         @admin_groups = FactoryBot.create_list(:group,3)
         @admin_groups.push(@group)
-        puts @admin_groups.count
         get :index, params: {}, session: valid_session
         expect(response).to have_http_status(200)
       end
