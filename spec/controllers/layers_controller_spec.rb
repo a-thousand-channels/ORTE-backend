@@ -59,7 +59,6 @@ RSpec.describe LayersController, type: :controller do
         place = Layer.create! valid_attributes
         get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
         json = JSON.parse(response.body)
-        puts json
         expect(json['title']).to eq layer.title
       end
 

@@ -83,7 +83,7 @@ class PlacesController < ApplicationController
     # quirks, because foundation switch generats 'on'/'off' values,
     # rails expect true/false
     # TODO: render this at generating the form
-    puts params[:place][:published]
+    # puts params[:place][:published]
     if params[:place][:published] == 'on' || params[:place][:published] == 'true'
       params[:place][:published] = true
     else

@@ -48,7 +48,7 @@ RSpec.describe Place, type: :model do
     m = FactoryBot.create(:map)
     l = FactoryBot.create(:layer, :map => m)
     p = FactoryBot.create(:place, :layer => l)
-    expect(p.edit_link).to eq(" <a href=\"/maps/#{m.id}/layers/#{l.id}/places/#{p.id}/edit\" class='button1 tiny1'><i class='fi fi-pencil'></a>")
+    expect(p.edit_link).to eq(" <a href=\"/maps/#{m.id}/layers/#{l.id}/places/#{p.id}/edit\" class='button1 tiny1'><i class='fi fi-pencil'></i></a>")
   end
 
   describe 'Address' do
