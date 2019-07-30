@@ -12,6 +12,7 @@ RSpec.describe "layers/edit", type: :view do
       :published => false,
       :map => @map
     ))
+    @colors_selectable = ["aaa","bbb","ccc"]
   end
 
   it "renders the edit layer form" do
