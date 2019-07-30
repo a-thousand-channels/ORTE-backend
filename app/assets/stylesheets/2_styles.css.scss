@@ -199,9 +199,10 @@ form img {
 }
 
 
-p#another_color_wrapper {
+#another_color_wrapper {
   background-color: rgba(200, 200, 200, 0.5);
   padding: 0.5em 1em;
+  margin-top: 0.5em;
   span {
     cursor: pointer;
     svg:hover {
