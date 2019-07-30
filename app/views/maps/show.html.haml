@@ -21,7 +21,8 @@
         = simple_form_for :layer, url: '' do |f|
           .input-group
             .input-group-label
-              %i.fi-page-multiple.fi-24
+              = link_to map_layers_path(@map) do
+                %i.fi-page-multiple.fi-24
             = f.input "id", :collection => @map_layers.map { |l| ["#{l.title} (#{l.places.count})", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :include_blank => 'Select a layer...', input_html: {:class => 'nav-selector'}
             .input-group-button
               = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do

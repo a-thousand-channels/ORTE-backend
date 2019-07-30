@@ -44,6 +44,11 @@ class LayersController < ApplicationController
       @layer.color = generator.create_hex
     end
 
+    @colors_selectable = []
+    8.times do
+      @colors_selectable << generator.create_hex
+    end
+
 
 
   end
