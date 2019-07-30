@@ -1,4 +1,7 @@
 #form-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to maps_path, :class=>'close_link' do
+      \&times;
   %h1 Editing map
   = render 'form'
   %hr

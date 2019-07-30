@@ -209,3 +209,16 @@ p#another_color_wrapper {
     }
   }
 }
+
+p.close_link_wrapper {
+  width: 50px;
+  float: right;
+  padding: 0;
+  line-height: 1;
+  margin: 0;
+  a.close_link {
+    font-size: 3rem;
+    line-height: 0.7;
+    color: #888;
+  }
+}
