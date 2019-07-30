@@ -25,6 +25,13 @@ $(document).on('turbolinks:load', function() {
     $(document).foundation();
 
 
+    // select another color (for layers)
+    $('.another_color').click(function(e){
+      var another_color = $(this).data('color');
+      $('input#layer_color').val(another_color);
+      $('svg#layer_color_preview > circle').css({ fill: "#"+another_color});
+      console.log("changed");
+    });
 
 
     // navigate by dropdown
