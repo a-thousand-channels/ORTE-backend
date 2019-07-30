@@ -34,7 +34,6 @@ function DrawMarkers(map,params,color,places) {
         popupAnchor:  [-3, -76]
       }
     });
-
     $.each(places, function(key,place) {
       console.log("Place ID "+place.id+"////////");
       console.log(place.title+" @ "+place.lat+"/"+place.lon);
@@ -59,8 +58,18 @@ function DrawMarkers(map,params,color,places) {
         }
 
       }
+
+
+      // alternative place display as text
+      // TODO: display switch
+      var texticon= L.divIcon({ html: '<div class="text_inner">'+place.title+'</div>' });
+      var texticon1 = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon}).addTo(map);
+
+
+
       // TODO: add to layer, not map
-      var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(map);
+      var marker = L.marker([place.lat, place.lon], {icon: icon});
+      // .addTo(map);
       var content = '';
       if ( place.date ) {
         content += "<p>"+place.date;
