@@ -1,5 +1,8 @@
 
 #table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      \&times;
   %h1
     = link_to map_path(@map) do
       = @map.title
@@ -9,9 +12,6 @@
     %thead
       %tr
         %th Layer
-        %th Markercolor
-        %th Published?
-        %th
         %th
 
     %tbody
@@ -24,17 +24,20 @@
                 (#{layer.places.count})
             - if layer.text.present?
               %p= layer.text
-          %td
             - if layer.color.present?
               %svg{height:40,width:40,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
                 %circle{cx:"20",cy:"20",r:"20",fill:"##{layer.color}"}
-          %td
+            %span.icons{:style=>"height: 40px; vertical-align: middle;"}
             - if layer.published
               %i.fi-eye.fi-24
+              Published
             - else
               %i.fi-x.fi-24
-          %td= link_to 'Edit', edit_map_layer_path(@map, layer)
-          %td= link_to 'Destroy', map_layer_path(@map, layer), method: :delete, data: { confirm: 'Are you sure?' }
+              Hidden
+          %td
+            = link_to edit_map_layer_path(@map, layer), :class=>"button" do
+              %i.fi-pencil.fi-24
+
 
   %p
 
