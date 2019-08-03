@@ -34,6 +34,13 @@ $(document).on('turbolinks:load', function() {
     });
 
 
+    // marker switch
+    $('#map').before($('<div />').attr('id','marker_nav'));
+    $('#marker_nav').append($('<div />').attr('id','marker_nav_marker').text('Marker'));
+    $('#marker_nav').append($('<div />').attr('id','marker_nav_text').text('Text'));
+    $('#marker_nav').append($('<div />').attr('id','marker_nav_image').text('Image'));
+    $('#marker_nav').find('div').addClass('marker_nav_item');
+
     // navigate by dropdown
     $('.nav-selector').change(function(e){
       e.preventDefault();
