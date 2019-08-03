@@ -23,7 +23,7 @@
           \->
         = @place.full_address
         %br
-        %span.name Coordinates:
+        %span.name Coordinates
         - if @old_place
           #{@old_place.lat[0..4]}/#{@old_place.lon[0..4]}
           \-->
@@ -35,7 +35,10 @@
     .large-5.medium-5.cell
       .grid-x
         .large-6.medium-6.small-6.cell
-          %p.text-right{:title=>"This settings publishes this place on the map!"}
+
+          %p.text-right.show-for-medium{:title=>"This settings publishes this place on the map!"}
+            %span.name.middle Publish?
+          %p.text-left.show-for-small{:title=>"This settings publishes this place on the map!"}
             %span.name.middle Publish?
           - if params[:action] == 'edit'
             %p.text-right
@@ -63,22 +66,22 @@
     .large-6.medium-6.cell
       .form-inputs
         .grid-x
-          .large-6.medium-6.cell
+          .large-6.medium-6.small-7.cell
             = f.input :startdate, as: :hidden
             = f.label :startdate_data do
               Start date
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"If you just want to define the year, like \"1995\", type in the date 1.1.1995"}
             = f.input :startdate_date, as: :date, html5: true, :label => false
-          .large-6.medium-6.cell
+          .large-6.medium-6.small-5.cell
             = f.input :startdate_time, as: :time, html5: true, :label => 'Start time', :input_html => {:size => 5, class: 'input-time'}
         .grid-x
-          .large-6.medium-6.cell
+          .large-6.medium-6.small-7.cell
             = f.input :enddate, as: :hidden
             = f.label :enddate_data do
               End date
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"If you just want to define the year, like \"1995\", type in the date 1.1.1995"}
             = f.input :enddate_date, as: :date, html5: true, :label => false
-          .large-6.medium-6.cell
+          .large-6.medium-6.small-5.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 6, class: 'large-text'}
         %hr
