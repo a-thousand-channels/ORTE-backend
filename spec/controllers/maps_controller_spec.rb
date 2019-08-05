@@ -65,12 +65,6 @@ RSpec.describe MapsController, type: :controller do
         expect(json['title']).to eq map.title
       end
 
-      it "an empty response for an unpublished map" do
-        map = FactoryBot.create(:map, :group_id => @group.id, :published => false)
-        get :show, params: {id: map.to_param}, session: valid_session, format: 'json'
-        json = JSON.parse(response.body)
-        expect(json['title']).not_to eq map.title
-      end
     end
 
 

@@ -62,15 +62,7 @@ RSpec.describe LayersController, type: :controller do
         expect(json['title']).to eq layer.title
       end
 
-      it "an empty response for an unpublished layer" do
-
-        layer = FactoryBot.create(:layer, :map_id => @map.id, :published => false)
-        get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
-        json = JSON.parse(response.body)
-        expect(json['title']).not_to eq layer.title
-      end
-
-      it "a layer with published places" do
+      it "a layer with all places" do
         layer = Layer.create! valid_attributes
         layer = FactoryBot.create(:layer, :map_id => @map.id, :published => true)
         p1 = FactoryBot.create(:place, :published, :layer_id => layer.id, :title => "Place1")
@@ -80,8 +72,7 @@ RSpec.describe LayersController, type: :controller do
         json = JSON.parse(response.body)
         expect(json['places'][0]['title']).to eq p1.title
         expect(json['places'][1]['title']).to eq p2.title
-        expect(json.to_s).not_to match (/#{p3.title}/)
-
+        expect(json['places'][2]['title']).to eq p3.title
       end
 
       xit "a layer with published places and some attached images" do

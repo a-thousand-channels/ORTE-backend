@@ -56,7 +56,14 @@ $(document).on('turbolinks:load', function() {
     $('#map').before($('<div />').attr('id','export_bar').attr('class','nav_bar'));
     $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export to JSON').text('JSON'));
     $('#export_bar').find('div').addClass('nav_bar_item');
-    $('#export_bar_json').html('<a href="'+window.location.pathname+'.json" target="_blank">JSON</a>');
+
+    if ( $('#selection').data('map-id') ) {
+      $('#export_bar_json').html('<a href="/public/maps/'+$('#selection').data('map-id')+'.json" target="_blank">JSON</a>');
+
+    } else {
+      $('#export_bar_json').html('');
+
+    }
 
 
 
