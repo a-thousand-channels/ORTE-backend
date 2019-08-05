@@ -1,3 +1,1 @@
-if @map.published
-  json.partial! "maps/map", map: @map
-end
+json.partial! "maps/map", map: @map
