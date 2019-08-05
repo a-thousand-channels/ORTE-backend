@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe MapsController, type: :controller do
 
+  # needed for json builder test, since json builder files are handled as views
+  render_views
+
   describe "functionalities with logged in user with role 'admin'" do
 
     before do
@@ -46,6 +49,30 @@ RSpec.describe MapsController, type: :controller do
         expect(response).to have_http_status(302)
       end
     end
+
+    describe "GET #show as json" do
+
+      it "returns a success reponse" do
+        map = Map.create! valid_attributes
+        get :show, params: {id: map.to_param}, session: valid_session, format: 'json'
+        expect(response).to have_http_status(200)
+      end
+
+      it "a map w/title for a published map" do
+        map = FactoryBot.create(:map, :group_id => @group.id, :published => true)
+        get :show, params: {id: map.to_param}, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        expect(json['title']).to eq map.title
+      end
+
+      it "an empty response for an unpublished map" do
+        map = FactoryBot.create(:map, :group_id => @group.id, :published => false)
+        get :show, params: {id: map.to_param}, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        expect(json['title']).not_to eq map.title
+      end
+    end
+
 
     describe "GET #new" do
       it "returns a success response" do
