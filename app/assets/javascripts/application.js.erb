@@ -34,12 +34,20 @@ $(document).on('turbolinks:load', function() {
     });
 
 
-    // marker switch
-    $('#map').before($('<div />').attr('id','marker_nav'));
-    $('#marker_nav').append($('<div />').attr('id','marker_nav_marker').text('Marker'));
-    $('#marker_nav').append($('<div />').attr('id','marker_nav_text').text('Text'));
-    $('#marker_nav').append($('<div />').attr('id','marker_nav_image').text('Image'));
-    $('#marker_nav').find('div').addClass('marker_nav_item');
+    // add nav_bar for marker switch
+    $('#map').before($('<div />').attr('id','marker_bar').attr('class','nav_bar'));
+    $('#marker_bar').append($('<div />').attr('id','marker_bar_marker').text('M'));
+    $('#marker_bar').append($('<div />').attr('id','marker_bar_text').text('T'));
+    $('#marker_bar').append($('<div />').attr('id','marker_bar_image').text('I'));
+    $('#marker_bar').find('div').addClass('nav_bar_item');
+
+
+    // add nav_bar for export function(s)
+    $('#map').before($('<div />').attr('id','export_bar').attr('class','nav_bar'));
+    $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export to JSON').text('JSON'));
+    $('#export_bar').find('div').addClass('nav_bar_item');
+
+
 
     // navigate by dropdown
     $('.nav-selector').change(function(e){
