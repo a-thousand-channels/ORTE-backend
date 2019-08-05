@@ -240,6 +240,21 @@ p.close_link_wrapper {
     text-shadow: 0 0 7px #333;
 }
 
+/* image-marker */
+
+.image_inner {
+    color: white;
+    background-color: rgba(200,200,200,0);
+    padding: 0;
+    border: none;
+    img {
+      max-width: 65px;
+      width: 65px;
+      min-height: 40px;
+      background-color: rgba(200,200,200,0.8);
+    }
+}
+
 /* custom map control/nav bars */
 
 div.nav_bar {
@@ -265,7 +280,23 @@ div.nav_bar {
   top: 160px;
 }
 #export_bar {
-  bottom: 100px;
+  /* in map */
+  /* bottom: 100px; */
+
+  /* in footer */
+  position: fixed;
+  z-index: 1999;
+  bottom: -3px;
+  .nav_bar_item {
+    color: #888;
+    background-color: transparent;
+    a {
+      color: #888;
+    }
+    a:hover {
+      color:  #c6c600;
+    }
+  }
 }
 
 /* leaflet overrides */

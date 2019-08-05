@@ -27,11 +27,17 @@ function ShowPlacesForLayer(map,level) {
 }
 function DrawMarkers(map,params,color,places) {
     var c = 0;
-    var CustomIcon = L.Icon.extend({
+    var CustomLargeIcon = L.Icon.extend({
       options: {
         iconSize:     [30, 30],
         iconAnchor:   [15, 15],
         popupAnchor:  [-3, -76]
+      }
+    });
+    var CustomSmallIcon = L.Icon.extend({
+      options: {
+        iconSize:     [12, 12],
+        iconAnchor:   [6, 6]
       }
     });
     $.each(places, function(key,place) {
@@ -44,9 +50,11 @@ function DrawMarkers(map,params,color,places) {
           var opacity="0.7"
         }
         var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='#"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
-          var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
+        var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
           console.log(url);
-        var icon =new CustomIcon({iconUrl: url})
+        var icon = new CustomLargeIcon({iconUrl: url});
+        var icon = blueIcon;
+
       } else {
         if ( parseInt(place.id) === parseInt(params.place) ) {
           var icon = redIcon;
@@ -60,10 +68,33 @@ function DrawMarkers(map,params,color,places) {
       }
 
 
-      // alternative place display as text
+      // alternative place display marker as text
       // TODO: display switch
       var texticon= L.divIcon({
           html: '<div class="text_inner">'+place.title+'</div>',
+          iconAnchor:[0,0],
+          iconSize:null,
+          popupAnchor:[0,0] });
+      var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon})
+      //  .addTo(map);
+
+
+      // alternative place display image instead of a marker
+
+      var small_svg = "<svg height='8' width='8' xmlns='http://www.w3.org/2000/svg'><circle cx='4' cy='4' r='4' fill='#"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
+      var small_icon_url = encodeURI("data:image/svg+xml," + small_svg).replace(new RegExp('#', 'g'),'%23');
+      var small_icon =new CustomSmallIcon({iconUrl: small_icon_url})
+      var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(map);
+
+      var html = '';
+      if ( place.images && place.images[0] ) {
+        html = "<a href='"+place.images[0].image_url+"' target='_blank'><img src='"+place.images[0].image_url+"' /></a>";
+      } else {
+        html = "<img src='' />";
+      }
+
+      var texticon= L.divIcon({
+          html: '<div class="image_inner">'+html+'</div>',
           iconAnchor:[0,0],
           iconSize:null,
           popupAnchor:[0,0] });
@@ -98,7 +129,7 @@ function DrawMarkers(map,params,color,places) {
       }
 
       content += "<p>"+place.teaser.trim()    // remove leading and trailing spaces
-    .substring(0, 300).split(" ").slice(0, -1).join(" ") + "...";
+                .substring(0, 300).split(" ").slice(0, -1).join(" ") + "...";
 
       marker.bindPopup(content).on('click', function(){ map.panTo(marker.getLatLng()) });
       c++;

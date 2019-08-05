@@ -40,12 +40,23 @@ $(document).on('turbolinks:load', function() {
     $('#marker_bar').append($('<div />').attr('id','marker_bar_text').text('T'));
     $('#marker_bar').append($('<div />').attr('id','marker_bar_image').text('I'));
     $('#marker_bar').find('div').addClass('nav_bar_item');
+    $('#marker_bar > div').on('click', function(e){
+      console.log($(this));
+      if ($(this).attr('id') === 'marker_bar_text') {
+        // TODO
+      } else if ($(this).attr('id') === 'marker_bar_image') {
+        // TODO
+      } else {
+        // TODO
+      }
+    });
 
 
     // add nav_bar for export function(s)
     $('#map').before($('<div />').attr('id','export_bar').attr('class','nav_bar'));
     $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export to JSON').text('JSON'));
     $('#export_bar').find('div').addClass('nav_bar_item');
+    $('#export_bar_json').html('<a href="'+window.location.pathname+'.json" target="_blank">JSON</a>');
 
 
 
