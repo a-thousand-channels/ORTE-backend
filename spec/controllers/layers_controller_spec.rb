@@ -55,16 +55,36 @@ RSpec.describe LayersController, type: :controller do
         expect(response).to have_http_status(200)
       end
 
-      it "layer a layer w/title" do
-        place = Layer.create! valid_attributes
+      it "a layer w/title for a published layer" do
+        layer = FactoryBot.create(:layer, :map_id => @map.id, :published => true)
         get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
         json = JSON.parse(response.body)
         expect(json['title']).to eq layer.title
       end
 
-      xit "layer a layer with places" do
+      it "an empty response for an unpublished layer" do
+
+        layer = FactoryBot.create(:layer, :map_id => @map.id, :published => false)
+        get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        expect(json['title']).not_to eq layer.title
       end
-      xit "layer a layer with places and attached images" do
+
+      it "a layer with published places" do
+        layer = Layer.create! valid_attributes
+        layer = FactoryBot.create(:layer, :map_id => @map.id, :published => true)
+        p1 = FactoryBot.create(:place, :published, :layer_id => layer.id, :title => "Place1")
+        p2 = FactoryBot.create(:place, :published, :layer_id => layer.id, :title => "Place2")
+        p3 = FactoryBot.create(:place, :layer_id => layer.id, :title => "Place3")
+        get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        expect(json['places'][0]['title']).to eq p1.title
+        expect(json['places'][1]['title']).to eq p2.title
+        expect(json.to_s).not_to match (/#{p3.title}/)
+
+      end
+
+      xit "a layer with published places and some attached images" do
       end
 
     end
