@@ -228,12 +228,56 @@ p.close_link_wrapper {
   background-color: transparent;
 }
 
-.text_inner {
+/* text-marker */
 
+.text_inner {
     color: white;
+    background-color: rgba(200,200,200,0);
     line-height: 1;
     font-size: 18px;
     padding: 2px 8px;
-    background-color: #333;
     border: none;
+    text-shadow: 0 0 7px #333;
+}
+
+/* custom map control/nav bars */
+
+div.nav_bar {
+    position: absolute;
+    z-index: 2;
+    right: 10px;
+    background-color: transparent;
+
+    .nav_bar_item {
+      padding: 3px 9px;
+      text-align: center;
+      font-weight: bold;
+      background-color: white;
+      margin: 0 0 10px 0;
+    }
+    .nav_bar_item:hover {
+      background-color: #c6c600;
+      cursor: pointer;
+
+    }
+}
+#marker_bar {
+  top: 160px;
+}
+#export_bar {
+  bottom: 100px;
+}
+
+/* leaflet overrides */
+#map .leaflet-control-layers,
+#map .leaflet-bar {
+    border: 0;
+}
+
+#map .leaflet-bar a:first-child,
+#map .leaflet-bar a:last-child
+
+ {
+    border-top-left-radius: 0;
+    border-top-right-radius: 2px;
 }
