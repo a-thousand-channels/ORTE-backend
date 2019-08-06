@@ -52,7 +52,7 @@ group :staging, :production do
   gem 'passenger'
 end
 
-gem 'coveralls_reborn', '~> 0.12.0', require: false
+gem 'coveralls_reborn', '~> 0.13', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
