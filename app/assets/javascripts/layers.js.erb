@@ -1,4 +1,4 @@
-function ShowPlacesForLayer(map,level) {
+function ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,level) {
 
   var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
@@ -16,22 +16,22 @@ function ShowPlacesForLayer(map,level) {
     var params = getParams();
     if ( level === 'layers') {
       console.log("Render places of  one layer");
-      DrawMarkers(map,params,data.color,data.places);
+      DrawMarkers(map,text_layers,image_layers,marker_layers,params,data.color,data.places);
     } else  {
       $.each(data, function(key,places) {
         console.log("Render places of layer "+key+" on map");
-        DrawMarkers(map,params,data[key].color,data[key].places);
+        DrawMarkers(map,text_layers,image_layers,marker_layers,params,data[key].color,data[key].places);
       });
     }
   });
 }
-function DrawMarkers(map,params,color,places) {
+function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,places) {
     var c = 0;
     var CustomLargeIcon = L.Icon.extend({
       options: {
         iconSize:     [30, 30],
         iconAnchor:   [15, 15],
-        popupAnchor:  [-3, -76]
+        popupAnchor:  [-2, -20]
       }
     });
     var CustomSmallIcon = L.Icon.extend({
@@ -53,7 +53,7 @@ function DrawMarkers(map,params,color,places) {
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
           console.log(url);
         var icon = new CustomLargeIcon({iconUrl: url});
-        var icon = blueIcon;
+        // var icon = blueIcon;
 
       } else {
         if ( parseInt(place.id) === parseInt(params.place) ) {
@@ -75,8 +75,7 @@ function DrawMarkers(map,params,color,places) {
           iconAnchor:[0,0],
           iconSize:null,
           popupAnchor:[0,0] });
-      var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon})
-      //  .addTo(map);
+      var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon}).addTo(text_layers);
 
 
       // alternative place display image instead of a marker
@@ -84,7 +83,7 @@ function DrawMarkers(map,params,color,places) {
       var small_svg = "<svg height='8' width='8' xmlns='http://www.w3.org/2000/svg'><circle cx='4' cy='4' r='4' fill='#"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
       var small_icon_url = encodeURI("data:image/svg+xml," + small_svg).replace(new RegExp('#', 'g'),'%23');
       var small_icon =new CustomSmallIcon({iconUrl: small_icon_url})
-      var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(map);
+      var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(image_layers);
 
       var html = '';
       if ( place.images && place.images[0] ) {
@@ -98,13 +97,12 @@ function DrawMarkers(map,params,color,places) {
           iconAnchor:[0,0],
           iconSize:null,
           popupAnchor:[0,0] });
-      var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon}).addTo(map);
+      var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon}).addTo(image_layers);
 
 
 
       // TODO: add to layer, not map
-      var marker = L.marker([place.lat, place.lon], {icon: icon});
-      // .addTo(map);
+      var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
       var content = '';
       if ( place.date ) {
         content += "<p>"+place.date;

@@ -35,6 +35,7 @@ $(document).on('turbolinks:load', function() {
 
 
     // add nav_bar for marker switch
+    /* TODO
     $('#map').before($('<div />').attr('id','marker_bar').attr('class','nav_bar'));
     $('#marker_bar').append($('<div />').attr('id','marker_bar_marker').text('M'));
     $('#marker_bar').append($('<div />').attr('id','marker_bar_text').text('T'));
@@ -50,7 +51,7 @@ $(document).on('turbolinks:load', function() {
         // TODO
       }
     });
-
+    */
 
     // add nav_bar for export function(s)
     $('#map').before($('<div />').attr('id','export_bar').attr('class','nav_bar'));
@@ -111,9 +112,23 @@ $(document).on('turbolinks:load', function() {
     });
 
     // ---------------
+
+    var text_layers = L.layerGroup();
+    var image_layers = L.layerGroup();
+    var marker_layers = L.layerGroup();
+
+     var overlays = {
+        'T': text_layers,
+        'I': image_layers,
+        'P': marker_layers
+    };
+
+    // ---------------
     // baselayer map
 
-    var map = L.map('map', {zoomControl: false}).setView([53.55, 9.99], 12);
+    var map = L.map('map', {zoomControl: false, layers: [marker_layers]}).setView([53.55, 9.99], 12);
+
+    L.control.layers(overlays).addTo(map);
 
     //add zoom control with your options
     L.control.zoom({
@@ -128,16 +143,16 @@ $(document).on('turbolinks:load', function() {
     // layers: show all places
 
     if ( $('body').attr('id') === 'layers' )  {
-      ShowPlacesForLayer(map,'layers');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,'layers');
     }
     if ( $('body').attr('id') === 'maps' )  {
       // todo: omit/handle layer!
       // each layer different color!
-      ShowPlacesForLayer(map,'maps');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,'maps');
     }
 
-    // map click to get latlon
-
+    // addresslookup_address
+    // click on map to get latlon and adress
     map.on('dblclick', function(e){
       console.log(e.latlng);
       console.log(e.latlng.lat);
@@ -149,6 +164,7 @@ $(document).on('turbolinks:load', function() {
     });
 
 
+    /* special overlay for treffentotal map */
     /*
     var imageUrl = 'https://map.treffentotal.de/kampnagel_raumplan_by_hand_2000px.png',
         imageBounds = [[53.583839104119935, 10.020486116409304], [53.58267779635204, 10.023055034408571]];
