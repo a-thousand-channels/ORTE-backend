@@ -18,15 +18,17 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,level) {
       console.log("Render places of  one layer");
       DrawMarkers(map,text_layers,image_layers,marker_layers,params,data.color,data.places);
     } else  {
-      $.each(data, function(key,places) {
+      $.each(data.layers, function(key,data) {
         console.log("Render places of layer "+key+" on map");
-        DrawMarkers(map,text_layers,image_layers,marker_layers,params,data[key].color,data[key].places);
+        console.log(data.places);
+        DrawMarkers(map,text_layers,image_layers,marker_layers,params,data.color,data.places);
       });
     }
   });
 }
 function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,places) {
     var c = 0;
+    console.log("places: "+places.size);
     var CustomLargeIcon = L.Icon.extend({
       options: {
         iconSize:     [30, 30],
