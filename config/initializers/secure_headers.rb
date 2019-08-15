@@ -39,7 +39,7 @@ SecureHeaders::Configuration.default do |config|
     style_src: %w('self' 'unsafe-inline'),
     worker_src: %w('self'),
     upgrade_insecure_requests: true, # see https://www.w3.org/TR/upgrade-insecure-requests/
-    report_uri: %w(/report_csp)
+    report_uri: %w()
   }
 
   if Rails.env.development? || Rails.env.test? || Rails.env.staging?
