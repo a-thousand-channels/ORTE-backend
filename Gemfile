@@ -45,6 +45,8 @@ gem 'image_processing', '~> 1.2'
 
 gem 'color-generator'
 
+gem 'tinymce-rails'
+
 
 group :staging, :production do
   # gem 'pg'
