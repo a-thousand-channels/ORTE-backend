@@ -83,7 +83,8 @@
             = f.input :enddate_date, as: :date, html5: true, :label => false
           .large-6.medium-6.small-5.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
-        = f.input :teaser, :label => 'Text', :input_html => {:rows => 6, class: 'large-text'}
+        = tinymce
+        = f.input :teaser, :label => 'Text', :input_html => {:rows => 6, class: 'large-text tinymce' }
         %hr
         .form-actions
           = f.button :submit, :class => "button"
