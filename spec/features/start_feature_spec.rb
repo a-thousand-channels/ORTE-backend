@@ -65,7 +65,6 @@ RSpec.feature  'Logout' do
     fill_in 'user_password', with: user.password
     click_button 'Log in'
     expect(page).to have_current_path '/maps'
-    save_and_open_page
     find(:css, '#logout').click
     expect(page).to have_content I18n.t('devise.sessions.signed_out')
   end

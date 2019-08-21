@@ -24,7 +24,6 @@ RSpec.feature 'User create and updates a place ' do
     @ohter_layer = FactoryBot.create(:layer, :map_id=> @other_map.id, :title=>"other layer")
     @place = FactoryBot.create(:place, :layer_id => @layer.id)
     visit edit_map_layer_place_path(@map,@layer,@place)
-    save_and_open_page
     expect(page).to have_content 'my layer'
     expect(page).not_to have_content 'other layer'
 
