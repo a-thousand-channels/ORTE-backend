@@ -77,6 +77,7 @@ RSpec.describe PlacesController, type: :controller do
         get :edit, params: {id: place.to_param, layer_id: @layer.id, map_id: @map.id}, session: valid_session
         expect(response).to have_http_status(200)
       end
+
       it "returns a success response (with new coords to reposition)" do
         place = Place.create! valid_attributes
         get :edit, params: {id: place.to_param, layer_id: @layer.id, map_id: @map.id, lat: 10, lng: 10}, session: valid_session
