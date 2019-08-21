@@ -13,7 +13,7 @@
         - else
           %p.inline= f.label :layer
           %div.inline#layer_selector.hide
-            = f.association :layer, label: false, include_blank: false
+            = f.association :layer, :collection => @place.layer.map.layers, :label_method => :title, :value_method => :id, label: false, include_blank: false
           %div.inline#layer_display
             = @place.layer.title
       %p.clear
