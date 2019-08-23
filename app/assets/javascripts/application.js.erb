@@ -56,11 +56,11 @@ $(document).on('turbolinks:load', function() {
 
     // add nav_bar for export function(s)
     $('#map').before($('<div />').attr('id','export_bar').attr('class','nav_bar'));
-    $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export to JSON').text('JSON'));
+    $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export map data as JSON').text('JSON'));
     $('#export_bar').find('div').addClass('nav_bar_item');
 
     if ( $('#selection').data('map-id') ) {
-      $('#export_bar_json').html('<a href="/public/maps/'+$('#selection').data('map-id')+'.json" target="_blank">JSON</a>');
+      $('#export_bar_json').html('<a href="/public/maps/'+$('#selection').data('map-id')+'.json" download="map'+$('#selection').data('map-id')+'.json">JSON</a>');
 
     } else {
       $('#export_bar_json').html('');
