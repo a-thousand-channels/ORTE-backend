@@ -227,6 +227,7 @@ p.close_link_wrapper {
 
 .leaflet-marker-icon.leaflet-div-icon {
   background-color: transparent;
+  border: none;
 }
 
 /* text-marker */
@@ -234,11 +235,12 @@ p.close_link_wrapper {
 .text_inner {
     color: white;
     background-color: rgba(200,200,200,0);
-    line-height: 1;
+    line-height: 0.6;
     font-size: 18px;
     padding: 2px 8px;
     border: none;
     text-shadow: 0 0 7px #333;
+    transform: rotate(-45deg);
 }
 
 /* image-marker */
