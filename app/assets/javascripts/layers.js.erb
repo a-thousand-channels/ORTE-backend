@@ -24,6 +24,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,level) {
         DrawMarkers(map,text_layers,image_layers,marker_layers,params,data.color,data.places);
       });
     }
+    console.log("fit to bounds");
+    var bounds = text_layers.getBounds().pad(0.3);
+    map.fitBounds(bounds);
   });
 }
 function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,places) {
@@ -135,6 +138,7 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
       c++;
     });
     console.log(c+" Marker added to map!");
+
 
 }
 

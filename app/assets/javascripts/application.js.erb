@@ -114,7 +114,7 @@ $(document).on('turbolinks:load', function() {
 
     // ---------------
 
-    var text_layers = L.layerGroup();
+    var text_layers = L.featureGroup();
     var image_layers = L.layerGroup();
     var marker_layers = L.layerGroup();
 
@@ -145,6 +145,7 @@ $(document).on('turbolinks:load', function() {
 
     if ( $('body').attr('id') === 'layers' )  {
       ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,'layers');
+
     }
     if ( $('body').attr('id') === 'maps' )  {
       // todo: omit/handle layer!
