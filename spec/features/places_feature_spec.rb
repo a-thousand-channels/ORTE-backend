@@ -21,12 +21,11 @@ RSpec.feature 'User create and updates a place ' do
 
     @other_group = FactoryBot.create(:group)
     @other_map = FactoryBot.create(:map, :group_id => @other_group.id)
-    @ohter_layer = FactoryBot.create(:layer, :map_id=> @other_map.id, :title=>"other layer")
+    @other_layer = FactoryBot.create(:layer, :map_id=> @other_map.id, :title=>"other layer")
     @place = FactoryBot.create(:place, :layer_id => @layer.id)
     visit edit_map_layer_place_path(@map,@layer,@place)
     expect(page).to have_content 'my layer'
     expect(page).not_to have_content 'other layer'
-
 
   end
 
