@@ -1,6 +1,11 @@
 toolbar:
-  - bold italic | undo redo
-  - image | link
+  - bold italic blockquote bullist code | link | undo redo | fullscreen
 plugins:
   - image
   - link
+  - lists
+  - code
+  - fullscreen
+branding: false
+menubar: false
+statusbar: false

@@ -39,7 +39,8 @@
             = place.zip
             = place.city
           %td
-            #{place.lat[0..6]}/#{place.lon[0..5]}
+            - if place.lat
+              #{place.lat[0..6]}/#{place.lon[0..5]}
           %td
             - if place.published
               %i.fi-check.fi-24
