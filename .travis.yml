@@ -1,11 +1,14 @@
 dist: trusty
 language: ruby
 rvm:
-  - 2.4.4
+- 2.4.4
 sudo: required
 addons:
   chrome: stable
 before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3 # give xvfb some time to start
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- sleep 3
+env:
+  global:
+    secure: VuWCV2eBGT4Eqov373isabI1sV2oqZSH65T6BE0PlkSgS1XADbC5+xx4gUf00jkWCGT1KKYxQwomjV5B9q2mqTINKr9D5c9uu2COXkk0tfLiPh7DlQFtCGp5FR+gxdLfjVKAE/nCJglEGBad5OaMK/LxYvF+5i4vxJyV8JDNvLHA5Hqi2o81Yp6RWliGRbC5qlZB19/nMjPG0EG4fYLNVdMZ2CJ4MBfePZHrYtwgPwseh9+3JVImSlKlaqaT26ca2+UpnVoIo0wUz5OARn9k6ZSuSEkgRwZoYkvs8zUZ8b6FyLlMXjjvuj77KxRMPVaodqasKxgfcAqd2iWpKkbvj/4CQuftLrMhxr8bhvRWVN+cZfe2owO6z/Xqya0rC6wX2a533wxDOepUlm2Jkzr//eS5qpaiDOclt6dwbS9FKVA4cYO/JjtpMALYN5AqDlNwgRBfZwvts0cBXLTIIW+BPdTE4wtumG/xGDqc4ILgCop8JMQb25khD3o+LIfQFGbwm24hQY6SAloC7/esb57MX/+nqzbeCGrNxadB0TTaudA9v7Gnvd1x4f18TIPSbBCi82jZWR7YXbAETsI2pKKSvYO2NlumwR+06NnrG+aVaOgugpZiJ1XT+C2ZrT2K9sLDgRakIoJHmYglSdkQC4qyMJoevy6tXA67AQ/s/DBm1RI=
