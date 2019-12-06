@@ -21,9 +21,6 @@ gem 'jbuilder'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 
-gem 'honeybadger', '~> 4.0'
-
-
 # custom
 gem 'cancancan'
 gem 'devise'
