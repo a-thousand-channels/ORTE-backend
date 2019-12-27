@@ -1,7 +1,7 @@
 - if @map.script && @map.script.present?
   :javascript
     $(document).on('turbolinks:load', function() {
-        #{raw(@map.script)}
+        #{h(@map.script)}
     });
 
 
