@@ -7,7 +7,7 @@ Simple, straightforward backend for creating and managing places/POIs (or in ger
 
 Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
 
-This application is as its very beginning, work in progress. 
+This application is work in progress. 
 
 ![preview](https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-backend-dev-002.jpg)
 
@@ -17,11 +17,13 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 
 ## Credits
 
-Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and Treffentotal (acceptance testing and first use case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from OTRTE backend via JSON)
+Code + UI by Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and live testing by Treffentotal (acceptance testing and first use case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from OTRTE backend via JSON) and at Workshops of city/data/explosion.
 
 ## Feedback & Contributions
 
 Feedback, bug reports and code contributions are most welcome.
+
+Send Feedback to ulf.treger@googlemail.com
 
 Please file bugs to our Github Repository at https://github.com/ut/ORTE-backend
 
