@@ -1,7 +1,7 @@
 dist: trusty
 language: ruby
 rvm:
-- 2.4.4
+- 2.6.3
 sudo: required
 addons:
   chrome: stable
