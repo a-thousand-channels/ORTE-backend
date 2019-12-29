@@ -54,7 +54,10 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
         } else {
           var opacity="0.7"
         }
-        var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='#"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
+        if (color.indexOf('#') > -1) {
+          color = '#'+color;
+        }
+        var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
           console.log(url);
         var icon = new CustomLargeIcon({iconUrl: url});
@@ -85,7 +88,7 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
 
       // alternative place display image instead of a marker
 
-      var small_svg = "<svg height='14' width='14' xmlns='http://www.w3.org/2000/svg'><circle cx='7' cy='7' r='7' fill='#"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
+      var small_svg = "<svg height='14' width='14' xmlns='http://www.w3.org/2000/svg'><circle cx='7' cy='7' r='7' fill='"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
       var small_icon_url = encodeURI("data:image/svg+xml," + small_svg).replace(new RegExp('#', 'g'),'%23');
       var small_icon =new CustomSmallIcon({iconUrl: small_icon_url})
       var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(image_layers);

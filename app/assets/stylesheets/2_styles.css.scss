@@ -142,75 +142,7 @@ input#addresslookup_address {
 
 
 
-/* -------------------- */
-.form-actions {
-    /* margin-top: 0; */
-}
-/* -------------------- */
 
-div.place_layer {
-  padding-top: 5px;
-  padding-bottom: 10px;
-  label {
-    display: inline;
-  }
-  select#place_layer_id {
-    display: inline;
-    width: 70%;
-    margin-left: 20px;
-  }
-}
-
-#layer_selector {
-
-  .input.select {
-    display: inline;
-  }
-}
-
-
-select.datetime {
-  width: 100px;
-  padding: 0.3rem;
-}
-select#place_startdate_1i,
-select#place_enddate_1i  {
-  width: 62px;
-}
-select#place_startdate_3i,
-select#place_enddate_3i  {
-  width: 46px;
-}
-select#place_startdate_4i,
-select#place_enddate_4i
- {
-  width: 46px;
-}
-select#place_startdate_5i,
-select#place_enddate_5i  {
-  width: 46px;
-}
-
-
-form img {
-
-    max-width: 100px;
-    max-height: 150px;
-
-}
-
-
-#another_color_wrapper {
-  background-color: rgba(200, 200, 200, 0.5);
-  padding: 0.5em 1em;
-  margin-top: 0.5em;
-  span {
-    cursor: pointer;
-    svg:hover {
-      stroke: white;
-    }
-  }
-}
 
 p.close_link_wrapper {
   width: 50px;
