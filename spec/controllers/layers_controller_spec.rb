@@ -112,7 +112,7 @@ RSpec.describe LayersController, type: :controller do
       context "with invalid params" do
         it "returns a success response (i.e. to display the 'new' template)" do
           post :create, params: {map_id: @map.id,  layer: invalid_attributes}, session: valid_session
-          expect(response.status).to eq(302)
+          expect(response.status).to eq(200)
         end
       end
     end
@@ -141,7 +141,7 @@ RSpec.describe LayersController, type: :controller do
         it "returns a success response (i.e. to display the 'edit' template)" do
           layer = Layer.create! valid_attributes
           put :update, params: {map_id: @map.id, id: layer.to_param, layer: invalid_attributes}, session: valid_session
-          expect(response.status).to eq(302)
+          expect(response.status).to eq(200)
         end
       end
     end
