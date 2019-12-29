@@ -17,7 +17,6 @@ class MapsController < ApplicationController
         format.html { render :show }
         # format.json { render json: @map_layers.to_json(:include => { :places => { :methods => [:date, :edit_link] }} ) }
         format.json { render :show }
-
       end
     else
       redirect_to maps_path
@@ -31,8 +30,7 @@ class MapsController < ApplicationController
   end
 
   # GET /maps/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /maps
   # POST /maps.json
@@ -75,13 +73,14 @@ class MapsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_map
-      @map = Map.by_user(current_user).find_by_id(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def map_params
-      params.require(:map).permit(:title, :text, :published, :script, :group_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_map
+    @map = Map.by_user(current_user).find_by_id(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def map_params
+    params.require(:map).permit(:title, :text, :published, :script, :group_id)
+  end
 end

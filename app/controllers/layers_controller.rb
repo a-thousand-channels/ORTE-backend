@@ -1,7 +1,7 @@
 class LayersController < ApplicationController
   before_action :set_layer, only: [:show, :edit, :update, :destroy]
 
-  protect_from_forgery :except => :show
+  protect_from_forgery except: :show
 
   require 'color-generator'
 
@@ -48,24 +48,21 @@ class LayersController < ApplicationController
     generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
     if !@layer.color || params[:recolor]
       @layer.color = '#' + generator.create_hex
-    else
-      if !@layer.color.include? '#'
-        @layer.color = '#' + @layer.color
-      end
+    elsif @layer.color && !@layer.color.include?('#')
+      @layer.color = '#' + @layer.color
     end
 
     @colors_selectable = []
     6.times do
-      @colors_selectable << generator.create_hex
+      @colors_selectable << '#' + generator.create_hex
     end
-
   end
 
   # POST /layers
   # POST /layers.json
   def create
     @layer = Layer.new(layer_params)
-    if !@layer.color.include? '#'
+    if @layer.color && !@layer.color.include?('#')
       @layer.color = '#' + @layer.color
     end
     @map = Map.by_user(current_user).find(params[:map_id])
@@ -83,7 +80,7 @@ class LayersController < ApplicationController
   # PATCH/PUT /layers/1
   # PATCH/PUT /layers/1.json
   def update
-    if !@layer.color.include? '#'
+    if @layer.color && !@layer.color.include?('#')
       @layer.color = '#' + @layer.color
     end
     respond_to do |format|
@@ -108,14 +105,15 @@ class LayersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_layer
-      @map = Map.by_user(current_user).find(params[:map_id])
-      @layer = Layer.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def layer_params
-      params.require(:layer).permit(:title, :text, :published, :map_id, :color)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_layer
+    @map = Map.by_user(current_user).find(params[:map_id])
+    @layer = Layer.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def layer_params
+    params.require(:layer).permit(:title, :text, :published, :map_id, :color)
+  end
 end
