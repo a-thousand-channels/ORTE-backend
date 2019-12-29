@@ -3,37 +3,36 @@
     .large-12.cell
       = f.error_notification
   .grid-x
-    .large-3.cell
-      &nbsp;
-    .large-6.medium-12.cell
+    .large-12.medium-12.cell
       .form-inputs
-        = f.input :title
-        = f.input :text
-        = f.input :published
+        %p
+          = f.input :title
+          = f.input :text, :label => 'Description'
+        %p
+          = f.input :published, :label => 'Publish'
+        %p.compact
+          = f.label :color, "Marker color"
         .grid-x
-          .small-5.cell
-            = f.label :color, "Marker color"
-            = f.input :color, :label => false
-          .small-1.cell
-            &nbsp;
           .small-6.cell
-            %svg{id: "layer_color_preview",height:50,width:50,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
-              %circle{cx:"25",cy:"25",r:"25",fill:"##{@layer.color}"}
+            #preview_color_wrapper
+              %svg{id: "layer_color_preview",height:50,width:50,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
+                %circle{cx:"25",cy:"25",r:"25",fill:"#{@layer.color}"}
+              = f.input :color, :label => false, :size => 10, :class => "inline"
+          .small-6.cell
+
             - if @colors_selectable
               #another_color_wrapper
                 %p.small
-                  Or select a color:
+                  Select an alternate color:
                 %p
                   - @colors_selectable.each do |c|
                     %span{:class=>'another_color',"data-color"=>"#{c}"}
                       %svg{height:24,width:24,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
-                        %circle{cx:"12",cy:"12",r:"12",fill:"##{c}"}
+                        %circle{cx:"12",cy:"12",r:"12",fill:"#{c}"}
 
 
 
         = f.association :map, collection: Map.by_user(current_user), include_blank: false
       .form-actions
-        %br
-        = f.button :submit, :class => "button"
-    .large-3.cell
-      &nbsp;
+        %p
+          = f.button :submit, :class => "button"

@@ -17,13 +17,15 @@ class LayersController < ApplicationController
   def show
     @maps = Map.by_user(current_user)
     @map_layers = @map.layers
-    @places =  @layer.places
+    @places = @layer.places
     if params[:remap]
       @place = Place.find(params[:place_id])
     end
     respond_to do |format|
       format.html { render :show }
-      # format.json { render json: @layer.to_json(:include => { :places => { :methods => [:date, :edit_link], :include => :images }} ) }
+      # format.json { render json: @layer.to_json
+      # (:include =>
+      # { :places => { :methods => [:date, :edit_link], :include => :images }} ) }
       # switch to json.builder
       format.json { render :show }
     end
@@ -33,15 +35,23 @@ class LayersController < ApplicationController
   def new
     @layer = Layer.new
     generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
-    @layer.color = generator.create_hex
+    @layer.color = '#' + generator.create_hex
     @map = Map.by_user(current_user).find(params[:map_id])
+    @colors_selectable = []
+    6.times do
+      @colors_selectable << '#' + generator.create_hex
+    end
   end
 
   # GET /layers/1/edit
   def edit
     generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
     if !@layer.color || params[:recolor]
-      @layer.color = generator.create_hex
+      @layer.color = '#' + generator.create_hex
+    else
+      if !@layer.color.include? '#'
+        @layer.color = '#' + @layer.color
+      end
     end
 
     @colors_selectable = []
@@ -49,18 +59,19 @@ class LayersController < ApplicationController
       @colors_selectable << generator.create_hex
     end
 
-
-
   end
 
   # POST /layers
   # POST /layers.json
   def create
     @layer = Layer.new(layer_params)
+    if !@layer.color.include? '#'
+      @layer.color = '#' + @layer.color
+    end
     @map = Map.by_user(current_user).find(params[:map_id])
     respond_to do |format|
       if @layer.save
-        format.html { redirect_to map_path(@map), notice: 'Layer was successfully created.' }
+        format.html { redirect_to map_path(@map), notice: 'Layer was created.' }
         format.json { render :show, status: :created, location: @layer }
       else
         format.html { render :new }
@@ -72,6 +83,9 @@ class LayersController < ApplicationController
   # PATCH/PUT /layers/1
   # PATCH/PUT /layers/1.json
   def update
+    if !@layer.color.include? '#'
+      @layer.color = '#' + @layer.color
+    end
     respond_to do |format|
       if @layer.update(layer_params)
         format.html { redirect_to map_path(@map), notice: 'Layer was successfully updated.' }
