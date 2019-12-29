@@ -74,7 +74,6 @@ class Admin::UsersController < ApplicationController
   def admin_user_params
     permitted_attributes = %i[email password group_id]
     permitted_attributes << :role if current_user.try(:admin?)
-
     params.require(:admin_user).permit(permitted_attributes)
   end
 end
