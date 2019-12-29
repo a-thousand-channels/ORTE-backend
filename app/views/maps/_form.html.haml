@@ -5,18 +5,20 @@
   .grid-x
     .large-12.cell
       .form-inputs
-        = f.input :title
-        = f.input :text
-        = f.input :published
-        = f.association :group, collection: Group.by_user(current_user), include_blank: false
-        = f.input :script
+        %p
+          = f.input :title
+          = f.input :text, :label => 'Description'
+        %p
+          = f.input :published, :label => 'Publish'
+          = f.association :group, collection: Group.by_user(current_user), include_blank: false
+          = f.input :script
       .form-actions
         %p
           = f.button :submit, :class => "button"
-- if admin?
+- if admin? && params[:action] == 'edit'
   - if @map.layers.count == 0
     %hr
     = link_to @map, :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
       %i.fi.fi-x
       Destroy
-  %p.shy Only admins can delete a map. But: You can destroy this map only if you've deleted all places and layers before :#
+  %p.shy Only admins can delete a map. You are an admin. But: You can destroy this map only if you've deleted all places and layers before :#

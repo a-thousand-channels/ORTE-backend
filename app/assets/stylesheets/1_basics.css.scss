@@ -1,5 +1,6 @@
 body {
   font-family: "worksans","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-size: 11.3pt;
 }
 h1,h2 {
   font-family: "worksans-light","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
@@ -52,7 +53,8 @@ span.name.middle {
 /* foundation adapations */
 .callout {
     border: 0px;
-    margin: 20px 0 1rem;
+    margin: 20px 0;
+    padding: 0.7rem 3rem 0.7rem 0.7rem;
 }
 div.panel {
     border: 5px solid #bbc;
@@ -79,7 +81,13 @@ a.button.small {
     line-height: 1;
     position: absolute;
 }
-
+a.button.action {
+  font-size: 13pt;
+  i {
+    padding-right: 10px;
+    vertical-align: text-top;
+  }
+}
 
 select {
   margin: 0;
@@ -89,6 +97,11 @@ select {
 /* -------------------- */
 .top-bar, .top-bar ul {
     background-color: #333;
+}
+
+.top-bar ul li.name {
+    font-family: 'worksans-semibold';
+    margin-top: 2px;
 }
 
 @media screen and (max-width: 63.9375em) {
@@ -104,7 +117,16 @@ select {
     display: none;
   }
 }
-
+.menu a.button.logout {
+    background-color: #333;
+    border: 1px solid #666;
+    color: #aaaa00 !important;
+    margin-top: 3px;
+    padding: 0.5rem 0.75rem
+}
+.menu a.button.logout:hover {
+    border: 1px solid #999;
+}
 
 
 
@@ -142,7 +164,15 @@ input[type="date"] {
 }
 
 .form-actions {
-  margin-top: 25px;
+  margin-top: 15px;
+
+  p {
+    margin: 0;
+
+    .button {
+        margin: 0;
+    }
+  }
 }
 
 p.hint {

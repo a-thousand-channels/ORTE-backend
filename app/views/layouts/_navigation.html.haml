@@ -6,7 +6,7 @@
         - if admin?
           %li
             %a{:href => maps_path}
-              %i.fi-map.fi-24
+              %i.fi-map.fi-21
               %span.show-for-large
                 Maps
           %li.hide
@@ -21,25 +21,26 @@
       - if user_signed_in?
         %li
           %a{:href => edit_user_password_path}
-            #{current_user.email} (#{current_user.group.title})
+            %i.fi-torso.fi-21
+            - if admin?
+              #{current_user.email} (#{current_user.group.title})
 
 
         - if admin?
           %li
-            %a{:href => admin_users_path}
-              %i.fi-torsos-all.fi-24
-              %span.show-for-large
-                Users
-          %li
             %a{:href => admin_groups_path}
-              %i.fi-torsos-all.fi-24
+              %i.fi-torsos.fi-21
               %span.show-for-large
                 Groups
+          %li
+            %a{:href => admin_users_path}
+              %i.fi-torsos-all.fi-21
+              %span.show-for-large
+                Users
 
         %li.show-for-medium-up
-          = link_to destroy_user_session_path, method: :delete, :id => 'logout' do
-            %i.fi-power
-            = t(".sign_out")
+          = link_to destroy_user_session_path, method: :delete, :id => 'logout', :title => "#{t('.sign_out')}", :class=>'button logout' do
+            %i.fi-power.fi-21
       - else
         %li
           = link_to new_user_session_path, :id => 'login' do
