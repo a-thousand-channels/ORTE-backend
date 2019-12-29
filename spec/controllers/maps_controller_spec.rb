@@ -100,7 +100,7 @@ RSpec.describe MapsController, type: :controller do
       context "with invalid params" do
         it "returns a success response (i.e. to display the 'new' template)" do
           post :create, params: {map: invalid_attributes}, session: valid_session
-          expect(response).to have_http_status(302)
+          expect(response).to have_http_status(200)
         end
       end
     end
@@ -127,9 +127,9 @@ RSpec.describe MapsController, type: :controller do
 
       context "with invalid params" do
         it "returns a success response (i.e. to display the 'edit' template)" do
-          map = Map.create! invalid_attributes
+          map = Map.create! valid_attributes
           put :update, params: {id: map.to_param, map: invalid_attributes}, session: valid_session
-          expect(response).to have_http_status(302)
+          expect(response).to have_http_status(200)
         end
       end
     end
