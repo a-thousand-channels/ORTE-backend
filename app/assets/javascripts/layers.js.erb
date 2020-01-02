@@ -142,7 +142,14 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
       content += "<p>"+place.teaser.trim()    // remove leading and trailing spaces
                 .substring(0, 300).split(" ").slice(0, -1).join(" ") + "...";
 
-      marker.bindPopup(content).on('click', function(){ map.panTo(marker.getLatLng()) });
+      marker.bindPopup(content).on('click', function(){
+          map.panTo(marker.getLatLng());
+          if ( $('#addresslookup_address').hasClass('hide') ) {
+            // ShowLookUpField();
+          } else {
+            ClearLookUpField();
+          }
+      });
       c++;
     });
     console.log(c+" Marker added to map!");
