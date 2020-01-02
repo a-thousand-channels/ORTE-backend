@@ -6,7 +6,9 @@
       %div
         - if @place.layer.title && params[:action] == 'new'
           %p.inline
-            %span.name Layer
+            = link_to map_url(@place.layer.map) do
+              = @place.layer.map.title
+            \>
             = link_to map_layer_url(@place.layer.map,@place.layer) do
               = @place.layer.title
             = f.association :layer, as: :hidden
@@ -35,11 +37,6 @@
     .large-5.medium-5.cell
       .grid-x
         .large-6.medium-6.small-6.cell
-
-          %p.text-right.show-for-medium{:title=>"This settings publishes this place on the map!"}
-            %span.name.middle Publish?
-          %p.text-left.show-for-small-only{:title=>"This settings publishes this place on the map!"}
-            %span.name.middle Publish?
           - if params[:action] == 'edit'
             %p.text-right
               %span.name.middle New position?
@@ -49,8 +46,8 @@
             %label.switch-paddle{:for=>"place_published"}
               %span.show-for-sr
                 Publish
-              %span.switch-active{:aria-hidden=>"true"} Yes
-              %span.switch-inactive{:aria-hidden=>"true"} No
+              %span.switch-active{:aria-hidden=>"true"} No
+              %span.switch-inactive{:aria-hidden=>"true"} Yes
 
           - if params[:action] == 'edit'
             %p#remap.clear
@@ -100,7 +97,7 @@
             = f.input :city
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
-        = f.input :images, input_html: { accept: ('image'), multiple: true  }
+        - # = f.input :images, input_html: { accept: ('image'), multiple: true  }
         - if @place.images.count > 0
           - @place.images.each do |img|
             - # = image_tag img.variant(resize_to_limit: [100, 100]).processed

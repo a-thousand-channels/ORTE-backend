@@ -43,8 +43,15 @@ form#addresslookup {
   }
 }
 input#addresslookup_address {
-    margin: 0;
-    padding: 0.5rem;
+  margin: 0;
+  padding: 0.5rem;
+  transition: all 1s;
+  width: auto;
+}
+input#addresslookup_address.hide {
+  padding: 0;
+  width: 0;
+  transition: all 1s;
 }
 /* -------------------- */
 #map .leaflet-popup-content-wrapper, #map  .leaflet-popup-tip {
@@ -55,7 +62,8 @@ input#addresslookup_address {
 
     p {
       margin: 8px 0;
-
+      font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+      font-size: 9pt;
       a {
         color: black;
         text-decoration: underline;
@@ -80,6 +88,8 @@ input#addresslookup_address {
   max-width: 310px;
   display: block;
   margin-top: 1rem;
+  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-size: 9pt;
 }
 @media screen and (max-width: 63.9375em) {
 
