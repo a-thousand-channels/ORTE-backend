@@ -1,48 +1,39 @@
-%p#notice= notice
 
-%p
-  %b Title:
-  = @place.title
-%p
-  %b Teaser:
-  = @place.teaser
-%p
-  %b Text:
-  = @place.text
-%p
-  %b Link:
-  = @place.link
-%p
-  %b Startdate:
-  = @place.startdate
-%p
-  %b Enddate:
-  = @place.enddate
-%p
-  %b Lat:
-  = @place.lat
-%p
-  %b Lon:
-  = @place.lon
-%p
-  %b Location:
-  = @place.location
-%p
-  %b Address:
-  = @place.address
-%p
-  %b Zip:
-  = @place.zip
-%p
-  %b City:
-  = @place.city
-%p
-  %b Country:
-  = @place.country
-%p
-  %b Published:
-  = @place.published
-%p
-  %b Layer:
-  = @place.layer
+#info-wrapper
+  %p#notice= notice
 
+
+  %p.hint.text-left
+    = link_to map_url(@place.layer.map) do
+      = @place.layer.map.title
+    \>
+    = link_to map_layer_url(@place.layer.map,@place.layer) do
+      = @place.layer.title
+
+  %h1
+    = @place.title
+  %p
+    %strong
+      = @place.teaser.html_safe
+  %p
+    =h @place.text
+  %p
+    =link_to @place.link
+  %p
+    = @place.startdate
+    - if @place.enddate
+      = @place.enddate
+  %p
+    = @place.location
+    = @place.address
+
+    = @place.zip
+    \/
+    = @place.city
+    = @place.country
+    \(#{@place.lat[0..5]}/#{@place.lon[0..5]})
+  %p.hint
+    %b Published:
+    = @place.published
+    %b Last edit:
+    = @place.updated_at

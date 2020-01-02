@@ -140,7 +140,6 @@ $(document).on('turbolinks:load', function() {
     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
     }).addTo(map);
 
-
     // layers: show all places
 
     if ( $('body').attr('id') === 'layers' )  {
@@ -153,6 +152,7 @@ $(document).on('turbolinks:load', function() {
       ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,'maps');
     }
 
+
     // addresslookup_address
     // click on map to get latlon and adress
     map.on('dblclick', function(e){
@@ -160,18 +160,15 @@ $(document).on('turbolinks:load', function() {
       console.log(e.latlng.lat);
       // minimize address lookup form
       if ( $('#addresslookup_address').length > 0 ) {
-        $('#addresslookup_address').addClass('hide');
-        $('#addresslookup_address').val('');
-        $('#addresslookup_button i.fi-magnifying-glass').addClass('hide');
-        $('#addresslookup_button i.fi-fast-forward').removeClass('hide');
-        $('#selection-hint').html("");
-        $('#selection-hint').removeClass('active');
-
+        ClearLookUpField();
         ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
       } else {
         console.log("No lookup possible. Please select a map and a layer first");
       }
     });
+
+
+
 
 
     /* special overlay for treffentotal map */
@@ -192,3 +189,19 @@ $(document).on('turbolinks:load', function() {
   });
 });
 
+function ClearLookUpField() {
+      $('#addresslookup_address').addClass('hide');
+      $('#addresslookup_address').val('');
+      $('#addresslookup_button i.fi-magnifying-glass').addClass('hide');
+      $('#addresslookup_button i.fi-fast-forward').removeClass('hide');
+      $('#selection-hint').html("");
+      $('#selection-hint').removeClass('active');
+};
+function ShowLookUpField() {
+    $('#addresslookup_address').removeClass('hide');
+    $('#addresslookup_button i.fi-magnifying-glass').removeClass('hide');
+    $('#addresslookup_button i.fi-fast-forward').addClass('hide');
+    $('.leaflet-popup').hide();
+    $('#selection-hint').html("");
+    $('#selection-hint').removeClass('active');
+}

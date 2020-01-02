@@ -23,12 +23,7 @@ function PrepareBeforeLookup(url) {
 function LookupNominatim(address,url) {
 
   if ( $('#addresslookup_address').hasClass('hide') ) {
-    $('#addresslookup_address').removeClass('hide');
-    $('#addresslookup_button i.fi-magnifying-glass').removeClass('hide');
-    $('#addresslookup_button i.fi-fast-forward').addClass('hide');
-    $('.leaflet-popup').hide();
-    $('#selection-hint').html("");
-    $('#selection-hint').removeClass('active');
+    ShowLookUpField();
 
   } else {
 
