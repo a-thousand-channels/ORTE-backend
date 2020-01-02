@@ -184,11 +184,21 @@ p.hint {
   margin-bottom: 0;
   text-align: right;
 }
+p.hint.text-left {
+  text-align: left;
+}
 
 div#switch {
     height: initial;
     position: static;
     margin-bottom: 0;
+    .switch-paddle {
+      width: 7rem;
+    }
+    input:checked ~ .switch-paddle::after {
+      left: auto;
+      right: 0.25rem;
+    }
 }
 p#remap {
   margin: 10px 0 0 0;

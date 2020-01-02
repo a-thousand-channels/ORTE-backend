@@ -38,8 +38,12 @@ main {
 
 /* -------------------- */
 form#addresslookup {
+
+  width: auto;
+  display: inline-block;
   .input-group {
     margin: 0;
+    width: max-content;
   }
 }
 input#addresslookup_address {

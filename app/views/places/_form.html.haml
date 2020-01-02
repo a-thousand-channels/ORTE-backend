@@ -13,12 +13,16 @@
               = @place.layer.title
             = f.association :layer, as: :hidden
         - else
-          %p.inline= f.label :layer
           %div.inline#layer_selector.hide
             = f.association :layer, :collection => @place.layer.map.layers, :label_method => :title, :value_method => :id, label: false, include_blank: false
           %div.inline#layer_display
-            = @place.layer.title
-      %p.clear
+            = link_to map_url(@place.layer.map) do
+              = @place.layer.map.title
+            \>
+            = link_to map_layer_url(@place.layer.map,@place.layer) do
+              = @place.layer.title
+            %i.fi.fi-pencil.fi-13
+      %p.clear.hint.text-left
         %span.name Address
         - if @old_place
           = @old_place.full_address
@@ -35,24 +39,18 @@
         = f.input :lon, as: :hidden
 
     .large-5.medium-5.cell
-      .grid-x
-        .large-6.medium-6.small-6.cell
-          - if params[:action] == 'edit'
-            %p.text-right
-              %span.name.middle New position?
-        .large-6.medium-6.small-6.cell
-          #switch.switch.inline
-            %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
-            %label.switch-paddle{:for=>"place_published"}
-              %span.show-for-sr
-                Publish
-              %span.switch-active{:aria-hidden=>"true"} No
-              %span.switch-inactive{:aria-hidden=>"true"} Yes
+      #switch.switch.inline
+        %input{:name=>"place[published]", :class => "switch-input", :id => "place_published", :type => "checkbox", :checked => @place.published }
+        %label.switch-paddle{:for=>"place_published"}
+          %span.show-for-sr
+            Publish
+          %span.switch-active{:aria-hidden=>"true"} Publish
+          %span.switch-inactive{:aria-hidden=>"true"} Publish
 
-          - if params[:action] == 'edit'
-            %p#remap.clear
-              = link_to map_layer_path(@place.layer.map,@place.layer,remap: true, place_id: @place.id), :class =>"button small" do
-                %strong RE-MAP
+      - if params[:action] == 'edit'
+        %p#remap.clear
+          = link_to map_layer_path(@place.layer.map,@place.layer,remap: true, place_id: @place.id), :class =>"button small" do
+            %strong RE-MAP
 
   .grid-x.grid-padding-x
     .large-12.cell
@@ -80,6 +78,7 @@
             = f.input :enddate_date, as: :date, html5: true, :label => false
           .large-6.medium-6.small-5.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
+
         = tinymce
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
