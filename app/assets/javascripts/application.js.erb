@@ -56,11 +56,11 @@ $(document).on('turbolinks:load', function() {
 
     // add nav_bar for export function(s)
     $('#map').before($('<div />').attr('id','export_bar').attr('class','nav_bar'));
-    $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export map data as JSON').text('EXPORT'));
+    $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export map data as JSON').text('JSON'));
     $('#export_bar').find('div').addClass('nav_bar_item');
 
     if ( $('#selection').data('map-id') ) {
-      $('#export_bar_json').html('<a href="/public/maps/'+$('#selection').data('map-id')+'.json" download="map'+$('#selection').data('map-id')+'.json">EXPORT</a>');
+      $('#export_bar_json').html('<a href="/public/maps/'+$('#selection').data('map-id')+'.json" download="map'+$('#selection').data('map-id')+'.json">JSON</a>');
 
     } else {
       $('#export_bar_json').html('');
@@ -158,7 +158,15 @@ $(document).on('turbolinks:load', function() {
     map.on('dblclick', function(e){
       console.log(e.latlng);
       console.log(e.latlng.lat);
+      // minimize address lookup form
       if ( $('#addresslookup_address').length > 0 ) {
+        $('#addresslookup_address').addClass('hide');
+        $('#addresslookup_address').val('');
+        $('#addresslookup_button i.fi-magnifying-glass').addClass('hide');
+        $('#addresslookup_button i.fi-fast-forward').removeClass('hide');
+        $('#selection-hint').html("");
+        $('#selection-hint').removeClass('active');
+
         ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
       } else {
         console.log("No lookup possible. Please select a map and a layer first");

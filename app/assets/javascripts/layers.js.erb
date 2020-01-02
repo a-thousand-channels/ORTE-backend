@@ -49,14 +49,18 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
       console.log("Place ID "+place.id+"////////");
       console.log(place.title+" @ "+place.lat+"/"+place.lon);
       if ( color ) {
+        console.log("--------------");
+        console.log(color);
         if ( place.published === true ) {
           var opacity="0.9"
         } else {
           var opacity="0.7"
         }
-        if (color.indexOf('#') > -1) {
+        if (color.indexOf('#') == -1) {
           color = '#'+color;
         }
+        console.log("--------------");
+        console.log(color);
         var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
           console.log(url);
