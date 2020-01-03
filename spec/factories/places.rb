@@ -1,18 +1,18 @@
 FactoryBot.define do
   factory :place do
-    title { "MyString" }
+    title { "MyTitle" }
     teaser { "MyText" }
     text { "MyText" }
-    link { "MyString" }
+    link { "http://domain.com" }
     startdate { "2018-04-27 19:48:51" }
     enddate { "2018-04-27 19:48:51" }
-    lat { "MyString" }
-    lon { "MyString" }
-    location { "MyString" }
-    address { "MyString" }
-    zip { "MyString" }
-    city { "MyString" }
-    country { "MyString" }
+    lat { "Lat" }
+    lon { "Lon" }
+    location { "Location" }
+    address { "Address" }
+    zip { "Zip" }
+    city { "City" }
+    country { "Country" }
     published { false }
     layer
     trait :published do
