@@ -12,13 +12,17 @@
 
   %h1
     = @place.title
+    = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
+      %i.fi.fi-pencil.fi-24
   %p
     %strong
       = @place.teaser.html_safe
   %p
     =h @place.text
   %p
-    =link_to @place.link
+    - if @place.link
+      =link_to @place.link do
+        @place.link
   %p
     = @place.startdate
     - if @place.enddate
