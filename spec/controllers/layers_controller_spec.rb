@@ -1,12 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe LayersController, type: :controller do
-
-  # needed for json builder test, since json builder files are handled as views
+  # needed for json builder test, since json builder files are handled as views:
   render_views
 
   describe "functionalities with logged in user with role 'admin'" do
-
     before do
       group = FactoryBot.create(:group)
       user = FactoryBot.create(:admin_user, :group_id => group.id)
@@ -47,11 +45,10 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
-    describe "GET #show as json" do
-
+    describe 'GET #show as json' do
       it "returns a success reponse" do
         layer = Layer.create! valid_attributes
-        get :show, params: {id: layer.to_param, map_id: @map.id}, session: valid_session, format: 'json'
+        get :show, params: { id: layer.to_param, map_id: @map.id }, session: valid_session, format: 'json'
         expect(response).to have_http_status(200)
       end
 
@@ -73,6 +70,8 @@ RSpec.describe LayersController, type: :controller do
         expect(json['places'][0]['title']).to eq p1.title
         expect(json['places'][1]['title']).to eq p2.title
         expect(json['places'][2]['title']).to eq p3.title
+        expect(json['places'][2]['edit_link']).to match(/pencil/)
+        expect(json['places'][2]['show_link']).to match(/#{p3.title}/)
       end
 
       xit "a layer with published places and some attached images" do

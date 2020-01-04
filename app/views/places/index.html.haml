@@ -29,8 +29,12 @@
           %td
             = smart_date_display(place.startdate, place.enddate)
           %td
-            %h4= place.title
-            %p= place.link
+            %h4
+              = link_to map_layer_place_path(place.layer.map,place.layer,place) do
+                = place.title
+            %p
+              = link_to place.link do
+                = place.link
           %td
             = place.location
             %br

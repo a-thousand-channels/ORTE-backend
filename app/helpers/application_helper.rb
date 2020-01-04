@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-
   def after_sign_in_path_for(resource)
     maps_path
   end
@@ -10,7 +9,7 @@ module ApplicationHelper
     current_user&.admin?
   end
 
-  def smart_date_display(startdate,enddate)
+  def smart_date_display(startdate, enddate)
     if !startdate
       return
     end
