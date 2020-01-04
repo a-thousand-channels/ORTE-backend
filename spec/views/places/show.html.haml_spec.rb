@@ -18,8 +18,7 @@ RSpec.describe "places/show", type: :view do
     expect(rendered).to match(/Address/)
     expect(rendered).to match(/Zip/)
     expect(rendered).to match(/City/)
-    expect(rendered).to match(/Country/)
-    expect(rendered).to match(/false/)
+    expect(rendered).to match(/No/)
     expect(rendered).to match(//)
   end
 end
