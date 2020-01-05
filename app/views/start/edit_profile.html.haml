@@ -1,18 +1,15 @@
-= simple_form_for @user, url: update_profile_path do |f|
-  .grid-x
-    .large-12.cell
-      = f.error_notification
-  .grid-x
-    .large-3.cell
-      &nbsp;
-    .large-6.medium-12.cell.panel
-      %h1= "Edit your Profile"
-      .form-inputs
-        = f.label :email
-        = f.text_field :email
-        = f.label :update_password
-        = f.password_field :password
-      .form-actions
-        = f.button :submit, :class => "button"
-    .large-3.cell
-      &nbsp;
+#info-wrapper
+  = simple_form_for @user, url: update_profile_path do |f|
+    .grid-x
+      .large-12.cell
+        = f.error_notification
+    .grid-x
+      .large-12.medium-12.cell
+        %h1= "Edit your Profile"
+        .form-inputs
+          = f.label :email
+          = f.text_field :email
+          = f.label "New Password"
+          = f.password_field :password
+        .form-actions
+          = f.button :submit, :class => "button", :value => 'Save'

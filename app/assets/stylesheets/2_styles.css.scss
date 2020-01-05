@@ -16,6 +16,10 @@ main {
   min-height: auto;
   padding: 0;
 
+  a {
+    color: darken(#c6c600,10%);
+  }
+
 }
 @media screen and (max-width: 63.9375em) {
   main {
@@ -252,6 +256,9 @@ div.nav_bar {
 #map .leaflet-control-layers,
 #map .leaflet-bar {
     border: 0;
+}
+#map.leaflet-container a {
+    color: darken(#c6c600,10%);
 }
 
 #map .leaflet-bar a:first-child,

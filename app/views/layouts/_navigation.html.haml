@@ -20,7 +20,7 @@
     %ul.menu
       - if user_signed_in?
         %li
-          %a{:href => edit_user_password_path}
+          %a{:href => edit_profile_path, :title => 'Edit your profile'}
             %i.fi-torso.fi-21
             - if admin?
               #{current_user.email} (#{current_user.group.title})
@@ -28,12 +28,12 @@
 
         - if admin?
           %li
-            %a{:href => admin_groups_path}
+            %a{:href => admin_groups_path, :title => 'Manage Groups'}
               %i.fi-torsos.fi-21
               %span.show-for-large
                 Groups
           %li
-            %a{:href => admin_users_path}
+            %a{:href => admin_users_path, :title => 'Manage Users'}
               %i.fi-torsos-all.fi-21
               %span.show-for-large
                 Users
