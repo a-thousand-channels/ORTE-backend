@@ -5,41 +5,48 @@
       %i.fi.fi-x
   %p#notice= notice
 
+  .grid-x.grid-padding-x
+    .cell.medium-4
+      - if @place.images.count > 0
+        - @place.images.each do |img|
+          - # = image_tag img.variant(resize_to_limit: [100, 100]).processed
+          = link_to url_for(img) do
+            = image_tag url_for(img)
+    .cell.medium-8
+      %p.hint.text-left
+        = link_to map_url(@place.layer.map) do
+          = @place.layer.map.title
+        \>
+        = link_to map_layer_url(@place.layer.map,@place.layer) do
+          = @place.layer.title
 
-  %p.hint.text-left
-    = link_to map_url(@place.layer.map) do
-      = @place.layer.map.title
-    \>
-    = link_to map_layer_url(@place.layer.map,@place.layer) do
-      = @place.layer.title
+      %h1
+        = @place.title
+        = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
+          %i.fi.fi-pencil.fi-24
+      %p
+        %strong
+          = @place.teaser.html_safe
+      %p
+        =h @place.text
+      %p
+        - if @place.link
+          =link_to @place.link do
+            = @place.link
+      %p
+        = @place.startdate
+        - if @place.enddate
+          = @place.enddate
+      %p
+        #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
 
-  %h1
-    = @place.title
-    = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
-      %i.fi.fi-pencil.fi-24
-  %p
-    %strong
-      = @place.teaser.html_safe
-  %p
-    =h @place.text
-  %p
-    - if @place.link
-      =link_to @place.link do
-        = @place.link
-  %p
-    = @place.startdate
-    - if @place.enddate
-      = @place.enddate
-  %p
-    #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
-
-  %p.hint
-    %b Coordinates:
-    #{@place.lat[0..5]}, #{@place.lon[0..5]}
-    %b Published:
-    - if @place.published
-      Yes
-    - else
-      No
-    %b Last edit:
-    = @place.updated_at
+      %p.hint
+        %b Coordinates:
+        #{@place.lat[0..5]}, #{@place.lon[0..5]}
+        %b Published:
+        - if @place.published
+          Yes
+        - else
+          No
+        %b Last edit:
+        = @place.updated_at
