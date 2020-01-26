@@ -31,7 +31,7 @@ main {
   main {
       padding: 5px;
       top: 0;
-      margin: 5px 0 0 0;
+      margin: 0 0 0 0;
       min-height: none;
       right: 0;
       left: 0;
@@ -61,36 +61,18 @@ input#addresslookup_address.hide {
   width: 0;
   transition: all 1s;
 }
+
 /* -------------------- */
-#map .leaflet-popup-content-wrapper, #map  .leaflet-popup-tip {
-    background: rgba(255,255,255,0.7);
-    color: #333;
-    box-shadow: 0;
-    border-radius: 0;
-
-    p {
-      margin: 8px 0;
-      font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-      font-size: 9pt;
-      a {
-        color: black;
-        text-decoration: underline;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-    }
-    img {
-      width: 100%;
-      margin-top: 7px;
-
-    }
+#layers main,
+#layers main .grid-x,
+#layers main .cell,
+#layers main #selection {
+  /* avoid 100% width for a nav elements  */
+  width: max-content;
 }
-/* -------------------- */
-
 #selection {
-
 }
+
 #selection p#selection-hint {
   background-color: rgba(200,200,200,0.5);
   padding: 5px 10px;
@@ -142,6 +124,13 @@ input#addresslookup_address.hide {
   background-color: rgba(255,255,255,0.8);
   padding: 10px 20px;
   min-width: 400px;
+  @media screen and (max-width: 39.9375em) {
+    padding: 10px;
+    min-width: none;
+    tbody th, tbody td {
+      padding: 0.5rem 0.3rem 0.3rem;
+    }
+  }
 }
 
 #table-wrapper.large-wrapper,
@@ -254,19 +243,3 @@ div.nav_bar {
   }
 }
 
-/* leaflet overrides */
-#map .leaflet-control-layers,
-#map .leaflet-bar {
-    border: 0;
-}
-#map.leaflet-container a {
-    color: darken(#c6c600,10%);
-}
-
-#map .leaflet-bar a:first-child,
-#map .leaflet-bar a:last-child
-
- {
-    border-top-left-radius: 0;
-    border-top-right-radius: 2px;
-}

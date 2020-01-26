@@ -15,26 +15,27 @@
   %table
     %thead
       %tr
-        %th Date
+        %th.show-for-large Date
         %th Place
-        %th Address
-        %th
+        %th.show-for-large
           %i.fi-eye.fi-24
         %th
 
     %tbody
       - @places.order(:startdate).each do |place|
         %tr
-          %td
+          %td.show-for-medium
             = smart_date_display(place.startdate, place.enddate)
           %td
+            %p.show-for-small-only
+              = smart_date_display(place.startdate, place.enddate)
+
             %h4
               = link_to map_layer_place_path(place.layer.map,place.layer,place) do
                 = place.title
             %p
               = link_to place.link do
                 = place.link
-          %td
             %p
               = place.location
               %br
@@ -45,7 +46,7 @@
             %p.hint.text-left
               - if place.lat
                 #{place.lat[0..6]}/#{place.lon[0..5]}
-          %td
+          %td.show-for-large
             - if place.published
               %i.fi-check.fi-24
             - else
