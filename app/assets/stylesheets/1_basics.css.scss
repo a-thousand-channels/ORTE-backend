@@ -39,7 +39,7 @@ div.small {
 }
 .clear { clear: both; }
 p.inline, div.inline {
-  float: left; margin: 0;
+  display: inline; margin: 0;
 }
 p.clear {
   margin: 0;
@@ -60,6 +60,7 @@ span.name.middle {
 .callout {
     border: 0px;
     margin: 20px 0;
+    margin: 0 0 0.5rem 0;
     padding: 0.7rem 3rem 0.7rem 0.7rem;
 }
 div.panel {
@@ -103,6 +104,7 @@ select {
 /* -------------------- */
 .top-bar, .top-bar ul {
     background-color: #333;
+    padding: 0;
 }
 
 .top-bar ul li.name {
@@ -146,6 +148,8 @@ footer {
 }
 /* -------------------- */
 div.input-group {
+
+  margin-bottom: 0.5rem;
   select {
     margin: 0;
     -moz-appearance: none;

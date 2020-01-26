@@ -4,6 +4,7 @@
     =link_to map_path(@map), :class=>'close_link' do
       \&times;
   %h1
+    Karte:
     = link_to map_path(@map) do
       = @map.title
 
@@ -12,8 +13,8 @@
     %thead
       %tr
         %th Layer
-        %th Marker
-        %th
+        %th.show-for-medium Marker
+        %th.show-for-medium
           %i.fi-eye.fi-24
         %th
 
@@ -27,12 +28,17 @@
                 (#{layer.places.count})
             - if layer.text.present?
               %p= layer.text
-          %td
+            %p.show-for-small-only
+              - if layer.color.present?
+                %svg{height:30,width:30,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
+                  %circle{cx:"15",cy:"15",r:"15",fill:"#{layer.color}"}
+              %span.icons{:style=>"height: 40px; vertical-align: middle;"}
+          %td.show-for-medium
             - if layer.color.present?
               %svg{height:30,width:30,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
                 %circle{cx:"15",cy:"15",r:"15",fill:"#{layer.color}"}
             %span.icons{:style=>"height: 40px; vertical-align: middle;"}
-          %td
+          %td.show-for-medium
             - if layer.published
               %i.fi-check.fi-24
             - else

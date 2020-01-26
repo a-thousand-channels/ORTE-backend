@@ -25,7 +25,7 @@
       = render 'layouts/navigation'
 
     #map
-      MAP
+      &nbsp;
     %main{role: "main"}
       .grid-x
         .cell.medium-12
@@ -35,8 +35,9 @@
           = yield
     %footer.footer
       .grid-x
-        .cell.medium-10
+        .cell.small-10
           = render partial: "layouts/version"
-        .cell.medium-2
           = render partial: "layouts/credits"
+        .cell.small-2
+          &nbsp;
 

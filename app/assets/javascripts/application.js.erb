@@ -141,7 +141,7 @@ $(document).on('turbolinks:load', function() {
     }).addTo(map);
 
     var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>'
     }).addTo(map);
 
     // layers: show all places
@@ -196,15 +196,19 @@ $(document).on('turbolinks:load', function() {
 function ClearLookUpField() {
       $('#addresslookup_address').addClass('hide');
       $('#addresslookup_address').val('');
+      /* disabled
       $('#addresslookup_button i.fi-magnifying-glass').addClass('hide');
       $('#addresslookup_button i.fi-fast-forward').removeClass('hide');
+      */
       $('#selection-hint').html("");
       $('#selection-hint').removeClass('active');
 };
 function ShowLookUpField() {
     $('#addresslookup_address').removeClass('hide');
+    /* disabled
     $('#addresslookup_button i.fi-magnifying-glass').removeClass('hide');
     $('#addresslookup_button i.fi-fast-forward').addClass('hide');
+    */
     $('.leaflet-popup').hide();
     $('#selection-hint').html("");
     $('#selection-hint').removeClass('active');

@@ -148,7 +148,10 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
       content += "</p>";
 
       marker.bindPopup(content).on('click', function(){
-          map.panTo(marker.getLatLng());
+          // map.panTo(marker.getLatLng());
+          map.panToOffset(marker.getLatLng(),[0,125]);
+
+
           if ( $('#addresslookup_address').hasClass('hide') ) {
             // ShowLookUpField();
           } else {
@@ -159,6 +162,13 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
     });
     console.log(c+" Marker added to map!");
 
+    // thanks to https://github.com/louh
+    L.Map.prototype.panToOffset = function (latlng, offset, options) {
+        var x = this.latLngToContainerPoint(latlng).x - offset[0]
+        var y = this.latLngToContainerPoint(latlng).y - offset[1]
+        var point = this.containerPointToLatLng([x, y])
+        return this.setView(point, this._zoom, { pan: options })
+    }
 
 }
 
@@ -176,3 +186,6 @@ function getParams() {
   }
   return vars;
 }
+
+
+
