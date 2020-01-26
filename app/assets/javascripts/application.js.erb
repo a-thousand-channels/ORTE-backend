@@ -26,6 +26,10 @@ $(document).on('turbolinks:load', function() {
     $(document).foundation();
 
 
+    setTimeout(function(){
+      $('#flash').slideUp(500);
+    }, 2000);
+
     // select another color (for layers)
     $('.another_color').click(function(e){
       var another_color = $(this).data('color');

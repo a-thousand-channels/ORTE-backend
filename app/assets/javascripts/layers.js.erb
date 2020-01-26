@@ -117,6 +117,12 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
       // TODO: add to layer, not map
       var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
       var content = '';
+      if ( place.images && place.images[0] ) {
+        $.each(place.images, function(kkey, image) {
+          content += "<img src='"+image.image_url+"' />";
+        });
+      }
+
       if ( place.date ) {
         content += "<p>"+place.date;
         if ( place.address ) {
@@ -129,21 +135,17 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
       if ( place.show_link ) {
         content += place.show_link;
       }
-      if ( place.edit_link ) {
-        content += place.edit_link;
-      }
       content += "</h4>";
       if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
       }
-      if ( place.images && place.images[0] ) {
-        $.each(place.images, function(kkey, image) {
-          content += "<a href='"+image.image_url+"' target='_blank'><img src='"+image.image_url+"' /></a>";
-        });
-      }
 
       content += "<p>"+place.teaser.trim()    // remove leading and trailing spaces
-                .substring(0, 300).split(" ").slice(0, -1).join(" ") + "...";
+                .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
+      if ( place.edit_link ) {
+        content += place.edit_link;
+      }
+      content += "</p>";
 
       marker.bindPopup(content).on('click', function(){
           map.panTo(marker.getLatLng());
