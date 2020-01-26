@@ -1,7 +1,7 @@
 <%# Rails flash messages styled for Zurb Foundation %>
 <% flash.each do |name, msg| %>
   <% if msg.is_a?(String) %>
-    <div class="callout <%= name.to_s == 'notice' ? 'success' : 'alert' %>" data-closable>
+    <div id="flash" class="callout <%= name.to_s == 'notice' ? 'success' : 'alert' %>" data-closable>
       <%= content_tag :div, msg %>
       <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
         <span aria-hidden="true">&times;</span>
