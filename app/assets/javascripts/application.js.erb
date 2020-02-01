@@ -17,6 +17,7 @@
 //= require_tree .
 //= require turbolinks
 //= require leaflet/dist/leaflet
+//= require leaflet.markercluster/dist/leaflet.markercluster
 //= require leaflet-color-markers
 //= require tinymce-jquery
 
@@ -120,7 +121,8 @@ $(document).on('turbolinks:load', function() {
 
     var text_layers = L.featureGroup();
     var image_layers = L.layerGroup();
-    var marker_layers = L.layerGroup();
+    // var marker_layers = L.layerGroup();
+    var marker_layers = L.markerClusterGroup();
 
      var overlays = {
         'T': text_layers,
