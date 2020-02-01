@@ -69,6 +69,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'simplecov'
+  gem 'rspec_junit_formatter'
   gem 'sqlite3'
   gem 'json-schema'
 end
