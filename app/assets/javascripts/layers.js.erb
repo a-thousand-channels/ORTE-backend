@@ -66,6 +66,8 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
           console.log(url);
         var icon = new CustomLargeIcon({iconUrl: url});
         // var icon = blueIcon;
+        $('.marker-cluster-small').css('background-color', 'transparent').css('border', '3px solid '+color).css('opacity', 0.7);
+        $('.marker-cluster-small div').css('background-color', color).css('transform', 'translate3d(-3px, -3px, 0px)').css('font',' 12px "worksans-bold","Helvetica Neue", Arial, Helvetica, sans-serif').css('color','white');
 
       } else {
         if ( parseInt(place.id) === parseInt(params.place) ) {
@@ -117,7 +119,6 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
       // TODO: add to layer, not map
       // var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
       // layercluster
-      var markers = L.markerClusterGroup();
       var marker = L.marker([place.lat, place.lon], {icon: icon})
       marker_layers.addLayer(marker);
       var content = '';

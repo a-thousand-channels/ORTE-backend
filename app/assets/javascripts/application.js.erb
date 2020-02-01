@@ -12,17 +12,17 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require jquery.turbolinks
+// # require jquery.turbolinks
 //= require foundation
 //= require_tree .
-//= require turbolinks
+// # require turbolinks
 //= require leaflet/dist/leaflet
 //= require leaflet.markercluster/dist/leaflet.markercluster
 //= require leaflet-color-markers
 //= require tinymce-jquery
 
 
-$(document).on('turbolinks:load', function() {
+// $(document).on('turbolinks:load', function() {
   $(function() {
     $(document).foundation();
 
@@ -122,7 +122,9 @@ $(document).on('turbolinks:load', function() {
     var text_layers = L.featureGroup();
     var image_layers = L.layerGroup();
     // var marker_layers = L.layerGroup();
-    var marker_layers = L.markerClusterGroup();
+    var marker_layers = L.markerClusterGroup({
+          maxClusterRadius: 20
+      });
 
      var overlays = {
         'T': text_layers,
@@ -133,7 +135,14 @@ $(document).on('turbolinks:load', function() {
     // ---------------
     // baselayer map
 
-    var map = L.map('map', {zoomControl: false, layers: [marker_layers]}).setView([53.55, 9.99], 12);
+    var map = L.map('map', {
+        zoomControl: false,
+        layers: [marker_layers],
+        minZoom: 12,
+        maxZoom: 19
+    }).setView([53.55, 9.99], 12);
+
+    map._layersMaxZoom = 19;
 
     L.control.layers(overlays).addTo(map);
 
@@ -173,6 +182,9 @@ $(document).on('turbolinks:load', function() {
       }
     });
 
+    map.addLayer(marker_layers);
+
+
 
 
 
@@ -193,7 +205,7 @@ $(document).on('turbolinks:load', function() {
     <% end %>
 
   });
-});
+// });
 
 function ClearLookUpField() {
       $('#addresslookup_address').addClass('hide');
