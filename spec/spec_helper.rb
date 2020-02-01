@@ -3,6 +3,7 @@
 require 'capybara'
 require 'capybara/rspec'
 require 'selenium/webdriver'
+require 'webdrivers/chromedriver'
 
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
@@ -10,15 +11,19 @@ end
 
 Capybara.register_driver :headless_chrome do |app|
   capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    chromeOptions: { args: %w(headless disable-gpu) },
-    loggingPrefs: {
-      browser: 'ALL'
-    }
+    chromeOptions: { args: %w[headless disable-gpu] }
   )
+  options = ::Selenium::WebDriver::Chrome::Options.new
+  options.add_argument('--headless')
+  options.add_argument('--no-sandbox')
+  options.add_argument('--disable-dev-shm-usage')
+  options.add_argument('--window-size=1400,1400')
+  options.add_argument('--disable-features=VizDisplayCompositor')
 
   Capybara::Selenium::Driver.new app,
-    browser: :chrome,
-    desired_capabilities: capabilities
+                                 browser: :chrome,
+                                 desired_capabilities: capabilities,
+                                 options: options
 end
 
 # switch to :chrome for watching the tests in browser
@@ -36,7 +41,9 @@ RSpec.configure do |config|
   config.color = true
 
   config.include Capybara::DSL
-
+  Capybara.server = :puma, { Silent: true }
+  Capybara.javascript_driver = :headless_chrome
+  Capybara.server_host = "0.0.0.0" # universal IP
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
