@@ -38,7 +38,7 @@ config/initializers/secret_token.rb
 bower.json
 
 
-/node_modules/*
+# /node_modules/*
 package-lock.json
 
 # Ignore pow environment settings
