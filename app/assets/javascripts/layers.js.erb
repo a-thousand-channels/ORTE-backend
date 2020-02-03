@@ -15,13 +15,14 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,level) {
     console.log("Check for url params");
     var params = getParams();
     if ( level === 'layers') {
-      console.log("Render places of  one layer");
-      DrawMarkers(map,text_layers,image_layers,marker_layers,params,data.color,data.places);
+      console.log("Render places of one layer");
+      DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,data.places);
     } else  {
       $.each(data.layers, function(key,data) {
-        console.log("Render places of layer "+key+" on map");
+        console.log("Render places of layer "+key+" (\""+data.title+"\") on map");
+
         console.log(data.places);
-        DrawMarkers(map,text_layers,image_layers,marker_layers,params,data.color,data.places);
+        DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,data.places);
       });
     }
     console.log("fit to bounds");
@@ -29,9 +30,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,level) {
     map.fitBounds(bounds);
   });
 }
-function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,places) {
+function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,color,places) {
     var c = 0;
-    console.log("places: "+places.size);
+    console.log("places: "+places.length);
     var CustomLargeIcon = L.Icon.extend({
       options: {
         iconSize:     [30, 30],
@@ -45,12 +46,27 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
         iconAnchor:   [6, 6]
       }
     });
+    $("head").append("\
+      <style>\
+        #map .marker-cluster-small {\
+            background-color: transparent;\
+            border: 3px solid "+color+";\
+            opacity: 0.7;\
+        }\
+        #map .marker-cluster-small div {\
+            background-color: "+color+";\
+            transform: translate3d(-3px, -3px, 0px);\
+            font: 12px \"worksans-bold\",\"Helvetica Neue\", Arial, Helvetica, sans-serif;\
+            color: white;\
+        }\
+      </style>\
+      ");
+
+
     $.each(places, function(key,place) {
-      console.log("Place ID "+place.id+"////////");
+      console.log("Place ID "+place.id+"//"+layer_id+"//////");
       console.log(place.title+" @ "+place.lat+"/"+place.lon);
       if ( color ) {
-        console.log("--------------");
-        console.log(color);
         if ( place.published === true ) {
           var opacity="0.9"
         } else {
@@ -63,9 +79,7 @@ function DrawMarkers(map,text_layers,image_layers,marker_layers,params,color,pla
         console.log(color);
         var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
-          console.log(url);
         var icon = new CustomLargeIcon({iconUrl: url});
-        // var icon = blueIcon;
         $('.marker-cluster-small').css('background-color', 'transparent').css('border', '3px solid '+color).css('opacity', 0.7);
         $('.marker-cluster-small div').css('background-color', color).css('transform', 'translate3d(-3px, -3px, 0px)').css('font',' 12px "worksans-bold","Helvetica Neue", Arial, Helvetica, sans-serif').css('color','white');
 
