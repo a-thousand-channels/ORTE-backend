@@ -82,7 +82,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
       ");
 
     console.log("fit to bounds");
-    var bounds = marker_layers.getBounds();
+    var bounds = marker_meta_layers.getBounds();
     map.fitBounds(bounds, {maxzoom: 12, padding: [300,300]});
   });
 }

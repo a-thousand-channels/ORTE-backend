@@ -4,6 +4,7 @@ body {
 }
 h1,h2 {
   font-family: "worksans-light","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  line-height: 1;
 }
 h3,h4,h5,h6 {
   font-family: "worksans-semibold","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
@@ -184,7 +185,10 @@ input[type="date"] {
     }
   }
 }
-
+p.date {
+  margin-top: 1em;
+  margin-bottom: 0;
+}
 p.hint {
   font-size: 0.8em;
   color: grey;

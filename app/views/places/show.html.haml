@@ -21,6 +21,8 @@
         = link_to map_layer_url(@place.layer.map,@place.layer) do
           = @place.layer.title
 
+      %p.date
+        = smart_date_display(@place.startdate, @place.enddate)
       %h1
         = @place.title
         = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
@@ -34,10 +36,6 @@
         - if @place.link
           =link_to @place.link do
             = @place.link
-      %p
-        = @place.startdate
-        - if @place.enddate
-          = @place.enddate
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
 
