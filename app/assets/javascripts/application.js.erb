@@ -135,7 +135,7 @@
     var map = L.map('map', {
         zoomControl: false,
         layers: [marker_meta_layers],
-        minZoom: 8,
+        minZoom: 6,
         maxZoom: 18
     }).setView([53.55, 9.99], 12);
 
@@ -155,6 +155,10 @@
 
     if ( $('body').attr('id') === 'layers' )  {
       ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'layers');
+
+    }
+    if ( $('body').attr('id') === 'places' )  {
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'places');
 
     }
     if ( $('body').attr('id') === 'maps' )  {

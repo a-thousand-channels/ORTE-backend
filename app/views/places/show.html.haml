@@ -1,13 +1,14 @@
 
-#info-wrapper
+#info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}" }}
+
   = link_to map_layer_url(@map,@layer), :class=>"close-button button small", "aria-label"=>"Close back",:type=>"button" do
     %span{"aria-hidden"=>"true"}
       %i.fi.fi-x
   %p#notice= notice
 
   .grid-x.grid-padding-x
-    .cell.medium-4
-      - if @place.images.count > 0
+    - if @place.images.count > 0
+      .cell.medium-4
         - @place.images.each do |img|
           - # = image_tag img.variant(resize_to_limit: [100, 100]).processed
           = link_to url_for(img) do
@@ -45,8 +46,9 @@
         #{@place.lat[0..5]}, #{@place.lon[0..5]}
         %b Published:
         - if @place.published
-          Yes
+          %i.fi-check.fi-18
         - else
-          No
-        %b Last edit:
-        = @place.updated_at
+          %i.fi-lock.fi-18
+
+        %b Last edited:
+        = l(@place.updated_at)
