@@ -121,15 +121,12 @@
 
     var text_layers = L.featureGroup();
     var image_layers = L.layerGroup();
-    // var marker_layers = L.layerGroup();
-    var marker_layers = L.markerClusterGroup({
-          maxClusterRadius: 20
-      });
+    var marker_meta_layers = L.layerGroup();
 
      var overlays = {
         'T': text_layers,
         'I': image_layers,
-        'P': marker_layers
+        'P': marker_meta_layers
     };
 
     // ---------------
@@ -137,8 +134,8 @@
 
     var map = L.map('map', {
         zoomControl: false,
-        layers: [marker_layers],
-        minZoom: 12,
+        layers: [marker_meta_layers],
+        minZoom: 8,
         maxZoom: 18
     }).setView([53.55, 9.99], 12);
 
@@ -157,13 +154,13 @@
     // layers: show all places
 
     if ( $('body').attr('id') === 'layers' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,'layers');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'layers');
 
     }
     if ( $('body').attr('id') === 'maps' )  {
       // todo: omit/handle layer!
       // each layer different color!
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_layers,'maps');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'maps');
     }
 
 
@@ -181,7 +178,7 @@
       }
     });
 
-    map.addLayer(marker_layers);
+    map.addLayer(marker_meta_layers);
 
 
 
