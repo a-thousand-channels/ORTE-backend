@@ -16,19 +16,26 @@ class Place < ApplicationRecord
   attr_accessor :enddate_time
 
   before_save do
-    if startdate_time
-      self.startdate = "#{startdate_date} #{"T"} #{startdate_time}"
-    elsif startdate_date
-      self.startdate = "#{startdate_date} #{"T"} 00:00:00"
+    if startdate_date.present? && startdate_time.present?
+      self.startdate = "#{startdate_date} #{startdate_time}"
+    elsif startdate_date.present?
+      self.startdate = "#{startdate_date} 00:00:00"
+    else
+      # FIXME: if form field startdate_date is emptied by user
+      # the startdate field should be set to null
+      # but: this make json validation fail
+      # and: it makes model based verification impossible
+      # (see spec/models/place_spec.rb line 16 as an example)
+      # self.startdate = ""
     end
-    if enddate_time
-      self.enddate = "#{enddate_date} #{"T"} #{enddate_time}"
-    elsif enddate_date
-      self.enddate = "#{enddate_date} #{"T"} 00:00:00"
+    if enddate_date.present? && enddate_time.present?
+      self.enddate = "#{enddate_date} #{enddate_time}"
+    elsif enddate_date.present?
+      self.enddate = "#{enddate_date} 00:00:00"
+    else
+      # self.enddate = ""
     end
   end
-
-
 
   def date
     ApplicationController.helpers.smart_date_display(self.startdate,self.enddate)
@@ -45,14 +52,14 @@ class Place < ApplicationRecord
   def full_address
     if self.location.present? && self.address.present?
       if self.location == self.address
-        "#{self.location}"
+        self.location
       else
         "#{self.location} #{self.address}"
       end
     elsif self.location.present?
-      "#{self.location}"
+      self.location
     else
-      "#{self.address}"
+      self.address
     end
   end
 
@@ -63,7 +70,4 @@ class Place < ApplicationRecord
     end
     "#{self.full_address}#{c}"
   end
-
-
-
 end

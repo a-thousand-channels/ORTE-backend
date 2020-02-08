@@ -2,8 +2,6 @@
 
 class Public::MapsController  < ActionController::Base
 
-
-
   before_action :cors_set_access_control_headers
 
   # For all responses in this controller, return the CORS access control headers.
@@ -14,8 +12,6 @@ class Public::MapsController  < ActionController::Base
     headers['Access-Control-Request-Method'] = '*'
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   end
-
-
 
   # GET /maps.json
   def index
@@ -33,7 +29,6 @@ class Public::MapsController  < ActionController::Base
   def show
     @map = Map.published.find_by_id(params[:id])
 
-
     respond_to do |format|
       if @map && @map.layers
         @map_layers = @map.layers
@@ -50,6 +45,4 @@ class Public::MapsController  < ActionController::Base
       end
     end
   end
-
-
 end
