@@ -52,7 +52,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
     $.each(data.layers, function(key,data) {
       layer_style += "\
         #map .marker-cluster-layer-"+data.id+" {\
-          border: 3px solid "+data.color+";\
+          border: 0px solid "+data.color+";\
         }\
         #map .marker-cluster-layer-"+data.id+" div {\
           background-color: "+data.color+";\
@@ -64,7 +64,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         #map .marker-cluster-medium, \
         #map .marker-cluster-small {\
             background-color: transparent;\
-            border: 3px solid "+clustercolor+";\
+            border: 0px solid "+clustercolor+";\
             opacity: 0.9;\
             width: 40px;\
             height: 40px;\
@@ -108,9 +108,9 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       console.log(place.title+" @ "+place.lat+"/"+place.lon);
       if ( color ) {
         if ( place.published === true ) {
-          var opacity="0.9"
-        } else {
           var opacity="0.7"
+        } else {
+          var opacity="0.3"
         }
         if (color.indexOf('#') == -1) {
           color = '#'+color;
@@ -192,14 +192,21 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       content += "<h4>";
       if ( place.show_link ) {
         content += place.show_link;
+        if ( place.published !== true ) {
+          content += " <i class='fi-lock fi-18'></i>";
+        }
       }
+
       content += "</h4>";
       if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
       }
-
-      content += "<p>"+place.teaser.trim()    // remove leading and trailing spaces
+      var teaser = place.teaser.replace(/<[^>]*>?/gm, '') // remove html
+      if ( teaser.length > 400 ) {
+        teaser = place.teaser.trim()    // remove leading and trailing spaces
                 .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
+      }
+      content += "<p>"+teaser;
       if ( place.edit_link ) {
         content += place.edit_link;
       }
