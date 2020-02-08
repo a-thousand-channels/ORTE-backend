@@ -15,9 +15,41 @@ This application is work in progress.
 
 This application uses [Nominatim](https://nominatim.openstreetmap.org/), a search engine for OpenStreetMap data to look up address and geolocation data. By implementing this application you should respect the [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/)!
 
+## Installation
+
+Basic steps for a local installation on your *nix machine:
+
+### Get repository
+
+```bash
+$ git clone git@github.com:ut/ORTE-backend.git
+```
+### Prepare Rails
+
+```bash
+$ gem install bundler
+$ bundle install
+```
+
+### Setup MySQL/Maria DB
+
+```bash
+$ sudo mysql -u root
+> CREATE USER 'user'@'localhost' IDENTITIED BY 'password';
+> GRANT ALL PRIVILEGES ON *.* TO 'orte'@'localhost';
+> $CREATE DATABASE orte CHARACTER SET utf8 COLLATE utf8_general_ci;
+> exit;
+$ bundle exec rails db:schema:load;
+$ bundle exec rails db:seed;
+```
+
 ## Credits
 
-Code + UI by Ulf Treger <ulf.treger@googlemail.com> with kind support by Pragma Shift Projects (code donation) and live testing by Treffentotal (acceptance testing and first use case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from OTRTE backend via JSON) and at Workshops of city/data/explosion.
+Code + UI by Ulf Treger <ulf.treger@googlemail.com> with kind support from:
+
+* Pragma Shift Projects, Hamburg (code donation)
+* Treffentotal 2018 (acceptance testing and first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON) 
+* and from participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/).
 
 ## Feedback & Contributions
 
