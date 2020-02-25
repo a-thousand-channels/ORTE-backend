@@ -78,7 +78,7 @@
     $('.nav-selector').change(function(e){
       e.preventDefault();
       $(this).parent('form').prop( "disabled", true );
-      let map = $(this).data('map');
+      var map = $(this).data('map');
       if ( $(this).val() !== '') {
         var url = $(this).val()
         console.log(url);

@@ -25,7 +25,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
       clustercolor = data.color;
       var places = new Array();
       if ( level === 'places') {
-        places = {data};
+        places = data
       } else {
         places = data.places;
       }
