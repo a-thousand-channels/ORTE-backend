@@ -8,14 +8,14 @@ class LayersController < ApplicationController
   # GET /layers
   # GET /layers.json
   def index
-    @map = Map.by_user(current_user).find(params[:map_id])
+    @map = Map.sorted.by_user(current_user).find(params[:map_id])
     @layers = @map.layers
   end
 
   # GET /layers/1
   # GET /layers/1.json
   def show
-    @maps = Map.by_user(current_user)
+    @maps = Map.sorted.by_user(current_user)
     @map_layers = @map.layers
     @places = @layer.places
     if params[:remap]

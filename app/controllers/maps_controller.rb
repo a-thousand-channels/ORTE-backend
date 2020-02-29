@@ -4,13 +4,13 @@ class MapsController < ApplicationController
   # GET /maps
   # GET /maps.json
   def index
-    @maps = Map.by_user(current_user)
+    @maps = Map.sorted.by_user(current_user)
   end
 
   # GET /maps/1
   # GET /maps/1.json
   def show
-    @maps = Map.by_user(current_user)
+    @maps = Map.sorted.by_user(current_user)
     if @map
       @map_layers = @map.layers
       respond_to do |format|
