@@ -30,7 +30,10 @@ class MapsController < ApplicationController
   end
 
   # GET /maps/1/edit
-  def edit; end
+  def edit
+    @map.northeast_corner = params[:northeast] if params[:northeast]
+    @map.southwest_corner = params[:southwest] if params[:southwest]
+  end
 
   # POST /maps
   # POST /maps.json
@@ -81,6 +84,6 @@ class MapsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def map_params
-    params.require(:map).permit(:title, :text, :published, :script, :group_id)
+    params.require(:map).permit(:title, :text, :published, :script, :group_id, :northeast_corner, :southwest_corner)
   end
 end

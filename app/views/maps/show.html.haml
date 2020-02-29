@@ -1,36 +1,46 @@
 
 #selection{:data => { 'url' => "/maps/#{@map.id}.json", 'map_id' => "#{@map.id}" }}
-  .grid-x
-    .cell.medium-12
-      = simple_form_for :navselector, url: '' do |f|
-        .input-group
-          .input-group-label
-            = link_to map_path(@map) do
-              %i.fi-map.fi-24
-
-          - icon = '<i class="fi-lock fi-24">'
-          - # #{m.published ? '' : icon}
-          = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
-          .input-group-button
-            = link_to edit_map_path(@map), :class => 'button secondary' do
-              %i.fi-pencil.fi-24
-
-  .grid-x
-    .cell.medium-12
-      - if @map_layers.count > 0
-        = simple_form_for :layer, url: '' do |f|
+  - if params[:setbound]
+    #form-wrapper.small-wrapper
+      .grid-x
+        .cell.medium-12
+          %p Set custom extend
+          %p.hint
+            Adjust the extend rectangle and click the save button
+            %br
+          = link_to edit_map_path(@map, :northeast => '', :southwest => ''), :class => 'button secondary', :id => 'setbound'  do
+            Save
+  - else
+    .grid-x
+      .cell.medium-12
+        = simple_form_for :navselector, url: '' do |f|
           .input-group
             .input-group-label
-              = link_to map_layers_path(@map) do
-                %i.fi-page-multiple.fi-24
-            = f.input "id", :collection => @map_layers.map { |l| ["#{l.title} (#{l.places.count})", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :include_blank => 'Select a layer...', input_html: {:class => 'nav-selector'}
+              = link_to map_path(@map) do
+                %i.fi-map.fi-24
+
+            - icon = '<i class="fi-lock fi-24">'
+            - # #{m.published ? '' : icon}
+            = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
             .input-group-button
-              = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do
-                %i.fi-plus.fi-24
-      - else
-        = link_to new_map_layer_path(@map), :class => 'button info' do
-          %i.fi-plus
-          Create a layer for this map
+              = link_to edit_map_path(@map), :class => 'button secondary' do
+                %i.fi-pencil.fi-24
+    .grid-x
+      .cell.medium-12
+        - if @map_layers.count > 0
+          = simple_form_for :layer, url: '' do |f|
+            .input-group
+              .input-group-label
+                = link_to map_layers_path(@map) do
+                  %i.fi-page-multiple.fi-24
+              = f.input "id", :collection => @map_layers.map { |l| ["#{l.title} (#{l.places.count})", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :include_blank => 'Select a layer...', input_html: {:class => 'nav-selector'}
+              .input-group-button
+                = link_to new_map_layer_path(@map), :class => 'button secondary', :title => 'Create new layer' do
+                  %i.fi-plus.fi-24
+        - else
+          = link_to new_map_layer_path(@map), :class => 'button info' do
+            %i.fi-plus
+            Create a layer for this map
 
 
 

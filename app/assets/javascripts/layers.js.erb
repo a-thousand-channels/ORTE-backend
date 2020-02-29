@@ -52,8 +52,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
 
     var layer_style = '';
     $.each(data.layers, function(key,data) {
-      layer_style += "\
-        #map .marker-cluster-layer-"+data.id+" {\
+      layer_style += "#map .marker-cluster-layer-"+data.id+" {\
           border: 0px solid "+data.color+";\
         }\
         #map .marker-cluster-layer-"+data.id+" div {\
@@ -83,8 +82,32 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
       </style>\
       ");
 
+      var bounds = marker_meta_layers.getBounds().pad(0.25);
+      var northeast = bounds.getNorthEast();
+      var southwest = bounds.getSouthWest();
       console.log("fit to bounds");
-      map.fitBounds(marker_meta_layers.getBounds(), {maxZoom: 12, minZoom: 2});
+      console.log(bounds);
+      map.fitBounds(bounds, {maxZoom: 12, minZoom: 2});
+      var params = getParams();
+      if ( params.setbound )  {
+        var hint = 'Re-map this place: ';
+        var extend_layer = L.featureGroup().addTo(map);
+        var rect = L.rectangle(bounds, {color: 'white', weight: 5, opacity: 0.5, fill: false});
+        // http://127.0.0.1:3000/maps/8/edit?northeast=1&southwest=2
+        var setbound_url = $("#setbound").attr('href');
+        console.log(setbound_url);
+        setbound_url = setbound_url.replace(/northeast=(\d*?)/, 'northeast='+northeast.toString());
+        setbound_url = setbound_url.replace(/southwest=(\d*?)/, 'southwest='+southwest.toString());
+        console.log(setbound_url);
+
+        $("#setbound").attr('href', setbound_url);
+
+        rect.editing.enable();
+        map.addLayer(rect);
+        rect.on('edit', function() {
+          console.log('Rect was edited!');
+        });
+      }
   });
 }
 function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {

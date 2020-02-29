@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_24_194609) do
+ActiveRecord::Schema.define(version: 2020_02_29_181724) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(version: 2019_07_24_194609) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "script"
+    t.string "northeast_corner"
+    t.string "southwest_corner"
     t.index ["group_id"], name: "index_maps_on_group_id"
   end
 
