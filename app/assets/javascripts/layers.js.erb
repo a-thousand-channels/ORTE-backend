@@ -44,8 +44,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         });
         clustercolor = data.color;
         DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
-        map.addLayer(marker_layers);
+        marker_meta_layers.addLayer(marker_layers);
+
       });
+
     }
 
     var layer_style = '';
@@ -81,9 +83,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
       </style>\
       ");
 
-    console.log("fit to bounds");
-    var bounds = marker_meta_layers.getBounds();
-    map.fitBounds(bounds, {maxzoom: 12, padding: [300,300]});
+      console.log("fit to bounds");
+      map.fitBounds(marker_meta_layers.getBounds(), {maxZoom: 12, minZoom: 2});
   });
 }
 function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
@@ -120,8 +121,6 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
         var icon = new CustomLargeIcon({iconUrl: url});
-        console.log("assign cluster-color")
-
       } else {
         if ( parseInt(place.id) === parseInt(params.place) ) {
           var icon = redIcon;
@@ -131,7 +130,6 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         } else {
           var icon = greyIcon;
         }
-
       }
 
 

@@ -125,7 +125,7 @@
 
     var text_layers = L.featureGroup();
     var image_layers = L.layerGroup();
-    var marker_meta_layers = L.layerGroup();
+    var marker_meta_layers = L.featureGroup();
 
      var overlays = {
         'T': text_layers,
@@ -139,7 +139,7 @@
     var map = L.map('map', {
         zoomControl: false,
         layers: [marker_meta_layers],
-        minZoom: 4,
+        minZoom: 1,
         maxZoom: 18
     }).setView([53.55, 9.99], 12);
 
@@ -186,9 +186,8 @@
       }
     });
 
+
     map.addLayer(marker_meta_layers);
-
-
 
 
 
