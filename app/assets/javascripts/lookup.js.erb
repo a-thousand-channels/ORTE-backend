@@ -4,20 +4,20 @@ function PrepareBeforeLookup(url) {
       'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)'
     }
   });
-    var params = getParams();
+  var params = getParams();
 
-    // url is provided via data-attr
-    // alter this url if there are "remap" and "place" params
-    if ( params.remap )  {
-      // call URL + "edit"
-      console.log('Lookup:: Alter URL for edit');
-      url = url+'/places/'+params.place_id+"/edit";
-    } else {
-     // call URL + "new"
-      console.log('Lookup:: Alter URL for new');
-      url = url+'/places/new';
-    }
-    return url;
+  // url is provided via data-attr
+  // alter this url if there are "remap" and "place" params
+  if ( params.remap )  {
+    // call URL + "edit"
+    console.log('Lookup:: Alter URL for edit');
+    url = url+'/places/'+params.place_id+"/edit";
+  } else {
+   // call URL + "new"
+    console.log('Lookup:: Alter URL for new');
+    url = url+'/places/new';
+  }
+  return url;
 }
 
 function LookupNominatim(address,url) {

@@ -124,12 +124,27 @@ input#addresslookup_address.hide {
   background-color: rgba(255,255,255,0.8);
   padding: 10px 20px;
   min-width: 400px;
+  max-width: 90%;
   @media screen and (max-width: 39.9375em) {
     padding: 10px;
     min-width: none;
     tbody th, tbody td {
       padding: 0.5rem 0.3rem 0.3rem;
     }
+  }
+}
+#form-wrapper.small-wrapper {
+  min-width: none;
+  max-width: 80%;
+  max-width: 225px;
+  p {
+    margin-bottom: 0.25rem;
+  }
+  p.hint {
+    text-align: left;
+  }
+  a.button {
+    margin: 0.4rem 0 0 0;
   }
 }
 
