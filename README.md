@@ -39,8 +39,8 @@ $ sudo mysql -u root
 > GRANT ALL PRIVILEGES ON *.* TO 'orte'@'localhost';
 > $CREATE DATABASE orte CHARACTER SET utf8 COLLATE utf8_general_ci;
 > exit;
-$ bundle exec rails db:schema:load;
-$ bundle exec rails db:seed;
+$ bundle exec rails db:schema:load
+$ bundle exec rails db:seed
 ```
 
 ## Credits
