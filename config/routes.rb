@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   root 'start#index'
+  
+  get "info", to: "start#info"
 
   match 'preferences' => 'preferences#edit', :as => :preferences, via: [:get, :patch]
 
