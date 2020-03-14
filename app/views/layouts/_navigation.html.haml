@@ -2,6 +2,11 @@
   .top-bar-left
     %ul.menu.show-for-medium
       %li.name= link_to "#{Settings.app_name}", root_path
+      %li
+        = link_to info_path do
+          %i.fi-lightbulb.fi-21
+          %span.show-for-large
+            Info
       - if user_signed_in?
         - if admin?
           %li

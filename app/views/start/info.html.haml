@@ -1,0 +1,26 @@
+
+#info-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to maps_path, :class=>'close_link' do
+      \&times;
+  %h1 #{Settings.app_name}
+  %h3 #{Settings.app_tagline}
+  %p
+    This application is primarily meant to create and edit temporary or permanent places on a map. 
+  %h4
+    How to use ORTE
+  %p
+    You can 
+    = link_to new_map_path do
+      create a new map, 
+    and at least one (or more) layers. If you have selected your layer, you have two choices to creae a new place.
+  %p First, you can point and click somewhere on the map. After a short moment where the application tries to resolve the point clicked to an known address, a popup is displayed to create a place. The following form allows to you define several informations, like title and description. You may provide temporal informations, and you can add one or more images to this place.
+  %p Second, you can type an address to a place into the input field. The application will look up, if this address is known and will offer you one or more options. Select one and proceed to the form where you can define title and others infos.
+  %p 
+    This application is will be extended with more and better input functions. Checkout 
+    = link_to 'https://github.com/ut/ORTE-backend' do
+      ORTE Backend at GitHub
+  %p Feedback and contributions are welcome!
+
+
+
