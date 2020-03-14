@@ -6,10 +6,10 @@
         .cell.medium-12
           %p Set custom extend
           %p.hint
-            Adjust the extend of your map by clicking and draging the corners of the rectangle. Then click the save button.
+            Adjust the extend of your map by clicking and draging the corners of the rectangle. Then click the set button.
             %br
           = link_to edit_map_path(@map, :northeast => '', :southwest => ''), :class => 'button secondary', :id => 'setbound'  do
-            Save
+            Set extend
   - else
     .grid-x
       .cell.medium-12

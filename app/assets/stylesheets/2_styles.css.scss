@@ -192,11 +192,13 @@ p.close_link_wrapper {
     color: white;
     background-color: rgba(200,200,200,0);
     line-height: 0.6;
-    font-size: 18px;
+    font-size: 14px;
+    font-weight: bold;
     padding: 2px 8px;
     border: none;
     text-shadow: 0 0 7px #333;
     transform: rotate(-45deg);
+    width: 200px;
 }
 
 /* image-marker */
@@ -206,6 +208,8 @@ p.close_link_wrapper {
     background-color: rgba(200,200,200,0);
     padding: 0;
     border: none;
+    border-radius: 100px;
+    overflow: auto;
     img {
       max-width: 65px;
       width: 65px;
