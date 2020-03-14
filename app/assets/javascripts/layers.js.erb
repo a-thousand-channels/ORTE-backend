@@ -82,30 +82,48 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
       </style>\
       ");
 
+      console.log("fit to bounds");
       var bounds = marker_meta_layers.getBounds().pad(0.25);
       var northeast = bounds.getNorthEast();
       var southwest = bounds.getSouthWest();
-      console.log("fit to bounds");
-      console.log(bounds);
+      if ( $('#selection').data('map-extent-northeast') ) {
+        console.log("fit to custom extent");
+        var northeast_array = $('#selection').data('map-extent-northeast').split(",").map(Number);
+        var southwest_array = $('#selection').data('map-extent-southwest').split(",").map(Number);
+        northeast = L.latLng(northeast_array[0],northeast_array[1]);
+        southwest = L.latLng(southwest_array[0],southwest_array[1]);
+        bounds = L.latLngBounds(northeast, southwest);
+      } 
       map.fitBounds(bounds, {maxZoom: 12, minZoom: 2});
+      
+      // set custom extent
       var params = getParams();
       if ( params.setbound )  {
-        var hint = 'Re-map this place: ';
         var extend_layer = L.featureGroup().addTo(map);
         var rect = L.rectangle(bounds, {color: 'white', weight: 5, opacity: 0.5, fill: false});
         // http://127.0.0.1:3000/maps/8/edit?northeast=1&southwest=2
         var setbound_url = $("#setbound").attr('href');
         console.log(setbound_url);
-        setbound_url = setbound_url.replace(/northeast=(\d*?)/, 'northeast='+northeast.toString());
-        setbound_url = setbound_url.replace(/southwest=(\d*?)/, 'southwest='+southwest.toString());
+        setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
+        setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
         console.log(setbound_url);
 
         $("#setbound").attr('href', setbound_url);
 
         rect.editing.enable();
         map.addLayer(rect);
-        rect.on('edit', function() {
-          console.log('Rect was edited!');
+        rect.on('edit', function(e) {
+          console.log('Map extent was edited!');
+          var new_bound = rect.getBounds();
+          var northeast = new_bound.getNorthEast();
+          var southwest = new_bound.getSouthWest();          
+          console.log("get new bounds");
+          console.log(northeast);
+          setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
+          setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
+          console.log(setbound_url);
+          $("#setbound").attr('href', setbound_url);
+
         });
       }
   });
@@ -234,21 +252,21 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       content += "</p>";
 
       marker.bindPopup(content).on('click', function(){
-          // map.panTo(marker.getLatLng());
-          map.panToOffset(marker.getLatLng(),[0,60]);
+        // map.panTo(marker.getLatLng());
+        map.panToOffset(marker.getLatLng(),[0,60]);
 
 
-          if ( $('#addresslookup_address').hasClass('hide') ) {
-            // ShowLookUpField();
-          } else {
-            ClearLookUpField();
-          }
+        if ( $('#addresslookup_address').hasClass('hide') ) {
+          // ShowLookUpField();
+        } else {
+          ClearLookUpField();
+        }
       });
       c++;
     });
     console.log(c+" Marker added to map!");
 
-    // thanks to https://github.com/louh
+    // thanks to https://github.com/louh - Allow for offset on center of map
     L.Map.prototype.panToOffset = function (latlng, offset, options) {
         var x = this.latLngToContainerPoint(latlng).x - offset[0]
         var y = this.latLngToContainerPoint(latlng).y - offset[1]
