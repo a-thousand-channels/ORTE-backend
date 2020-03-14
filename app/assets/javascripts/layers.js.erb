@@ -178,7 +178,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       // TODO: display switch
       var texticon= L.divIcon({
           html: '<div class="text_inner">'+place.title+'</div>',
-          iconAnchor:[10,40],
+          iconAnchor:[30,75],
           iconSize:null,
           popupAnchor:[0,0] });
       var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon}).addTo(text_layers);
