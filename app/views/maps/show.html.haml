@@ -1,12 +1,12 @@
 
-#selection{:data => { 'url' => "/maps/#{@map.id}.json", 'map_id' => "#{@map.id}" }}
+#selection{:data => { 'url' => "/maps/#{@map.id}.json", 'map_id' => "#{@map.id}", 'map-extent-northeast' => "#{@map.northeast_corner}", 'map-extent-southwest' => "#{@map.southwest_corner}" }}
   - if params[:setbound]
     #form-wrapper.small-wrapper
       .grid-x
         .cell.medium-12
           %p Set custom extend
           %p.hint
-            Adjust the extend rectangle and click the save button
+            Adjust the extend of your map by clicking and draging the corners of the rectangle. Then click the save button.
             %br
           = link_to edit_map_path(@map, :northeast => '', :southwest => ''), :class => 'button secondary', :id => 'setbound'  do
             Save
