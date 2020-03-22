@@ -16,7 +16,7 @@ class MapsController < ApplicationController
       respond_to do |format|
         format.html { render :show }
         # format.json { render json: @map_layers.to_json(:include => { :places => { :methods => [:date, :edit_link] }} ) }
-        format.json { render :show }
+        format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
       end
     else
       redirect_to maps_path

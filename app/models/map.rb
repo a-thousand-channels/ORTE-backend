@@ -13,4 +13,5 @@ class Map < ApplicationRecord
   scope :sorted, -> { order(title: :asc) }
 
   scope :published, -> { where(published: true) }
+
 end
