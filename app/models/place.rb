@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 class Place < ApplicationRecord
 
   # self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
@@ -72,4 +74,16 @@ class Place < ApplicationRecord
     end
     "#{self.full_address}#{c}"
   end
+
+  def self.to_csv
+    attributes = %w{id title teaser text startdate enddate lat lon location address zip city country}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |user|
+        csv << attributes.map{ |attr| user.send(attr) }
+      end
+    end
+  end      
 end

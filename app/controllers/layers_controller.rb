@@ -28,6 +28,7 @@ class LayersController < ApplicationController
       # { :places => { :methods => [:date, :edit_link], :include => :images }} ) }
       # switch to json.builder
       format.json { render :show }
+      format.csv { send_data @places.to_csv, filename: "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.csv" }
     end
   end
 
