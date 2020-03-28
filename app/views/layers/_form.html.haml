@@ -6,6 +6,13 @@
     .large-12.medium-12.cell
       .form-inputs
         %p
+          - if admin? && params[:action] == 'edit'
+            = f.association :map, collection: Map.by_user(current_user), include_blank: false
+          - else
+            Map: 
+            =link_to map_path(@map) do
+              #{@map.title}      
+        %p
           = f.input :title
           = f.input :text, :label => 'Description'
         %p
@@ -32,7 +39,6 @@
 
 
 
-        = f.association :map, collection: Map.by_user(current_user), include_blank: false
       .form-actions
         %p
           = f.button :submit, :class => "button"
