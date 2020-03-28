@@ -70,6 +70,7 @@ input#addresslookup_address.hide {
   /* avoid 100% width for a nav elements  */
   width: max-content;
 }
+
 #selection {
 }
 
@@ -132,6 +133,9 @@ input#addresslookup_address.hide {
       padding: 0.5rem 0.3rem 0.3rem;
     }
   }
+}
+#form-wrapper {
+  max-width: unset;
 }
 #form-wrapper.small-wrapper {
   min-width: none;
