@@ -39,12 +39,16 @@
           = render partial: "layouts/version"
           = render partial: "layouts/credits"
         .cell.small-2.text-right
-          - if controller_name == 'layers' && @map && @layer
+          &nbsp;
+        .cell.small-2.text-right
+          - if controller_name == 'layers' && params[:action] == 'show' && @map && @layer
             = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV" do
               CSV 
             \::
             = link_to map_layer_path(@map,@layer,:format => :json ), :title => "Export this layer as JSON" do
               JSON
-        .cell.small-2
-          &nbsp;
+          - if controller_name == 'maps' && params[:action] == 'show' && @map 
+            = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON" do
+              Public JSON
+
 
