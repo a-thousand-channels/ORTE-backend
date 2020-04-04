@@ -1,9 +1,10 @@
 
 #info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}" }}
-
-  = link_to map_layer_url(@map,@layer), :class=>"close-button button small", "aria-label"=>"Close back",:type=>"button" do
-    %span{"aria-hidden"=>"true"}
-      %i.fi.fi-x
+  
+  %p.text-right.close_link_wrapper
+    = link_to map_layer_url(@map,@layer), :class=>"close-button button small", "aria-label"=>"Close back",:type=>"button" do
+      %span{"aria-hidden"=>"true"}
+        %i.fi.fi-x     
   %p#notice= notice
 
   .grid-x.grid-padding-x
