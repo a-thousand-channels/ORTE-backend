@@ -3,11 +3,11 @@
 
 # ORTE-backend
 
-Simple, straightforward backend for creating and managing places/POIs (or in german "Orte") and additional informations of a web-based map. Output is a public available API w/JSON.
+Simple, straightforward backend for creating and managing places/POIs (or in german "Orte") and additional informations of a web-based map. Output is a public available API w/JSON and exportable as CSV/JSON.
 
 Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
 
-This application is work in progress. 
+This application is work in progress. Contributions are welcome (see below).
 
 ![preview](https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-backend-dev-002.jpg)
 
@@ -17,7 +17,7 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 
 ## Installation
 
-Basic steps for a local installation on your *nix machine:
+Basic steps for a local installation on your machine:
 
 ### Get repository
 
@@ -45,7 +45,7 @@ $ bundle exec rails db:seed
 
 ## Credits
 
-Code + UI by Ulf Treger <ulf.treger@googlemail.com> with kind support from:
+Code + Design by Ulf Treger <ulf.treger@googlemail.com> with kind support from:
 
 * Pragma Shift Projects, Hamburg (code donation)
 * Treffentotal 2018 (acceptance testing and first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON) 
@@ -57,9 +57,10 @@ Feedback, bug reports and code contributions are most welcome.
 
 Send Feedback to ulf.treger@googlemail.com
 
-Please file bugs to our Github Repository at https://github.com/ut/ORTE-backend
+Please file bug repots to our Github Repository at https://github.com/ut/ORTE-backend
 
 For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
+
 
 ## Licence
 
