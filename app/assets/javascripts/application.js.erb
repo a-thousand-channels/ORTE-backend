@@ -126,9 +126,9 @@
     var marker_meta_layers = L.featureGroup();
 
      var overlays = {
-        'T': text_layers,
-        'I': image_layers,
-        'P': marker_meta_layers
+        'Text': text_layers,
+        'Image': image_layers,
+        'Place': marker_meta_layers
     };
 
     // ---------------
@@ -181,6 +181,12 @@
         ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
       } else {
         console.log("No lookup possible. Please select a map and a layer first");
+        $('#selection-hint').html("No lookup possible. Please select a map and a layer first.");
+        $('#selection-hint').addClass('active');        
+        setTimeout(function(){
+          $('#selection-hint').slideUp(500);
+          $('#selection-hint').removeClass('active');    
+        }, 2000);        
       }
     });
 

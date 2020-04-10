@@ -3,10 +3,28 @@
 #map .leaflet-control-layers,
 #map .leaflet-bar {
     border: 0;
+    border-radius: 0;
 
     @media screen and (max-width: 39.9375em) {
         display: none;
     }
+}
+#map .leaflet-control-layers-toggle::before {
+    content: "*";
+    font-size: 38px;
+    line-height: 1.2;
+    padding-left: 8px;
+}
+#map .leaflet-control-layers-toggle {
+    background-image: none;
+    width: 31px;
+    height: 31px;   
+}
+#map .leaflet-control-layers-list label {
+  color: darken(#c6c600,10%);
+}
+#map .leaflet-control-layers-selector {
+    margin-right: 5px;
 }
 #map.leaflet-container a {
     color: darken(#c6c600,10%);
@@ -16,8 +34,8 @@
 #map .leaflet-bar a:last-child
 
  {
-    border-top-left-radius: 0;
-    border-top-right-radius: 2px;
+    border-radius: 0;
+    background-color: white;
 }
 
 #map .leaflet-bottom {
