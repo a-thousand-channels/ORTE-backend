@@ -164,13 +164,17 @@ function ReverseLookupNominatim(map,latlng,lat,lon,url) {
       if ( data.name && data.name.length > 0 ) {
           location = data.name;
       }
+      var city = ''
+      if ( data.address && data.address.city ) {
+        city = data.address.city;
+      }
       // call "places/new"
       var house_number = '';
       if ( data.address.house_number ) {
         house_number = ' '+data.address.house_number ;
       }
-      full_address = location+" "+data.address.road+house_number+", "+data.address.postcode+' '+data.address.state+' ('+data.address.suburb+")"
-      var href = url+'?location='+location+'&address='+data.address.road+house_number+'&zip='+data.address.postcode+'&city='+data.address.state+' ('+data.address.suburb+')&lat='+lat+'&lon='+lon;
+      full_address = location+" "+data.address.road+house_number+", "+data.address.postcode+' '+city+' ('+data.address.suburb+")"
+      var href = url+'?location='+location+'&address='+data.address.road+house_number+'&zip='+data.address.postcode+'&city='+city+' ('+data.address.suburb+')&lat='+lat+'&lon='+lon;
       console.log(href);
       // that would be a direct call
       // window.location = href;
