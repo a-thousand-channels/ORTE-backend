@@ -94,10 +94,15 @@ function LookupNominatim(address,url) {
         if ( val.class === 'building') {
           location = val.address.road+" "+val.address.house_number
         }
-
+        var city = ''
+        if ( val.address && val.address.city ) {
+          city = val.address.city;
+        } else {
+          city = val.address.state
+        }
         // TODO verify all values
         // FIXME hamburg as state
-        href = url+'?location='+location+"&address="+val.address.road+" "+val.address.house_number+"&zip="+val.address.postcode+"&city="+val.address.state+'&lat='+val.lat+'&lon='+val.lon;
+        href = url+'?location='+location+"&address="+val.address.road+" "+val.address.house_number+"&zip="+val.address.postcode+"&city="+city+'&lat='+val.lat+'&lon='+val.lon;
       }
 
 
