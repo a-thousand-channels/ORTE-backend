@@ -14,7 +14,6 @@ gem 'uglifier'
 
 
 gem 'coffee-rails'
-gem 'turbolinks'
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
@@ -54,7 +53,7 @@ group :staging, :production do
   gem 'passenger'
 end
 
-gem 'coveralls_reborn', '~> 0.13', require: false
+gem 'coveralls_reborn', '~> 0.15', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
