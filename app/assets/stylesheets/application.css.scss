@@ -54,26 +54,31 @@ footer {
     padding: 0 2px;
 }
 
-.fi.fi-shuffle,
-.fi.fi-pencil,
-.fi.fi-x
-{
-    background-color: white;
-    color: #333;
-    border-radius: 10px;
-    padding: 3px 5px;
-    transition: 0.7s all;
-    cursor: pointer;
 
-}
-.fi.fi-shuffle:hover,
-.fi.fi-pencil:hover,
-.fi.fi-x:hover
- {
-    background-color: #333;
-    color: white;
-    border-radius: 10px;
-    padding: 3px 5px;
-    transition: 0.5s all;
-    cursor: pointer;
-}
+
+#layer_change {
+	
+	.fi.fi-shuffle,
+	.fi.fi-pencil,
+	.fi.fi-x
+	{
+	    background-color: white;
+	    color: #333;
+	    border-radius: 10px;
+	    padding: 3px 5px;
+	    transition: 0.7s all;
+	    cursor: pointer;
+
+	}
+	.fi.fi-shuffle:hover,
+	.fi.fi-pencil:hover,
+	.fi.fi-x:hover
+	 {
+	    background-color: #333;
+	    color: white;
+	    border-radius: 10px;
+	    padding: 3px 5px;
+	    transition: 0.5s all;
+	    cursor: pointer;
+	}
+} 

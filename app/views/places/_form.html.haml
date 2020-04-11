@@ -3,7 +3,7 @@
     .large-3.medium-3.cell
       %h1 Place
     .large-4.medium-4.cell
-      %div
+      %div#layer_change
         - if @place.layer.title && params[:action] == 'new'
           %p.inline
             = link_to map_url(@place.layer.map) do
