@@ -109,7 +109,6 @@
       e.preventDefault();
       var val = $('input#addresslookup_address').val();
       LookupNominatim(val,$('input#addresslookup_address').data('url'));
-
     });
 
 
@@ -118,7 +117,11 @@
       $('#layer_selector').removeClass('hide');
       $('#layer_display').hide();
     });
-
+    $('#layer_display_cancel').click(function(e){
+      $("#place_layer_id option:selected").removeAttr("selected");
+      $('#layer_selector').addClass('hide');
+      $('#layer_display').show();
+    });
     // ---------------
 
     var text_layers = L.featureGroup();

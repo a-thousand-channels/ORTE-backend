@@ -235,12 +235,12 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
           content += " <i class='fi-lock fi-18'></i>";
         }
       }
-
       content += "</h4>";
       if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
       }
-      var teaser = place.teaser.replace(/<[^>]*>?/gm, '') // remove html
+      var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
+      teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
       if ( teaser.length > 400 ) {
         teaser = place.teaser.trim()    // remove leading and trailing spaces
                 .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";

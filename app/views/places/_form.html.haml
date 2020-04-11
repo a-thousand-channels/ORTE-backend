@@ -15,11 +15,14 @@
         - else
           %div.inline#layer_selector.hide
             = f.association :layer, :collection => @place.layer.map.layers, :label_method => :title, :value_method => :id, label: false, include_blank: false
+            %span#layer_display_cancel{:title => "Cancel" }
+              %i.fi.fi-x.fi-13         
+            
           %div.inline#layer_display
             = link_to map_url(@place.layer.map) do
               = @place.layer.map.title
             \>
-            = link_to map_layer_url(@place.layer.map,@place.layer) do
+            = link_to map_layer_url(@place.layer.map,@place.layer), :title => "Change layer for this place" do
               = @place.layer.title
             %i.fi.fi-pencil.fi-13
       %p.clear.hint.text-left
