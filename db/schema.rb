@@ -10,19 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_29_181724) do
+ActiveRecord::Schema.define(version: 2020_04_12_105542) do
 
-  create_table "active_storage_attachments", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.integer "record_id", null: false
-    t.integer "blob_id", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -33,22 +33,22 @@ ActiveRecord::Schema.define(version: 2020_02_29_181724) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "groups", force: :cascade do |t|
+  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "icons", force: :cascade do |t|
+  create_table "icons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "image"
-    t.integer "iconset_id"
+    t.bigint "iconset_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["iconset_id"], name: "index_icons_on_iconset_id"
   end
 
-  create_table "iconsets", force: :cascade do |t|
+  create_table "iconsets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.string "image"
@@ -56,22 +56,37 @@ ActiveRecord::Schema.define(version: 2020_02_29_181724) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "layers", force: :cascade do |t|
+  create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.string "licence"
+    t.text "source"
+    t.string "creator"
+    t.bigint "place_id"
+    t.string "alt"
+    t.string "caption"
+    t.integer "sorting"
+    t.boolean "preview"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["place_id"], name: "index_images_on_place_id"
+  end
+
+  create_table "layers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "text"
     t.boolean "published"
-    t.integer "map_id"
+    t.bigint "map_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
     t.index ["map_id"], name: "index_layers_on_map_id"
   end
 
-  create_table "maps", force: :cascade do |t|
+  create_table "maps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "text"
     t.boolean "published"
-    t.integer "group_id"
+    t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "script"
@@ -80,7 +95,7 @@ ActiveRecord::Schema.define(version: 2020_02_29_181724) do
     t.index ["group_id"], name: "index_maps_on_group_id"
   end
 
-  create_table "places", force: :cascade do |t|
+  create_table "places", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "teaser"
     t.text "text"
@@ -95,14 +110,14 @@ ActiveRecord::Schema.define(version: 2020_02_29_181724) do
     t.string "city"
     t.string "country"
     t.boolean "published"
-    t.integer "layer_id"
+    t.bigint "layer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "imagelink"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -114,10 +129,17 @@ ActiveRecord::Schema.define(version: 2020_02_29_181724) do
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
-    t.integer "group_id"
+    t.bigint "group_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "icons", "iconsets"
+  add_foreign_key "images", "places"
+  add_foreign_key "layers", "maps"
+  add_foreign_key "maps", "groups"
+  add_foreign_key "places", "layers"
+  add_foreign_key "users", "groups"
 end

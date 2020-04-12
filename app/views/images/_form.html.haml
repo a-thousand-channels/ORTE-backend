@@ -1,0 +1,28 @@
+= simple_form_for(@image) do |f|
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x
+    .large-3.cell
+      &nbsp;
+    .large-6.medium-12.cell
+      .form-inputs
+        = f.input :title
+        = f.input :licence
+        = f.input :source
+        = f.input :creator
+        = f.association :place
+        = f.input :alt
+        = f.input :caption
+        = f.input :sorting
+        = f.input :preview
+        %hr
+        = f.input :file, as: :file, input_html: { accept: ('image'), multiple: false  }
+        - if params[:action] == 'edit' && @image.file.attached? 
+          - # = image_tag @image.variant(resize_to_limit: [100, 100]).processed
+          = link_to url_for(@image.file) do
+            = image_tag url_for(@image.file)
+      .form-actions
+        = f.button :submit, :class => "button"
+    .large-3.cell
+      &nbsp;

@@ -1,0 +1,33 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @image.title
+%p
+  %b Licence:
+  = @image.licence
+%p
+  %b Source:
+  = @image.source
+%p
+  %b Creator:
+  = @image.creator
+%p
+  %b Place:
+  = @image.place
+%p
+  %b Alt:
+  = @image.alt
+%p
+  %b Caption:
+  = @image.caption
+%p
+  %b Sorting:
+  = @image.sorting
+%p
+  %b Preview:
+  = @image.preview
+
+= link_to 'Edit', edit_image_path(@image)
+\|
+= link_to 'Back', images_path
