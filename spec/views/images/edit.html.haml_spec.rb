@@ -2,17 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "images/edit", type: :view do
   before(:each) do
-    @image = assign(:image, Image.create!(
-      title: "MyString",
-      licence: "MyString",
-      source: "MyText",
-      creator: "MyString",
-      place: nil,
-      alt: "MyString",
-      caption: "MyString",
-      sorting: 1,
-      preview: false
-    ))
+    @map = FactoryBot.create(:map)
+    @layer = FactoryBot.create(:layer, :map_id=> @map.id)
+    @place = FactoryBot.create(:place, :layer_id => @layer.id)
+    @image = FactoryBot.create(:image, :place_id => @place.id)
   end
 
   it "renders the edit image form" do
@@ -27,8 +20,6 @@ RSpec.describe "images/edit", type: :view do
       assert_select "textarea[name=?]", "image[source]"
 
       assert_select "input[name=?]", "image[creator]"
-
-      assert_select "input[name=?]", "image[place_id]"
 
       assert_select "input[name=?]", "image[alt]"
 
