@@ -183,11 +183,10 @@
         ClearLookUpField();
         ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
       } else {
-        console.log("No lookup possible. Please select a map and a layer first");
-        $('#selection-hint').html("No lookup possible. Please select a map and a layer first.");
+        console.log("No mapping possible. Please select a map and a layer first");
+        $('#selection-hint').html("No mapping possible. Please select a map and a layer first.");
         $('#selection-hint').addClass('active');        
         setTimeout(function(){
-          $('#selection-hint').slideUp(500);
           $('#selection-hint').removeClass('active');    
         }, 2000);        
       }
