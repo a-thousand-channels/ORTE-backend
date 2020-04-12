@@ -52,6 +52,19 @@
             - else
               %i.fi-lock.fi-24
           %td
-            = link_to 'Edit', edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button"
+            = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button" do
+              %i.fi-pencil.fi-24
+              Edit
             %br
-            = link_to 'Destroy',  map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm: 'Are you sure?' }, :class => "button warning"
+            - if place.images.count > 0
+              = link_to images_path(place_id: place.id), :class => "button" do
+                %i.fi-photo.fi-24
+                Images
+            - else
+              = link_to new_image_path(place_id: place.id), :class => "button" do
+                %i.fi-plus.fi-24
+                Add&nbsp;image
+            %br
+            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm: 'Are you sure?' }, :class => "button warning" do
+              %i.fi-trash.fi-24
+              Destroy

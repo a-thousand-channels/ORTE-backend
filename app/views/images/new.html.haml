@@ -1,6 +1,19 @@
 #form-wrapper
 	%h1 New image
 
+	%p 
+		Add an image for 
+
+		%strong
+			#{@place.layer.map.title}
+		\>
+		%strong
+			#{@place.layer.title}
+		\>
+		%strong
+			#{@place.title}
+
+
 	= render 'form'
 
-	= link_to 'Back', images_path
+	= link_to 'Cancel', images_path, class: 'button secondary'

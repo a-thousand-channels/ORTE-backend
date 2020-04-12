@@ -12,8 +12,8 @@ class Place < ApplicationRecord
 
   validates :title,  presence: true
 
-  scope :published, -> { where(published: true) }
-
+  scope :published, -> { where(published: true) }  
+  
   attr_accessor :startdate_date
   attr_accessor :startdate_time
   attr_accessor :enddate_date
