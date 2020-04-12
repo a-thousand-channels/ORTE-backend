@@ -1,0 +1,63 @@
+#table-wrapper
+
+  %h1 Images
+
+  %table
+    %thead
+      %tr
+        %th Image
+        %th Metadata
+        %th Sorting + Preview?
+        %th
+
+    %tbody
+      - @images.each do |image|
+        %tr
+          %td.img_col{style: 'width: 200px'}
+            %p.shy
+              =link_to map_layer_place_path(image.place.layer.map.id,image.place.layer.id,image.place.id) do
+                = image.place.title
+            - if image.title.present?
+              %h4
+                = image.title
+            - elsif image.file.attached? 
+              %p
+                %tt= image.file.filename
+            - else
+              %h4
+                No Name
+            - if image.file.attached? 
+              = link_to url_for(image.file) do
+                = image_tag url_for(image.file)
+            = image.alt
+            %br
+            = image.caption
+          %td
+            - if image.creator.present?
+              %strong Creator:
+              = image.creator
+              %br
+            - if image.licence.present?
+              %strong Licence: 
+              = image.licence
+              %br
+            - if image.source.present?
+              %string Source
+              = image.source   
+            - if image.preview 
+              Previewimage
+              %i.fi-check.fi-24
+            = image.sorting         
+          %td
+            = link_to edit_image_path(image), :class => 'button' do
+              %i.fi.fi-pencil
+              Edit
+            = link_to image, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
+              %i.fi.fi-x
+              Destroy
+
+  %br
+
+  = link_to new_image_path, :class => "button secondary" do
+    %i.fi.fi-plus
+    Add Image
