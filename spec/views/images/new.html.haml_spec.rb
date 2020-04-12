@@ -2,17 +2,18 @@ require 'rails_helper'
 
 RSpec.describe "images/new", type: :view do
   before(:each) do
+    @map = FactoryBot.create(:map)
+    @layer = FactoryBot.create(:layer, :map_id=> @map.id)
+    @place = FactoryBot.create(:place, :layer_id => @layer.id)
+    @image = FactoryBot.create(:image, :place_id => @place.id)
+
+    group = FactoryBot.create(:group)
+    user = FactoryBot.create(:admin_user, :group_id => group.id)
+    sign_in user
     assign(:image, Image.new(
-      title: "MyString",
-      licence: "MyString",
-      source: "MyText",
-      creator: "MyString",
-      place: nil,
-      alt: "MyString",
-      caption: "MyString",
-      sorting: 1,
-      preview: false
-    ))
+      :title => "MyString",
+      :place => @place    
+    ))    
   end
 
   it "renders new image form" do
@@ -27,8 +28,6 @@ RSpec.describe "images/new", type: :view do
       assert_select "textarea[name=?]", "image[source]"
 
       assert_select "input[name=?]", "image[creator]"
-
-      assert_select "input[name=?]", "image[place_id]"
 
       assert_select "input[name=?]", "image[alt]"
 
