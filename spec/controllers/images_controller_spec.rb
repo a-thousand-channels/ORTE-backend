@@ -39,7 +39,7 @@ RSpec.describe ImagesController, type: :controller do
       it "returns a success response" do
         image = Image.create! valid_attributes
         get :show, params: {id: image.to_param, :place_id => @place.id}, session: valid_session
-        expect(response).to have_http_status(302)
+        expect(response).to have_http_status(200)
       end
     end
 

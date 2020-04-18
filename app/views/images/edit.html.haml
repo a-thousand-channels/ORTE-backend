@@ -1,5 +1,16 @@
 #form-wrapper
 	%h1 Editing image
+	%p 
+		Edit this image for 
+
+		%strong
+			#{@place.layer.map.title}
+		\>
+		%strong
+			#{@place.layer.title}
+		\>
+		%strong
+			#{@place.title}
 
 	= render 'form'
 
