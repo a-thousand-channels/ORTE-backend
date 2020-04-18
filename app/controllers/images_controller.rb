@@ -14,6 +14,14 @@ class ImagesController < ApplicationController
     @images = Image.where(place_id: @place_id)
   end
 
+  def transition
+    @places = Place.all
+    # This joins statement returns all Places with an attachement,  "Place.with_attached_images" just counts all places!
+    @places_images = Place.joins(:images_attachments)
+    @images_file = Image.joins(:file_attachment)
+  end
+
+
   # GET /images/1
   # GET /images/1.json
   def show

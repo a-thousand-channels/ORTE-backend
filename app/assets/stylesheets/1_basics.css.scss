@@ -39,6 +39,11 @@ div.small {
     line-height: 1;
 }
 .clear { clear: both; }
+
+tt {
+  font-size: 9pt;
+  color: darkblue;
+}
 p.inline, div.inline {
   display: inline; margin: 0;
 }
