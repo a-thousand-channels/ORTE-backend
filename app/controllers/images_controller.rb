@@ -41,11 +41,7 @@ class ImagesController < ApplicationController
 
   # GET /images/1/edit
   def edit
-
-    unless params[:place_id]
-      redirect_to root_url, notice: 'No place defined for editing an image'
-    end
-    @place = Place.where(id: params[:place_id])
+    @place = @image.place
     unless @place || ( @place && @place.layer.map.group == current_user.group )
       redirect_to root_url, notice: 'No valid place defined for editing an mage'
     end    

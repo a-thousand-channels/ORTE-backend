@@ -5,6 +5,12 @@
     %b Title:
     = @image.title
   %p
+    - if @image.file.attached? 
+      = link_to url_for(@image.file) do
+        = image_tag url_for(@image.file)    
+    - else
+      No Image
+  %p
     %b Licence:
     = @image.licence
   %p
