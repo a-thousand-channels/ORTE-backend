@@ -10,6 +10,8 @@ class Place < ApplicationRecord
 
   has_many_attached :images
 
+  has_many :images
+
   validates :title,  presence: true
 
   scope :published, -> { where(published: true) }  

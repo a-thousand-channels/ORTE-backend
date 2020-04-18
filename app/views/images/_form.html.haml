@@ -2,8 +2,6 @@
   .grid-x
     .large-12.cell
       = f.error_notification
-
-
       = f.association :place, as: :hidden, :input_html => { :value => @place.id }
 
   .grid-x
@@ -24,7 +22,7 @@
               Please check that your Image is not larger than 2000px
           .large-6.medium-6.cell
             = f.input :preview
-            %p.shy Show this image on the map
+            %p.shy Show this image in the popup and in listings
             = f.input :alt, label: "Alternate Text"
             %p.shy Please provide a short description for screenreader
 
