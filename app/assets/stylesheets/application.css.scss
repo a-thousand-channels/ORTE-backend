@@ -55,6 +55,23 @@ footer {
 }
 
 
+a.edit_link .fi {
+	background-color: rgba(255,255,255,0.7);
+	color: #333;
+	border-radius: 10px;
+	padding: 3px 5px;
+	transition: 0.7s all;
+	cursor: pointer;
+}
+a.edit_link:hover .fi {
+	    background-color: #333;
+	    color: white;
+	    border-radius: 10px;
+	    padding: 3px 5px;
+	    transition: 0.5s all;
+	    cursor: pointer;
+	}
+
 
 #layer_change {
 	

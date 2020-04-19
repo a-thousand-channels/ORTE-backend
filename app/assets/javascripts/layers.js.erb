@@ -219,7 +219,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
           content += "<img src='"+image.image_url+"' />";
         });
       }
-
+      content += '<div class="leaflet-popup-content-text">';
       if ( place.date ) {
         content += "<p>"+place.date;
         if ( place.address ) {
@@ -250,6 +250,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         content += place.edit_link;
       }
       content += "</p>";
+      content += '</div>';
 
       marker.bindPopup(content).on('click', function(){
         // map.panTo(marker.getLatLng());

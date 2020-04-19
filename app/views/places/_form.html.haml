@@ -22,15 +22,16 @@
             = link_to map_url(@place.layer.map) do
               = @place.layer.map.title
             \>
-            = link_to map_layer_url(@place.layer.map,@place.layer), :title => "Change layer for this place" do
+            = link_to map_layer_url(@place.layer.map,@place.layer), title: "Change layer for this place" do
               = @place.layer.title
-            %i.fi.fi-pencil.fi-13
+            %i.fi.fi-pencil.fi-13{title: "Click to change layer for this place"}
       %p.clear.hint.text-left
         %span.name Address
         - if @old_place
           = @old_place.full_address
           \->
         = @place.full_address
+        = @place.city
         %br
         %span.name Coordinates
         - if @old_place
