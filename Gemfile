@@ -9,6 +9,7 @@ end
 
 gem 'rails', '~> 5.2.4'
 gem 'puma', '~> 4'
+gem 'sassc', '~> 2.2.1'
 gem 'sassc-rails'
 gem 'uglifier'
 
