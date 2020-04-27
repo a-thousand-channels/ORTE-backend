@@ -74,24 +74,22 @@ input#addresslookup_address.hide {
 #selection {
 }
 
-#selection p#selection-hint {
+#selection #selection-hint p {
   background-color: rgba(200,200,200,0.5);
-  background-color: transparent;
   padding: 5px 10px;
   margin: 0;
   max-width: 310px;
   display: block;
   margin-top: 1rem;
   font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-  font-size: 9pt;
+  font-size: 11pt;
 }
-@media screen and (max-width: 63.9375em) {
-
-  #selection p#selection-hint {
+@media screen and (max-width: 43.9375em) {
+  #selection #selection-hint {
     display: none;
   }
 }
-#selection p#selection-hint.active {
+#selection #selection-hint.active p {
   background-color: rgba(200,200,200,0.8);
   color: #522;
   display: block;
