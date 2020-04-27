@@ -4,6 +4,7 @@
       %li.name= link_to "#{Settings.app_name}", root_path
       %li
         = link_to info_path do
+          %i.fi-info.fi-21
           %span.show-for-large
             Info
       - if user_signed_in?
@@ -26,9 +27,8 @@
         %li
           %a{:href => edit_profile_path, :title => 'Edit your profile'}
             %i.fi-torso.fi-21
-            - if admin?
-              #{current_user.email} (#{current_user.group.title})
-
+            %span.show-for-large
+              Profil
 
         - if admin?
           %li

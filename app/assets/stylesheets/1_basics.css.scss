@@ -141,13 +141,14 @@ select {
 }
 .menu a.button.logout {
     background-color: #333;
-    border: 1px solid #666;
     color: #aaaa00 !important;
     margin-top: 3px;
-    padding: 0.5rem 0.75rem
+    padding: 0.5rem 0.75rem;
+    border-radius: 30px;
 }
 .menu a.button.logout:hover {
-    border: 1px solid #999;
+    background-color: #555;
+    
 }
 
 
