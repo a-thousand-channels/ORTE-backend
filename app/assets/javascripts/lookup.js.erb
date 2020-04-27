@@ -28,19 +28,19 @@ function LookupNominatim(address,url) {
   } else {
 
   $('#response').remove();
-  $('#selection-hint').html('Searching...');
+  $('#selection-hint').html('<p>Searching...</p>');
   var items = [];
   console.log("---------------------");
   console.log("LookupNominatim");
   console.log("Checking for params...");
   var url = PrepareBeforeLookup(url);
   if ( address === '' ) {
-    $('#selection-hint').html("<strong>No input!</strong> Please type in a complete address ('Street Number, City')");
+    $('#selection-hint').html("<p><strong>No input!</strong> Please type in a complete address ('Street Number, City')</p>");
     $('#selection-hint').addClass('active');
   }
   if ( address.length < 5 ) {
     console.log('Lookup:: Value too short!');
-    $('#selection-hint').html("<strong>Input too short.</strong> Please type in a complete address ('Street Number, City')");
+    $('#selection-hint').html("<p><strong>Input too short.</strong> Please type in a complete address ('Street Number, City')</p>");
     $('#selection-hint').addClass('active');
 
   } else {
@@ -56,7 +56,7 @@ function LookupNominatim(address,url) {
     // if no result
     if ( !data || data.length === 0) {
       console.log('Lookup:: No result');
-      $('#selection-hint').html("Nothing found. Please try another adress!  (Type 'Street Number, City')");
+      $('#selection-hint').html("<p>Nothing found. Please try another adress!  (Type 'Street Number, City')</p>");
       $('#selection-hint').addClass('active');
       return;
     }
@@ -117,13 +117,13 @@ function LookupNominatim(address,url) {
         html: items.join( "" ),
       }).appendTo( "#selection" );
     console.log( "Success" );
-    $('#selection-hint').html("Please select one of the addresses below or give in another address.");
+    $('#selection-hint').html("<p>Please select one of the addresses below or give in another address.</p>");
     $('#selection-hint').addClass('active');
     }).done(function() {
 
     }).fail(function() {
       console.log( "error" );
-      $('#selection-hint').html("Nothing found. Please try another input.");
+      $('#selection-hint').html("</p> :( Nothing found. Please try another input.</p>");
       $('#selection-hint').addClass('active');
     }).always(function() {
       console.log( "Complete" );
@@ -140,7 +140,7 @@ function ReverseLookupNominatim(map,latlng,lat,lon,url) {
   var url = PrepareBeforeLookup(url);
 
   if ( lat === '' ) {
-    $('#selection-hint').html("<strong>No input!</strong> Please try again");
+    $('#selection-hint').html("<p><strong>No input!</strong> Please try again.</p>");
     $('#selection-hint').addClass('active');
   } else {
     console.log('Reverse Lookup:: '+lat+"/"+lon);
@@ -154,7 +154,7 @@ function ReverseLookupNominatim(map,latlng,lat,lon,url) {
       // if no result
       if ( !data ) {
         console.log('Lookup:: No result');
-        $('#selection-hint').html("Nothing found. Please try another place on the map");
+        $('#selection-hint').html("<p>Nothing found. Please try another place on the map</p>");
         $('#selection-hint').addClass('active');
         return;
       }
@@ -200,13 +200,13 @@ function ReverseLookupNominatim(map,latlng,lat,lon,url) {
       L.popup().setLatLng(latlng).setContent("<p>"+hint+"<br/><a href='"+href+"'>"+full_address +"</a></p>").openOn(map);
     }).done(function() {
       console.log( "success" );
-      // $('#selection-hint').html("Please select the address shown in the popup or try another input.");
+      // $('#selection-hint').html("<p>Please select the address shown in the popup or try another input.</p>");
       // $('#selection-hint').addClass('active');
 
     })
     .fail(function() {
       console.log( "error" );
-      $('#selection-hint').html("Nothing found. Please try another input.");
+      $('#selection-hint').html("<p>Nothing found. Please try another input.</p>");
       $('#selection-hint').addClass('active');
     })
     .always(function() {
