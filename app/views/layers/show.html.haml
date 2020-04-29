@@ -12,7 +12,7 @@
         .input-group
           .input-group-label
             =link_to map_path(@map) do
-              %i.fi-map.fi-24
+              .orte-icons-maps
           = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button.hide
             =link_to new_map_path, :class => 'button secondary', :title => 'Create a new map' do
@@ -24,7 +24,7 @@
         .input-group
           .input-group-label
             =link_to map_layers_path(@map), :title => "Show all layers of this map" do
-              %i.fi-page-multiple.fi-24
+              .orte-icons-layers
           =simple_form_for :navselector, url: '', html: { method: :get }  do |f|
             = f.input :id, :collection => @map_layers.map { |l| ["#{l.title} (#{l.places.count})", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}/layers/#{@layer.id}", :include_blank => true, input_html: {:class => 'nav-selector', :data => { :map => @map.id}}
 
@@ -43,7 +43,7 @@
         .input-group
           .input-group-label
             = link_to map_layer_places_path(@map,@layer), :title => "Show all places for this layer" do
-              %i.fi-marker.fi-24
+              .orte-icons-places
           = f.input :address, :label => false, :placeholder => 'Add place: Name, Street + Number...', input_html: {:class => "address-lookup-field input-group-field", :data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}" }}
           .input-group-button
             %button{:id => 'addresslookup_button', :class => 'button secondary', :title => 'Lookup for address'}
