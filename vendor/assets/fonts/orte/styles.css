@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "orte";
+  src:url("fonts/orte.eot");
+  src:url("fonts/orte.eot?#iefix") format("embedded-opentype"),
+    url("fonts/orte.woff") format("woff"),
+    url("fonts/orte.ttf") format("truetype"),
+    url("fonts/orte.svg#orte") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "orte" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="orte-icon-"]:before,
+[class*=" orte-icon-"]:before {
+  font-family: "orte" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.orte-icon-orte-icons-maps:before {
+  content: "\65";
+}
+.orte-icon-orte-icons-layers:before {
+  content: "\66";
+}
+.orte-icon-orte-icons-places:before {
+  content: "\67";
+}

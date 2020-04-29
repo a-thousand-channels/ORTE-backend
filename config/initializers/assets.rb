@@ -12,6 +12,7 @@ Rails.application.config.assets.paths << Rails.root.join('vendor/assets/fonts')
 
 # Rails.application.config.assets.paths << Rails.root.join('vendor','assets','fonts','media','files')
 Rails.application.config.assets.paths << Rails.root.join('vendor','assets','fonts','worksans')
+Rails.application.config.assets.paths << Rails.root.join('vendor','assets','fonts','orte')
 Rails.application.config.assets.paths << Rails.root.join('node_modules')
 
 

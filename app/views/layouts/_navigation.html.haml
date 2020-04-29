@@ -1,7 +1,10 @@
 .top-bar
   .top-bar-left
     %ul.menu.show-for-medium
-      %li.name= link_to "#{Settings.app_name}", root_path
+      %li.name
+        = link_to root_path do
+          #{Settings.app_name}
+          %span.orte-icons-maps
       %li
         = link_to info_path do
           %i.fi-info.fi-21
