@@ -19,7 +19,7 @@ RSpec.describe "images/new", type: :view do
   it "renders new image form" do
     render
 
-    assert_select "form[action=?][method=?]", images_path, "post" do
+    assert_select "form[action=?][method=?]", map_layer_place_images_path(@map,@layer,@place), "post" do
 
       assert_select "input[name=?]", "image[title]"
 

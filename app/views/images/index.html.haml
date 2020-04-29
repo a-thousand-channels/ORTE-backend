@@ -49,15 +49,9 @@
               %i.fi-check.fi-24
             = image.sorting         
           %td
-            = link_to edit_image_path(image), :class => 'button' do
+            = link_to edit_map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image), :class => 'button' do
               %i.fi.fi-pencil
               Edit
-            = link_to image, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
+            = link_to map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
               %i.fi.fi-x
               Destroy
-
-  %br
-
-  = link_to new_image_path, :class => "button secondary" do
-    %i.fi.fi-plus
-    Add Image

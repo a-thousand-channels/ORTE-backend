@@ -13,7 +13,9 @@
 			#{@place.title}
 
 	= render 'form'
-
-	= link_to 'Show', @image
-	\|
-	= link_to 'Back', images_path	
+  
+	= link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), class: "button"  do
+		Show
+	&nbsp;
+	= link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
+		Back to place  

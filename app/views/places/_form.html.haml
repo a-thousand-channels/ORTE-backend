@@ -111,10 +111,11 @@
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
 
-        %label Images
-        = link_to new_image_path(place_id: @place.id), class: 'button' do
-          %i.fi.fi-plus
-          Add image     
+        - if params[:action] == 'edit'
+          %label Images
+          = link_to new_map_layer_place_image_path(@place.layer.map,@place.layer,@place), class: 'button' do
+            %i.fi.fi-plus
+            Add image     
         - if @place.images.count > 0
           %p
             Images, old format
@@ -127,10 +128,15 @@
         - if images.count > 0
           %p
             Images, new format
-          %p
+          .grid-x
             - images.each do |img|
-              = link_to img, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning button_in_image' do
-                %i.fi.fi-x
-              = link_to image_path(img) do
-                = image_tag url_for(img.file)
+              .large-6.medium-6.small-6.cell
+                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning button_in_image' do
+                  %i.fi.fi-x
+                - if img.preview
+                  = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
+                    = image_tag url_for(img.file)
+                - else
+                  = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
+                    = image_tag url_for(img.file)
 

@@ -11,7 +11,7 @@ RSpec.describe "images/edit", type: :view do
   it "renders the edit image form" do
     render
 
-    assert_select "form[action=?][method=?]", image_path(@image), "post" do
+    assert_select "form[action=?][method=?]", map_layer_place_image_path(@map,@layer,@place,@image), "post" do
 
       assert_select "input[name=?]", "image[title]"
 

@@ -25,15 +25,17 @@ class ImagesController < ApplicationController
   # GET /images/1
   # GET /images/1.json
   def show
-    unless @image.place.layer.map.group == current_user.group
-      redirect_to root_url, notice: 'No place defined for showing this image'
+    if @image.place.layer.map.group != current_user.group && current_user.group.title != 'Admins'
+      redirect_to root_url, notice: "You are not allowed for viewing this image #{current_user.group.title}"
     end    
   end
 
   # GET /images/new
   def new
     @image = Image.new
-    @place = Place.where(id: params[:place_id]).first
+    @map = Map.by_user(current_user).find(params[:map_id])
+    @layer = Layer.find(params[:layer_id])    
+    @place = Place.find(params[:place_id])  
     unless @place || ( @place && @place.layer.map.group == current_user.group )
       redirect_to root_url, notice: 'No place defined for adding an image'
     end
@@ -68,11 +70,9 @@ class ImagesController < ApplicationController
   def update
     respond_to do |format|
       if @image.update(image_params)
-        format.html { redirect_to @image, notice: 'Image was successfully updated.' }
-        format.json { render :show, status: :ok, location: @image }
+        format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map,@image.place.layer,@image.place), notice: 'Image was successfully updated.' }
       else
         format.html { render :edit }
-        format.json { render json: @image.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -82,7 +82,7 @@ class ImagesController < ApplicationController
   def destroy
     @image.destroy
     respond_to do |format|
-      format.html { redirect_to images_url, notice: 'Image was successfully destroyed.' }
+      format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map,@image.place.layer,@image.place), notice: 'Image was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -90,6 +90,9 @@ class ImagesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_image
+      @map = Map.by_user(current_user).find(params[:map_id])
+      @layer = Layer.find(params[:layer_id])
+      @place = Place.find(params[:place_id])    
       @image = Image.find(params[:id])
     end
 

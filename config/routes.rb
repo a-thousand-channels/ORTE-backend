@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :images
-
   devise_for :users
 
   root 'start#index'
@@ -24,7 +22,9 @@ Rails.application.routes.draw do
   end
   resources :maps do
     resources :layers do
-      resources :places
+      resources :places do
+        resources :images
+      end
     end
   end
 

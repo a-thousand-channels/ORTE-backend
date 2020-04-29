@@ -1,4 +1,4 @@
-= simple_form_for(@image) do |f|
+= simple_form_for([@map,@layer,@place,@image]) do |f|
   .grid-x
     .large-12.cell
       = f.error_notification
@@ -21,10 +21,20 @@
             %p.shy
               Please check that your Image is not larger than 2000px
           .large-6.medium-6.cell
-            = f.input :preview
-            %p.shy Show this image in the popup and in listings
-            = f.input :alt, label: "Alternate Text"
-            %p.shy Please provide a short description for screenreader
+            .grid-x.grid-padding-x
+              .large-7.medium-7.cell
+                #switch.switch.inline
+                  %label Preview?
+                  %input{:name=>"image[preview]", :class => "switch-input", :id => "image_preview", :type => "checkbox", :checked => @image.preview }
+                  %label.switch-paddle{:for=>"image_preview"}
+                    %span.show-for-sr
+                      Preview
+                    %span.switch-active{:aria-hidden=>"true"} Preview
+                    %span.switch-inactive{:aria-hidden=>"true"} Preview
+                %p.shy Show this image in the popup and in listings?
+              .large-5.medium-5.cell          
+                = f.input :sorting, size: 4         
+                %p.shy Sorting order (1-99)
 
 
         %hr
@@ -37,9 +47,12 @@
             = f.input :source
             %p.shy Origin of this image
           .large-6.medium-6.cell
+            = f.input :alt, label: "Alternate Text"
+            %p.shy Please provide a short description for screenreader
+          
             = f.input :caption
             %p.shy Do you want to add a caption?
-            = f.input :sorting
+
 
       .form-actions
         = f.button :submit, :class => "button"

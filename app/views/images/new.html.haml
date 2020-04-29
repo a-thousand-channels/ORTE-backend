@@ -16,4 +16,4 @@
 
 	= render 'form'
 
-	= link_to 'Cancel', images_path, class: 'button secondary'
+	= link_to 'Back to place', edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: 'button secondary'

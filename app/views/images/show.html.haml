@@ -1,9 +1,5 @@
 #form-wrapper
   %p#notice= notice
-
-  %p
-    %b Title:
-    = @image.title
   %p
     - if @image.file.attached? 
       = link_to url_for(@image.file) do
@@ -11,35 +7,45 @@
     - else
       No Image
   %p
-    %b Licence:
-    = @image.licence
-  %p
-    %b Source:
-    = @image.source
-  %p
-    %b Creator:
-    = @image.creator
-  %p
     %b Place:
-    = @image.place.layer.map.title
+    = link_to map_path(@image.place.layer.map) do
+      = @image.place.layer.map.title
     \>
-    = @image.place.layer.title
+    = link_to map_layer_path(@image.place.layer.map,@image.place.layer) do
+      = @image.place.layer.title
     \>
-    = @image.place.title
+    = link_to map_layer_place_path(@image.place.layer.map,@image.place.layer,@image.place)  do
+      = @image.place.title
 
+  - if @image.title
+    %h3= @image.title
   %p
     %b Alt:
     = @image.alt
   %p
-    %b Caption:
-    = @image.caption
+    - if @image.caption.present?
+      %b Caption:
+      = @image.caption
   %p
-    %b Sorting:
-    = @image.sorting
+    %b Source:
+    = link_to @image.source do
+      = @image.source
   %p
-    %b Preview:
-    = @image.preview
+    %b Creator:
+    = @image.creator
+    %b Licence:
+    = @image.licence    
+  %p
+    - if @image.sorting
+      %b Sorting:
+      = @image.sorting
+    - if @image.preview
+      %b Preview:
+      %i.fi-check.fi-24
 
-  = link_to 'Edit', edit_image_path(@image)
-  \|
-  = link_to 'Back', images_path
+  = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), class: "button"  do
+    %i.fi.fi-pencil
+    Edit
+  &nbsp;
+  = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
+    Back to place  

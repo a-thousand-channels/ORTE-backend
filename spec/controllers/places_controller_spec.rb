@@ -60,7 +60,6 @@ RSpec.describe PlacesController, type: :controller do
         json = JSON.parse(response.body)
         expect(json['title']).to eq place.title
       end
-
     end
 
 

@@ -31,7 +31,11 @@
           %td
             %p.show-for-small-only
               = smart_date_display(place.startdate, place.enddate)
+            - images = Image.preview(place.id)
 
+            - if images.count > 0
+              - images.each do |img|
+                = image_tag img.variant(resize: "120x120").processed, class: "thumbnail"                
             %h4
               = link_to map_layer_place_path(place.layer.map,place.layer,place) do
                 = place.title
@@ -58,14 +62,14 @@
               %i.fi-pencil.fi-21
               Edit
             %br
-            - if place.images.count > 0
-              = link_to images_path(place_id: place.id), :class => "button" do
-                %i.fi-photo.fi-21
-                Images
-            - else
-              = link_to new_image_path(place_id: place.id), :class => "button" do
-                %i.fi-plus.fi-21
-                Images
+            - images = Image.where(place_id: place.id)
+            - if images.count > 0
+              %i.fi-photo.fi-21
+              = images.count
+              Images
+            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button" do
+              %i.fi-plus.fi-21
+              Images
             %br
             = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm: 'Are you sure?' }, :class => "button warning" do
               %i.fi-trash.fi-21

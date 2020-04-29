@@ -18,6 +18,5 @@ RSpec.describe "images/show", type: :view do
     expect(rendered).to match(/Alt/)
     expect(rendered).to match(/Caption/)
     expect(rendered).to match(/2/)
-    expect(rendered).to match(/false/)
   end
 end
