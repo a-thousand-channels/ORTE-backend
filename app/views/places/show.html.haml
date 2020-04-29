@@ -2,18 +2,25 @@
 #info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}" }}
   
   %p.text-right.close_link_wrapper
-    = link_to map_layer_url(@map,@layer), :class=>"close-button button small", "aria-label"=>"Close back",:type=>"button" do
+    = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
       %span{"aria-hidden"=>"true"}
         %i.fi.fi-x     
   %p#notice= notice
 
   .grid-x.grid-padding-x
-    - if @place.images.count > 0
-      .cell.medium-4
+    .cell.medium-4
+      - if @place.images.count > 0
         - @place.images.each do |img|
           - # = image_tag img.variant(resize_to_limit: [100, 100]).processed
           = link_to url_for(img) do
             = image_tag url_for(img)
+      - images = Image.where(place_id: @place.id)
+      - if images.count > 0
+        %p
+          - images.each do |img|
+            = link_to image_path(img), class: 'thumbnail' do
+              = image_tag url_for(img.file)
+
     .cell.medium-8
       %p.hint.text-left
         = link_to map_url(@place.layer.map) do
@@ -39,8 +46,7 @@
             = @place.link
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
-
-      %p.hint
+      %p.hint.text-left
         %b Coordinates:
         #{@place.lat[0..5]}, #{@place.lon[0..5]}
         %b Published:
@@ -48,6 +54,5 @@
           %i.fi-check.fi-18
         - else
           %i.fi-lock.fi-18
-
-        %b Last edited:
+        %b Last edit:
         = l(@place.updated_at)
