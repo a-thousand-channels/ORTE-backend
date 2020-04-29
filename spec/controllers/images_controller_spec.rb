@@ -9,8 +9,9 @@ RSpec.describe ImagesController, type: :controller do
       @group = FactoryBot.create(:group)
       user = FactoryBot.create(:admin_user, :group_id => @group.id)
       sign_in user
-      @place = FactoryBot.create(:place)
-
+      @map = FactoryBot.create(:map, :group_id => @group.id)
+      @layer = FactoryBot.create(:layer, :map_id => @map.id)
+      @place = FactoryBot.create(:place, :layer_id => @layer.id)
     end
 
     let(:image) {
@@ -30,7 +31,7 @@ RSpec.describe ImagesController, type: :controller do
     describe "GET #index" do
       it "returns a success response" do
         image = Image.create! valid_attributes
-        get :index, params: { :place_id => @place.id }, session: valid_session
+        get :index, params: { layer_id: @layer.id, map_id: @map.id, :place_id => @place.id }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
@@ -38,22 +39,22 @@ RSpec.describe ImagesController, type: :controller do
     describe "GET #show" do
       it "returns a success response" do
         image = Image.create! valid_attributes
-        get :show, params: {id: image.to_param, :place_id => @place.id}, session: valid_session
-        expect(response).to have_http_status(302)
+        get :show, params: {id: image.to_param, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id}, session: valid_session
+        expect(response).to have_http_status(200)
       end
     end
 
     describe "GET #new" do
       it "returns a success response" do
-        get :new, params: { :place_id => @place.id }, session: valid_session
-        expect(response).to have_http_status(200)
+        get :new, params: { layer_id: @layer.id, map_id: @map.id, :place_id => @place.id }, session: valid_session
+        expect(response).to have_http_status(200)  
       end
     end
 
     describe "GET #edit" do
       it "returns a success response" do
         image = Image.create! valid_attributes
-        get :edit, params: {id: image.to_param, :place_id => @place.id }, session: valid_session
+        get :edit, params: {id: image.to_param, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
@@ -62,18 +63,18 @@ RSpec.describe ImagesController, type: :controller do
       context "with valid params" do
         it "creates a new Image" do
           expect {
-            post :create, params: {image: valid_attributes, :place_id => @place.id}, session: valid_session
+            post :create, params: {image: valid_attributes, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id}, session: valid_session
           }.to change(Image, :count).by(1)
         end
 
         it "redirects to the created image" do
-          post :create, params: {image: valid_attributes, :place_id => @place.id }, session: valid_session          
+          post :create, params: {image: valid_attributes, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id }, session: valid_session          
           expect(response).to have_http_status(302)
         end        
 
         it "redirects to related place url" do
           pending
-          post :create, params: {image: valid_attributes, :place_id => @place.id }, session: valid_session
+          post :create, params: {image: valid_attributes, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id }, session: valid_session
           expect(response).to redirect_to(redirect_to place_url(@place))
         end
       end
@@ -99,14 +100,14 @@ RSpec.describe ImagesController, type: :controller do
 
         it "updates the requested image" do
           image = Image.create! valid_attributes
-          put :update, params: {id: image.to_param, image: new_attributes, :place_id => @place.id }, session: valid_session
+          put :update, params: {id: image.to_param, image: new_attributes, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id }, session: valid_session
           image.reload
           expect(image.title).to eq('OtherTitle')
         end
 
         xit "redirects to the place" do
           image = Image.create! valid_attributes
-          put :update, params: {id: image.to_param, image: valid_attributes, :place_id => @place.id }, session: valid_session
+          put :update, params: {id: image.to_param, image: valid_attributes, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id }, session: valid_session
           expect(response).to redirect_to(place_url(@place))
         end
       end
@@ -114,7 +115,7 @@ RSpec.describe ImagesController, type: :controller do
       context "with invalid params" do
         it "returns a success response (i.e. to display the 'edit' template)" do
           image = Image.create! valid_attributes
-          put :update, params: {id: image.to_param, image: invalid_attributes, :place_id => @place.id}, session: valid_session
+          put :update, params: {id: image.to_param, image: invalid_attributes, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id}, session: valid_session
           expect(response).to have_http_status(302)
         end
       end
@@ -124,13 +125,13 @@ RSpec.describe ImagesController, type: :controller do
       it "destroys the requested image" do
         image = Image.create! valid_attributes
         expect {
-          delete :destroy, params: {id: image.to_param, :place_id => @place.id}, session: valid_session
+          delete :destroy, params: {id: image.to_param, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id}, session: valid_session
         }.to change(Image, :count).by(-1)
       end
 
       xit "redirects to the images list" do
         image = Image.create! valid_attributes
-        delete :destroy, params: {id: image.to_param, :place_id => @place.id}, session: valid_session
+        delete :destroy, params: {id: image.to_param, layer_id: @layer.id, map_id: @map.id, :place_id => @place.id}, session: valid_session
         expect(response).to redirect_to(place_url(@place))
       end
     end

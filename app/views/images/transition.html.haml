@@ -35,24 +35,24 @@
 					%td{colspan: 2}
 						- if images.count > 0
 							Neues Format für Bilder
-					- images.each do |i|
+					- images.each do |image|
 						%tr
 							%td
 								- begin
-									= link_to image_path(i) do
-										= image_tag i.file.variant(resize: "300x300").processed
+									= link_to map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image) do
+										= image_tag image.file.variant(resize: "300x300").processed
 								- rescue Errno::ENOENT
 									%tt File not found	
 							%td
-								- if i.preview
+								- if image.preview
 									%i.fi.fi-star
-								= link_to image_path(i) do
-									%tt= i.file.filename
-								= link_to i, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
+								= link_to map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image) do
+									%tt= image.file.filename
+								= link_to map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
 									%i.fi.fi-x
 									Delete								
 				%tr
 					%td{colspan: 2}
-						= link_to new_image_path(place_id: p.id), class: 'button' do
+						= link_to new_map_layer_place_image_path(p.layer.map,p.layer,p), class: 'button' do
 							%i.fi.fi-plus
 							Bild im neuen Format hinzufügen				

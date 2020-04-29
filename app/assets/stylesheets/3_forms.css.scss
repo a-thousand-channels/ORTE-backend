@@ -53,11 +53,16 @@ select#place_enddate_5i  {
 }
 
 
-form img {
+form imgX {
     max-width: 100px;
     max-height: 150px;
 }
-
+form a.thumbnail {
+  margin-right: 10px;  
+}
+form a.thumbnail-preview {
+  border: solid 4px orange;
+}
 
 
 
