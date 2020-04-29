@@ -95,6 +95,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         bounds = L.latLngBounds(northeast, southwest);
       } 
       map.fitBounds(bounds, {maxZoom: 12, minZoom: 2});
+      console.log("fit to bounds done");
+
       
       // set custom extent
       var params = getParams();

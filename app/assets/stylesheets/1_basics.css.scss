@@ -134,6 +134,11 @@ select {
       flex: 0 0 100%;
       max-width: 50%;
   }
+  .top-bar-right {
+      ul.menu {
+        float: right;
+      }
+  }
   #maps header,
   #layers header {
     display: none;

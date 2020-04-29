@@ -1,8 +1,9 @@
 
 #table-wrapper
-  = link_to map_layer_url(@map,@layer), :class=>"close-button button small", "aria-label"=>"Close back",:type=>"button" do
-    %span{"aria-hidden"=>"true"}
-      %i.fi.fi-x
+  %p.text-right.close_link_wrapper
+    = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
+      %span{"aria-hidden"=>"true"}
+        %i.fi.fi-x
   %h3
     = link_to map_path(@layer.map) do
       = @layer.map.title
@@ -15,11 +16,12 @@
   %table
     %thead
       %tr
-        %th.show-for-large Date
+        %th.show-for-medium Date
         %th Place
         %th.show-for-large
           %i.fi-eye.fi-24
         %th
+          &nbsp;
 
     %tbody
       - @places.order(:startdate).each do |place|
@@ -48,23 +50,23 @@
                 #{place.lat[0..6]}/#{place.lon[0..5]}
           %td.show-for-large
             - if place.published
-              %i.fi-check.fi-24
+              %i.fi-check.fi-21
             - else
-              %i.fi-lock.fi-24
+              %i.fi-lock.fi-21
           %td
             = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button" do
-              %i.fi-pencil.fi-24
+              %i.fi-pencil.fi-21
               Edit
             %br
             - if place.images.count > 0
               = link_to images_path(place_id: place.id), :class => "button" do
-                %i.fi-photo.fi-24
+                %i.fi-photo.fi-21
                 Images
             - else
               = link_to new_image_path(place_id: place.id), :class => "button" do
-                %i.fi-plus.fi-24
-                Add&nbsp;image
+                %i.fi-plus.fi-21
+                Images
             %br
             = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm: 'Are you sure?' }, :class => "button warning" do
-              %i.fi-trash.fi-24
+              %i.fi-trash.fi-21
               Destroy

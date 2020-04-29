@@ -19,10 +19,13 @@
               %i.fi-marker
               %span.show-for-large
                 Iconsets
-
-
+    %ul.menu.show-for-small-only
+      %li.name= link_to "#{Settings.app_shortname}", root_path
+      %li
+        = link_to info_path do
+          %i.fi-info.fi-21
   .top-bar-right
-    %ul.menu
+    %ul.menu.text-right
       - if user_signed_in?
         %li
           %a{:href => edit_profile_path, :title => 'Edit your profile'}
