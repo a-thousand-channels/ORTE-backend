@@ -18,8 +18,12 @@
       - if images.count > 0
         %p
           - images.each do |img|
-            = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
-              = image_tag url_for(img.file)
+            - if img.preview
+              = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
+                = image_tag url_for(img.file)       
+            - else   
+              = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
+                = image_tag url_for(img.file)
 
     .cell.medium-8
       %p.hint.text-left

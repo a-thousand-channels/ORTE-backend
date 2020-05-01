@@ -221,6 +221,11 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
           content += "<img src='"+image.image_url+"' />";
         });
       }
+      if ( place.imagelink2 ) {
+        content += "<img src='"+place.imagelink2+"' />";
+      } else if ( place.imagelink ) {
+        content += "<img src='"+place.imagelink+"' />";
+      }      
       content += '<div class="leaflet-popup-content-text">';
       if ( place.date ) {
         content += "<p>"+place.date;
@@ -238,9 +243,6 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         }
       }
       content += "</h4>";
-      if ( place.imagelink ) {
-        content += "<img src='"+place.imagelink+"' />";
-      }
       var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
       teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
       if ( teaser.length > 400 ) {

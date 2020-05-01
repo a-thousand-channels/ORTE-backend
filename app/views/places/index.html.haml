@@ -32,7 +32,6 @@
             %p.show-for-small-only
               = smart_date_display(place.startdate, place.enddate)
             - images = Image.preview(place.id)
-
             - if images.count > 0
               - images.each do |img|
                 = image_tag img.variant(resize: "120x120").processed, class: "thumbnail"                

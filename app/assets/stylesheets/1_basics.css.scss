@@ -112,6 +112,13 @@ a.button.button_in_image_right {
     margin-left: 82px;
 }
 
+a.thumbnail {
+  border: solid 4px transparent;
+}
+a.thumbnail.thumbnail-preview {
+  border: solid 4px orange;
+}
+
 select {
   margin: 0;
   -moz-appearance: none;

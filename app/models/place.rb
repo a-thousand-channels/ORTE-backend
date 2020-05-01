@@ -11,6 +11,7 @@ class Place < ApplicationRecord
   has_many_attached :images
 
   has_many :images
+  # has_many :imgs, foreign_key: "place_id", class_name: "Image"
 
   validates :title,  presence: true
 
@@ -53,6 +54,15 @@ class Place < ApplicationRecord
 
   def edit_link
     ApplicationController.helpers.edit_link(self.layer.map.id,self.layer.id,id)
+  end
+
+  def imagelink2
+    i = Image.preview(id)
+    if i.count > 0
+      ApplicationController.helpers.image_link(i.first)
+    else
+      self.imagelink if self.imagelink
+    end
   end
 
   def full_address

@@ -18,8 +18,6 @@ RSpec.describe ImagesController, type: :routing do
       expect(get: "/maps/1/layers/1/places/1/images/1/edit").to route_to("images#edit", id: '1', layer_id: '1', map_id: '1', place_id: '1')
     end
 
-
-
     it "routes to #create" do
       expect(post: "/maps/1/layers/1/places/1/images").to route_to("images#create", layer_id: '1', map_id: '1', place_id: '1')
     end
