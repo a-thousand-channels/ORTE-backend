@@ -9,21 +9,16 @@
 
   .grid-x.grid-padding-x
     .cell.medium-4
-      - if @place.images.count > 0
-        - @place.images.each do |img|
-          - # = image_tag img.variant(resize_to_limit: [100, 100]).processed
-          = link_to url_for(img) do
-            = image_tag url_for(img)
       - images = Image.where(place_id: @place.id)
       - if images.count > 0
         %p
           - images.each do |img|
             - if img.preview
               = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
-                = image_tag url_for(img.file)       
+                = image_tag img.file.variant(resize: "300x300").processed
             - else   
               = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
-                = image_tag url_for(img.file)
+                = image_tag img.file.variant(resize: "300x300").processed
 
     .cell.medium-8
       %p.hint.text-left

@@ -2,133 +2,134 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
 
   var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
-  console.log("Drawing placemarks w/data from "+layer_json_url);
+  if(typeof layer_json_url !== 'undefined') {
+  
+    console.log("Drawing placemarks w/data from "+layer_json_url);
 
+    var request = $.getJSON(layer_json_url, function(data) {
 
-
-  var request = $.getJSON(layer_json_url, function(data) {
-
-    console.log("-----------------------------");
-    console.log(data);
-
-    // read params, place id is given, render this place special
-    console.log("Check for url params");
-    var params = getParams();
-
-    var clustercolor = '#445';
-    if ( level !== 'maps') {
-      console.log("Render places of one layer");
+      console.log("-----------------------------");
       console.log(data);
-      var marker_layers = L.markerClusterGroup({
-        maxClusterRadius: 20
-      });
-      clustercolor = data.color;
-      var places = new Array();
-      if ( level === 'places') {
-        places = data
-      } else {
-        places = data.places;
-      }
-      DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
-      $('.marker-cluster-small').addClass('marker-layer-'+data.id);
-      marker_meta_layers.addLayer(marker_layers);
 
-    } else  {
-      $.each(data.layers, function(key,data) {
-        console.log("Render places of layer "+key+" (\""+data.title+"\") on map");
+      // read params, place id is given, render this place special
+      console.log("Check for url params");
+      var params = getParams();
+
+      var clustercolor = '#445';
+      if ( level !== 'maps') {
+        console.log("Render places of one layer");
+        console.log(data);
         var marker_layers = L.markerClusterGroup({
-          maxClusterRadius: 20,
-          iconCreateFunction: function(cluster) {
-              return L.divIcon({ html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data.id+'"><div>' + cluster.getChildCount() + '</div></div>' });
-            }
+          maxClusterRadius: 20
         });
         clustercolor = data.color;
-        DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
+        var places = new Array();
+        if ( level === 'places') {
+          places = data
+        } else {
+          places = data.places;
+        }
+        DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
+        $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         marker_meta_layers.addLayer(marker_layers);
 
+      } else  {
+        $.each(data.layers, function(key,data) {
+          console.log("Render places of layer "+key+" (\""+data.title+"\") on map");
+          var marker_layers = L.markerClusterGroup({
+            maxClusterRadius: 20,
+            iconCreateFunction: function(cluster) {
+                return L.divIcon({ html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data.id+'"><div>' + cluster.getChildCount() + '</div></div>' });
+              }
+          });
+          clustercolor = data.color;
+          DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
+          marker_meta_layers.addLayer(marker_layers);
+
+        });
+
+      }
+
+      var layer_style = '';
+      $.each(data.layers, function(key,data) {
+        layer_style += "#map .marker-cluster-layer-"+data.id+" {\
+            border: 0px solid "+data.color+";\
+          }\
+          #map .marker-cluster-layer-"+data.id+" div {\
+            background-color: "+data.color+";\
+          }\
+        ";
       });
+      $("head").append("\
+        <style>\
+          #map .marker-cluster-medium, \
+          #map .marker-cluster-small {\
+              background-color: transparent;\
+              border: 0px solid "+clustercolor+";\
+              opacity: 0.9;\
+              width: 40px;\
+              height: 40px;\
+          }\
+          #map .marker-cluster-medium div,\
+          #map .marker-cluster-small div {\
+              background-color: "+clustercolor+";\
+              transform: translate3d(-3px, -3px, 0px);\
+              font: 12px \"worksans-bold\",\"Helvetica Neue\", Arial, Helvetica, sans-serif;\
+              color: transparent;\
+              padding: 8px;\
+          }\
+          "+layer_style+"\
+        </style>\
+        ");
 
-    }
+        console.log("fit to bounds");
+        var bounds = marker_meta_layers.getBounds().pad(0.25);
+        var northeast = bounds.getNorthEast();
+        var southwest = bounds.getSouthWest();
+        if ( $('#selection').data('map-extent-northeast') ) {
+          console.log("fit to custom extent");
+          var northeast_array = $('#selection').data('map-extent-northeast').split(",").map(Number);
+          var southwest_array = $('#selection').data('map-extent-southwest').split(",").map(Number);
+          northeast = L.latLng(northeast_array[0],northeast_array[1]);
+          southwest = L.latLng(southwest_array[0],southwest_array[1]);
+          bounds = L.latLngBounds(northeast, southwest);
+        } 
+        map.fitBounds(bounds, {maxZoom: 12, minZoom: 2});
+        console.log("fit to bounds done");
 
-    var layer_style = '';
-    $.each(data.layers, function(key,data) {
-      layer_style += "#map .marker-cluster-layer-"+data.id+" {\
-          border: 0px solid "+data.color+";\
-        }\
-        #map .marker-cluster-layer-"+data.id+" div {\
-          background-color: "+data.color+";\
-        }\
-      ";
-    });
-    $("head").append("\
-      <style>\
-        #map .marker-cluster-medium, \
-        #map .marker-cluster-small {\
-            background-color: transparent;\
-            border: 0px solid "+clustercolor+";\
-            opacity: 0.9;\
-            width: 40px;\
-            height: 40px;\
-        }\
-        #map .marker-cluster-medium div,\
-        #map .marker-cluster-small div {\
-            background-color: "+clustercolor+";\
-            transform: translate3d(-3px, -3px, 0px);\
-            font: 12px \"worksans-bold\",\"Helvetica Neue\", Arial, Helvetica, sans-serif;\
-            color: transparent;\
-            padding: 8px;\
-        }\
-        "+layer_style+"\
-      </style>\
-      ");
-
-      console.log("fit to bounds");
-      var bounds = marker_meta_layers.getBounds().pad(0.25);
-      var northeast = bounds.getNorthEast();
-      var southwest = bounds.getSouthWest();
-      if ( $('#selection').data('map-extent-northeast') ) {
-        console.log("fit to custom extent");
-        var northeast_array = $('#selection').data('map-extent-northeast').split(",").map(Number);
-        var southwest_array = $('#selection').data('map-extent-southwest').split(",").map(Number);
-        northeast = L.latLng(northeast_array[0],northeast_array[1]);
-        southwest = L.latLng(southwest_array[0],southwest_array[1]);
-        bounds = L.latLngBounds(northeast, southwest);
-      } 
-      map.fitBounds(bounds, {maxZoom: 12, minZoom: 2});
-      console.log("fit to bounds done");
-
-      
-      // set custom extent
-      var params = getParams();
-      if ( params.setbound )  {
-        var extend_layer = L.featureGroup().addTo(map);
-        var rect = L.rectangle(bounds, {color: 'white', weight: 5, opacity: 0.5, fill: false});
-        // http://127.0.0.1:3000/maps/8/edit?northeast=1&southwest=2
-        var setbound_url = $("#setbound").attr('href');
-        console.log(setbound_url);
-        setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
-        setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
-        console.log(setbound_url);
-
-        $("#setbound").attr('href', setbound_url);
-
-        rect.editing.enable();
-        map.addLayer(rect);
-        rect.on('edit', function(e) {
-          console.log('Map extent was edited!');
-          var new_bound = rect.getBounds();
-          var northeast = new_bound.getNorthEast();
-          var southwest = new_bound.getSouthWest();          
-          console.log("get new bounds");
-          console.log(northeast);
+        
+        // set custom extent
+        var params = getParams();
+        if ( params.setbound )  {
+          var extend_layer = L.featureGroup().addTo(map);
+          var rect = L.rectangle(bounds, {color: 'white', weight: 5, opacity: 0.5, fill: false});
+          // http://127.0.0.1:3000/maps/8/edit?northeast=1&southwest=2
+          var setbound_url = $("#setbound").attr('href');
+          console.log(setbound_url);
           setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
           setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
           console.log(setbound_url);
+
           $("#setbound").attr('href', setbound_url);
 
-        });
-      }
-  });
+          rect.editing.enable();
+          map.addLayer(rect);
+          rect.on('edit', function(e) {
+            console.log('Map extent was edited!');
+            var new_bound = rect.getBounds();
+            var northeast = new_bound.getNorthEast();
+            var southwest = new_bound.getSouthWest();          
+            console.log("get new bounds");
+            console.log(northeast);
+            setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
+            setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
+            console.log(setbound_url);
+            $("#setbound").attr('href', setbound_url);
+
+          });
+        }
+    });
+  }
 }
 function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
     var c = 0;
