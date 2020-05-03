@@ -23,7 +23,10 @@
               %span.show-for-large
                 Iconsets
     %ul.menu.show-for-small-only
-      %li.name= link_to "#{Settings.app_shortname}", root_path
+      %li.name
+        = link_to root_path do
+          #{Settings.app_shortname}
+          %span.orte-icons-maps
       %li
         = link_to info_path do
           %i.fi-info.fi-21
