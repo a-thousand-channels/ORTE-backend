@@ -1,4 +1,5 @@
 //= link_tree ../images
+//= link_directory ../favicon
 //= link_directory ../javascripts .js
 //= link_directory ../stylesheets .css
 
