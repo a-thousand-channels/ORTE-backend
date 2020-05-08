@@ -153,6 +153,19 @@ select {
     display: none;
   }
 }
+
+.menu a, .menu .button {
+    line-height: 1;
+    text-decoration: none;
+    display: block;
+    padding: 0.6rem 1rem;
+}
+.menu li.name a {
+    line-height: 1;
+    text-decoration: none;
+    display: block;
+    padding: 0.1rem 1rem;
+}
 .menu a.button.logout {
     background-color: #333;
     color: #aaaa00 !important;
