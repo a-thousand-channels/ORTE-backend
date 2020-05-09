@@ -1,7 +1,9 @@
-= Settings.app_name
+= link_to root_url, class: 'shy' do
+  = Settings.app_name
 %span.show-for-medium
   \&mdash;
+  = link_to Settings.github_url, target: '_blank', class: 'shy' do
+    v#{Settings.app_version}
+%span.show-for-large.small
   = Settings.app_tagline
-  = Settings.app_version
-%span.show-for-large
-  = "#{DEPLOY_REVISION}@#{Rails.env} (#{I18n.l DEPLOY_DATE})"
+  = "#{DEPLOY_REVISION}@#{Rails.env[0..2]} (#{I18n.l DEPLOY_DATE})"

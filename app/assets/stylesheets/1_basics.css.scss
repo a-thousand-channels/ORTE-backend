@@ -1,6 +1,17 @@
+html,body {
+  height: 100%;
+}
+
 body {
   font-family: "worksans","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
   font-size: 11.3pt;
+}
+header {
+    position: absolute;
+    top: 0;
+    z-index: 9;
+    right: 0;
+    left: 0;
 }
 h1,h2 {
   font-family: "worksans-light","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
@@ -29,10 +40,8 @@ div.small {
 }
 .hide, .hidden {display: none;}
 .shy {
-
     color: #888;
-    font-size: 90%;
-
+    font-size: 14px;
 }
 .small {
     font-size: 14px;
@@ -159,6 +168,12 @@ select {
     text-decoration: none;
     display: block;
     padding: 0.6rem 1rem;
+}
+.menu a#login {
+    line-height: 1;
+    text-decoration: none;
+    display: block;
+    padding: 0.7rem 1rem;
 }
 .menu li.name a {
     line-height: 1;

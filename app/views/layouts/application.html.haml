@@ -1,5 +1,5 @@
 !!! 5
-%html{ lang: "en" }
+%html{ lang: "de" }
   %head
     %meta{ charset: "utf-8" }
     %meta{ name: 'robots', content: 'noindex, nofollow' }
@@ -46,20 +46,18 @@
           = yield
     %footer.footer
       .grid-x
-        .cell.small-8
+        .cell.large-10.medium-8.small-6
           = render partial: "layouts/version"
           = render partial: "layouts/credits"
-        .cell.small-2.text-right
-          &nbsp;
-        .cell.small-2.text-right
+        .cell.large-2.medium-4.small-6.text-right
           - if controller_name == 'layers' && params[:action] == 'show' && @map && @layer
-            = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV" do
+            = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV", class: 'small' do
               CSV 
             \::
-            = link_to map_layer_path(@map,@layer,:format => :json ), :title => "Export this layer as JSON" do
+            = link_to map_layer_path(@map,@layer,:format => :json ), :title => "Export this layer as JSON", class: 'small' do
               JSON
           - if controller_name == 'maps' && params[:action] == 'show' && @map 
-            = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON" do
+            = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON", class: 'small' do
               Public JSON
 
 
