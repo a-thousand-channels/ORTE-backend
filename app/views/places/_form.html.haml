@@ -65,7 +65,7 @@
               %i.fi.fi-plus
               Add another entry
           &nbsp;              
-          %i.fi.fi-info{"data-tooltip"=>true, :title=>"With this function you can add another entry to the same place or location. "}
+          %i.fi.fi-info{"data-tooltip"=>true, :title=>"With this function you can add another entry to the exact same place or location. "}
   .grid-x.grid-padding-x
     .large-12.cell
       = f.error_notification
@@ -101,7 +101,7 @@
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
-        %p.hint Only needed, if different to the title
+        %p.hint Only needed, if the location has different official name
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
@@ -131,7 +131,7 @@
           .grid-x
             - images.each do |img|
               .large-6.medium-6.small-6.cell
-                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning button_in_image' do
+                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning button_in_image' do
                   %i.fi.fi-x
                 - if img.preview
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do

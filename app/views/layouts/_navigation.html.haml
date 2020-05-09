@@ -22,10 +22,8 @@
   .top-bar-right
     %ul.menu.text-right
       %li
-        = link_to info_path do
+        = link_to info_path, {title: 'About this project'} do
           %i.fi-info.fi-21
-          %span.show-for-large
-            Info    
       - if user_signed_in?
         %li
           %a{:href => edit_profile_path, :title => 'Edit your profile'}

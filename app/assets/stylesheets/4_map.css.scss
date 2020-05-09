@@ -39,10 +39,17 @@
 }
 
 #map .leaflet-bottom {
-
+    bottom: 43px;
     @media screen and (max-width: 39.9375em) {
       bottom: 43px;
     }
+}
+.leaflet-container .leaflet-control-attribution {
+    background: #fff;
+    background: rgba(55, 55, 55, 0.7);
+    margin: 0;
+    color: #999;
+    padding: 0 1.3rem 0 0.7rem;
 }
 .leaflet-container .leaflet-popup-content {
     line-height: 1.4;
