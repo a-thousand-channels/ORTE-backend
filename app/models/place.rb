@@ -8,10 +8,10 @@ class Place < ApplicationRecord
 
   belongs_to :layer
 
+  # deprecated, will be removed after transitions
   has_many_attached :images
 
   has_many :images
-  # has_many :imgs, foreign_key: "place_id", class_name: "Image"
 
   validates :title,  presence: true
 
