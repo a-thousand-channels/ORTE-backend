@@ -133,7 +133,7 @@
               .large-6.medium-6.small-6.cell
                 = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning button_in_image' do
                   %i.fi.fi-x
-                - if img.preview
+                - if img.preview.present?
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
                     = image_tag url_for(img.file)
                 - else

@@ -1,9 +1,11 @@
 function PrepareBeforeLookup(url) {
   $.ajaxSetup({
     headers : {
-      'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)'
+      'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)',
+      'crossDomain' : true
     }
   });
+  // https://nominatim.openstreetmap.org/
   var params = getParams();
 
   // url is provided via data-attr

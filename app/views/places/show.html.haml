@@ -8,19 +8,19 @@
   %p#notice= notice
 
   .grid-x.grid-padding-x
-    .cell.medium-4
+    .cell.small-4.medium-4
       - images = Image.where(place_id: @place.id)
       - if images.count > 0
         %p
           - images.each do |img|
-            - if img.preview
+            - if img.preview.present?
               = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
                 = image_tag img.file.variant(resize: "300x300").processed
             - else   
               = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
                 = image_tag img.file.variant(resize: "300x300").processed
 
-    .cell.medium-8
+    .cell.small-8.medium-8
       %p.hint.text-left
         = link_to map_url(@place.layer.map) do
           = @place.layer.map.title
