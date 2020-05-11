@@ -30,6 +30,9 @@
 								%tt File not found
 						%td
 							%tt= img.filename
+							= link_to 'Remove', delete_image_attachment_map_layer_place_url(p.layer.map.id, p.layer.id, p.id, signed_id:  img.signed_id),
+                method: :delete,
+                data: { confirm: 'Are you sure?' }						
 				- images = Image.where(place_id: p.id)
 				%tr
 					%td{colspan: 2}

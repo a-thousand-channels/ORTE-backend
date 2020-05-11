@@ -110,6 +110,12 @@ class PlacesController < ApplicationController
     end
   end
 
+  def delete_image_attachment
+    @image = ActiveStorage::Blob.find_signed(params[:signed_id])
+    @image.attachments.first.purge
+    redirect_to  transition_path, notice: 'Image attachement has been purged'
+  end  
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
