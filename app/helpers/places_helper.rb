@@ -7,18 +7,12 @@ module PlacesHelper
     end  
 
   def show_link(title, map_id, layer_id, id)
-    #html_concat link_to(map_layer_place_path(map_id, layer_id, id)) {
-    #  html_concat(title)
-    #}
     " <a href=\"/maps/#{map_id}/layers/#{layer_id}/places/#{id}\">
       #{title}
       </a>"
   end
 
   def edit_link(map_id, layer_id, id)
-    #html_concat link_to(edit_map_layer_place_url(map_id, layer_id, id)) {
-    #  html_tag :i, 'aria-hidden': 'true', class: 'fa fa-pencil'
-    #}
     " <a href=\"/maps/#{map_id}/layers/#{layer_id}/places/#{id}/edit\" class='edit_link'><i class='fi fi-pencil'></i></a>"
   end
 
@@ -28,8 +22,6 @@ module PlacesHelper
 
   def image_link(image)
     if image.file.attached? 
-      # url_for(image.file)
-      # rails_blob_path(image.file, disposition: "attachment")
       polymorphic_url(image.file)
     end
   end

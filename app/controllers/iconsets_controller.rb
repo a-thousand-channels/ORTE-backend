@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class IconsetsController < ApplicationController
-  before_action :set_iconset, only: [:show, :edit, :update, :destroy]
+  before_action :set_iconset, only: %i[show edit update destroy]
 
   # GET /iconsets
   # GET /iconsets.json
@@ -9,8 +11,7 @@ class IconsetsController < ApplicationController
 
   # GET /iconsets/1
   # GET /iconsets/1.json
-  def show
-  end
+  def show; end
 
   # GET /iconsets/new
   def new
@@ -18,8 +19,7 @@ class IconsetsController < ApplicationController
   end
 
   # GET /iconsets/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /iconsets
   # POST /iconsets.json
@@ -62,13 +62,14 @@ class IconsetsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_iconset
-      @iconset = Iconset.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def iconset_params
-      params.require(:iconset).permit(:title, :text, :image)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_iconset
+    @iconset = Iconset.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def iconset_params
+    params.require(:iconset).permit(:title, :text, :image)
+  end
 end

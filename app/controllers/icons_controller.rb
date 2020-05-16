@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class IconsController < ApplicationController
-  before_action :set_icon, only: [:show, :edit, :update, :destroy]
+  before_action :set_icon, only: %i[show edit update destroy]
 
   # GET /icons
   # GET /icons.json
@@ -9,8 +11,7 @@ class IconsController < ApplicationController
 
   # GET /icons/1
   # GET /icons/1.json
-  def show
-  end
+  def show; end
 
   # GET /icons/new
   def new
@@ -18,8 +19,7 @@ class IconsController < ApplicationController
   end
 
   # GET /icons/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /icons
   # POST /icons.json
@@ -65,13 +65,14 @@ class IconsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_icon
-      @icon = Icon.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def icon_params
-      params.require(:icon).permit(:title, :image, :iconset_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_icon
+    @icon = Icon.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def icon_params
+    params.require(:icon).permit(:title, :image, :iconset_id)
+  end
 end

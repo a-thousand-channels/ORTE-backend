@@ -43,7 +43,7 @@ RSpec.configure do |config|
   config.include Capybara::DSL
   Capybara.server = :puma, { Silent: true }
   Capybara.javascript_driver = :headless_chrome
-  Capybara.server_host = "0.0.0.0" # universal IP
+  Capybara.server_host = '0.0.0.0' # universal IP
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.extract! layer, :id, :title, :text, :published, :map_id, :color, :created_at, :updated_at
 json.url map_layer_url(layer, format: :json)
 json.places layer.places do |place|

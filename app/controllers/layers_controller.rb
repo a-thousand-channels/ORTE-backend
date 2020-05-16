@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class LayersController < ApplicationController
-  before_action :set_layer, only: [:show, :edit, :update, :destroy]
+  before_action :set_layer, only: %i[show edit update destroy]
 
   protect_from_forgery except: :show
 
@@ -18,9 +20,7 @@ class LayersController < ApplicationController
     @maps = Map.sorted.by_user(current_user)
     @map_layers = @map.layers
     @places = @layer.places
-    if params[:remap]
-      @place = Place.find(params[:place_id])
-    end
+    @place = Place.find(params[:place_id]) if params[:remap]
     respond_to do |format|
       format.html { render :show }
       format.json { render :show }
@@ -59,9 +59,7 @@ class LayersController < ApplicationController
   # POST /layers.json
   def create
     @layer = Layer.new(layer_params)
-    if @layer.color && !@layer.color.include?('#')
-      @layer.color = '#' + @layer.color
-    end
+    @layer.color = '#' + @layer.color if @layer.color && !@layer.color.include?('#')
     @map = Map.by_user(current_user).find(params[:map_id])
     respond_to do |format|
       if @layer.save
@@ -77,9 +75,7 @@ class LayersController < ApplicationController
   # PATCH/PUT /layers/1
   # PATCH/PUT /layers/1.json
   def update
-    if @layer.color && !@layer.color.include?('#')
-      @layer.color = '#' + @layer.color
-    end
+    @layer.color = '#' + @layer.color if @layer.color && !@layer.color.include?('#')
     respond_to do |format|
       if @layer.update(layer_params)
         format.html { redirect_to map_path(@map), notice: 'Layer was successfully updated.' }

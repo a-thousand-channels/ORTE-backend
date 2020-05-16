@@ -24,7 +24,6 @@ RSpec.describe Ability, type: :model do
         User.destroy_all
         let(:user) { FactoryBot.create(:admin_user) }
         it { should be_able_to(:manage, User.new) }
-
       end
     end
   end

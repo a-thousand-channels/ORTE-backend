@@ -12,7 +12,7 @@ class Ability
 
     case role
 
-    when :admin then
+    when :admin
       can :manage, :all
 
     when :user then

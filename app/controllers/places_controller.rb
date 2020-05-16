@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class PlacesController < ApplicationController
-  before_action :set_place, only: [:show, :edit, :update, :destroy]
+  before_action :set_place, only: %i[show edit update destroy]
 
   # GET /places
   # GET /places.json
@@ -39,19 +41,19 @@ class PlacesController < ApplicationController
       @place.enddate_time = @place.enddate.to_time
     end
 
-    if params[:lat].present?
-      flash[:notice] = "Re-Map: Got new coordinates and address data. Please check all fields and click 'Update place'"
-      @old_place = @place.dup
-      @place.location = params[:location]
-      @place.address = params[:address]
-      @place.zip = params[:zip]
-      @place.city = params[:city]
-      @place.lat = params[:lat]
-      @place.lon = params[:lon]
-      @place.layer_id = params[:layer_id]
-      @map = Map.by_user(current_user).find(params[:map_id])
-      @layer = Layer.find(params[:layer_id])
-    end
+    return unless params[:lat].present?
+
+    flash[:notice] = "Re-Map: Got new coordinates and address data. Please check all fields and click 'Update place'"
+    @old_place = @place.dup
+    @place.location = params[:location]
+    @place.address = params[:address]
+    @place.zip = params[:zip]
+    @place.city = params[:city]
+    @place.lat = params[:lat]
+    @place.lon = params[:lon]
+    @place.layer_id = params[:layer_id]
+    @map = Map.by_user(current_user).find(params[:map_id])
+    @layer = Layer.find(params[:layer_id])
   end
 
   # POST /places
@@ -63,7 +65,7 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
       if @place.save
-        format.html { redirect_to map_layer_url(@map,@layer), notice: 'Place was successfully created.' }
+        format.html { redirect_to map_layer_url(@map, @layer), notice: 'Place was successfully created.' }
         format.json { render :show, status: :created, location: @place }
       else
         format.html { render :new }
@@ -82,16 +84,16 @@ class PlacesController < ApplicationController
     # rails expect true/false
     # TODO: render this at generating the form
     # puts params[:place][:published]
-    if params[:place][:published] == 'on' || params[:place][:published] == 'true'
-      params[:place][:published] = true
-    else
-      params[:place][:published] = false
-    end
+    params[:place][:published] = if params[:place][:published] == 'on' || params[:place][:published] == 'true'
+                                   true
+                                 else
+                                   false
+                                 end
     params[:place][:published]
     respond_to do |format|
       if @place.update(place_params)
-        @place.update({"published"=>params[:place][:published]})
-        format.html { redirect_to map_layer_url(@map.id,@place.layer.id), notice: 'Place was successfully updated.' }
+        @place.update({ 'published' => params[:place][:published] })
+        format.html { redirect_to map_layer_url(@map.id, @place.layer.id), notice: 'Place was successfully updated.' }
         format.json { render :show, status: :ok, location: @place }
       else
         format.html { render :edit }
@@ -105,7 +107,7 @@ class PlacesController < ApplicationController
   def destroy
     @place.destroy
     respond_to do |format|
-      format.html { redirect_to map_layer_places_path(@map,@layer), notice: 'Place was successfully destroyed.' }
+      format.html { redirect_to map_layer_places_path(@map, @layer), notice: 'Place was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -113,8 +115,8 @@ class PlacesController < ApplicationController
   def delete_image_attachment
     @image = ActiveStorage::Blob.find_signed(params[:signed_id])
     @image.attachments.first.purge
-    redirect_to  transition_path, notice: 'Image attachement has been purged'
-  end  
+    redirect_to transition_path, notice: 'Image attachement has been purged'
+  end
 
   private
 

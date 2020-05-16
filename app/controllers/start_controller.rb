@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class StartController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index, :info]
+  skip_before_action :authenticate_user!, only: %i[index info]
 
   def index
     redirect_to maps_path if current_user
