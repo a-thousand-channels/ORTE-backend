@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Place, type: :model do
-  it "has a valid factory" do
+  it 'has a valid factory' do
     expect(build(:place)).to be_valid
   end
 
@@ -46,32 +48,31 @@ RSpec.describe Place, type: :model do
 
   it 'edit_link' do
     m = FactoryBot.create(:map)
-    l = FactoryBot.create(:layer, :map => m)
-    p = FactoryBot.create(:place, :layer => l)
+    l = FactoryBot.create(:layer, map: m)
+    p = FactoryBot.create(:place, layer: l)
     expect(p.edit_link).to eq(" <a href=\"/maps/#{m.id}/layers/#{l.id}/places/#{p.id}/edit\" class='edit_link'><i class='fi fi-pencil'></i></a>")
   end
 
   describe 'Address' do
-
     it 'full_address w/location but no address' do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, :map => m)
-      p = FactoryBot.create(:place, :layer => l, :address => '', :location => "A location")
-      expect(p.full_address).to eq("A location")
+      l = FactoryBot.create(:layer, map: m)
+      p = FactoryBot.create(:place, layer: l, address: '', location: 'A location')
+      expect(p.full_address).to eq('A location')
     end
 
     it 'full_address w/address but no location(name)' do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, :map => m)
-      p = FactoryBot.create(:place, :layer => l, :address => 'An address', :location => "")
-      expect(p.full_address).to eq("An address")
+      l = FactoryBot.create(:layer, map: m)
+      p = FactoryBot.create(:place, layer: l, address: 'An address', location: '')
+      expect(p.full_address).to eq('An address')
     end
 
     it 'full_address_with_city' do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, :map => m)
-      p = FactoryBot.create(:place, :layer => l, :address => 'An address', :location => "A location", :zip => '12345', :city => 'City')
-      expect(p.full_address_with_city).to eq("A location An address, 12345 City")
+      l = FactoryBot.create(:layer, map: m)
+      p = FactoryBot.create(:place, layer: l, address: 'An address', location: 'A location', zip: '12345', city: 'City')
+      expect(p.full_address_with_city).to eq('A location An address, 12345 City')
     end
   end
 end

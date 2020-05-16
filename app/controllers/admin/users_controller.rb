@@ -26,11 +26,11 @@ class Admin::UsersController < ApplicationController
   end
 
   def edit
-    if current_user.admin?
-      @groups = Group.all
-    else
-      @groups = Group.by_user(current_user)
-    end
+    @groups = if current_user.admin?
+                Group.all
+              else
+                Group.by_user(current_user)
+              end
   end
 
   def index
@@ -39,11 +39,11 @@ class Admin::UsersController < ApplicationController
 
   def new
     @admin_user = User.new
-    if current_user.admin?
-      @groups = Group.all
-    else
-      @groups = Group.by_user(current_user)
-    end
+    @groups = if current_user.admin?
+                Group.all
+              else
+                Group.by_user(current_user)
+              end
   end
 
   def show; end

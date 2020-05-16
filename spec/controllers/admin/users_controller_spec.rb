@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-
 RSpec.describe Admin::UsersController, type: :controller do
   describe 'for guests' do
     describe 'GET #index' do
@@ -17,7 +16,7 @@ RSpec.describe Admin::UsersController, type: :controller do
     before(:all) do
       User.destroy_all
       @admin_group = FactoryBot.create(:group)
-      @admin_user = FactoryBot.create(:admin_user, :group_id => @admin_group.id)
+      @admin_user = FactoryBot.create(:admin_user, group_id: @admin_group.id)
     end
 
     before(:each) do
@@ -28,14 +27,14 @@ RSpec.describe Admin::UsersController, type: :controller do
     # User. As you add validations to Admin::User, be sure to
     # adjust the attributes here as well.
     let(:valid_attributes) do
-      { email:      'admin@domain.com',
-        password:   '1234567890ß',
-        group:  @admin_group }
+      { email: 'admin@domain.com',
+        password: '1234567890ß',
+        group: @admin_group }
     end
 
     let(:invalid_attributes) do
-      { email:      '',
-        password:   'test' }
+      { email: '',
+        password: 'test' }
     end
 
     # This should return the minimal set of values that should be in the session
@@ -74,9 +73,8 @@ RSpec.describe Admin::UsersController, type: :controller do
     end
 
     describe 'POST #create' do
-
       before(:all) do
-        @new_admin_user_attributes = FactoryBot.attributes_for(:user, :group_id => @admin_group.id)
+        @new_admin_user_attributes = FactoryBot.attributes_for(:user, group_id: @admin_group.id)
       end
 
       context 'with valid params' do

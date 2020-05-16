@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :iconset do
-    title { "MyString" }
-    text { "MyText" }
-    image { "MyString" }
+    title { 'MyString' }
+    text { 'MyText' }
+    image { 'MyString' }
     trait :invalid do
       title { nil }
     end
     trait :changed do
-      title { "OtherTitle" }
+      title { 'OtherTitle' }
     end
   end
 end

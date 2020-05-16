@@ -1,0 +1,87 @@
+#inherit_from: ../.rubocop.yml
+
+Style/AsciiComments:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Lint/UnusedBlockArgument:
+  Enabled: false
+
+Lint/UselessAssignment:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/BlockNesting:
+  Exclude:
+    - app/helpers/application_helper.rb
+
+Metrics/ClassLength:
+  Max: 280
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - app/helpers/application_helper.rb
+    - app/services/statistic_field_calculator.rb
+    - app/helpers/cases_helper.rb
+    - app/controllers/statistics_controller.rb
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Max: 227
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/VariableName:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/IdenticalConditionalBranches:
+  Exclude:
+    - app/helpers/application_helper.rb
+
+Style/IfInsideElse:
+  Exclude:
+    - app/helpers/application_helper.rb
+
+Style/MixinUsage:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+  EnforcedStyle: slashes
+
+Style/SymbolProc:
+  Exclude:
+    - app/services/statistic_field_calculator.rb
+
+Style/ClassVars:
+  Exclude:
+    - app/controllers/statistics_controller.rb
+
+AllCops:
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'contrib/**/*'
+    - 'app/views/cases/_case.json.jbuilder'
+    - 'scaffolding.rb'

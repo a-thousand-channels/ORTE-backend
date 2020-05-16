@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "images/show", type: :view do
+RSpec.describe 'images/show', type: :view do
   before(:each) do
     @map = FactoryBot.create(:map)
-    @layer = FactoryBot.create(:layer, :map_id=> @map.id)
-    @place = FactoryBot.create(:place, :layer_id => @layer.id)
-    @image = FactoryBot.create(:image, :place_id => @place.id)
+    @layer = FactoryBot.create(:layer, map_id: @map.id)
+    @place = FactoryBot.create(:place, layer_id: @layer.id)
+    @image = FactoryBot.create(:image, place_id: @place.id)
   end
 
-  it "renders attributes in <p>" do
+  it 'renders attributes in <p>' do
     render
     expect(rendered).to match(/Title/)
     expect(rendered).to match(/Licence/)

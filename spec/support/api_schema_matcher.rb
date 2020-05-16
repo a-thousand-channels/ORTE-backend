@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fame goes to Laila Winner, https://robots.thoughtbot.com/validating-json-schemas-with-an-rspec-matcher
 
 # JSON Schema infered with https://www.jsonschema.net/

@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :map do
-    title { "MyString" }
-    text { "MyString" }
+    title { 'MyString' }
+    text { 'MyString' }
     published { false }
     group
     trait :invalid do
       title { nil }
     end
     trait :update do
-      title { "MyNewString" }
+      title { 'MyNewString' }
     end
   end
 end

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class Admin::GroupsController < ApplicationController
-  before_action :set_admin_group, only: [:edit, :update, :destroy]
+  before_action :set_admin_group, only: %i[edit update destroy]
 
   def index
-    if current_user.admin?
-      @admin_groups = Group.all
-    else
-      @admin_groups = Group.by_user(current_user)
-    end
+    @admin_groups = if current_user.admin?
+                      Group.all
+                    else
+                      Group.by_user(current_user)
+                    end
   end
 
   def new
@@ -16,9 +16,7 @@ class Admin::GroupsController < ApplicationController
   end
 
   def edit
-    unless @admin_group
-      redirect_to admin_groups_path, notice: "You can't edit this group."
-    end
+    redirect_to admin_groups_path, notice: "You can't edit this group." unless @admin_group
   end
 
   def create
@@ -59,17 +57,18 @@ class Admin::GroupsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_admin_group
-      if current_user.admin?
-        @admin_group = Group.find_by_id(params[:id])
-      else
-        @admin_group = Group.by_user(current_user).find_by_id(params[:id])
-      end
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def admin_group_params
-      params.require(:admin_group).permit(:title)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_admin_group
+    @admin_group = if current_user.admin?
+                     Group.find_by_id(params[:id])
+                   else
+                     Group.by_user(current_user).find_by_id(params[:id])
+                   end
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def admin_group_params
+    params.require(:admin_group).permit(:title)
+  end
 end

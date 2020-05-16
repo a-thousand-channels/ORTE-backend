@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe 'admin/users/edit', type: :view do
   before(:each) do
     group = FactoryBot.create(:group)
-    @user = assign(:admin_user, FactoryBot.create(:user, :group_id => group.id))
+    @user = assign(:admin_user, FactoryBot.create(:user, group_id: group.id))
   end
 
   xit 'renders the edit admin_user form' do

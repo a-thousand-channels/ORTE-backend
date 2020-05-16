@@ -6,11 +6,11 @@ RSpec.describe 'admin/users/new', type: :view do
   before(:each) do
     group = FactoryBot.create(:group)
     user = assign(:admin_user, User.new(
-      :email => "you@home.com",
-      :password => "1235657",
-      :role => "user",
-      :group => group
-    ))
+                                 email: 'you@home.com',
+                                 password: '1235657',
+                                 role: 'user',
+                                 group: group
+                               ))
   end
 
   xit 'renders new admin_user form' do
