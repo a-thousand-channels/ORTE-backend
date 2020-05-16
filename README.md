@@ -9,7 +9,7 @@ Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
 
 This application is work in progress. Contributions are welcome (see below).
 
-![preview](https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-sample-map2-overview.jpg)
+<img src="https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-sample-map2-overview.jpg" style="max-width: 640px" width="640" />
 
 ## Address and geolocation lookup
 
