@@ -196,5 +196,22 @@ RSpec.describe PlacesController, type: :controller do
         expect(response).to redirect_to(map_layer_places_url(@map, @layer))
       end
     end
+
+
+    describe 'POST #sort' do
+      it 'sort images of a place (via XHR)' do
+        place = Place.create! valid_attributes
+        
+        image1 = FactoryBot.create(:image, place: place, sorting: 1)
+        image2 = FactoryBot.create(:image, place: place, sorting: 2)
+        image3 = FactoryBot.create(:image, place: place, sorting: 3)
+        @image_ids = [image3.id, image2.id, image1.id]
+        post :sort, params: { id: place.to_param, layer_id: @layer.id, map_id: @map.id, images: @image_ids }, session: valid_session
+        image1.reload
+        image3.reload
+        expect(image1.sorting).to eq(3)
+        expect(image3.sorting).to eq(1)
+      end
+    end
   end
 end

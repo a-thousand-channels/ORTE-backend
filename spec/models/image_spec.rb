@@ -3,5 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe Image, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it 'has a valid factory' do
+    expect(build(:image)).to be_valid
+  end
+
+  describe 'Attachment' do
+    it 'is valid  ' do
+      subject.file.attach(io: File.open(Rails.root.join('public', 'apple-touch-icon.png')), filename: 'attachment.png', content_type: 'image/png')
+      expect(subject.file).to be_attached
+    end
+  end
 end

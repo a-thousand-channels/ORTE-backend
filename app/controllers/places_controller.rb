@@ -118,7 +118,6 @@ class PlacesController < ApplicationController
     redirect_to transition_path, notice: 'Image attachement has been purged'
   end
 
-
   def sort
     @image_ids = params[:images]
     n = 1
