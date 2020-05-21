@@ -90,21 +90,21 @@ RSpec.describe ImagesController, type: :controller do
         end
 
         it 'redirects to related place url' do
-          pending
           post :create, params: { image: valid_attributes, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
-          expect(response).to redirect_to(redirect_to(place_url(@place)))
+          expect(response).to redirect_to(edit_map_layer_place_url(@map, @layer, @place))
+
         end
       end
 
       context 'with invalid params' do
-        xit "returns a success response (i.e. to display the 'new' template)" do
-          post :create, params: { image: invalid_attributes }, session: valid_session
-          expect(response).to have_http_status(302)
+        it "returns a success response (i.e. to display the 'new' template)" do
+          post :create, params: { image: invalid_attributes, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
+          expect(response).to have_http_status(200)
         end
 
         xit 'redirects to new image url' do
-          post :create, params: { image: invalid_attributes }, session: valid_session
-          expect(response).to redirect_to(new_image_url)
+          post :create, params: { image: invalid_attributes, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
+          expect(response).to redirect_to(new_map_layer_place_image_url(@map, @layer, @place))
         end
       end
     end
@@ -122,10 +122,10 @@ RSpec.describe ImagesController, type: :controller do
           expect(image.title).to eq('OtherTitle')
         end
 
-        xit 'redirects to the place' do
+        it 'redirects to the place' do
           image = Image.create! valid_attributes
           put :update, params: { id: image.to_param, image: valid_attributes, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
-          expect(response).to redirect_to(place_url(@place))
+          expect(response).to redirect_to(edit_map_layer_place_url(@map, @layer, @place))
         end
       end
 
@@ -146,10 +146,10 @@ RSpec.describe ImagesController, type: :controller do
         end.to change(Image, :count).by(-1)
       end
 
-      xit 'redirects to the images list' do
+      it 'redirects to the place edit view' do
         image = Image.create! valid_attributes
         delete :destroy, params: { id: image.to_param, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
-        expect(response).to redirect_to(place_url(@place))
+          expect(response).to redirect_to(edit_map_layer_place_url(@map, @layer, @place))        
       end
     end
   end

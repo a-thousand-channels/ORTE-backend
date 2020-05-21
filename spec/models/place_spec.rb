@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'csv'
 
 RSpec.describe Place, type: :model do
   it 'has a valid factory' do
@@ -73,6 +74,23 @@ RSpec.describe Place, type: :model do
       l = FactoryBot.create(:layer, map: m)
       p = FactoryBot.create(:place, layer: l, address: 'An address', location: 'A location', zip: '12345', city: 'City')
       expect(p.full_address_with_city).to eq('A location An address, 12345 City')
+    end
+  end
+
+
+  describe 'CSV' do
+    it 'is valid  ' do
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      p1 = FactoryBot.create(:place, layer: l, address: 'An address1', location: 'A location', zip: '12345', city: 'City')
+      p2 = FactoryBot.create(:place, layer: l, address: 'An address2', location: 'A location', zip: '12345', city: 'City')
+      places = Place.all
+      csv_header = 'id,title,teaser,text,startdate,enddate,lat,lon,location,address,zip,city,country'
+      csv_line1 = 'An address1,12345,City,Country'
+      csv_line2 = 'An address2,12345,City,Country'
+      expect(places.to_csv).to include(csv_header)
+      expect(places.to_csv).to include(csv_line1)
+      expect(places.to_csv).to include(csv_line2)
     end
   end
 end
