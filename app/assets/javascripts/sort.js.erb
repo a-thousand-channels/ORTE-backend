@@ -1,0 +1,21 @@
+$(document).ready(function(){
+ $.ajaxSetup({
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+      }
+    });
+   /* sort images */
+   $("#sortable").sortable({
+      handle: ".sortable_handle",
+      placeholder: "ui-state-highlight",
+      update: function(event, ui){
+        console.log("sortable called");
+        var images_array = $("#sortable").sortable('toArray');
+        var map = $("#sortable").data('map');
+        var layer = $("#sortable").data('layer');
+        var place = $("#sortable").data('place');
+        var images = {images: images_array};
+        $.post("<%= Settings.app_url %>/maps/"+map+"/layers/"+layer+"/places/"+place+"/sort", images);
+      }
+    });
+});

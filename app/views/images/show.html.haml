@@ -47,5 +47,9 @@
     %i.fi.fi-pencil
     Edit
   &nbsp;
+  = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
+    %i.fi.fi-trash   
+    Delete     
+  &nbsp;
   = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
     Back to place  
