@@ -456,7 +456,6 @@ DEPENDENCIES
   sassc (~> 2.2.1)
   sassc-rails
   secure_headers
-  selenium-webdriver
   settingslogic
   simple_form
   simplecov
