@@ -12,22 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - [UI] Adjust some CSS positions, labels, styles
-- [Fix] Resolve city name resolving
+- [Fix] Fix error by resolving a city name 
 - [Fix] Some minor bugs
 
 ## [0.35] - 2020-03-28
 ### Added
-- [UI/Map] Implementing markercluster + change style
+- [UI/Map] Implementing markercluster + style it according to the SVG marker style
 - [UI] List map titles A-Z
-- [UI/Map] Introduce map custom extend, change automatic bounds to custom bounds
+- [UI/Map] Introduce custom map extend, making it possible to switch from automatic bounds to manuelly set bounds
 - [Feature] Export layer as CSV
-- [Info] Public help, refine description, add contact email
+- [Info] Public accesible help/infotext, adding contact email
 - [Info] Basic installation description added
 
 ## [0.34] - 2020-01-26
 ### Added
-- [UI] Popup: nicer image display
-- [UI] Improve views for smallscreens, make things more compact
+- [UI] Popup: Nicer image display
+- [UI] Improve views for smallscreens, make things like the forms more compact
 
 ## [0.33] - 2020-01-05
 ### Added
@@ -44,8 +44,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.32] - 2019-08-14
 ### Added
-- Offer color alternatives for svg markers
-- Introduce alternative layer display (places as text)
+- Offer color alternatives for svg markers and selection via UI
+- Introduce alternative layer display (places as text, places as images)
 
 ### Changed
 - Minor UI improvements
