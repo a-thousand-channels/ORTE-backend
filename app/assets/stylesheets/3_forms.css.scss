@@ -53,14 +53,28 @@ select#place_enddate_5i  {
 }
 
 
-form imgX {
-    max-width: 100px;
-    max-height: 150px;
-}
-form a.thumbnail {
-  margin-right: 10px;  
+form .image {
+  width: 45%;
+  padding-right: 10px;  
+
 }
 
+.image-toolbar {
+  position: relative;
+  float: right;
+  right: 16px;
+  a.button {
+    position: absolute;
+    padding: 0.2rem;
+  }
+  a.button.button-right {
+    margin-right: 10px;
+  }
+  .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
+}
+a.thumbnail {
+
+}
 
 
 

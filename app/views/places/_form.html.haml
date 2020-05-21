@@ -128,15 +128,17 @@
         - if images.count > 0
           %p
             Images, new format
-          .grid-x
-            - images.each do |img|
-              .large-6.medium-6.small-6.cell
-                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning button_in_image' do
-                  %i.fi.fi-x
+          .grid-x#sortable{data: { map: @place.layer.map.id, layer: @place.layer.id, place: @place.id }}
+            - images.order('sorting ASC').each_with_index do |img,i|
+              .image.ui-state-default{id: "image_#{img.id}"}
+                .image-toolbar
+                  = link_to map_layer_place_path(@place.layer.map,@place.layer,@place), class: 'button button-right tiny sortable_handle' do
+                    %i.fi-arrows-out                  
                 - if img.preview.present?
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
                     = image_tag url_for(img.file)
                 - else
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
                     = image_tag url_for(img.file)
+      
 
