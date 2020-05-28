@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :map do
     title { 'MyString' }
+    subtitle { 'MyString' }
     text { 'MyString' }
     published { false }
     group

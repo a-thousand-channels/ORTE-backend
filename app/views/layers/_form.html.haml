@@ -15,7 +15,9 @@
             = f.association :map, as: :hidden, :input_html => { :value => @map.id }
         %p
           = f.input :title
-          = f.input :text, :label => 'Description'
+          = f.input :subtitle
+          = tinymce
+          = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }          
         %p
           = f.input :published, :label => 'Publish'
         %p.compact
