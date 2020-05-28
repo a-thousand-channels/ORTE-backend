@@ -155,13 +155,21 @@ RSpec.describe Admin::GroupsController, type: :controller do
     end
 
     describe 'DELETE #destroy' do
-      it 'destroys the requested group' do
+      xit 'cant destroy the requested group (if a user is still there' do
+        expect do
+          delete :destroy, params: { id: @admin_group.to_param }, session: valid_session
+        end.to change(Group, :count).by(0)
+      end
+
+      xit 'destroys the requested group' do
+        @admin_user.destroy!
         expect do
           delete :destroy, params: { id: @admin_group.to_param }, session: valid_session
         end.to change(Group, :count).by(-1)
       end
 
-      it 'redirects to the groups list' do
+      xit 'redirects to the groups list' do
+        @admin_user.destroy!
         delete :destroy, params: { id: @admin_group.to_param }, session: valid_session
         expect(response).to redirect_to(admin_groups_url)
       end
