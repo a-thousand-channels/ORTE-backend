@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :layer do
     title { 'MyString' }
+    subtitle { 'MyString' }    
     text { 'MyString' }
     published { false }
     map

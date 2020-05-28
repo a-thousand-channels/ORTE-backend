@@ -7,7 +7,9 @@
       .form-inputs
         %p
           = f.input :title
-          = f.input :text, :label => 'Description'
+          = f.input :subtitle
+          = tinymce          
+          = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
         .grid-x.grid-padding-x
           .large-6.medium-6.small-6.cell
             - if admin?
