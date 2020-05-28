@@ -22,8 +22,8 @@ RSpec.describe 'layers/edit', type: :view do
 
     assert_select 'form[action=?][method=?]', map_layer_path(@layer, map_id: @map.id), 'post' do
       assert_select 'input[name=?]', 'layer[title]'
-
-      assert_select 'input[name=?]', 'layer[text]'
+      assert_select 'input[name=?]', 'layer[subtitle]'
+      assert_select 'textarea[name=?]', 'layer[text]'
     end
   end
 end

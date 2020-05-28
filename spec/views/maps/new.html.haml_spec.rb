@@ -20,8 +20,8 @@ RSpec.describe 'maps/new', type: :view do
 
     assert_select 'form[action=?][method=?]', maps_path, 'post' do
       assert_select 'input[name=?]', 'map[title]'
-
-      assert_select 'input[name=?]', 'map[text]'
+      assert_select 'input[name=?]', 'map[subtitle]'
+      assert_select 'textarea[name=?]', 'map[text]'
     end
   end
 end
