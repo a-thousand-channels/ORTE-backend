@@ -41,10 +41,10 @@
 					- images.each do |image|
 						%tr
 							%td
-								- begin
+								- if image.file.attached? 
 									= link_to map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image) do
 										= image_tag image.file.variant(resize: "300x300").processed
-								- rescue Errno::ENOENT
+								- else
 									%tt File not found	
 							%td
 								- if image.preview
