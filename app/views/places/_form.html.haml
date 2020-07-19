@@ -16,8 +16,8 @@
           %div.inline#layer_selector.hide
             = f.association :layer, :collection => @place.layer.map.layers, :label_method => :title, :value_method => :id, label: false, include_blank: false
             %span#layer_display_cancel{:title => "Cancel" }
-              %i.fi.fi-x.fi-13         
-            
+              %i.fi.fi-x.fi-13
+
           %div.inline#layer_display
             = link_to map_url(@place.layer.map) do
               = @place.layer.map.title
@@ -54,17 +54,17 @@
       - if params[:action] == 'edit'
         %p#remap.clear
           = link_to map_layer_path(@place.layer.map,@place.layer,remap: true, place_id: @place.id), :class =>"button small", title: "Reposition this place on the map" do
-            %strong 
+            %strong
               %i.fi.fi-map
               RE-MAP
           &nbsp;
           %i.fi.fi-info{"data-tooltip"=>true, :title=>"With this function you can re-position this entry on the map. Click the button and then click on the map, where you would like to set as the correct place"}
         %p#remap
           = link_to add_new_entry_link(@place), :class =>"button small", title: "Add another entry to the exact same place" do
-            %strong 
+            %strong
               %i.fi.fi-plus
               Add another entry
-          &nbsp;              
+          &nbsp;
           %i.fi.fi-info{"data-tooltip"=>true, :title=>"With this function you can add another entry to the exact same place or location. "}
   .grid-x.grid-padding-x
     .large-12.cell
@@ -115,7 +115,7 @@
           %label Images
           = link_to new_map_layer_place_image_path(@place.layer.map,@place.layer,@place), class: 'button' do
             %i.fi.fi-plus
-            Add image     
+            Add image
         - if @place.images.count > 0
           %p
             Images, old format
@@ -133,12 +133,13 @@
               .image.ui-state-default{id: "image_#{img.id}"}
                 .image-toolbar
                   = link_to map_layer_place_path(@place.layer.map,@place.layer,@place), class: 'button button-right tiny sortable_handle' do
-                    %i.fi-arrows-out                  
+                    %i.fi-arrows-out
                 - if img.preview.present?
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
                     = image_tag url_for(img.file)
                 - else
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
                     = image_tag url_for(img.file)
-      
-
+        %label Audio
+        = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
+        %p.hint Please upload MP3 only
