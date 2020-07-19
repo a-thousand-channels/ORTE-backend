@@ -1,10 +1,10 @@
 
 #info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}" }}
-  
+
   %p.text-right.close_link_wrapper
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
       %span{"aria-hidden"=>"true"}
-        %i.fi.fi-x     
+        %i.fi.fi-x
   %p#notice= notice
 
   .grid-x.grid-padding-x
@@ -16,7 +16,7 @@
             - if img.preview.present?
               = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
                 = image_tag img.file.variant(resize: "300x300").processed
-            - else   
+            - else
               = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
                 = image_tag img.file.variant(resize: "300x300").processed
 
@@ -43,6 +43,10 @@
         - if @place.link
           =link_to @place.link do
             = @place.link
+      - if @place.audio.attached?
+        %p
+          = audio_tag rails_blob_url(@place.audio), autoplay: true, controls: true
+          = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
       %p.hint.text-left
