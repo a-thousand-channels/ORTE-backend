@@ -196,12 +196,15 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(text_layers);
 
       var html = '';
+
       if ( place.images && place.images[0] ) {
         html = "<a href='"+place.images[0].image_url+"' target='_blank'><img src='"+place.images[0].image_url+"' /></a>";
       } else {
         html = "";
       }
-
+      if ( place.imagelink2 ) {
+        html = "<img src='"+place.imagelink2+"' />";
+      }
       var texticon= L.divIcon({
           html: '<div class="image_inner">'+html+'</div>',
           iconAnchor:[0,0],
@@ -226,7 +229,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         content += "<img src='"+place.imagelink2+"' />";
       } else if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
-      }      
+      }
       content += '<div class="leaflet-popup-content-text">';
       if ( place.date ) {
         content += "<p>"+place.date;
