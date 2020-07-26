@@ -12,6 +12,13 @@
         display: none;
     }
 }
+#map .leaflet-bottom.leaflet-right .leaflet-bar.leaflet-control {
+    @media screen and (max-width: 39.9375em) {
+        display: block;
+    }
+}
+
+
 #map .leaflet-control-layers-toggle::before {
     content: "*";
     font-size: 38px;
