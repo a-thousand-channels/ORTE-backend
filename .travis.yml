@@ -3,9 +3,12 @@ language: ruby
 rvm:
 - 2.6.3
 sudo: required
+services:
+  - mysql
 addons:
   chrome: stable
 before_install:
+  - mysql -e 'CREATE DATABASE orte_test;'
   - gem install bundler
   - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
