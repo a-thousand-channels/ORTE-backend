@@ -8,7 +8,9 @@ services:
 addons:
   chrome: stable
 before_install:
-  - mysql -e 'CREATE DATABASE orte_test;'
+  - mysql -e  "CREATE USER 'user'@'localhost' IDENTITIED BY 'password';"
+  - mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'orte'@'localhost';"
+  - mysql -e "CREATE DATABASE orte_test CHARACTER SET utf8 COLLATE utf8_general_ci;"
   - gem install bundler
   - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
