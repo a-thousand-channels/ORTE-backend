@@ -1,8 +1,7 @@
 dist: trusty
 language: ruby
 rvm:
-- 2.6.3
-sudo: required
+  - 2.6.5
 services:
   - mysql
 addons:
@@ -10,10 +9,15 @@ addons:
 before_install:
   - mysql -e "CREATE DATABASE orte_test CHARACTER SET utf8 COLLATE utf8_general_ci;"
   - gem install bundler
-  - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+  - apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  - sudo apt-get update -qq
-  - sudo apt-get install -y -qq yarn
+  - apt-get update -qq
+  - apt-get install -y -qq yarn
+  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+  - sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+  - apt-get update
+  - apt-get install google-chrome-stable
+
 cache:
   yarn: true
 before_script:
