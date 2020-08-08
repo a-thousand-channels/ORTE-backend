@@ -5,6 +5,9 @@ rvm:
 services:
   - mysql
 addons:
+  apt:
+    packages:
+      - chromium-browser
   chrome: stable
 before_install:
   - mysql -e "CREATE DATABASE orte_test CHARACTER SET utf8 COLLATE utf8_general_ci;"
@@ -13,13 +16,9 @@ before_install:
   - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   - sudo apt-get update -qq
   - sudo apt-get install -y -qq yarn
-  - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-  - sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-  - sudo apt-get update
-  - sudo apt-get install google-chrome-stable
-
 cache:
   yarn: true
+  bundler: true
 before_script:
 - bundle exec rails runner "Webdrivers::Chromedriver.update"
 env:
