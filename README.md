@@ -43,13 +43,22 @@ $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
 ```
 
+### Run
+
+
+```bash
+$ bundlex exec rails s
+```
+
 ## Credits
 
 Code + Design by Ulf Treger <ulf.treger@googlemail.com> with kind support from:
 
 * Pragma Shift Projects, Hamburg (code donation)
-* Treffentotal 2018 (acceptance testing and first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON) 
-* and from participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/).
+* Treffentotal 2018, Hamburg (acceptance testing and first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON) 
+* and from participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen.
+
+
 
 ## Feedback & Contributions
 
@@ -57,7 +66,7 @@ Feedback, bug reports and code contributions are most welcome.
 
 Send Feedback to ulf.treger@googlemail.com
 
-Please file bug repots to our Github Repository at https://github.com/ut/ORTE-backend
+Please file bug reports and feature request to our Github Repository at https://github.com/ut/ORTE-backend
 
 For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 
