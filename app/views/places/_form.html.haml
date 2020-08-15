@@ -127,7 +127,7 @@
         - images = Image.where(place_id: @place.id)
         - if images.count > 0
           %p
-            Images, new format
+            Images
           .grid-x#sortable{data: { map: @place.layer.map.id, layer: @place.layer.id, place: @place.id }}
             - images.order('sorting ASC').each_with_index do |img,i|
               .image.ui-state-default{id: "image_#{img.id}"}
@@ -141,5 +141,10 @@
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
                     = image_tag url_for(img.file)
         %label Audio
+        - if @place.audio && @place.audio.attached?
+          %p
+            = link_to rails_blob_path(@place.audio, disposition: 'attachment') do
+              = @place.audio.filename
+          %p.shy Upload a new file:
         = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
         %p.hint Please upload MP3 only

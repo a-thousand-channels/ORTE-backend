@@ -59,6 +59,11 @@ p.inline, div.inline {
 p.clear {
   margin: 0;
 }
+small.error {
+    color: red;
+    border: 2px solid red;
+    padding: 10px;
+}
 span.name, label {
     color: #888;
     font-size: 90%;
@@ -182,7 +187,7 @@ select {
 }
 .menu a.button.logout:hover {
     background-color: #555;
-    
+
 }
 
 
