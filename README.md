@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ut/ORTE-backend.svg?branch=master)](https://travis-ci.org/ut/ORTE-backend) ![Release](https://img.shields.io/badge/tag-v0.36-blue.svg) [![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=master)](https://coveralls.io/github/ut/ORTE-backend?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
+[![Build Status](https://travis-ci.org/ut/ORTE-backend.svg?branch=main)](https://travis-ci.org/ut/ORTE-backend) ![Release](https://img.shields.io/badge/tag-v0.38-blue.svg) [![Coverage Status](https://coveralls.io/repos/github/ut/ORTE-backend/badge.svg?branch=main)](https://coveralls.io/github/ut/ORTE-backend?branch=main) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
 
 
 # ORTE-backend
@@ -9,7 +9,7 @@ Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
 
 This application is work in progress. Contributions are welcome (see below).
 
-<img src="https://raw.githubusercontent.com/ut/ORTE-backend/master/app/assets/images/ORTE-sample-map2-overview.jpg" style="max-width: 640px" width="640" />
+<img src="https://raw.githubusercontent.com/ut/ORTE-backend/main/app/assets/images/ORTE-sample-map2-overview.jpg" style="max-width: 640px" width="640" />
 
 ## Address and geolocation lookup
 
@@ -43,13 +43,22 @@ $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
 ```
 
+### Run
+
+
+```bash
+$ bundlex exec rails s
+```
+
 ## Credits
 
 Code + Design by Ulf Treger <ulf.treger@googlemail.com> with kind support from:
 
 * Pragma Shift Projects, Hamburg (code donation)
-* Treffentotal 2018 (acceptance testing and first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON) 
-* and from participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/).
+* Treffentotal 2018, Hamburg (acceptance testing and first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON)
+* and from participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen.
+
+
 
 ## Feedback & Contributions
 
@@ -57,7 +66,7 @@ Feedback, bug reports and code contributions are most welcome.
 
 Send Feedback to ulf.treger@googlemail.com
 
-Please file bug repots to our Github Repository at https://github.com/ut/ORTE-backend
+Please file bug reports and feature request to our Github Repository at https://github.com/ut/ORTE-backend
 
 For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 

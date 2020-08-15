@@ -10,9 +10,12 @@ class Place < ApplicationRecord
   # deprecated, will be removed after transitions
   has_many_attached :images
 
+  has_one_attached :audio
+
   has_many :images
 
   validates :title, presence: true
+  validate :check_audio_format
 
   scope :published, -> { where(published: true) }
 
@@ -33,6 +36,9 @@ class Place < ApplicationRecord
       self.enddate = "#{enddate_date} 00:00:00"
     end
   end
+
+
+
 
   def date
     ApplicationController.helpers.smart_date_display(startdate, enddate)
@@ -83,6 +89,14 @@ class Place < ApplicationRecord
       all.each do |user|
         csv << attributes.map { |attr| user.send(attr) }
       end
+    end
+  end
+
+  private
+
+  def check_audio_format
+    if audio.attached? && !audio.content_type.in?(%w(audio/mpeg))
+      errors.add(:document, 'Must be a MP3 Audiofile')
     end
   end
 end

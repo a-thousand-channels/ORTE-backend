@@ -3,7 +3,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
   var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
   if(typeof layer_json_url !== 'undefined') {
-  
+
     console.log("Drawing placemarks w/data from "+layer_json_url);
 
     var request = $.getJSON(layer_json_url, function(data) {
@@ -93,11 +93,11 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
           northeast = L.latLng(northeast_array[0],northeast_array[1]);
           southwest = L.latLng(southwest_array[0],southwest_array[1]);
           bounds = L.latLngBounds(northeast, southwest);
-        } 
+        }
         map.fitBounds(bounds, {maxZoom: 12, minZoom: 2});
         console.log("fit to bounds done");
 
-        
+
         // set custom extent
         var params = getParams();
         if ( params.setbound )  {
@@ -118,7 +118,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
             console.log('Map extent was edited!');
             var new_bound = rect.getBounds();
             var northeast = new_bound.getNorthEast();
-            var southwest = new_bound.getSouthWest();          
+            var southwest = new_bound.getSouthWest();
             console.log("get new bounds");
             console.log(northeast);
             setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
@@ -196,12 +196,15 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(text_layers);
 
       var html = '';
+
       if ( place.images && place.images[0] ) {
         html = "<a href='"+place.images[0].image_url+"' target='_blank'><img src='"+place.images[0].image_url+"' /></a>";
       } else {
         html = "";
       }
-
+      if ( place.imagelink2 ) {
+        html = "<img src='"+place.imagelink2+"' />";
+      }
       var texticon= L.divIcon({
           html: '<div class="image_inner">'+html+'</div>',
           iconAnchor:[0,0],
@@ -226,7 +229,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         content += "<img src='"+place.imagelink2+"' />";
       } else if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
-      }      
+      }
       content += '<div class="leaflet-popup-content-text">';
       if ( place.date ) {
         content += "<p>"+place.date;
