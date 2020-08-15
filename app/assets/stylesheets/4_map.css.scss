@@ -1,5 +1,8 @@
 
 /* leaflet overrides */
+#map .leaflet-top {
+    top: 40px;
+}
 #map .leaflet-control-layers,
 #map .leaflet-bar {
     border: 0;
@@ -9,6 +12,13 @@
         display: none;
     }
 }
+#map .leaflet-bottom.leaflet-right .leaflet-bar.leaflet-control {
+    @media screen and (max-width: 39.9375em) {
+        display: block;
+    }
+}
+
+
 #map .leaflet-control-layers-toggle::before {
     content: "*";
     font-size: 38px;
@@ -18,7 +28,7 @@
 #map .leaflet-control-layers-toggle {
     background-image: none;
     width: 31px;
-    height: 31px;   
+    height: 31px;
 }
 #map .leaflet-control-layers-list label {
   color: darken(#c6c600,10%);

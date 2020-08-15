@@ -5,14 +5,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [0.40] - PENDING
+## [0.39] - PENDING
 
+
+## [0.38] - 2020-06-26
+
+### Added
+- [Map] Adding leaflet control module (for user location on map)
+- [MVC] Extend Layer and Map with a fulltext column
+- [UI]  Sorting images of a place w/XHR
+- [Place] Adding basic audio upload and play feature
+
+### Changed
+- [UI] Icons, switch from font to inline svg, set favicon
+
+## [0.37] - 2020-05-01
+
+### Added
+- [UI] Custom icons for maps, layers, places w/SVG font
+- [MVC] Image MVC, now more than one image can be attached to a place
+
+### Changed
+- [UI] Better handling of inplace layer change for places
+- [UI] Some minor UI improvements
 
 ## [0.36] - 2020-04-10
 
 ### Changed
 - [UI] Adjust some CSS positions, labels, styles
-- [Fix] Fix error by resolving a city name 
+- [Fix] Fix error by resolving a city name
 - [Fix] Some minor bugs
 
 ## [0.35] - 2020-03-28
@@ -52,7 +73,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.31] - 2019-07-25
 ### Added
-- Colored svg markers 
+- Colored svg markers
 - ColorGenerator Gem
 
 

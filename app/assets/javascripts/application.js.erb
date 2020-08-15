@@ -19,6 +19,7 @@
 //= require leaflet/dist/leaflet
 //= require leaflet.markercluster/dist/leaflet.markercluster
 //= require leaflet-draw/dist/leaflet.draw
+//= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-color-markers
 //= require tinymce-jquery
 
@@ -149,6 +150,16 @@
 
     L.control.layers(overlays).addTo(map);
 
+
+    L.control.locate({
+      position: 'bottomright',
+      strings: {
+          title: "Show my location on the map"
+      },
+      icon: 'fi-marker',
+      iconLoading: 'fi-clock'
+    }).addTo(map);
+
     //add zoom control with your options
     L.control.zoom({
          position:'topright'
@@ -187,10 +198,10 @@
       } else {
         console.log("No mapping possible. Please select a map and a layer first");
         $('#selection-hint').html("<p>Please select a map and a layer first.</p>");
-        $('#selection-hint').addClass('active');        
+        $('#selection-hint').addClass('active');
         setTimeout(function(){
-          $('#selection-hint').removeClass('active');    
-        }, 2000);        
+          $('#selection-hint').removeClass('active');
+        }, 2000);
       }
     });
 
