@@ -100,7 +100,7 @@ GEM
     coffee-script-source (1.12.2)
     color-generator (0.0.4)
     colorize (0.8.1)
-    concurrent-ruby (1.1.6)
+    concurrent-ruby (1.1.7)
     coveralls_reborn (0.16.0)
       simplecov (~> 0.18.1)
       term-ansicolor (~> 1.6)
