@@ -7,6 +7,8 @@ class Place < ApplicationRecord
 
   belongs_to :layer
 
+  acts_as_taggable_on :tags
+
   # deprecated, will be removed after transitions
   has_many_attached :images
 
