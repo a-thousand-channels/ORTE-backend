@@ -49,6 +49,8 @@
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
+      - if @place.tag_list
+        #{@place.tag_list}
       %p.hint.text-left
         %b Coordinates:
         #{@place.lat[0..5]}, #{@place.lon[0..5]}
@@ -57,5 +59,6 @@
           %i.fi-check.fi-18
         - else
           %i.fi-lock.fi-18
+        \|
         %b Last edit:
         = l(@place.updated_at)

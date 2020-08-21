@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   root 'start#index'
-  
+
   get 'info', to: 'start#info'
 
   get 'transition', to: 'images#transition'
