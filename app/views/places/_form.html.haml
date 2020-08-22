@@ -69,6 +69,11 @@
   .grid-x.grid-padding-x
     .large-12.cell
       = f.error_notification
+      - if @place.errors.full_messages.present?
+        %ul.hide
+          = @place.errors.full_messages.each do |item,msg|
+            %li= item
+
       = f.input :title
 
   .grid-x.grid-padding-x
