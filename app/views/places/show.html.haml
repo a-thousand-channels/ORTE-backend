@@ -50,7 +50,10 @@
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
       - if @place.tag_list
-        #{@place.tag_list}
+        %p
+          - @place.tags.each do |tag|
+            %span.label.secondary= tag
+
       %p.hint.text-left
         %b Coordinates:
         #{@place.lat[0..5]}, #{@place.lon[0..5]}
