@@ -22,6 +22,7 @@
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
 //= require leaflet-color-markers
 //= require tinymce-jquery
+//= require select2-full
 
 
 // $(document).on('turbolinks:load', function() {
@@ -32,6 +33,12 @@
     setTimeout(function(){
       $('#flash').slideUp(2000);
     }, 3500);
+
+      $('#place_tag_list').select2({
+        tags: true,
+        tokenSeparators: [',']
+      });
+      // tags option enables free text responses
 
     // select another color (for layers)
     $('.another_color').click(function(e){

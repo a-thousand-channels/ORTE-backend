@@ -3,6 +3,7 @@
 class Map < ApplicationRecord
   belongs_to :group
   has_many :layers
+  has_many :places, through: :layers
 
   validates :title, presence: true
 
