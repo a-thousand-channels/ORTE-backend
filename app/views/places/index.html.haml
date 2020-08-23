@@ -34,7 +34,7 @@
             - images = Image.preview(place.id)
             - if images.count > 0
               - images.each do |img|
-                = image_tag img.variant(resize: "120x120").processed, class: "thumbnail"                
+                = image_tag img.variant(resize: "120x120").processed, class: "thumbnail"
             %h4
               = link_to map_layer_place_path(place.layer.map,place.layer,place) do
                 = place.title
@@ -48,9 +48,16 @@
               %br
               = place.zip
               = place.city
+
+            - if place.tags
+              %p
+                %i.fi-price-tag
+                - place.tags.each do |tag|
+                  %span.label.secondary.tag= tag
             %p.hint.text-left
               - if place.lat
                 #{place.lat[0..6]}/#{place.lon[0..5]}
+
           %td.show-for-large
             - if place.published
               %i.fi-check.fi-21
