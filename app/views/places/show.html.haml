@@ -51,8 +51,11 @@
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
       - if @place.tag_list
         %p
+          %i.fi-price-tag
           - @place.tags.each do |tag|
-            %span.label.secondary= tag
+            %span.label.secondary.tag
+              = link_to map_tag_path(@map,tag) do
+                = tag
 
       %p.hint.text-left
         %b Coordinates:

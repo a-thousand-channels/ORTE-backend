@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :icons
   end
   resources :maps do
+    resources :tags, only: [:index, :show]
     resources :layers do
       resources :places do
         resources :images

@@ -134,6 +134,24 @@ select {
   -webkit-appearance: none;
 }
 /* -------------------- */
+.label.secondary.tag {
+    padding: 0.15em 0.45em 0.25em;
+    border-radius: 4px;
+    background-color: #baa;
+
+    a {
+      color: white;
+    }
+
+}
+.label.secondary.tag:hover {
+    background-color: #a99;
+    a {
+      color: white;
+    }
+}
+
+/* -------------------- */
 .top-bar, .top-bar ul {
     background-color: #333;
     padding: 0;
