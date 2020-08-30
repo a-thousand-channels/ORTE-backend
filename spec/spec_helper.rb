@@ -3,6 +3,8 @@
 require 'capybara'
 require 'capybara/rspec'
 require 'webdrivers/chromedriver'
+require 'webmock/rspec'
+WebMock.disable_net_connect!(allow_localhost: true)
 
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
@@ -43,6 +45,13 @@ RSpec.configure do |config|
   Capybara.server = :puma, { Silent: true }
   Capybara.javascript_driver = :headless_chrome
   Capybara.server_host = '0.0.0.0' # universal IP
+
+
+  config.before(:each) do
+    stub_request(:get, /server.arcgisonline.com/).
+      with(headers: {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+      to_return(status: 200, body: "stubbed response", headers: {})
+  end
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
