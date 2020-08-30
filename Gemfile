@@ -75,6 +75,7 @@ group :development, :test do
   gem 'rspec_junit_formatter'
   gem 'sqlite3'
   gem 'json-schema'
+  gem 'webmock'
 end
 
 
