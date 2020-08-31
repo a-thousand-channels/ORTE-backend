@@ -70,6 +70,8 @@ Please file bug reports and feature request to our Github Repository at https://
 
 For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 
+All contributors shall respect the [Contributor Covenant Code of Conduct](https://github.com/ut/ORTE-backend/blob/main/CODE_OF_CONDUCT.md)
+
 
 ## Licence
 
