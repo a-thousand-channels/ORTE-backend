@@ -27,6 +27,8 @@ test:
   adapter: mysql2
   database: orte_test
   host: localhost
+  username: orte
+  password: orte00
   encoding: utf8
 
 staging:

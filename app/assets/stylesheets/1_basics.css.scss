@@ -59,6 +59,7 @@ p.inline, div.inline {
 p.clear {
   margin: 0;
 }
+div.alert-box,
 small.error {
     color: red;
     border: 2px solid red;
@@ -75,6 +76,8 @@ span.name.middle {
   padding-top: 7px;
   display: inline-block;
 }
+
+hr {border-bottom: 1px solid #aaa;}
 /* -------------------- */
 /* foundation adapations */
 .callout {
@@ -130,6 +133,24 @@ select {
   -moz-appearance: none;
   -webkit-appearance: none;
 }
+/* -------------------- */
+.label.secondary.tag {
+    padding: 0.15em 0.45em 0.25em;
+    border-radius: 4px;
+    background-color: #baa;
+
+    a {
+      color: white;
+    }
+
+}
+.label.secondary.tag:hover {
+    background-color: #a99;
+    a {
+      color: white;
+    }
+}
+
 /* -------------------- */
 .top-bar, .top-bar ul {
     background-color: #333;
