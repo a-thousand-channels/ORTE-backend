@@ -2,7 +2,7 @@
 <% flash.each do |name, msg| %>
   <% if msg.is_a?(String) %>
     <div id="flash" class="callout <%= name.to_s == 'notice' ? 'success' : 'alert' %>" data-closable>
-      <%= content_tag :div, msg %>
+      <%= content_tag :div, msg.html_safe %>
       <button class="close-button" aria-label="Dismiss alert" type="button" data-close>
         <span aria-hidden="true">&times;</span>
       </button>

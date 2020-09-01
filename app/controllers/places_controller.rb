@@ -93,7 +93,7 @@ class PlacesController < ApplicationController
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })
-        format.html { redirect_to map_layer_url(@map.id, @place.layer.id), notice: 'Place was successfully updated.' }
+        format.html { redirect_to map_layer_url(@map.id, @place.layer.id), notice: "#{view_context.link_to(@place.title, map_layer_place_path( @map, @layer, @place ))} was successfully updated." }
         format.json { render :show, status: :ok, location: @place }
       else
         format.html { render :edit }
@@ -146,6 +146,6 @@ class PlacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :imagelink, :layer_id, :audio, images: [])
+    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :imagelink, :layer_id, :audio, tag_list: [], images: [])
   end
 end
