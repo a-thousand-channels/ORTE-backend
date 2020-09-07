@@ -2,6 +2,10 @@
 /* -------------------- */
 .form-actions {
     /* margin-top: 0; */
+
+  input.button[type=submit] {
+    background-color: #a0c400;
+  }
 }
 /* -------------------- */
 
@@ -55,7 +59,7 @@ select#place_enddate_5i  {
 
 form .image {
   width: 45%;
-  padding-right: 10px;  
+  padding-right: 10px;
 
 }
 
@@ -81,9 +85,9 @@ a.thumbnail {
 /* layer > form: color preview + input in one row */
 
 #preview_color_wrapper {
-  background-color: rgba(200, 200, 200, 0.5);  
+  background-color: rgba(200, 200, 200, 0.5);
   padding: 0.5em 1em;
-  margin-top: 0.5em;	
+  margin-top: 0.5em;
   margin-right: 0.5em;
 	div.input.string.optional.layer_color {
 	    display: inline-block;
@@ -105,7 +109,7 @@ a.thumbnail {
   margin-top: 0.5em;
   p.small {
     color: #666;
-  }  
+  }
   span {
     cursor: pointer;
     svg:hover {

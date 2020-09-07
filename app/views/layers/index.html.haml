@@ -8,6 +8,10 @@
     = link_to map_path(@map) do
       = @map.title
 
+  - if @map.places.all_tags
+    = link_to map_tags_path(@map), :class => "button" do
+      %i.fi-pricetag-multiple
+      List of Tags
 
   %table
     %thead

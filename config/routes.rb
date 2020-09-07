@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   root 'start#index'
-  
+
   get 'info', to: 'start#info'
 
   get 'transition', to: 'images#transition'
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     resources :icons
   end
   resources :maps do
+    resources :tags, only: [:index, :show]
     resources :layers do
       resources :places do
         resources :images

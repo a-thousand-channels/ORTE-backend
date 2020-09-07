@@ -35,9 +35,9 @@ $ bundle install
 
 ```bash
 $ sudo mysql -u root
-> CREATE USER 'user'@'localhost' IDENTITIED BY 'password';
-> GRANT ALL PRIVILEGES ON *.* TO 'orte'@'localhost';
-> $CREATE DATABASE orte CHARACTER SET utf8 COLLATE utf8_general_ci;
+> CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+> GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost';
+> CREATE DATABASE orte CHARACTER SET utf8 COLLATE utf8_general_ci;
 > exit;
 $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
@@ -69,6 +69,8 @@ Send Feedback to ulf.treger@googlemail.com
 Please file bug reports and feature request to our Github Repository at https://github.com/ut/ORTE-backend
 
 For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
+
+All contributors shall respect the [Contributor Covenant Code of Conduct](https://github.com/ut/ORTE-backend/blob/main/CODE_OF_CONDUCT.md)
 
 
 ## Licence

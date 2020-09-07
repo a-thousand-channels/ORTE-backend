@@ -42,6 +42,8 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts-as-taggable-on (6.5.0)
+      activerecord (>= 5.0, < 6.1)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     airbrussh (1.4.0)
@@ -106,6 +108,8 @@ GEM
       term-ansicolor (~> 1.6)
       thor (>= 0.20.3, < 2.0)
       tins (~> 1.16)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
     crass (1.0.6)
     database_cleaner (1.8.5)
     descendants_tracker (0.0.4)
@@ -158,6 +162,7 @@ GEM
       haml (>= 4.0.6, < 6.0)
       html2haml (>= 1.0.1)
       railties (>= 5.1)
+    hashdiff (1.0.1)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
       haml (>= 4.0, < 6)
@@ -204,7 +209,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.6.0)
+    loofah (2.7.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -216,9 +221,9 @@ GEM
     mini_magick (4.10.1)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
-    mini_racer (0.2.6)
-      libv8 (>= 6.9.411)
-    minitest (5.14.1)
+    mini_racer (0.3.1)
+      libv8 (~> 8.4.255)
+    minitest (5.14.2)
     mysql2 (0.5.3)
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
@@ -234,7 +239,7 @@ GEM
       rake (>= 0.8.1)
     path_expander (1.1.0)
     psych (3.1.0)
-    public_suffix (4.0.5)
+    public_suffix (4.0.6)
     puma (4.3.5)
       nio4r (~> 2.0)
     rack (2.2.3)
@@ -306,7 +311,7 @@ GEM
     ruby-vips (2.0.17)
       ffi (~> 1.9)
     ruby_dep (1.5.0)
-    ruby_parser (3.14.2)
+    ruby_parser (3.15.0)
       sexp_processor (~> 4.9)
     rubycritic (4.5.1)
       flay (~> 2.8)
@@ -320,6 +325,7 @@ GEM
       tty-which (~> 0.4.0)
       virtus (~> 1.0)
     rubyzip (2.3.0)
+    safe_yaml (1.0.5)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -336,11 +342,12 @@ GEM
       sprockets-rails
       tilt
     secure_headers (6.3.1)
+    select2-rails (4.0.13)
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
     settingslogic (2.0.9)
-    sexp_processor (4.15.0)
+    sexp_processor (4.15.1)
     simple_form (5.0.2)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
@@ -391,8 +398,8 @@ GEM
       coercible (~> 1.0)
       descendants_tracker (~> 0.0, >= 0.0.3)
       equalizer (~> 0.0, >= 0.0.9)
-    warden (1.2.8)
-      rack (>= 2.0.6)
+    warden (1.2.9)
+      rack (>= 2.0.9)
     web-console (3.7.0)
       actionview (>= 5.0)
       activemodel (>= 5.0)
@@ -402,6 +409,10 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (>= 3.0, < 4.0)
+    webmock (3.8.3)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -412,6 +423,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts-as-taggable-on (~> 6.0)
   bcrypt
   brakeman
   byebug
@@ -441,7 +453,7 @@ DEPENDENCIES
   kaminari
   letter_opener
   listen (>= 3.0.5, < 3.2)
-  mini_racer (= 0.2.6)
+  mini_racer
   mysql2
   passenger
   puma (~> 4)
@@ -454,6 +466,7 @@ DEPENDENCIES
   sassc (~> 2.2.1)
   sassc-rails
   secure_headers
+  select2-rails
   settingslogic
   simple_form
   simplecov
@@ -466,6 +479,7 @@ DEPENDENCIES
   uglifier
   web-console (>= 3.3.0)
   webdrivers (~> 4.0)
+  webmock
 
 BUNDLED WITH
    2.1.4
