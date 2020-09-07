@@ -69,6 +69,11 @@
   .grid-x.grid-padding-x
     .large-12.cell
       = f.error_notification
+      - if @place.errors.full_messages.present?
+        %ul.hide
+          = @place.errors.full_messages.each do |item,msg|
+            %li= item
+
       = f.input :title
 
   .grid-x.grid-padding-x
@@ -96,12 +101,16 @@
         = tinymce
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
-        .form-actions
-          = f.button :submit, :class => "button"
+        - # = f.input :tag_list, label: 'Tags', input_html: {value: f.object.tag_list.join(", "), placeholder: 'Tags, seperate with comma'}
+        = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name
+        %p.hint To add a tag, just type into the field and hit return. You can add multiple tags. If you start typing you will see most used tags as a proposal
+
+
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
         %p.hint Only needed, if the location has different official name
+        %hr
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
@@ -110,7 +119,7 @@
             = f.input :city
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
-
+        %hr
         - if params[:action] == 'edit'
           %label Images
           = link_to new_map_layer_place_image_path(@place.layer.map,@place.layer,@place), class: 'button' do
@@ -140,6 +149,7 @@
                 - else
                   = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
                     = image_tag url_for(img.file)
+        %hr
         %label Audio
         - if @place.audio && @place.audio.attached?
           %p
@@ -148,3 +158,8 @@
           %p.shy Upload a new file:
         = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
         %p.hint Please upload MP3 only
+  %hr
+  .grid-x
+    .large-6.medium-6.small-12.cell
+      .form-actions.text-right
+        = f.button :submit, :class => "button"

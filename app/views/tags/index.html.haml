@@ -1,0 +1,25 @@
+#table-wrapper
+
+  %h3
+    = link_to map_path(@map) do
+      = @map.title
+    > Tags
+
+  - @tags.each do |tag|
+    %span.label.secondary.tag
+      = link_to map_tag_path(@map,tag) do
+        %i.fi-price-tag
+        = tag.name
+        (#{@map.places.tagged_with(["#{tag.name}"]).count})
+    %ul.hide
+      - @map.places.tagged_with(["#{tag.name}"]).each do |place|
+        %li
+          - if place.startdate.present?
+            %p
+              = smart_date_display(place.startdate, place.enddate)
+          %h5
+            = link_to map_layer_place_path(@map,place.layer,place) do
+              = place.title
+
+
+
