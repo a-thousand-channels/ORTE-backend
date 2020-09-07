@@ -128,7 +128,7 @@ input#addresslookup_address.hide {
   @media screen and (max-width: 39.9375em) {
     padding: 10px;
     min-width: none;
-    margin-top: 50px;    
+    margin-top: 50px;
     tbody th, tbody td {
       padding: 0.5rem 0.3rem 0.3rem;
     }
@@ -276,4 +276,15 @@ svg.icons {
     fill: #939300;
 
   }
+}
+
+.card.card-image-info {
+    padding: 10px 10px 0;
+    color: #444;
+    background-color: transparent;
+    border: 1px solid #444;
+    p {
+      margin-bottom: 5px;
+    }
+
 }
