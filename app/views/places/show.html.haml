@@ -13,12 +13,13 @@
       - if images.count > 0
         %p
           - images.each do |img|
-            - if img.preview.present?
-              = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
-                = image_tag img.file.variant(resize: "300x300").processed
-            - else
-              = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
-                = image_tag img.file.variant(resize: "300x300").processed
+            - if img.attached?
+              - if img.preview.present?
+                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
+                  = image_tag img.file.variant(resize: "300x300").processed
+              - else
+                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
+                  = image_tag img.file.variant(resize: "300x300").processed
 
     .cell.small-8.medium-8
       %p.hint.text-left
@@ -49,6 +50,14 @@
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
+      - if @place.tag_list
+        %p
+          - @place.tags.each do |tag|
+            %span.label.secondary.tag
+              = link_to map_tag_path(@map,tag) do
+                %i.fi-price-tag
+                = tag
+
       %p.hint.text-left
         %b Coordinates:
         #{@place.lat[0..5]}, #{@place.lon[0..5]}
@@ -57,5 +66,6 @@
           %i.fi-check.fi-18
         - else
           %i.fi-lock.fi-18
+        \|
         %b Last edit:
         = l(@place.updated_at)
