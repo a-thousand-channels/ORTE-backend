@@ -31,7 +31,7 @@ test:
   encoding: utf8
 
 localtest:
- adapter: mysql2
+  adapter: mysql2
   database: orte_test
   host: localhost
   username: orte
