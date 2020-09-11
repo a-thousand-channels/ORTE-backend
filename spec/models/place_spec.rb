@@ -11,7 +11,6 @@ RSpec.describe Place, type: :model do
   describe 'Image attachment' do
     it 'is valid and attached' do
       subject.images.attach(io: File.open(Rails.root.join('public', 'apple-touch-icon.png')), filename: 'attachment.png', content_type: 'image/png')
-      expect(subject).to be_valid
       expect(subject.images).to be_attached
     end
   end
