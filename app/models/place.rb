@@ -98,7 +98,7 @@ class Place < ApplicationRecord
 
   def check_audio_format
     if audio.attached? && !audio.content_type.in?(%w(audio/mpeg))
-      errors.add(:audio, 'Format must be MP3.')
+      errors.add(:audio, 'format must be MP3.')
     end
   end
 end
