@@ -2,6 +2,14 @@
   .grid-x
     .large-12.medium-12.cell
       %h1= Settings
+      %p
+        = @user.email
+        \|
+        %i.fi-torsos-all.fi-21
+        = @user.group.title
+      %p.small
+        Last login
+        = l(@user.last_sign_in_at)
       %hr
       %ul.menu
         - if user_signed_in?
