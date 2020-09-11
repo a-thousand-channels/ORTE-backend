@@ -8,12 +8,17 @@
         %p
           = f.input :title
           = f.input :subtitle
-          = tinymce          
+          = tinymce
           = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
         .grid-x.grid-padding-x
           .large-6.medium-6.small-6.cell
-            - if admin?
-              = f.association :group, collection: Group.by_user(current_user), include_blank: false
+            %p
+              - if admin?
+                = f.association :group, collection: Group.by_user(current_user), include_blank: false
+              - else
+                = f.association :group, as: :hidden, :input_html => {:value => current_user.group.id}
+                %i.fi-torsos-all.fi-21
+                = current_user.group.title
           .large-6.medium-6.small-6.cell
             %p
               = f.input :published, :label => 'Publish'
