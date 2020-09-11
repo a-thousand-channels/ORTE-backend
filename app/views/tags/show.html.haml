@@ -5,8 +5,7 @@
       = @map.title
     >
     = link_to map_tags_path(@map) do
-      Tags
-    >
+      Tag
     = @tag.name
 
   %p.hint.text-left
@@ -21,6 +20,9 @@
         %h5
           = link_to map_layer_place_path(@map,place.layer,place) do
             = place.title
+        %p.small
+          = link_to map_layer_path(@map,place.layer) do
+            = place.layer.title
         - if place.tag_list
           %p
             - place.tags.each do |tag|

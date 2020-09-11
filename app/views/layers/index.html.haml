@@ -9,9 +9,19 @@
       = @map.title
 
   - if @map.places.all_tags
-    = link_to map_tags_path(@map), :class => "button" do
-      %i.fi-pricetag-multiple
-      List of Tags
+    %div.tags
+      - @map.places.all_tags.each do |tag|
+        - if @map.places.tagged_with(["#{tag.name}"]).count > 1
+          %span.label.secondary.tag
+            = link_to map_tag_path(@map,tag) do
+              %i.fi-price-tag
+              = tag.name
+              (#{@map.places.tagged_with(["#{tag.name}"]).count})
+
+    %p
+      = link_to map_tags_path(@map), :class => "button small" do
+        %i.fi-pricetag-multiple
+        List of all tags
 
   %table
     %thead

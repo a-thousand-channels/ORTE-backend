@@ -128,6 +128,7 @@ input#addresslookup_address.hide {
     min-width: none;
     margin-top: 10px;
     max-width: 97%;
+    max-width: unset;
 
     tbody th, tbody td {
       padding: 0.5rem 0.3rem 0.3rem;
@@ -160,7 +161,8 @@ input#addresslookup_address.hide {
   #info-wrapper,
   #table-wrapper,
   #form-wrapper {
-    min-width: auto;
+    min-width: initial;
+    max-width: initial;
   }
   #table-wrapper.large-wrapper,
   #form-wrapper.large-wrapper {
@@ -287,4 +289,9 @@ svg.icons {
       margin-bottom: 5px;
     }
 
+}
+
+.tags {
+  max-width: 80vw;
+  margin: 15px 30px 15px 0;
 }
