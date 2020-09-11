@@ -23,15 +23,13 @@ main {
 }
 @media screen and (max-width: 63.9375em) {
   main {
-
-
   }
 }
 @media screen and (max-width: 39.9375em) {
   main {
       padding: 5px;
       top: 0;
-      margin: 0 0 0 0;
+      margin:  40px 0 0 5px;
       min-height: none;
       right: 0;
       left: 0;
@@ -123,12 +121,14 @@ input#addresslookup_address.hide {
 #form-wrapper {
   background-color: rgba(255,255,255,0.8);
   padding: 10px 20px;
-  min-width: 400px;
+  min-width: 450px;
   max-width: 90%;
   @media screen and (max-width: 39.9375em) {
     padding: 10px;
     min-width: none;
-    margin-top: 50px;
+    margin-top: 10px;
+    max-width: 97%;
+
     tbody th, tbody td {
       padding: 0.5rem 0.3rem 0.3rem;
     }
@@ -173,7 +173,7 @@ input#addresslookup_address.hide {
 
 
 p.close_link_wrapper {
-  width: 50px;
+  width: 20px;
   float: right;
   padding: 0;
   line-height: 1;

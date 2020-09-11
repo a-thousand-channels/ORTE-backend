@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   get 'bomb',        to: 'application#bomb'
   post 'report_csp', to: 'application#report_csp'
 
+  # settings
+  get   'settings',    to: 'start#settings'
   # profile
   get   'edit_profile',    to: 'start#edit_profile'
   patch 'update_profile',  to: 'start#update_profile'
