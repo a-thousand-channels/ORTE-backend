@@ -11,9 +11,9 @@
   %p.hint.text-left
     #{@map.places.tagged_with(["#{@tag.name}"]).count} place(s) tagged with #{@tag.name}
   %hr
-  %ul
+  %div
     - @map.places.tagged_with(["#{@tag.name}"]).each do |place|
-      %li
+      %div.cards
         - if place.startdate.present?
           %p
             = smart_date_display(place.startdate, place.enddate)
