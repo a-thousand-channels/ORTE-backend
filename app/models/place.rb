@@ -9,9 +9,6 @@ class Place < ApplicationRecord
 
   acts_as_taggable_on :tags
 
-  # deprecated, will be removed after transitions
-  has_many_attached :images
-
   has_one_attached :audio
 
   has_many :images

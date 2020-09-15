@@ -8,13 +8,6 @@ RSpec.describe Place, type: :model do
     expect(build(:place)).to be_valid
   end
 
-  describe 'Image attachment' do
-    it 'is valid and attached' do
-      subject.images.attach(io: File.open(Rails.root.join('public', 'apple-touch-icon.png')), filename: 'attachment.png', content_type: 'image/png')
-      expect(subject.images).to be_attached
-    end
-  end
-
   describe 'Audio attachment' do
     it 'is attached' do
       subject.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')

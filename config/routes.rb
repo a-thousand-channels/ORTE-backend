@@ -6,8 +6,6 @@ Rails.application.routes.draw do
 
   get 'info', to: 'start#info'
 
-  get 'transition', to: 'images#transition'
-
   match 'preferences' => 'preferences#edit', :as => :preferences, via: [:get, :patch]
 
   get 'bomb',        to: 'application#bomb'
