@@ -49,7 +49,8 @@
         - # = f.input :script
       .form-actions
         %p
-          = f.button :submit, :class => "button"
+          - # disable_with: rails5 ujs
+          = f.button :submit, :class => "button", :data => { "disable_with" => false }
 
 - if admin? && params[:action] == 'edit'
   - if @map.layers.count == 0
