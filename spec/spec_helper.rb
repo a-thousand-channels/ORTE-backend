@@ -4,7 +4,7 @@ require 'capybara'
 require 'capybara/rspec'
 require 'webdrivers/chromedriver'
 require 'webmock/rspec'
-# WebMock.disable_net_connect!(allow_localhost: true)
+
 WebMock.disable_net_connect!(allow: [
   'localhost',
   '0.0.0.0',
