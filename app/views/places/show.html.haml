@@ -1,3 +1,5 @@
+- content_for(:title) { "#{@place.title} — #{@place.layer.title}" }
+
 
 #info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}" }}
 
@@ -25,7 +27,7 @@
       %p.hint.text-left
         = link_to map_url(@place.layer.map) do
           = @place.layer.map.title
-        \>
+        \—
         = link_to map_layer_url(@place.layer.map,@place.layer) do
           = @place.layer.title
 

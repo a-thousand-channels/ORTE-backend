@@ -1,3 +1,5 @@
+- content_for(:title) { "#{@layer.title} (Edit)" }
+
 #form-wrapper
   %p.text-right.close_link_wrapper
     =link_to map_layers_path(@map), :class=>'close_link' do

@@ -1,12 +1,13 @@
-#table-wrapper
+- content_for(:title) { "#{@tag.name}" }
 
+
+#table-wrapper
   %h3
     = link_to map_path(@map) do
       = @map.title
-    >
+    \:
     = link_to map_tags_path(@map) do
-      Tag
-    = @tag.name
+      = @tag.name
 
   %p.hint.text-left
     #{@map.places.tagged_with(["#{@tag.name}"]).count} place(s) tagged with #{@tag.name}
