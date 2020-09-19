@@ -23,6 +23,9 @@ Rails.application.routes.draw do
   resources :maps do
     resources :tags, only: [:index, :show]
     resources :layers do
+      collection do
+        get :search
+      end
       resources :places do
         resources :images
         member do
