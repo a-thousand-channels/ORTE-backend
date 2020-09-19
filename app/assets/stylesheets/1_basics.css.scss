@@ -134,6 +134,14 @@ select {
   -webkit-appearance: none;
 }
 /* -------------------- */
+.reveal {
+  background-color: #fefefe;
+
+  button.close-button {
+    color: #c6c600;
+  }
+}
+/* -------------------- */
 .label.secondary.tag {
     padding: 0.15em 0.45em 0.25em;
     border-radius: 4px;

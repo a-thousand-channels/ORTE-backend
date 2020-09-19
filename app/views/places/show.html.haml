@@ -10,20 +10,28 @@
   %p#notice= notice
 
   .grid-x.grid-padding-x
-    .cell.small-4.medium-4
-      - images = Image.where(place_id: @place.id)
-      - if images.count > 0
-        %p
+    - images = Image.where(place_id: @place.id)
+    - if images.count > 0
+      - textcol = 8
+      .cell.small-4.medium-4
+        %div
           - images.each do |img|
             - if img.attached?
               - if img.preview.present?
-                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
+                %p{"data-open": "reveal#{img.id}"}
                   = image_tag img.file.variant(resize: "300x300").processed
               - else
-                = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: 'thumbnail' do
+                %p{"data-open": "reveal#{img.id}"}
                   = image_tag img.file.variant(resize: "300x300").processed
+      - images.each do |img|
+        .reveal{id: "reveal#{img.id}", "data-reveal": true, "data-animation-in": "fade-in", "data-animation-out": "fade-out"}
+          = image_tag img.file.variant(resize: "800x800").processed
+          %button.close-button{"data-close": true, "aria-label": "Close", type: "button"}
+            %i.fi.fi-x{"aria-hidden": true}
 
-    .cell.small-8.medium-8
+    - else
+      - textcol = 12
+    .cell{class: "small-#{textcol} medium-#{textcol}"}
       %p.hint.text-left
         = link_to map_url(@place.layer.map) do
           = @place.layer.map.title
