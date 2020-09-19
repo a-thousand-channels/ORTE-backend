@@ -1,6 +1,9 @@
 - content_for(:title) { "Settings" }
 
 #info-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to maps_path, :class=>'close_link' do
+      %i.fi.fi-x
   .grid-x
     .large-12.medium-12.cell
       %h1= Settings
