@@ -20,6 +20,12 @@ h1,h2 {
 h3,h4,h5,h6 {
   font-family: "worksans-semibold","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 }
+h4 {
+  svg {
+    vertical-align: -6px;
+    margin-right: 10px;
+  }
+}
 h3 {
   font-size: 1.5375rem;
 }
