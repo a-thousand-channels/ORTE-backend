@@ -26,7 +26,7 @@
           &nbsp;
 
     %tbody
-      - @places.order(:startdate).each do |place|
+      - @places.sort_by(&:startdate).each do |place|
         %tr
           %td.show-for-medium
             = smart_date_display(place.startdate, place.enddate)
