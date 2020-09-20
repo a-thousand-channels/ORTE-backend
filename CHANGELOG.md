@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - [Feature] Search for title/teaser/text of all places of one map
 - [Images] Better display of metadata and infos
+- [Images] Click on image shows large version in a modal
 - [UI] Admin view: Combine access to settings, user, groups into one view
 - [UI] Adding HTML titles + OG metadata for most views
 - [UI] Some smaller improvements and adjustments
