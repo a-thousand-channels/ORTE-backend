@@ -46,6 +46,7 @@ SecureHeaders::Configuration.default do |config|
     # get rid off the https
     config.csp = default_csp_config.merge({
         default_src: %w('self'),
+        script_src: %w('self' 'unsafe-inline'),
         block_all_mixed_content: false,
         upgrade_insecure_requests: false,
         sandbox: false
