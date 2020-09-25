@@ -8,7 +8,6 @@ RSpec.describe 'icons/new', type: :view do
     @icon = FactoryBot.create(:icon, iconset_id: @iconset.id)
     assign(:icon, Icon.new(
                     title: 'MyString',
-                    image: 'MyString',
                     iconset: @iconset
                   ))
   end
@@ -19,7 +18,6 @@ RSpec.describe 'icons/new', type: :view do
     assert_select 'form[action=?][method=?]', iconset_icons_path(@iconset), 'post' do
       assert_select 'input[name=?]', 'icon[title]'
 
-      assert_select 'input[name=?]', 'icon[image]'
     end
   end
 end
