@@ -14,7 +14,7 @@
     - @icons.each do |icon|
       %tr
         %td= icon.title
-        %td= icon.image
+        %td= icon.file
         %td= icon.iconset
         %td= link_to 'Show', iconset_icon_path(@iconset,icon)
         %td= link_to 'Edit', edit_iconset_icon_path(@iconset,icon)

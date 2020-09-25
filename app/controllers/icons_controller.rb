@@ -73,6 +73,6 @@ class IconsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def icon_params
-    params.require(:icon).permit(:title, :image, :iconset_id)
+    params.require(:icon).permit(:title, :iconset_id )
   end
 end
