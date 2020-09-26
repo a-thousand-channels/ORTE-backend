@@ -22,17 +22,19 @@
             - if iconset.text.present?
               %p= iconset.text
             - if iconset.icons.count > 0
-              with #{iconset.icons.count} Icon(s)
-
+              %p Set with #{iconset.icons.count} Icon(s)
             - if iconset.maps.count > 0
-              This set is used at
-              - iconset.maps.each do |m|
-                = link_to map_path(m) do
-                  = m.title
+              %p
+                This set is used at
+                - iconset.maps.each do |m|
+                  = link_to map_path(m) do
+                    = m.title
           %td
             - if iconset.file.attached?
               = link_to url_for(iconset.file) do
-                = image_tag url_for(iconset.file)
+                = image_tag iconset.file.variant(resize: "60x60").processed, class: "thumbnail"
+            - else
+              No preview/default image
 
           %td
             = link_to edit_iconset_path(iconset), :class => 'button' do

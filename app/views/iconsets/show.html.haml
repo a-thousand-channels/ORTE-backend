@@ -18,23 +18,20 @@
   %p
     = @iconset.text
   - if @iconset.file.attached?
+    %h5 Preview & default icon:
     %p
-      %b Image:
       = link_to url_for(@iconset.file) do
-        = image_tag url_for(@iconset.file)
+        = image_tag @iconset.file.variant(resize: "120x120").processed, class: "thumbnail"
   - if @iconset.icons.count > 0
+    %h5 Icons
     %p
-      %b Icons:
-    %ul
       - @iconset.icons.each do |icon|
         - if icon.file.attached?
-          %li
-
-            = image_tag icon.file.variant(resize: "120x120").processed, class: "thumbnail"
-            = link_to iconset_icon_path(@iconset,icon), method: :delete, data: { confirm: 'Are you sure to delete this icon?' }, :class => 'button warning tiny' do
-              %i.fi.fi-trash
-              Delete
-
+          = image_tag icon.file.variant(resize: "120x120").processed, class: "thumbnail"
+          = link_to iconset_icon_path(@iconset,icon), method: :delete, data: { confirm: 'Are you sure to delete this icon?' }, :class => 'button warning tiny' do
+            %i.fi.fi-trash
+            Delete
+  %hr
   = link_to edit_iconset_path(@iconset), class: "button"  do
     %i.fi.fi-pencil
     Edit/Add more icons
