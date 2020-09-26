@@ -2,27 +2,33 @@
   .grid-x
     .large-12.cell
       = f.error_notification
-      %p Here you can defined a set if icons, that can be used as markers on the map
-      %p Icons can be PNG or SVG files.
+      %p A set of icons, that can be used as markers on the map
+      %p.shy Icons shall be PNG or SVG files.
   .grid-x.grid-padding-x
     .large-4.medium-12.cell
       .form-inputs
         %h5 Iconset
 
         = f.input :title
-        = f.input :text
-        = f.input :file
-        - if @iconset.file.attached?
-          %p
-            %b Image:
-            = link_to url_for(@iconset.file) do
-              = image_tag url_for(@iconset.file)
+        = f.input :text, label: 'Short description'
+
+
         %hr
         %p TODO: Default height/width and offset.
     .large-8.medium-12.cell
       .form-inputs
         %h5 Icons
-        = @iconset.icons.count
+        %hr
+        .grid-x.grid-padding-x
+          .large-5.medium-6.cell
+            %p Preview & default icon
+          .large-7.medium-6.cell
+            - if @iconset.file.attached?
+              %p
+                = link_to url_for(@iconset.file) do
+                  = image_tag @iconset.file.variant(resize: "60x60").processed, class: "thumbnail"
+            = f.input :file, label: false
+        %hr
         = f.fields_for :icons do |i|
           .grid-x.grid-padding-x
             .large-5.medium-6.cell
