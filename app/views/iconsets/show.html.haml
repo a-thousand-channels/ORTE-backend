@@ -25,15 +25,19 @@
   - if @iconset.icons.count > 0
     %p
       %b Icons:
-      %ul
-        - @iconset.icons.each do |icon|
-          - if icon.file.attached?
-            %li
-              = image_tag icon.file.variant(resize: "120x120").processed, class: "thumbnail"
+    %ul
+      - @iconset.icons.each do |icon|
+        - if icon.file.attached?
+          %li
+
+            = image_tag icon.file.variant(resize: "120x120").processed, class: "thumbnail"
+            = link_to iconset_icon_path(@iconset,icon), method: :delete, data: { confirm: 'Are you sure to delete this icon?' }, :class => 'button warning tiny' do
+              %i.fi.fi-trash
+              Delete
 
   = link_to edit_iconset_path(@iconset), class: "button"  do
     %i.fi.fi-pencil
-    Edit
+    Edit/Add more icons
   &nbsp;
   = link_to iconset_path(@iconset), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
     %i.fi.fi-trash

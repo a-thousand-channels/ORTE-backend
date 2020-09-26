@@ -22,11 +22,15 @@
     .large-8.medium-12.cell
       .form-inputs
         %h5 Icons
+        = @iconset.icons.count
         = f.fields_for :icons do |i|
           .grid-x.grid-padding-x
             .large-5.medium-6.cell
-              = i.input :title, label: "Name"
+              = i.input :title, label: "Name/Category"
             .large-7.medium-6.cell
+              - if i.object.file.attached?
+                = link_to url_for(i.object.file) do
+                  = image_tag i.object.file.variant(resize: "60x60").processed, class: "thumbnail"
               = i.input :file
           %hr
 
