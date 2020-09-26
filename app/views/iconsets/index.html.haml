@@ -38,10 +38,6 @@
             = link_to edit_iconset_path(iconset), :class => 'button' do
               %i.fi.fi-pencil
               Edit
-            \
-            = link_to iconset, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
-              %i.fi.fi-x
-              Destroy
         %tr
           %td{colspan: 3}
             - if iconset.icons.count > 0

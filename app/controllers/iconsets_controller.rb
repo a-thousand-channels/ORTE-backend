@@ -21,10 +21,11 @@ class IconsetsController < ApplicationController
 
   # GET /iconsets/1/edit
   def edit
-
     if ( @iconset.icons.count < 10 )
       x = 10 - @iconset.icons.count
       x.times { @iconset.icons.build }
+    else
+      1.times { @iconset.icons.build }
     end
 
   end
