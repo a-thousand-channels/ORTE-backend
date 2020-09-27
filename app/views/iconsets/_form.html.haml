@@ -7,14 +7,20 @@
   .grid-x.grid-padding-x
     .large-4.medium-12.cell
       .form-inputs
-        %h5 Iconset
+        %h5 Description
 
         = f.input :title
         = f.input :text, label: 'Short description'
-
-
         %hr
-        %p TODO: Default height/width and offset.
+        %h5 Leaflet placement settings
+        .grid-x.grid-padding-x
+          .large-6.medium-6.cell
+            = f.input :icon_anchor, input_html: { placeholder: '[0,0]'}
+            = f.input :icon_size, input_html: { placeholder: '[0,0]'}
+            = f.input :popup_anchor, input_html: { placeholder: '[0,0]'}
+          .large-6.medium-6.cell
+            = f.input :class_name, label: 'Style', collection: class_name_collection
+
     .large-8.medium-12.cell
       .form-inputs
         %h5 Icons
