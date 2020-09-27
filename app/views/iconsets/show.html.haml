@@ -21,7 +21,8 @@
     %h5 Preview & default icon:
     %p
       = link_to url_for(@iconset.file) do
-        = image_tag @iconset.file.variant(resize: "120x120").processed, class: "thumbnail"
+        - if @iconset.file.image?
+          = image_tag @iconset.file.variant(resize: "120x120").processed, class: "thumbnail"
   - if @iconset.icons.count > 0
     %h5 Icons
     %p
