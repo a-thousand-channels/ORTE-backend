@@ -16,6 +16,15 @@
       - @iconsets.each do |iconset|
         %tr
           %td
+            - if iconset.file.attached?
+              = link_to url_for(iconset.file) do
+                - if iconset.file.content_type == 'image/svg+xml'
+                  = image_tag rails_blob_url(iconset.file), class: "thumbnail thumbnail-svg thumbnail-svg-small"
+                - elsif iconset.file.image?
+                  = image_tag iconset.file.variant(resize: "60x60").processed, class: "thumbnail"
+            - else
+              No preview/default image
+          %td
             %h4
               = link_to iconset_path(iconset) do
                 = iconset.title
@@ -29,12 +38,6 @@
                 - iconset.maps.each do |m|
                   = link_to map_path(m) do
                     = m.title
-          %td
-            - if iconset.file.attached?
-              = link_to url_for(iconset.file) do
-                = image_tag iconset.file.variant(resize: "60x60").processed, class: "thumbnail"
-            - else
-              No preview/default image
 
           %td
             = link_to edit_iconset_path(iconset), :class => 'button' do
@@ -45,7 +48,10 @@
             - if iconset.icons.count > 0
               - iconset.icons.each do |icon|
                 - if icon.file.attached?
-                  = image_tag icon.file.variant(resize: "60x60").processed, class: "thumbnail"
+                  - if icon.file.content_type == 'image/svg+xml'
+                    = image_tag rails_blob_url(icon.file), class: "thumbnail thumbnail-svg thumbnail-svg-small"
+                  - elsif icon.file.image?
+                    = image_tag icon.file.variant(resize: "60x60").processed, class: "thumbnail"
   %p
     = link_to new_iconset_path, :class=>'button' do
       %i.fi-plus.fi-24
