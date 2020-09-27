@@ -32,7 +32,10 @@
             - if @iconset.file.attached?
               %p
                 = link_to url_for(@iconset.file) do
-                  = image_tag @iconset.file.variant(resize: "60x60").processed, class: "thumbnail"
+                  - if @iconset.file.content_type == 'image/svg+xml'
+                    = image_tag rails_blob_url(@iconset.file), class: "thumbnail thumbnail-svg thumbnail-svg-small"
+                  - elsif @iconset.file.image?
+                    = image_tag @iconset.file.variant(resize: "60x60").processed, class: "thumbnail"
             = f.input :file, label: false
         %hr
         = f.fields_for :icons do |i|
@@ -42,7 +45,10 @@
             .large-7.medium-6.cell
               - if i.object.file.attached?
                 = link_to url_for(i.object.file) do
-                  = image_tag i.object.file.variant(resize: "60x60").processed, class: "thumbnail"
+                  - if i.object.file.content_type == 'image/svg+xml'
+                    = image_tag rails_blob_url(i.object.file), class: "thumbnail thumbnail-svg thumbnail-svg-small"
+                  - elsif i.object.file.image?
+                    = image_tag i.object.file.variant(resize: "60x60").processed, class: "thumbnail"
               = i.input :file
           %hr
 

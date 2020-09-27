@@ -21,14 +21,20 @@
     %h5 Preview & default icon:
     %p
       = link_to url_for(@iconset.file) do
-        - if @iconset.file.image?
+        - if @iconset.file.content_type == 'image/svg+xml'
+          = image_tag rails_blob_url(@iconset.file), class: "thumbnail thumbnail-svg"
+        - elsif @iconset.file.image? && @iconset.file.content_type != 'image/svg+xml'
           = image_tag @iconset.file.variant(resize: "120x120").processed, class: "thumbnail"
   - if @iconset.icons.count > 0
     %h5 Icons
     %p
       - @iconset.icons.each do |icon|
         - if icon.file.attached?
-          = image_tag icon.file.variant(resize: "120x120").processed, class: "thumbnail"
+          - if icon.file.content_type == 'image/svg+xml'
+            = image_tag rails_blob_url(icon.file), class: "thumbnail thumbnail-svg"
+          - elsif icon.file.image?
+            = image_tag icon.file.variant(resize: "120x120").processed, class: "thumbnail"
+
           = link_to iconset_icon_path(@iconset,icon), method: :delete, data: { confirm: 'Are you sure to delete this icon?' }, :class => 'button warning tiny' do
             %i.fi.fi-trash
             Delete
