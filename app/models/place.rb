@@ -55,8 +55,6 @@ class Place < ApplicationRecord
     i = Image.preview(id)
     if i.count > 0
       ApplicationController.helpers.image_link(i.first)
-    else
-      imagelink
     end
   end
 
