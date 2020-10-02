@@ -79,6 +79,6 @@ class IconsetsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def iconset_params
-    params.require(:iconset).permit(:title, :text, :file, icons_attributes: [:title, :file])
+    params.require(:iconset).permit(:title, :text, :file, :icon_anchor, :icon_size, :popup_anchor, :class_name, icons_attributes: [:title, :file])
   end
 end

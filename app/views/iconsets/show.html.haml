@@ -27,14 +27,14 @@
           = image_tag @iconset.file.variant(resize: "120x120").processed, class: "thumbnail"
   - if @iconset.icons.count > 0
     %h5 Icons
-    %p
-      - @iconset.icons.each do |icon|
+    - @iconset.icons.each do |icon|
+      %p
         - if icon.file.attached?
           - if icon.file.content_type == 'image/svg+xml'
             = image_tag rails_blob_url(icon.file), class: "thumbnail thumbnail-svg"
           - elsif icon.file.image?
             = image_tag icon.file.variant(resize: "120x120").processed, class: "thumbnail"
-
+          = icon.title
           = link_to iconset_icon_path(@iconset,icon), method: :delete, data: { confirm: 'Are you sure to delete this icon?' }, :class => 'button warning tiny' do
             %i.fi.fi-trash
             Delete

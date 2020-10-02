@@ -15,7 +15,15 @@ module PlacesHelper
   end
 
   def add_new_entry_link(place)
-      "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{@place.location}&address=#{@place.address}&zip=#{@place.zip}&city=#{@place.city}&lat=#{@place.lat}&lon=#{@place.lon}";
+    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{@place.location}&address=#{@place.address}&zip=#{@place.zip}&city=#{@place.city}&lat=#{@place.lat}&lon=#{@place.lon}";
+  end
+
+  def icon_link(file)
+    "<img src=\"#{polymorphic_path(file)}\">"
+  end
+
+  def icon_class(icon)
+    "icon_#{icon.iconset.class_name} icon_#{icon.title.parameterize}"
   end
 
   def image_link(image)
