@@ -52,6 +52,12 @@ class Place < ApplicationRecord
     ApplicationController.helpers.edit_link(layer.map.id, layer.id, id)
   end
 
+  def icon_name
+    if self.icon
+      ApplicationController.helpers.icon_name(self.icon.file)
+    end
+  end
+
   def icon_link
     if self.icon && self.icon.file.attached?
       ApplicationController.helpers.icon_link(self.icon.file)
@@ -60,7 +66,7 @@ class Place < ApplicationRecord
 
   def icon_class
     if self.icon && self.icon.iconset.class_name
-      ApplicationController.helpers.icon_class(self.icon)
+      ApplicationController.helpers.icon_class(self.icon.iconset.class_name,self.icon.title)
     end
   end
 
