@@ -22,8 +22,8 @@ module PlacesHelper
     "<img src=\"#{polymorphic_path(file)}\">"
   end
 
-  def icon_class(icon)
-    "icon_#{icon.iconset.class_name} icon_#{icon.title.parameterize}"
+  def icon_class(klass_name,title)
+    "icon_#{klass_name} icon_#{title.parameterize}"
   end
 
   def image_link(image)
