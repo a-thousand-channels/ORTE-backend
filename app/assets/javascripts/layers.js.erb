@@ -29,9 +29,20 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         } else {
           places = data.places;
         }
-        DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
-        $('.marker-cluster-small').addClass('marker-layer-'+data.id);
-        marker_meta_layers.addLayer(marker_layers);
+        if ( data.iconset ) {
+          console.log("DRAW ICONSET");
+          var marker_layers = L.featureGroup();
+
+          DrawIconset(map,data.id,marker_layers,params,data.iconset,places);
+          $('.marker-cluster-small').addClass('marker-layer-'+data.id);
+          marker_meta_layers.addLayer(marker_layers);
+        } else {
+          console.log("DRAW MARKER");
+          DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
+          $('.marker-cluster-small').addClass('marker-layer-'+data.id);
+          marker_meta_layers.addLayer(marker_layers);
+
+        }
 
       } else  {
         $.each(data.layers, function(key,data) {

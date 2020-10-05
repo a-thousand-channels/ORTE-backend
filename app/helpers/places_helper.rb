@@ -19,7 +19,7 @@ module PlacesHelper
   end
 
   def icon_link(file)
-    "<img src=\"#{polymorphic_path(file)}\">"
+    "<img src=\"#{polymorphic_url(file)}\">"
   end
 
   def icon_class(klass_name,title)
