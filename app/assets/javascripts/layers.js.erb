@@ -31,8 +31,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         }
         if ( data.iconset ) {
           console.log("DRAW ICONSET");
+          $('body').addClass('iconset');
           var marker_layers = L.featureGroup();
-
           DrawIconset(map,data.id,marker_layers,params,data.iconset,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
           marker_meta_layers.addLayer(marker_layers);

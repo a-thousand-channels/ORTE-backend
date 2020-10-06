@@ -12,10 +12,10 @@ function DrawIconset(map,layer_id,marker_layers,params,iconset,places) {
       }
 
       var divicon= L.divIcon({
-          html: '<div class="" style="background-color: rgba(255,255,255,1); border-radius: 2px; padding: 2px; height: 40px; width: 30px; border: 2px solid #1a1a1a;">'+icon_link+'</div>',
-          iconAnchor:[30,75],
+          html: '<div class="marker-icon" style="">'+icon_link+'</div>',
+          iconAnchor:[15,50],
           iconSize:null,
-          popupAnchor:[0,0] });
+          popupAnchor:[0,-35] });
       var divmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: divicon}).addTo(marker_layers);
 
 
