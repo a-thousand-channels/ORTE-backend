@@ -2,8 +2,6 @@
 
 require 'rails_helper'
 
-include Rails.application.routes.url_helpers
-
 
 RSpec.describe Icon, type: :model do
   it 'has a valid factory' do
