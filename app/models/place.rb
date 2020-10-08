@@ -54,7 +54,7 @@ class Place < ApplicationRecord
 
   def icon_name
     if self.icon
-      ApplicationController.helpers.icon_name(self.icon.file)
+      ApplicationController.helpers.icon_name(self.icon.title)
     end
   end
 
