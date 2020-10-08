@@ -110,14 +110,22 @@
     }
 }
 
+/* iconset settings */
 
+
+body.iconset .leaflet-control-layers-toggle{
+    display:none;
+}
+body.iconset #map.leaflet-container a {
+    color: #1a1a1a;
+}
 
 
 body.iconset #map .marker-icon {
         background-color: rgba(255,255,255,1); border-radius: 0; padding: 2px;
-        height: 40px; width: 30px;
-        border: 2px solid #1a1a1a;
-        box-shadow: 0 0 0 #fff;
+        height: 30px; width: 30px;
+        border: 0px solid #1a1a1a;
+        box-shadow: 0 0 4px #000;
         position: relative;
     }
 

@@ -26,6 +26,10 @@ module PlacesHelper
     "icon_#{klass_name} icon_#{title.parameterize}"
   end
 
+  def icon_name(title)
+    "#{title}"
+  end
+
   def image_link(image)
     if image.file.attached?
       polymorphic_url(image.file)

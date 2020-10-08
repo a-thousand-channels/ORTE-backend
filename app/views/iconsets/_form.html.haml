@@ -40,7 +40,7 @@
         %hr
         = f.fields_for :icons do |i|
           .grid-x.grid-padding-x
-            .large-5.medium-6.cell
+            .large-4.medium-6.cell
               = i.input :title, label: "Name/Category"
             .large-7.medium-6.cell
               - if i.object.file.attached?
@@ -50,6 +50,10 @@
                   - elsif i.object.file.image?
                     = image_tag i.object.file.variant(resize: "60x60").processed, class: "thumbnail"
               = i.input :file
+            .larg-1.medium-1.cell
+              - if i.object.id
+                = i.check_box :_destroy
+                = i.label :delete
           %hr
 
   .grid-x

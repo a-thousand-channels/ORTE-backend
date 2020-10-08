@@ -10,6 +10,13 @@ function DrawIconset(map,layer_id,marker_layers,params,iconset,places) {
       if ( place.icon_link ) {
         icon_link = place.icon_link;
       }
+      if ( icon_link.length === 0 ) {
+        if ( icon_name.length > 0 ) {
+          icon_link = '<strong>'+place.icon_name+'</strong>';
+        } else {
+          icon_link = '<strong>?</strong>';
+        }
+      }
 
       var divicon= L.divIcon({
           html: '<div class="marker-icon" style="">'+icon_link+'</div>',
