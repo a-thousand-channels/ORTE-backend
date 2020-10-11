@@ -12,14 +12,22 @@ function DrawIconset(map,layer_id,marker_layers,params,iconset,places) {
       }
       if ( icon_link.length === 0 ) {
         if ( place.icon_name ) {
-          icon_link = '<strong>'+place.icon_name.slice(0,1)+'</strong>';
+          icon_link = '<strong>'+place.icon_name.slice(0,1) +'</strong>';
         } else {
           icon_link = '<strong>?</strong>';
         }
       }
+      var klass = 'marker-icon';
+      if ( place.featured ) {
+        klass = klass + " marker-icon-featured";
+      }
+      if ( place.icon_class ) {
+        klass = klass + " " + place.icon_class;
+      }
+
 
       var divicon= L.divIcon({
-          html: '<div class="marker-icon" style="">'+icon_link+'</div>',
+          html: '<div class="'+klass+'">'+icon_link+'</div>',
           iconAnchor:[15,50],
           iconSize:null,
           popupAnchor:[0,-35] });
@@ -56,6 +64,9 @@ function DrawIconset(map,layer_id,marker_layers,params,iconset,places) {
         content += place.show_link;
         if ( place.published !== true ) {
           content += " <i class='fi-lock fi-18'></i>";
+        }
+        if ( place.featured === true ) {
+          content += " <i class='fi-star fi-18'></i>";
         }
       }
       content += "</h4>";
