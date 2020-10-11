@@ -11,8 +11,8 @@ function DrawIconset(map,layer_id,marker_layers,params,iconset,places) {
         icon_link = place.icon_link;
       }
       if ( icon_link.length === 0 ) {
-        if ( icon_name.length > 0 ) {
-          icon_link = '<strong>'+place.icon_name+'</strong>';
+        if ( place.icon_name ) {
+          icon_link = '<strong>'+place.icon_name.slice(0,1)+'</strong>';
         } else {
           icon_link = '<strong>?</strong>';
         }

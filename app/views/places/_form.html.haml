@@ -109,7 +109,7 @@
 
           = link_to iconset_path(@map.iconset) do
             = @map.iconset.title
-          = f.association :icon, :collection => @map.iconset.icons, :label_method => lambda { |icon| ("#{icon.title}<br>#{icon.icon_linktag}".html_safe) if icon.file.attached? }, :value_method => :id, label: false, include_blank: true
+          = f.association :icon, :collection => @map.iconset.icons, :label_method => lambda { |icon| ("#{icon.title}".html_safe) if icon.title }, :value_method => :id, label: false, include_blank: true
           %p.hint Select one item from list
 
     .large-6.medium-6.cell
