@@ -121,15 +121,13 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
           bounds = L.latLngBounds(northeast, southwest);
         }
 
-
-
         // set map center after last user action
         var northeast_array = localStorage.getItem('UserMapBoundsNE');
         console.log("set map bounds to user values NE " + northeast_array);
         var southwest_array = localStorage.getItem('UserMapBoundsSW');
         console.log("set map bounds to user values SW " + southwest_array);
         console.log("get map bounds if any");
-        if ( northeast_array ) {
+        if ( ( localStorage.getItem('SetCustomExtent') === 'true' ) && ( northeast_array ) ) {
           var boundsX = L.latLngBounds(northeast_array.split(","), southwest_array.split(","));
           console.log("set map bounds to user values " + bounds);
           map.fitBounds(boundsX, {maxZoom: 16, minZoom: 2});
@@ -137,7 +135,6 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
           map.fitBounds(bounds, {maxZoom: 16, minZoom: 2});
           console.log("fit to bounds done");
         }
-        /* TODO: center to map bounds if change of map or layer selection !!! */
 
         // set map zoom level after last user action
         /* not needed for now
