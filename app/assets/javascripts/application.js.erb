@@ -157,6 +157,8 @@
 
     L.control.layers(overlays).addTo(map);
 
+    UserZoomLevel(map);
+    UserMapBounds(map);
 
     L.control.locate({
       position: 'bottomright',
