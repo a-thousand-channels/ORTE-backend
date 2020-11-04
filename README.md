@@ -5,7 +5,7 @@
 
 Simple, straightforward backend for creating and managing places/POIs (or in german "Orte") and additional informations of a web-based map. Output is a public available API w/JSON and exportable as CSV/JSON.
 
-Based on Ruby on Rails 5, Postgres, jQuery, Leaflet and Foundation 6.
+Based on Ruby on Rails 5, MySQL/MariaDB, jQuery, Leaflet and Foundation 6.
 
 This application is work in progress. Contributions are welcome (see below).
 
@@ -18,6 +18,14 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 ## Installation
 
 Basic steps for a local installation on your machine:
+
+### Requirements
+
+Ruby 2.6+, RVM, ...
+
+MySQL/Maria DB
+
+ffmpeg (for the video upload feature)
 
 ### Get repository
 
