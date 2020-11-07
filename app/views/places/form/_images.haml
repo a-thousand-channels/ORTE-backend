@@ -6,8 +6,13 @@
     - images.order('sorting ASC').each_with_index do |img,i|
       .image.ui-state-default{id: "image_#{img.id}"}
         .image-toolbar
-          = link_to map_layer_place_path(@place.layer.map,@place.layer,@place), class: 'button button-right tiny sortable_handle' do
+          = link_to map_layer_place_path(@place.layer.map,@place.layer,@place), class: 'button button-right tiny sortable_handle', title: 'Change sort order' do
             %i.fi-arrows-out
+          = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-show tiny", title: 'See details'  do
+            %i.fi-eye
+          = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-edit tiny", title: 'Delete image'  do
+            %i.fi-pencil
+
         - if img.file.attached?
           - if img.preview.present?
             = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
