@@ -122,7 +122,7 @@ GEM
     diff-lcs (1.4.4)
     docile (1.3.2)
     equalizer (0.0.11)
-    erubi (1.9.0)
+    erubi (1.10.0)
     erubis (2.7.0)
     exception_notification (4.4.3)
       actionmailer (>= 4.0, < 7)
@@ -239,7 +239,7 @@ GEM
     path_expander (1.1.0)
     psych (3.2.0)
     public_suffix (4.0.6)
-    puma (4.3.6)
+    puma (5.0.4)
       nio4r (~> 2.0)
     rack (2.2.3)
     rack-attack (6.3.1)
@@ -389,7 +389,7 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
-    tzinfo (1.2.7)
+    tzinfo (1.2.8)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
@@ -409,7 +409,7 @@ GEM
       nokogiri (~> 1.6)
       rubyzip (>= 1.3.0)
       selenium-webdriver (>= 3.0, < 4.0)
-    webmock (3.9.4)
+    webmock (3.10.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -456,7 +456,7 @@ DEPENDENCIES
   mini_racer
   mysql2
   passenger
-  puma (~> 4)
+  puma (~> 5)
   rack-attack
   rack-cors
   rails (~> 5.2.4.4)
