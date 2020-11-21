@@ -43,7 +43,9 @@ Rails.application.routes.draw do
   end
 
   namespace :public do
-    resources :maps, only: [:show, :index], :defaults => { :format => :json }
+    resources :maps, only: [:show, :index], :defaults => { :format => :json } do
+      resources :layers, only: [:show], :defaults => { :format => :json }
+    end
   end
 
 end
