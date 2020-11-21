@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '~> 5.2.4.4'
-gem 'puma', '~> 4'
+gem 'puma', '~> 5'
 # seg fault with sassc 2.3.0
 gem 'sassc', '~> 2.2.1'
 gem 'sassc-rails'
