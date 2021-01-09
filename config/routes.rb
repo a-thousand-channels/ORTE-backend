@@ -26,6 +26,9 @@ Rails.application.routes.draw do
       collection do
         post :search
       end
+      member do
+        get :images, only: [:index]
+      end
       resources :places do
         resources :images
         resources :videos

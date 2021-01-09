@@ -48,6 +48,19 @@ body#start main {
 }
 
 /* -------------------- */
+
+#layers #table-wrapper {
+    max-width: unset;
+}
+#layers .grid-x.grid-images {
+
+
+  div.gallery {
+    background: white;
+    padding: 10px;
+  }
+}
+/* -------------------- */
 form#addresslookup {
 
   width: auto;
