@@ -1,4 +1,4 @@
-lock "~> 3.10.1"
+lock "~> 3.15"
 
 load File.expand_path('../deploy/tagit.rb', __FILE__)
 require File.expand_path('../deploy/cap_notify', __FILE__)
@@ -6,7 +6,8 @@ require File.expand_path('../deploy/cap_notify', __FILE__)
 set :application, "ORTE-backend"
 set :repo_url, "git@github.com:ut/ORTE-backend.git"
 set :deploy_to, "/home/app/#{fetch(:application)}-#{fetch(:stage)}"
-set :ssh_options, forward_agent: true
+set :ssh_options, forward_agent: true, verify_host_key: :secure
+set :keep_releases, 3
 set :rvm_type, :user
 set :bundle_flags,    ''
 set :bundle_dir,      ''

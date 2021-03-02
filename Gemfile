@@ -84,9 +84,10 @@ group :development do
   gem 'listen', '~> 3'
   gem 'web-console', '>= 3.3.0'
 
+  gem 'capistrano', "~> 3.15", require: false
+  gem 'capistrano-rails', "~> 1.3", require: false
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
-  gem 'capistrano-rails', group: :development
   gem 'capistrano-rvm'
 
   gem 'letter_opener'
