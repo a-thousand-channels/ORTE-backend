@@ -5,7 +5,7 @@ require File.expand_path('../deploy/cap_notify', __FILE__)
 
 set :application, "ORTE-backend"
 set :repo_url, "git@github.com:ut/ORTE-backend.git"
-set :deploy_to, "/home/app/#{fetch(:application)}-#{fetch(:stage)}"
+set :deploy_to, "/home/orte-deploy/#{fetch(:application)}-#{fetch(:stage)}"
 set :ssh_options, forward_agent: true, verify_host_key: :secure
 set :keep_releases, 3
 set :rvm_type, :user
@@ -101,7 +101,7 @@ namespace :deploy do
     end
   end
 
-  before :migrate,    'deploy:db_backup'
+  # before :migrate,    'deploy:db_backup'
   after :updating,    'deploy:tagit'
   after :publishing,  'deploy:send_notification'
 
