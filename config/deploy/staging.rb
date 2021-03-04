@@ -1,9 +1,9 @@
-server 'server', roles: %w(app web db), user: 'app', port: 4199
 
-set :branch, 'master'
+set :branch, 'main'
 set :rails_env, 'staging'
 set :stage, 'staging'
 
+server "<%= Rails.application.credentials.dig(:deploy, :server)%>", roles: %w(app web db), user: 'orte-deploy', port: 4242
 
 # role-based syntax
 # ==================

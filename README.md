@@ -50,6 +50,16 @@ $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
 ```
 
+### Credentials + deployment
+
+If you need custom credentials, e.g for a server installation, you can secre them with rails credentials and a master.key. Edit the credentials with
+
+```bash
+$ EDITOR=vim bundle exec rails credentials:edit
+```
+
+
+
 ### Run
 
 ```bash
@@ -63,7 +73,7 @@ Code + Design by Ulf Treger <ulf.treger@googlemail.com> with kind support from a
 * [Pragma Shift](https://www.pragma-shift.net/), Hamburg (code donation),
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
 * Participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
-* and members of the working group "Queer narratives, mappped" 💖 
+* and members of the working group "Queer narratives, mappped" 💖
 
 ## Feedback & Contributions
 
