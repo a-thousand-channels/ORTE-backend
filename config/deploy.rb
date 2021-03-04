@@ -1,5 +1,8 @@
 lock "~> 3.15"
 
+# making Rails.application available here
+require File.expand_path("./environment", __dir__)
+
 load File.expand_path('../deploy/tagit.rb', __FILE__)
 require File.expand_path('../deploy/cap_notify', __FILE__)
 
@@ -10,12 +13,13 @@ set :ssh_options, forward_agent: true, verify_host_key: :secure
 set :keep_releases, 3
 set :rvm_type, :user
 set :bundle_flags,    ''
-set :bundle_dir,      ''
-set :bundle_path, nil
+set :bundle_without, [:development]
+# set :bundle_dir,      ''
+# set :bundle_path, nil
 set :bundle_binstubs, nil
 set :notify_emails, ['']
 
-append :linked_files, "config/secrets.yml"
+# append :linked_files, "config/secrets.yml"
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
 
