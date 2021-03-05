@@ -51,9 +51,7 @@ namespace :deploy do
       execute :touch, release_path.join('tmp/restart.txt')
     end
   end
-  # after :publishing,  'deploy:restart'
-  # TODO: besser via Capfile/passenger
-
+  after :publishing,  'deploy:restart'
 
   desc 'Send email notification'
   task :send_notification do
