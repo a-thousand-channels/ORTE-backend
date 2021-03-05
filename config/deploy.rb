@@ -9,7 +9,7 @@ require File.expand_path('../deploy/cap_notify', __FILE__)
 set :application, "ORTE-backend"
 set :repo_url, "git@github.com:ut/ORTE-backend.git"
 set :deploy_to, "/home/orte-deploy/#{fetch(:application)}-#{fetch(:stage)}"
-set :ssh_options, forward_agent: true, verify_host_key: :secure
+set :ssh_options, forward_agent: true, verify_host_key: :always
 set :keep_releases, 3
 set :rvm_type, :user
 set :bundle_flags,    ''
@@ -51,7 +51,7 @@ namespace :deploy do
       execute :touch, release_path.join('tmp/restart.txt')
     end
   end
-  after :publishing,  'deploy:restart'
+  # after :publishing,  'deploy:restart'
   # TODO: besser via Capfile/passenger
 
 
