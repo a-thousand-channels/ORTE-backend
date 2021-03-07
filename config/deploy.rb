@@ -21,7 +21,7 @@ set :notify_emails, ['']
 
 # append :linked_files, "config/secrets.yml"
 set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key')
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "storage"
 
 
 # Default branch is :master
