@@ -52,6 +52,8 @@ gem 'tinymce-rails'
 
 gem 'acts-as-taggable-on', '~> 6.0'
 
+gem 'turnout'
+
 group :staging, :production do
   # gem 'pg'
   gem 'mysql2'
