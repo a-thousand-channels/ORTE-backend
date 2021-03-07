@@ -4,7 +4,7 @@
 
       // toggle selection bar
       if ( ( $('body').attr('id') == 'maps' ) || ( $('body').attr('id') == 'layers' ) )  {
-        if (e.keyCode === 9) {          // tab
+        if (e.keyCode === 27) {          // ESC
           if ( $('#selection').is(":hidden") ) {
             console.log("is hidden");
             $('#selection').show('slow');
@@ -12,7 +12,7 @@
           } else {
             console.log("is visible");
             $('#selection').hide('slow');
-            $('#selection').before('<div id="selection-reveal-hint">Hit TAB to show selection box again</div>');
+            $('#selection').before('<div id="selection-reveal-hint">Hit ESC to show selection box again</div>');
             setTimeout(function(){
               $('#selection-reveal-hint').remove();
             }, 4500);
