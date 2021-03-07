@@ -1,3 +1,11 @@
+
+set :branch, 'main'
+set :rails_env, 'production'
+set :stage, 'production'
+
+server Rails.application.credentials.dig(:deploy, :production, :server), roles: %w(app web db), user: 'orte-deploy', port: 4242
+
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
