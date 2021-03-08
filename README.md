@@ -3,7 +3,7 @@
 
 # ORTE-backend
 
-Simple, straightforward backend for creating and managing places/POIs (or in german "Orte") and additional informations of a web-based map. Output is a public available API w/JSON and exportable as CSV/JSON.
+Simple, straightforward backend for creating and managing places/POIs (or in german "Orte") and additional informations of a web-based map. Output is a public available API w/JSON and exportable as CSV/JSON/GeoJSON.
 
 Based on Ruby on Rails 5, MySQL/MariaDB, jQuery, Leaflet and Foundation 6.
 
