@@ -33,7 +33,7 @@ SecureHeaders::Configuration.default do |config|
     manifest_src: %w('self'),
     media_src: %w('self'),
     object_src: %w('self' 'unsafe-eval'),
-    sandbox: true, # true and [] will set a maximally restrictive setting
+    sandbox: false, # true and [] will set a maximally restrictive setting
     plugin_types: %w(),
     script_src: %w('self' 'unsafe-inline'),
     style_src: %w('self' 'unsafe-inline'),
