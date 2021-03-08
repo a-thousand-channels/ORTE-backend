@@ -34,6 +34,13 @@ Rails.application.configure do
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
 
+
+  config.action_controller.default_url_options = { host: Rails.application.credentials.dig(:deploy, :production, :server), :protocol => Settings.app_host_protocol }
+
+  config.action_controller.asset_host = Rails.application.credentials.dig(:deploy, :production, :server)
+
+  config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:deploy, :production, :server), :protocol => Settings.app_host_protocol }
+
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Prevent host header injection
