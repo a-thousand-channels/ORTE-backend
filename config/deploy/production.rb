@@ -1,5 +1,5 @@
 
-set :branch, 'main'
+set :branch, 'production'
 set :rails_env, 'production'
 set :stage, 'production'
 

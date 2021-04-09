@@ -29,13 +29,16 @@ localtest:
 
 staging:
   <<: *defaults
-  app_host:          'orte.rekoder.de'
+  app_host:          'staging.orte.link'
   app_host_protocol: 'https'
-  app_url:           'https://orte.rekoder.de'
+  app_url:           'https://staging.orte.link'
   relative_url_root:  ""
   secure:             'true'
 
 production:
   <<: *defaults
+  app_host:          'orte.link'
+  app_host_protocol: 'https'
+  app_url:           'https://orte.link'
   relative_url_root:  ""
   secure:             'true'
