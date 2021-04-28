@@ -27,7 +27,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true)
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -37,7 +37,7 @@ Rails.application.configure do
 
   config.action_controller.default_url_options = { host: Rails.application.credentials.dig(:deploy, :staging, :server), :protocol => Settings.app_host_protocol }
 
-  config.action_controller.asset_host = Rails.application.credentials.dig(:deploy, :staging, :server)
+  # config.action_controller.asset_host = Rails.application.credentials.dig(:deploy, :staging, :server)
 
   config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:deploy, :staging, :server), :protocol => Settings.app_host_protocol }
 
@@ -82,7 +82,7 @@ Rails.application.configure do
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
-  config.i18n.fallbacks = true
+  config.i18n.fallbacks = [:en, :de]
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
