@@ -35,6 +35,8 @@
         %th Layer
         %th.show-for-medium
           %i.fi-eye.fi-24
+        %th.show-for-medium
+          %i.fi-web.fi-24  
         %th
 
     %tbody
@@ -58,6 +60,11 @@
               %span.icons{:style=>"height: 40px; vertical-align: middle;"}
           %td.show-for-medium
             - if layer.published
+              %i.fi-check.fi-24
+            - else
+              %i.fi-x.fi-24
+          %td.show-for-medium
+            - if layer.public_submission
               %i.fi-check.fi-24
             - else
               %i.fi-x.fi-24

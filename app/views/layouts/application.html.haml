@@ -1,5 +1,5 @@
 !!! 5
-%html{ lang: "de" }
+%html{ lang: "#{I18n.locale.to_s}" }
   %head
     %meta{ charset: "utf-8" }
     %meta{ name: 'robots', content: 'noindex, nofollow' }
@@ -29,9 +29,9 @@
 
 
 
-  - klass = ""
+  - klass = "lang-" + I18n.locale.to_s
   - if current_user
-    - klass = "logged_in "
+    - klass = klass + " logged_in "
   - if Rails.env == 'staging' || Rails.env == 'developement'
     - klass = klass + "#{Rails.env.parameterize}"
   - id = ''
@@ -62,10 +62,10 @@
             = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV", class: 'small' do
               CSV
             \::
-            = link_to map_layer_path(@map,@layer,:format => :json ), :title => "Export this layer as JSON", class: 'small' do
+            = link_to public_map_layer_path(@map,@layer,:format => :json ), :title => "Export this layer as JSON", class: 'small' do
               JSON
             \::
-            = link_to public_map_path(@map,@layer,:format => :geojson ), :title => "Export this layer as GeoJSON", class: 'small' do
+            = link_to public_map_layer_path(@map,@layer,:format => :geojson ), :title => "Export this layer as GeoJSON", class: 'small' do
               GeoJSON
           - if controller_name == 'maps' && params[:action] == 'show' && @map
             = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON", class: 'small' do
