@@ -1,0 +1,60 @@
+---
+fr:
+  simple_form:
+    "yes": oui
+    "no": non
+    required:
+      text: champ requis
+      mark: "*"
+    error_notification:
+      default_message: "Une erreur est survenue:"
+    preview:
+      intro: Aperçu de votre contribution
+    form_intro:
+      title: Submissions ORTE
+      text: |-
+        Nous attendons vos contributions avec impatience - merci beaucoup!
+    form_finished:
+      title: Merci pour votre participation.
+      subtitle: Après une vérification éditoriale, votre article sera publié.
+    labels:
+      title: nom (ou organisation)
+      teaser: votre contribution
+      email: adresse e-mail
+      location: lieu de résidence
+      image: Souhaitez-vous télécharger une image?
+      image_description: description de l'image
+      rights: J'autorise à publier ma contribution
+        (texte et image) sur son site Internet. Je confirme que je possède les droits
+        d'auteur.
+      privacy: Je confirme avoir lu et accepté les termes de la politique de confidentialité.
+      submit: Soumettre votre contribution
+      button_step1: Passez à l'étape 2
+      button_step2: Passez à l'étape 3
+      visit_site: Visitez notre site internet
+    hints:
+      title: votre nom sera publié.
+      teaser: Texte de 500 caractères maximum.
+      email: Votre adresse email ne sera pas publiée!
+      location:
+        Votre emplacement sera publié avec votre nom. Veuillez entrer la ville
+        (ou village) et le pays.
+      image:
+        "Veuillez n'utiliser que les formats JPEG, GIF et PNG. Taille maximale:
+        5 Mo."
+      image_description: Décrivez l'illustration en quelques mots.
+      image_switch: Télécharger un fichier image?
+    placeholders:
+      title: Votre nom et / ou votre organisation
+      teaser: Votre contribution
+      email: Votre adresse e-mail
+      location: lieu de résidence / pays
+      image_description: titre de l'illustration
+    messages:
+      accepted: votre consentement est requis.
+      blank: champ libre
+      empty: champ libre
+    form_menu:
+      submission: vos données personnelles
+      place: lieu / contribution
+      image: image / document

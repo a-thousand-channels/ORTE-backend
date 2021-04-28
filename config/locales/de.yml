@@ -1,0 +1,52 @@
+---
+de:
+  time:
+    formats:
+      day_nr: "%d."
+      daydate: "%d.%m.%Y"
+      default: "%d.%m.%Y, %H:%M"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  layouts:
+    navigation:
+      sign_out: Abmelden
+      imprint: Impressum
+  activerecord:
+    messages:
+      models:
+        submission:
+          created: Ihre Daten sind gespeichert (Schritt 1).
+        place:
+          created: Ihre Daten sind gespeichert (Schritt 2).
+        image:
+          created: Ihr Beitrag ist gespeichert.
+    errors:
+      models:
+        submission:
+          attributes:
+            name:
+              blank: Eingabe des Namen ist erforderlich
+            email:
+              taken: E-Mail bereits verwendet
+        image:
+          attributes:
+            title:
+              blank: Bildbeschreibung erforderlich.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: Zustimmung erforderlich
+      blank: Pflichtfeld
+      present: Dieses Feld bleibt frei
+      inclusion: Zustimmung erforderlich
+  search:
+    lookup:
+      intro:
+        "Wie in Weltkarte eintragen: Mit obigem Feld Adresse suchen durch Hinzufügung
+        des Namens Ihres Heimatortes"
+      address: "Adresse:"
+      no_input: Keine Eingabe! Bitte Stadt/Ort und Land eintragen.
+      too_short: Eingabe zu kurz! Bitte Stadt/Ort und Land eintragen.
+      no_result: Nichts gefunden. Bitte mit anderem Ort versuchen.
+      success_result: Bitte ein Ergebnis unten auswählen (oder andere Adresse eingeben)!

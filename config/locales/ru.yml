@@ -1,0 +1,54 @@
+---
+ru:
+  time:
+    formats:
+      day_nr: "%d."
+      daydate: "%d.%m.%Y"
+      default: "%d.%m.%Y, %H:%M"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  layouts:
+    navigation:
+      sign_out: Выйти
+      imprint: Импрессум
+  search:
+    lookup:
+      intro:
+        "Как пользоваться картой: Найдите адрес с помощью поля выше, предварительно
+        введя название вашего города"
+      address: "Адрес:"
+      no_input: Нет ввода! Пожалуйста, укажите город и страну.
+      too_short: Вход слишком короткий! Пожалуйста, укажите город и страну.
+      no_result: Ничего не найдено. Пожалуйста, попробуйте с другим местом.
+      success_result:
+        "Пожалуйста, выберите один из результатов ниже (или введите
+        другой адрес). "
+  activerecord:
+    messages:
+      models:
+        submission:
+          created: Ваша информация сохранена (Шаг 1)
+        place:
+          created: Ваша информация сохранена (Шаг 2)
+        image:
+          created: Ваша публикация сохранена.
+    errors:
+      models:
+        submission:
+          attributes:
+            name:
+              blank: Пожалуйста, введите имя.
+            email:
+              taken: E-Mail адрес уже используется
+        image:
+          attributes:
+            title:
+              blank: Пожалуйста, добавьте описание изображения.
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: Необходимо подтверждение
+      blank: Обязательное поле
+      present: Это поле остаётся пустым
+      inclusion: Необходимо подтверждение
