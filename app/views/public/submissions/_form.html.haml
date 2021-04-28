@@ -1,0 +1,43 @@
+= simple_form_for [@map,@layer, @submission], :url => {:action => @action, :controller => 'public/submissions'} do |f|
+  = f.input :layer_id, :as => :hidden, :input_html => { :value => @layer.id, :name => 'layer_id' }
+  = f.input :locale, :as => :hidden, :input_html => { :value => params[:locale] }
+  = render partial: 'form_head', locals: { :menu_index => 0 }
+  = render partial: 'form_menu', locals: { :menu_index => 0 }
+  .grid-x.grid-padding-x
+    .large-6.medium-12.cell
+
+
+      .grid-x.grid-padding-y
+        .large-8.large-offset-2.medium-12.cell
+          - if @submission.errors.full_messages.present?
+            %div.alert-box.alert
+              = f.error_notification
+              %ul
+                - @submission.errors.full_messages.each do |item,msg|
+                  %li= item
+          = f.input :name, :label => t('simple_form.labels.title'), :placeholder => t('simple_form.placeholders.title')
+          %p.hint= t('simple_form.hints.title')
+
+
+      .grid-x.grid-padding-y
+        .large-8.large-offset-2.medium-12.cell
+          .form-inputs
+            = f.input :email, :label => t('simple_form.labels.email'), :placeholder => t('simple_form.placeholders.email')
+            %p.hint= t('simple_form.hints.email')
+
+      .grid-x.grid-padding-y
+        .large-8.large-offset-2.medium-12.small-12.cell
+          = f.input :rights, as: 'boolean', :label => t('simple_form.labels.rights')
+      .grid-x.grid-padding-y
+        .large-8.large-offset-2.medium-12.small-12.cell
+          = f.input :privacy, as: 'boolean', :label => t('simple_form.labels.privacy')
+
+    .large-6.medium-12.cell
+      = render partial: 'form_preview', locals: { :index => 0 }
+
+  %hr
+  .grid-x
+    .large-11.medium-12.small-12.cell
+      .form-actions.text-right
+        = f.button :submit, t('simple_form.labels.button_step1'), :class => "button"
+

@@ -1,0 +1,27 @@
+
+.grid-x.grid-padding-x.align-center
+  .large-10.large-offset-1.medium-12.cell.float-right
+    - #TODO: %img.float-right{:src => asset_path("layer_logo.jpg"), "width" => '800px'}
+.grid-x.grid-padding-x
+  .large-10.large-offset-1.medium-12.cell
+    %h1
+      != t('simple_form.form_intro.title')
+.grid-x.grid-padding-x
+  .large-10.large-offset-1.medium-12.cell
+    = render 'layouts/messages'
+%hr
+- if menu_index == 0
+  .grid-x.grid-padding-x
+    .large-10.large-offset-1.medium-12.cell
+      %nav.menu
+        - I18n.available_locales.each do |language|
+
+          - klass = 'button secondary'
+          - if params[:locale] == language.to_s
+            - klass = "#{klass} active"
+          = link_to t('languages.' + language.to_s), current_page_params.merge(layer_id: params[:layer_id],place_id: params[:place_id], locale: language.to_s), class: "#{klass}"
+  %hr
+  .grid-x.grid-padding-x
+    .large-10.large-offset-1.medium-12.cell
+      = simple_format(t('simple_form.form_intro.text'))
+  %hr

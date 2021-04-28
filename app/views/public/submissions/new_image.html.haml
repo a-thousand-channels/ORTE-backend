@@ -1,0 +1,6 @@
+#step_image
+  #form-wrapper.large-wrapper
+    - if @layer && @layer.public_submission
+      = render 'form_image'
+    - else
+      = render 'nothing_found'
