@@ -20,6 +20,8 @@
           = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }          
         %p
           = f.input :published, :label => 'Publish'
+        %p
+          = f.input :public_submission, :label => 'Public submissions'  
         %p.compact
           = f.label :color, "Marker color"
         .grid-x
