@@ -1,0 +1,58 @@
+---
+it:
+  simple_form:
+    "yes": Si
+    "no": "No"
+    required:
+      text: Campo obbligatorio
+      mark: "*"
+    error_notification:
+      default_message: Si sono verificati degli errori
+    preview:
+      intro: Anteprima del tuo contributo
+    form_intro:
+      title: Submissions ORTE
+      text: |-
+        Attendiamo con impazienza i vostri contributi - grazie mille!
+    form_finished:
+      title: Grazie per la vostra partecipazione.
+      subtitle: Dopo un controllo redazionale, l’articolo sarà pubblicato.
+    labels:
+      title: Nome (o organizzazione)
+      teaser: Il tuo contributo
+      email: E-mail
+      location: Luogo
+      image: Vuoi caricare un'immagine?
+      image_description: Descrizione immagine
+      rights: Confermo di essere il proprietario dell‘immagine o di possedere i diritti d‘autore.
+      privacy: Confermo di aver letto e compreso l'informativa sulla privacy.
+      submit: Invia contributo
+      button_step1: Vai al punto 2
+      button_step2: Vai al punto 3
+      visit_site: Visitate il nostro sito web
+    hints:
+      title: Il tuo nome verrà pubblicato
+      teaser: Testo con una lunghezza massima di 500 caratteri.
+      email: Il tuo indirizzo e-mail non sarà pubblicato!
+      location:
+        La tua posizione sarà pubblicata insieme al tuo nome. Si prega di
+        indicare la città (o la località) e la Nazione.
+      image:
+        "Si prega di utilizzare solo i formati JPEG, GIF e PNG. Dimensione massima:
+        5 MB."
+      image_description: Descrivi l'illustrazione in poche parole.
+      image_switch: Vuoi caricare il file di un‘immagine?
+    placeholders:
+      title: Il tuo nome e/o organizzazione
+      teaser: Il tuo contributo
+      email: "Il tuo indirizzo e-mail   "
+      location: Città/Provincia/Nazione
+      image_description: Titolo dell‘immagine
+    messages:
+      accepted: Consenso necessario
+      blank: Questo spazio rimane libero
+      empty: Questo spazio rimane libero
+    form_menu:
+      submission: I tuoi dati
+      place: Luogo/Contributo
+      image: Immagine/Media

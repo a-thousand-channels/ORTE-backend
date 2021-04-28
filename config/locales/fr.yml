@@ -1,0 +1,53 @@
+---
+fr:
+  time:
+    formats:
+      day_nr: "%d."
+      daydate: "%d.%m.%Y"
+      default: "%d.%m.%Y, %H:%M"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  layouts:
+    navigation:
+      sign_out: se déconnecter
+      imprint: Mentions légales
+  activerecord:
+    messages:
+      models:
+        submission:
+          created: Vos données ont été enregistrées (étape 1).
+        place:
+          created: Vos données ont été enregistrées (étape 2).
+        image:
+          created: Votre contribution a été enregistrée.
+    errors:
+      models:
+        submission:
+          attributes:
+            name:
+              blank: La saisie du nom est obligatoire
+            email:
+              taken: adresse e-Mail déjà utilisée
+        image:
+          attributes:
+            title:
+              blank: Description de l'image requise
+  errors:
+    messages:
+      accepted: Consentement requis
+      blank: champ requis
+      present: ce champ reste vide
+      inclusion: Consentement requis
+  search:
+    lookup:
+      intro:
+        "Comment vous localiser: recherchez une adresse avec le champ ci-dessus
+        en ajoutant le nom de votre ville de résidence."
+      address: "adresse:"
+      no_input: Aucune contribution ! Veuillez saisir la ville et le pays.
+      too_short: Entrée trop courte ! Veuillez saisir la ville et le pays.
+      no_result: Rien n'a été trouvé. Veuillez essayer un autre endroit !
+      success_result:
+        Veuillez sélectionner un résultat ci-dessous (ou saisir une
+        autre adresse).

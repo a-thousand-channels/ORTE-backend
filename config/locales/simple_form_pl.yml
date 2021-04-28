@@ -1,0 +1,61 @@
+---
+pl:
+  simple_form:
+    "yes": Tak
+    "no": Nie
+    required:
+      text: Pole wymagane
+      mark: "*"
+    error_notification:
+      default_message: "Wystąpił błąd:"
+    preview:
+      intro: Podgląd wpisu
+    form_intro:
+      title: Submissions ORTE
+      text: |-
+        Czekamy na Twoją wiadomość - dziękujemy!
+    form_finished:
+      title: Bardzo dziękujemy za udział.
+      subtitle: Od połowy kwietnia, po przeglądzie redakcyjnym wpisy zostaną opublikowany.
+    labels:
+      title: Imię i nazwisko (lub organizacja)
+      teaser: Twój wpis
+      email: adres e-mail
+      location: Miejscowość
+      image: Chcesz dodać zdjęcie?
+      image_description: Opis zdjęcia
+      rights: Potwierdzam, że jestem
+        właścicielem odpowiednich praw autorskich.
+      privacy:
+        Potwierdzam, że przeczytałem/am i zrozumiałem/am oświadczenie o ochronie
+        danych osobowych.
+      submit: Wyślij wpis
+      button_step1: Dalej
+      button_step2: Dalej
+      visit_site: Odwiedź naszą stronę internetową
+    hints:
+      title: Twoje nazwisko zostanie opublikowane
+      teaser: Tekst o maksymalnej długości 500 znaków.
+      email: Twój adres e-mail nie zostanie opublikowany!
+      location:
+        Twoja lokalizacja zostanie opublikowana z Twoim nazwiskiem. Proszę
+        podać miasto (lub wieś) oraz kraj.
+      image:
+        Proszę używać tylko formatów JPEG, GIF lub PNG.  Maksymalna wielkość
+        5MB.
+      image_description: Opisz zdjęcie w kilku słowach
+      image_switch: Chcesz dodać zdjęcie?
+    placeholders:
+      title: Podaj imię i nazwisko (lub organizację)
+      teaser: Twój wpis
+      email: Twój adres e-mail
+      location: Twoja miejscowość i kraj
+      image_description: Opis zdjęcia
+    messages:
+      accepted: Zgoda obowiązkowa
+      blank: Pozostaje wolne.
+      empty: Pozostaje wolne.
+    form_menu:
+      submission: Twoje dane
+      place: Miejscowość/Wpis
+      image: Zdjęcie
