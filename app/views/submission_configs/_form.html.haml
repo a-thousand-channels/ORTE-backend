@@ -1,0 +1,21 @@
+= simple_form_for(@submission_config) do |f|
+  = f.association :layer, as: :hidden, :input_html => { :value => @layer.id }
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x.grid-padding-x
+    .large-12.cell
+      %h1 Submission configuration
+  .grid-x
+    .large-12.medium-12.cell
+      .form-inputs
+        = f.input :title_intro
+        = f.input :subtitle_intro
+        = f.input :intro
+        = f.input :title_outro
+        = f.input :outro
+        = f.input :start_time
+        = f.input :end_time
+        = f.input :use_city_only
+      .form-actions
+        = f.button :submit, :class => "button"
