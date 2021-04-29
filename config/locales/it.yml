@@ -1,0 +1,49 @@
+---
+it:
+  time:
+    formats:
+      day_nr: "%d."
+      daydate: "%d.%m.%Y"
+      default: "%d.%m.%Y, %H:%M"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  layouts:
+    navigation:
+      sign_out: Disconnettiti
+      imprint: Informazione legale
+  activerecord:
+    messages:
+      models:
+        submission:
+          created: I tuoi dati sono stati salvati (passo 1)
+        place:
+          created: I tuoi dati sono stati salvati (passo 2)
+        image:
+          created: Il tuo contributo è stato salvato
+    errors:
+      models:
+        submission:
+          attributes:
+            name:
+              blank: È necessario mettere il nome
+        image:
+          attributes:
+            title:
+              blank: È richiesta la descrizione dell'immagine.
+  errors:
+    messages:
+      accepted: È necessario il tuo consenso
+      blank: Campo obbligatorio
+      present: Questo spazio resta vuoto
+      inclusion: È necessario il tuo consenso
+  search:
+    lookup:
+      intro:
+        "Come fare la mappa: Cerca un indirizzo utilizzando il campo qui sopra
+        aggiungendo il nome della tua città."
+      address: Indirizzo
+      no_input: Nessun input! Si prega di inserire la città e il paese.
+      too_short: Ingresso troppo corto! Si prega di inserire la città e il paese.
+      no_result: Non è stato trovato nulla. Per favore, prova in un altro posto!
+      success_result: Seleziona un risultato qui sotto (o digita un altro indirizzo).

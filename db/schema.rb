@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_01_175955) do
+ActiveRecord::Schema.define(version: 2021_03_25_120134) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 2020_11_01_175955) do
     t.datetime "updated_at", null: false
     t.string "color"
     t.text "text"
+    t.boolean "public_submission"
     t.index ["map_id"], name: "index_layers_on_map_id"
   end
 
@@ -124,6 +125,19 @@ ActiveRecord::Schema.define(version: 2020_11_01_175955) do
     t.integer "icon_id"
     t.boolean "featured"
     t.index ["layer_id"], name: "index_places_on_layer_id"
+  end
+
+  create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.boolean "rights"
+    t.boolean "privacy"
+    t.string "locale"
+    t.bigint "place_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "status", default: 0, null: false
+    t.index ["place_id"], name: "index_submissions_on_place_id"
   end
 
   create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -186,12 +200,12 @@ ActiveRecord::Schema.define(version: 2020_11_01_175955) do
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "icons", "iconsets"
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
   add_foreign_key "places", "layers"
+  add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"
   add_foreign_key "users", "groups"
   add_foreign_key "videos", "places"
