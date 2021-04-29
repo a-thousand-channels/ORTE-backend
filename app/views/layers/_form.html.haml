@@ -21,7 +21,16 @@
         %p
           = f.input :published, :label => 'Publish'
         %p
-          = f.input :public_submission, :label => 'Public submissions'  
+          = f.input :public_submission, :label => 'Public submissions' 
+        - if @layer.public_submission
+          - if @layer.submission_config
+            = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button" do
+              %i.fi-pencil.fi-24  
+              = @layer.submission_config.title_intro
+            
+          - else  
+            = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button" do
+              %i.fi-pencil.fi-24   
         %p.compact
           = f.label :color, "Marker color"
         .grid-x
