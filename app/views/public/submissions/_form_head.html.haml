@@ -5,7 +5,10 @@
 .grid-x.grid-padding-x
   .large-10.large-offset-1.medium-12.cell
     %h1
-      != t('simple_form.form_intro.title')
+      - if @submission_config
+        = @submission_config.title_intro
+      - else  
+        != t('simple_form.form_intro.title')
 .grid-x.grid-padding-x
   .large-10.large-offset-1.medium-12.cell
     = render 'layouts/messages'
