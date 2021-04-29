@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :submission_configs
   devise_for :users
 
   root 'start#index'
