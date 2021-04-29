@@ -2,13 +2,20 @@ require 'rails_helper'
 
 RSpec.describe "submission_configs/edit", type: :view do
   before(:each) do
+    group = FactoryBot.create(:group)
+    user = FactoryBot.create(:admin_user, group_id: group.id)
+    sign_in user
+    @map = FactoryBot.create(:map, group_id: group.id)
+    @layer = FactoryBot.create(:layer, map_id: @map.id)
+
     @submission_config = assign(:submission_config, SubmissionConfig.create!(
       title_intro: "MyString",
       subtitle_intro: "MyString",
       intro: "MyText",
       title_outro: "MyString",
       outro: "MyText",
-      use_city_only: false
+      use_city_only: false,
+      layer_id: @layer.id
     ))
   end
 
