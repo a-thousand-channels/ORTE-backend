@@ -1,0 +1,49 @@
+---
+pl:
+  time:
+    formats:
+      day_nr: "%d."
+      daydate: "%d.%m.%Y"
+      default: "%d.%m.%Y, %H:%M"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  layouts:
+    navigation:
+      sign_out: Wyloguj się
+      imprint: Stopka wydawnicza
+  activerecord:
+    messages:
+      models:
+        submission:
+          created: Twoje dane zostały zapisane (krok 1)
+        place:
+          created: Twoje dane zostały zapisane (krok 2)
+        image:
+          created: Wpis został zapisany.
+    errors:
+      models:
+        submission:
+          attributes:
+            name:
+              blank: Podanie imienia i nazwiska jest obowiązkowe.
+            email:
+              taken: Adres E-mail już użyty
+        image:
+          attributes:
+            title:
+              blank: Wymagany opis zdjęcia.
+  errors:
+    messages:
+      accepted: Zgoda obowiązkowa
+      blank: Obowiązkowe
+      present: Pozostaje wolne.
+      inclusion: Zgoda obowiązkowa
+  search:
+    lookup:
+      intro: Wpisz swoje miejsce zamieszkania
+      address: "Adres:"
+      no_input: "<strong>Brak wkładu.</strong>  Wpisz miejsce zamieszkania i państwo."
+      too_short: "<strong>Za krótki wkład.</strong> Wpisz miejsce zamieszkania i państwo."
+      no_result: Nie znaleziono! Proszę podać inne miejsce.
+      success_result: Proszę wybrać jeden z poniższych wyników (lub wpisać inny adres).

@@ -1,0 +1,185 @@
+// Place all the styles related to the public/submissions controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+body.lang-ru {
+  font-family: Helvetica, Roboto, Arial, sans-serif;
+  font-size: 11.3pt;
+}
+.lang-ru h1,
+h2 {
+  font-family: Helvetica, Roboto, Arial, sans-serif;
+  line-height: 1;
+}
+.lang-ru h3,
+h4,
+h5,
+h6 {
+  font-family: Helvetica, Roboto, Arial, sans-serif;
+}
+
+body#submissions {
+  background-color: white;
+
+  main {
+    max-width: 85%;
+    @media screen and (max-width: 39.9375em) {
+      width: auto;
+      min-width: auto;
+      margin: 5px auto;
+    }
+  }
+}
+#submissions {
+  #form-wrapper {
+    border: 2px solid black;
+    padding: 40px 20px;
+
+    @media screen and (max-width: 39.9375em) {
+      border: 0 solid black;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #1e5365;
+    }
+
+    hr {
+      border-bottom: 2px solid #aaa;
+      width: 80%;
+      margin: 40px auto;
+    }
+
+    button.secondary,
+    .button.secondary {
+      background-color: white;
+      border: 1px solid #bbb;
+      color: #777 !important;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    #place_addresslookup_button {
+      margin-bottom: 0px;
+    }
+    .button.secondary.active,
+    button.secondary:hover,
+    .button.secondary:hover {
+      border: 1px solid #333;
+      color: #333 !important;
+    }
+    .breadcrumbs {
+      margin: 0 0 0 0;
+      li {
+        font-size: 1rem;
+        color: #777;
+        a {
+          color: #777;
+        }
+      }
+      li.current {
+        font-size: 1rem;
+        color: #c6c600;
+        a {
+          color: #c6c600;
+        }
+      }
+    }
+    .form-actions input.button[type="submit"] {
+      background-color: #1e5365;
+    }
+    input[type="checkbox"] {
+      margin: 0.2rem 0.5rem 0 0;
+    }
+    .place_address {
+      width: 100%;
+      input[type="text"] {
+        margin: 0;
+      }
+    }
+    #place_teaser_counter.warning {
+      color: #c00;
+    }
+
+    div.alert-box,
+    small.error {
+      color: #c00;
+      border: 2px solid #c00;
+      padding: 7px;
+      display: inline-block;
+      margin-top: 5px;
+    }
+
+    div.alert-box {
+      margin-bottom: 1rem;
+    }
+    .response-list {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      margin-top: 0px;
+      z-index: 100;
+    }
+    .thumbnail {
+      max-width: 600px;
+    }
+    .accordion-title {
+      position: static;
+      padding: 1.25rem 1rem;
+      font-size: 1rem;
+      background: white;
+      p {
+        margin-bottom: 0;
+      }
+    }
+
+    .callout#preview {
+      border: none;
+      background-color: rgba(224, 223, 216, 0.75);
+      padding: 2rem;
+    }
+
+    .preview:before {
+      float: left;
+      margin-right: 10px;
+      position: absolute;
+      left: -20px;
+      margin-top: 2px;
+      font-family: "foundation-icons";
+    }
+    .preview.active:before {
+      content: "\f10b";
+    }
+    .preview.todo {
+      color: #aaa;
+    }
+    .preview.todo:before {
+      content: "\f1ee";
+      content: "\2014";
+    }
+    .preview.done:before {
+      content: "\f126";
+    }
+
+    #place_teaser_receiver {
+      border: 1px solid rgb(167, 166, 166);
+      margin: 0.5rem 0 1rem;
+      padding: 10px;
+    }
+    #place_image_receiver p.image_title {
+      padding: 4px;
+      margin-bottom: 0;
+    }
+  }
+  .form-actions {
+    margin: 15px 15px 45px;
+  }
+
+  footer {
+    background-color: white;
+    position: relative;
+    width: 75%;
+    margin: 0px auto 10px;
+  }
+}

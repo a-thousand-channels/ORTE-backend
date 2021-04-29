@@ -1,0 +1,15 @@
+#step_finished
+  #form-wrapper.large-wrapper
+    = render partial: 'form_head', locals: { :menu_index => 3 }
+    .grid-x.grid-padding-x
+      .large-10.large-offset-1.medium-12.cell
+        %h1
+          = t('simple_form.form_finished.title')
+        %h2
+          = simple_format(t('simple_form.form_finished.subtitle'))
+    .grid-x.grid-padding-x
+      .large-10.large-offset-1.medium-12.cell
+    .grid-x.grid-padding-x
+      .large-6.large-offset-3.medium-12.cell
+        = render partial: 'form_preview', locals: { :index => -1 }   
+          
