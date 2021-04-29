@@ -1,0 +1,32 @@
+de:
+  simple_form:
+    required:
+      text: "Bitte angeben"
+    error_notification:
+      default_message: "Bitte überprüfen Sie Ihre Angaben:"
+  errors:
+    format: "%{attribute} %{message}"
+    attributes:
+      place:
+        name: "Name"
+        email: "E-Mail"
+        text: "Text"
+        location: "Titel"
+        copyright_notice_accepted: "Erlaubnis zur Veröffentlichung"
+        privacy_notice_accepted: "Hinweise zum Datenschutz"
+    messages:
+      accepted: "muss akzeptiert werden."
+      blank: "bitte ausfüllen."
+      empty: "bitte ausfüllen."
+  activerecord:
+    errors:
+      models:
+        place:
+          attributes:
+            copyright_notice_accepted:
+              please_confirm_copyright_notice: "Bitte bestätigen Sie, dass Sie uns erlauben ihre Einreichung zu veröffentlichen"
+
+
+# def tos_acceptance
+#   errors.add(:copyright_notice_accepted, :please_confirm_copyright_notice) if copyright_notice_accepted == false
+# end
