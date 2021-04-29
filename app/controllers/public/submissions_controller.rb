@@ -4,6 +4,7 @@ class Public::SubmissionsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index new create edit update new_place create_place edit_place update_place new_image create_image finished]
 
   around_action :switch_locale
+  before_action :load_layer_config
 
   SUBMISSION_STATUS_STEP1 = 1
   SUBMISSION_STATUS_STEP2 = 2
@@ -16,13 +17,24 @@ class Public::SubmissionsController < ApplicationController
     I18n.with_locale(locale, &action)
   end
 
+  def load_layer_config
+    @layer = Layer.find_by_id(layer_from_id)
+    return unless @layer.public_submission
+    @map = @layer.map
+
+    if @layer.submission_config
+      @submission_config = @layer.submission_config
+    else
+      @submission_config = nil
+    end
+  end
+
   def default_url_options(options = {})
     logger.debug "default_url_options is passed options: #{options.inspect}\n"
     { locale: I18n.locale }
   end
 
   def new
-    @layer = Layer.find_by_id(layer_from_id)
     if @layer&.public_submission
       @submission = Submission.new
       @submission.name = params[:name]
@@ -31,7 +43,6 @@ class Public::SubmissionsController < ApplicationController
       @submission.privacy = params[:privacy]
       @submission.rights = params[:rights]
 
-      @map = @layer.map
       @user = User.new
       @action = 'create'
     else
@@ -45,10 +56,6 @@ class Public::SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.status = SUBMISSION_STATUS_STEP1
 
-    @layer = Layer.find(layer_from_id)
-    return unless @layer.public_submission
-
-    @map = @layer.map
     @action = 'create'
 
     respond_to do |format|
@@ -62,7 +69,6 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def edit
-    @layer = Layer.find_by_id(layer_from_id)
     if @layer&.public_submission
       if session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
         @submission = Submission.find(session[:submission_id])
@@ -70,7 +76,6 @@ class Public::SubmissionsController < ApplicationController
         redirect_to submissions_new_path
       end
 
-      @map = @layer.map
       @user = User.new
       @action = 'update'
     else
@@ -79,7 +84,6 @@ class Public::SubmissionsController < ApplicationController
   end
 
   def update
-    @layer = Layer.find(layer_from_id)
     return unless @layer.public_submission
 
     if session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
@@ -89,7 +93,6 @@ class Public::SubmissionsController < ApplicationController
     end
 
     @submission.status = SUBMISSION_STATUS_STEP1
-    @map = @layer.map
     @action = 'update'
     respond_to do |format|
       if @submission.update(submission_params)
@@ -112,9 +115,6 @@ class Public::SubmissionsController < ApplicationController
 
     @submission = Submission.find(session[:submission_id])
 
-    @layer = Layer.find(layer_from_id)
-    @map = @layer.map
-
     @place = Place.new
     @place.location = params[:location]
     @place.address = params[:address]
@@ -134,8 +134,6 @@ class Public::SubmissionsController < ApplicationController
     @place = Place.new(place_params)
     @place.layer_id = layer_from_id
     @place.title = @submission.name
-    @layer = Layer.find(layer_from_id)
-    @map = @layer.map
     @action = 'create_place'
 
     respond_to do |format|
@@ -154,8 +152,6 @@ class Public::SubmissionsController < ApplicationController
     return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
 
     @submission = Submission.find(session[:submission_id])
-    @layer = Layer.find(layer_from_id)
-    @map = @layer.map
     @place = @submission.place
 
     @action = 'update_place'
@@ -166,8 +162,6 @@ class Public::SubmissionsController < ApplicationController
 
     @submission = Submission.find(session[:submission_id])
     @place = @submission.place
-    @layer = Layer.find(layer_from_id)
-    @map = @layer.map
     @action = 'update_place'
 
     respond_to do |format|
@@ -185,9 +179,6 @@ class Public::SubmissionsController < ApplicationController
     return unless session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
 
     @image = Image.new
-
-    @layer = Layer.find(layer_from_id)
-    @map = @layer.map
     @submission = Submission.find(session[:submission_id])
     @place = @submission.place
   end
@@ -197,8 +188,6 @@ class Public::SubmissionsController < ApplicationController
 
     @submission = Submission.find(session[:submission_id])
     @image = Image.new(image_params)
-    @layer = Layer.find(layer_from_id)
-    @map = @layer.map
     @place = @submission.place
     @image.place = @place
     @image.place_id = @place.id
@@ -226,8 +215,6 @@ class Public::SubmissionsController < ApplicationController
     @submission = Submission.find(session[:submission_id])
     @place = @submission.place
     @image = Image.sorted_by_place(@place.id)
-    @layer = Layer.find(layer_from_id)
-    @map = @layer.map
   end
 
   def layer_from_id
