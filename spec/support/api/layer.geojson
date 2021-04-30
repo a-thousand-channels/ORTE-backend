@@ -7,14 +7,14 @@
       "type": "string",
       "default": "FeatureCollection"
     },
+    "id": {
+      "type": "integer"
+    },
     "title": {
       "type": "string"
     },
     "text": {
       "type": "text"
-    },
-    "id": {
-      "type": "integer"
     },
     "features": {
       "type": "array",
@@ -72,13 +72,8 @@
                 "link": {
                   "type": "string"
                 },
-                "images": {
-                  "type": "array"
-                }
-              },
-              "required": ["name", "teaser", "text", "link"]
-            }
-          },
+                  "type": "text"
+                },
           "required": ["type", "geometry", "properties"]
         }
       ]
