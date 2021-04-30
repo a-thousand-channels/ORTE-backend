@@ -5,10 +5,7 @@
 .grid-x.grid-padding-x
   .large-10.large-offset-1.medium-12.cell
     %h1
-      - if @submission_config
-        = @submission_config.title_intro
-      - else  
-        != t('simple_form.form_intro.title')
+      = @submission_config.title_intro
 .grid-x.grid-padding-x
   .large-10.large-offset-1.medium-12.cell
     = render 'layouts/messages'
@@ -17,8 +14,7 @@
   .grid-x.grid-padding-x
     .large-10.large-offset-1.medium-12.cell
       %nav.menu
-        - I18n.available_locales.each do |language|
-
+        - @submission_config[:locales].each do |language|
           - klass = 'button secondary'
           - if params[:locale] == language.to_s
             - klass = "#{klass} active"

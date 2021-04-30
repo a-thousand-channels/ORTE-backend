@@ -3,8 +3,8 @@
 class Public::SubmissionsController < ApplicationController
   skip_before_action :authenticate_user!, only: %i[index new create edit update new_place create_place edit_place update_place new_image create_image finished]
 
-  around_action :switch_locale
   before_action :load_layer_config
+  around_action :switch_locale
 
   SUBMISSION_STATUS_STEP1 = 1
   SUBMISSION_STATUS_STEP2 = 2
@@ -13,8 +13,13 @@ class Public::SubmissionsController < ApplicationController
   def index; end
 
   def switch_locale(&action)
-    locale = params[:locale] || I18n.default_locale
+    locale = extract_locale || I18n.default_locale
     I18n.with_locale(locale, &action)
+  end
+
+  def extract_locale
+    parsed_locale = params[:locale]
+    I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
   end
 
   def load_layer_config
@@ -25,8 +30,15 @@ class Public::SubmissionsController < ApplicationController
     if @layer.submission_config
       @submission_config = @layer.submission_config
     else
-      @submission_config = nil
+      tempData = {
+        title_intro: t('simple_form.form_intro.title'),
+        locales: I18n.available_locales
+      }
+      @submission_config = JSON.parse(tempData.to_json, object_class: OpenStruct)
+
     end
+    # TODO: what to do if locale is not set in config?
+    # return unless @submission_config.locales.map(&:to_s).include?(params[:locale])
   end
 
   def default_url_options(options = {})
