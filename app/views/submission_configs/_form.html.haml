@@ -13,8 +13,6 @@
         = f.input :locales, :collection => I18n.available_locales, input_html: { multiple: true }, include_blank: false, include_hidden: false
         - @submission_config.locales.each do |language|
           - klass = 'button secondary'
-          - if @locale_mobility.to_s == language.to_s
-            - klass = "#{klass} holllow"
           = link_to t('languages.' + language.to_s), current_page_params.merge(layer_id: params[:layer_id],place_id: params[:place_id], locale_mobility: language.to_s), class: "#{klass}", disabled: @locale_mobility.to_s == language.to_s
 
         = f.input :title_intro

@@ -39,7 +39,7 @@ class SubmissionConfigsController < ApplicationController
 
     respond_to do |format|
       if @submission_config.save
-        format.html { redirect_to @submission_config, notice: "Submission config was successfully created." }
+        format.html { redirect_to edit_map_layer_path(@map.id,@layer.id), notice: "Submission config was successfully created." }
         format.json { render :show, status: :created, location: @submission_config }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class SubmissionConfigsController < ApplicationController
 
     respond_to do |format|
       if @submission_config.update(submission_config_params)
-        format.html { redirect_to @submission_config, notice: "Submission config was successfully updated." }
+        format.html { redirect_to edit_map_layer_path(@map.id,@layer.id), notice: "Submission config was successfully updated." }
         format.json { render :show, status: :ok, location: @submission_config }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -79,6 +79,8 @@ class SubmissionConfigsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_submission_config
       @submission_config = SubmissionConfig.find(params[:id])
+      @layer = Layer.find_by_id(@submission_config.layer_id)
+      @map = @layer.map
     end
 
     # Only allow a list of trusted parameters through.

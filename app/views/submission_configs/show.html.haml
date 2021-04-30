@@ -27,11 +27,7 @@
   - if @submission_config.layer_id  
     %p
       %b Layer:
-      - layer = Layer.find(@submission_config.layer_id)
-      - map = Map.find(layer.map_id)
-      = link_to layer.title, edit_map_layer_path(map,layer)    
+      = link_to layer.title, edit_map_layer_path(@map.id,@layer.id)    
     
 
-  = link_to 'Edit', edit_submission_config_path(@submission_config)
-  \|
-  = link_to 'Back', submission_configs_path
+  = link_to 'Edit', edit_submission_config_path(@submission_config), class: 'button'
