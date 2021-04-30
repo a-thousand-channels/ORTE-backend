@@ -1,5 +1,17 @@
 class SubmissionConfigsController < ApplicationController
   before_action :set_submission_config, only: %i[ show edit update destroy ]
+  before_action :switch_config_locale
+
+  def switch_config_locale(&action)
+    locale = extract_locale || Mobility.locale
+    Mobility.locale = locale
+    @locale_mobility = locale
+  end
+
+  def extract_locale
+    parsed_locale = params[:locale_mobility]
+    I18n.available_locales.map(&:to_s).include?(parsed_locale) ? parsed_locale : nil
+  end
 
   # GET /submission_configs or /submission_configs.json
   def index
@@ -38,6 +50,7 @@ class SubmissionConfigsController < ApplicationController
 
   # PATCH/PUT /submission_configs/1 or /submission_configs/1.json
   def update
+
     respond_to do |format|
       if @submission_config.update(submission_config_params)
         format.html { redirect_to @submission_config, notice: "Submission config was successfully updated." }
@@ -70,6 +83,6 @@ class SubmissionConfigsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def submission_config_params
-      params.require(:submission_config).permit(:title_intro, :subtitle_intro, :intro, :title_outro, :outro, :start_time, :end_time, :use_city_only, :layer_id)
+      params.require(:submission_config).permit(:title_intro, :subtitle_intro, :intro, :title_outro, :outro, :start_time, :end_time, :use_city_only, :layer_id, :locales => [])
     end
 end

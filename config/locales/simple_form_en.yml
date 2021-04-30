@@ -22,6 +22,11 @@ en:
       title: Thank you for your participation.
       subtitle: After an editorial review, your contribution will be published.
     labels:
+      defaults:
+        title_intro: Title Introduction
+        subtitle_intro: Subtitle Introduction
+        intro: Introduction text
+        locales: Translations for the submission form
       title: Name (or Organisation)
       teaser: Your contribution
       email: E-Mail
