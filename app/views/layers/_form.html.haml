@@ -25,12 +25,13 @@
         - if @layer.public_submission
           - if @layer.submission_config
             = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button" do
-              %i.fi-pencil.fi-24  
+              %i.fi-pencil.fi-24
+              Edit configuration: 
               = @layer.submission_config.title_intro
-            
           - else  
             = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button" do
-              %i.fi-pencil.fi-24   
+              %i.fi-pencil.fi-24
+              Create submission configuration 
         %p.compact
           = f.label :color, "Marker color"
         .grid-x
