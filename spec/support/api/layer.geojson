@@ -10,14 +10,14 @@
       "type": "string",
       "default": "FeatureCollection"
     },
+    "id": {
+      "type": "integer"
+    },
     "title": {
       "type": "string"
     },
     "text": {
       "type": "text"
-    },
-    "id": {
-      "type": "integer"
     },
     "features": {
       "type": "array",
@@ -54,6 +54,9 @@
             "properties": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "integer"
+                },
                 "name": {
                   "type": "string"
                 },
@@ -65,6 +68,44 @@
                 },
                 "link": {
                   "type": "string"
+                },
+                "address": {
+                  "type": "text"
+                },
+                "city": {
+                  "type": "text"
+                },
+                "country": {
+                  "type": "text"
+                },
+                "images": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "id": "integer"
+                    },
+                    {
+                      "title": "string"
+                    },
+                    {
+                      "source": "string"
+                    },
+                    {
+                      "creator": "string"
+                    },
+                    {
+                      "alt": "string"
+                    },
+                    {
+                      "sorting": "string"
+                    },
+                    {
+                      "image_linktag": "string"
+                    },
+                    {
+                      "image_url": "string"
+                    }
+                  ]
                 }
               },
               "required": [
