@@ -54,6 +54,8 @@ gem 'acts-as-taggable-on', '~> 6.0'
 
 gem 'turnout'
 
+gem 'mobility', '~> 1.1.2'
+
 group :staging, :production do
   # gem 'pg'
   gem 'mysql2'
