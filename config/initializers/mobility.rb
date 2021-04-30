@@ -99,7 +99,7 @@ Mobility.configure do
     # +I18n.available_locales+, but you can pass the set of locales with
     # +translates+ and/or set a global default here.
     #
-    # locale_accessors
+    locale_accessors
     #
     # Or define specific defaults by uncommenting line below
     # locale_accessors [:en, :ja]

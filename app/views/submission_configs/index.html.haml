@@ -27,6 +27,6 @@
           %td= submission_config.start_time
           %td= submission_config.end_time
           %td= submission_config.use_city_only
-          %td= link_to 'Show', submission_config
-          %td= link_to 'Edit', edit_submission_config_path(submission_config)
-          %td= link_to 'Destroy', submission_config, method: :delete, data: { confirm: 'Are you sure?' }
+          %td= link_to 'Show', submission_config, class: 'button'
+          %td= link_to 'Edit', edit_submission_config_path(submission_config), class: 'button'
+          %td= link_to 'Destroy', submission_config, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button'
