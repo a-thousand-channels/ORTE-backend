@@ -158,7 +158,7 @@ class Public::SubmissionsController < ApplicationController
         @submission.place = @place
         @submission.status = SUBMISSION_STATUS_STEP2
         @submission.save!
-        format.html { redirect_to submission_new_image_path(params[:locale], layer_id: layer_from_id), notice: t('activerecord.messages.models.place.created') }
+        format.html { redirect_to submission_new_image_path(locale: params[:locale], layer_id: layer_from_id, place_id: @place.id), notice: t('activerecord.messages.models.place.created') }
       else
         format.html { render :new_place }
       end
@@ -185,7 +185,7 @@ class Public::SubmissionsController < ApplicationController
       if @place.update(place_params)
         @submission.status = SUBMISSION_STATUS_STEP2
         @submission.save!
-        format.html { redirect_to submission_new_image_path(params[:locale], layer_id: layer_from_id), notice: t('activerecord.messages.models.place.created') }
+        format.html { redirect_to submission_new_image_path(locale: params[:locale], layer_id: layer_from_id, place_id: @place.id), notice: t('activerecord.messages.models.place.created') }
       else
         format.html { render :new_place }
       end
@@ -213,7 +213,7 @@ class Public::SubmissionsController < ApplicationController
         if @image.save
           @submission.status = SUBMISSION_STATUS_STEP3
           @submission.save!
-          format.html { redirect_to submission_finished_path(params[:locale], submission_id: @submission.id, layer_id: layer_from_id), notice: t('activerecord.messages.models.image.created') }
+          format.html { redirect_to submission_finished_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id, place_id: @place.id), notice: t('activerecord.messages.models.image.created') }
         else
           format.html { render :new_image }
         end
@@ -221,7 +221,7 @@ class Public::SubmissionsController < ApplicationController
         @submission.status = SUBMISSION_STATUS_STEP3
         @submission.save!
 
-        format.html { redirect_to submission_finished_path(params[:locale], submission_id: @submission.id, layer_id: layer_from_id), notice: t('activerecord.messages.models.image.created') }
+        format.html { redirect_to submission_finished_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id, place_id: @place.id), notice: t('activerecord.messages.models.image.created') }
       end
     end
   end
