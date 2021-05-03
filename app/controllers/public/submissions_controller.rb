@@ -87,10 +87,10 @@ class Public::SubmissionsController < ApplicationController
 
   def edit
     if @layer&.public_submission
-      if session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+      if session[:submission_id] && session[:submission_id].positive? && session[:submission_id] == params['id'].to_i
         @submission = Submission.find(session[:submission_id])
       else
-        redirect_to submissions_new_path
+        redirect_to new_submission_path
       end
 
       @user = User.new
@@ -103,10 +103,10 @@ class Public::SubmissionsController < ApplicationController
   def update
     return unless @layer.public_submission
 
-    if session[:submission_id]&.positive? && session[:submission_id] == submission_from_id
+    if session[:submission_id]&.positive? && session[:submission_id] == params['id'].to_i
       @submission = Submission.find(session[:submission_id])
     else
-      redirect_to submissions_new_path
+      redirect_to new_submission_path
     end
 
     @submission.status = SUBMISSION_STATUS_STEP1
