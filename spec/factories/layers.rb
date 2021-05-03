@@ -7,6 +7,7 @@ FactoryBot.define do
     text { 'MyString' }
     published { false }
     map
+    submission_config {false}
     trait :invalid do
       title { nil }
     end
