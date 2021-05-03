@@ -175,6 +175,8 @@ GEM
       ruby_parser (~> 3.5)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    i18n-js (3.8.2)
+      i18n (>= 0.6.6)
     ice_nine (0.11.2)
     image_processing (1.12.1)
       mini_magick (>= 4.9.5, < 5)
@@ -464,6 +466,7 @@ DEPENDENCIES
   foundation-icons-sass-rails
   foundation-rails (~> 6)
   haml-rails (~> 2.0)
+  i18n-js
   image_processing (~> 1.2)
   jbuilder
   jquery-rails
