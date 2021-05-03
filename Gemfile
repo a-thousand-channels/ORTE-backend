@@ -41,6 +41,7 @@ gem 'rack-cors'
 gem 'settingslogic'
 gem 'simple_form'
 gem 'select2-rails'
+gem "i18n-js"
 
 gem 'mini_racer', platforms: :ruby
 gem 'image_processing', '~> 1.2'
