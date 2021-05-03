@@ -28,7 +28,7 @@
 
               = f.label :adddress, :label => t('simple_form.labels.location')
               .input-group
-                = f.input :address,  :label => false, :placeholder => t('simple_form.placeholders.location'), input_html: {:class => "address-lookup-field input-group-field"}
+                = f.input :address,  :label => false, :placeholder => t('simple_form.placeholders.location'), input_html: {:class => "address-lookup-field input-group-field", :data => { 'lookupCityOnly' => @submission_config.use_city_only } }
 
                 .input-group-button
                   %button{:id => 'place_addresslookup_button', :class => 'button secondary', :title => 'Lookup for address'}

@@ -10,7 +10,7 @@
   .grid-x
     .large-12.medium-12.cell
       .form-inputs
-        = f.input :locales, :collection => I18n.available_locales, input_html: { multiple: true }, include_blank: false, include_hidden: false
+        = f.input :locales, :collection => I18n.available_locales, label_method: ->(obj){ t("languages.#{obj}") }, input_html: { multiple: true }, include_blank: false, include_hidden: false
         - @submission_config.locales.each do |language|
           - klass = 'button secondary'
           = link_to t('languages.' + language.to_s), current_page_params.merge(layer_id: params[:layer_id],place_id: params[:place_id], locale_mobility: language.to_s), class: "#{klass}", disabled: @locale_mobility.to_s == language.to_s
@@ -20,8 +20,9 @@
         = f.input :intro
         = f.input :title_outro
         = f.input :outro
-        = f.input :start_time
-        = f.input :end_time
+        = # f.input :start_time
+        = # f.input :end_time
+        = f.label "Do not look up full addresses"
         = f.input :use_city_only
       .form-actions
         = f.button :submit, :class => "button"

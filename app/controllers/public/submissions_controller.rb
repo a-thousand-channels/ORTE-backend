@@ -32,6 +32,11 @@ class Public::SubmissionsController < ApplicationController
     else
       tempData = {
         title_intro: t('simple_form.form_intro.title'),
+        subtitle_intro: t('simple_form.form_intro.subtitle'),
+        intro: t('simple_form.form_intro.text'),
+        title_outro: t('simple_form.form_finished.title'),
+        outro: t('simple_form.form_finished.subtitle'),
+        use_city_only: true,
         locales: I18n.available_locales
       }
       @submission_config = JSON.parse(tempData.to_json, object_class: OpenStruct)
