@@ -32,7 +32,7 @@
             %br 
             - @layer.submission_config.locales.each do |language|
               - klass = 'button secondary'
-              = link_to submission_new_path(layer_id: @layer.id, locale: language.to_s, submission_id: 0), class: "#{klass}", target: '_blank' do
+              = link_to new_submission_path(layer_id: @layer.id, locale: language.to_s), class: "#{klass}", target: '_blank' do
                 %i.fi-web.fi-24
                 - title = @layer.submission_config.title_intro(locale: language)
                 - if title.nil?
