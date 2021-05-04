@@ -1,6 +1,6 @@
 #step_first
   #form-wrapper.large-wrapper
-    - if @layer && @layer.public_submission
+    - if @layer && @layer.public_submission && @submission
       = render 'form'
     - else
-      TODO: nothing to see
+      = render 'nothing_found'

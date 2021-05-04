@@ -41,6 +41,7 @@ gem 'rack-cors'
 gem 'settingslogic'
 gem 'simple_form'
 gem 'select2-rails'
+gem "i18n-js"
 
 gem 'mini_racer', platforms: :ruby
 gem 'image_processing', '~> 1.2'
@@ -52,6 +53,8 @@ gem 'tinymce-rails'
 gem 'acts-as-taggable-on', '~> 6.0'
 
 gem 'turnout'
+
+gem 'mobility', '~> 1.1.2'
 
 group :staging, :production do
   # gem 'pg'

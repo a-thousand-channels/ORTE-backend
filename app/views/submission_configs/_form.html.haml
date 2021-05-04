@@ -1,0 +1,28 @@
+= simple_form_for(@submission_config) do |f|
+  = f.input 'locale_mobility', as: :hidden, :input_html => {:name => 'locale_mobility', :value => @locale_mobility,:id => "locale_mobility" }
+  = f.association :layer, as: :hidden, :input_html => { :value => @layer.id }
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x.grid-padding-x
+    .large-12.cell
+      %h1 Submission configuration
+  .grid-x
+    .large-12.medium-12.cell
+      .form-inputs
+        = f.input :locales, :collection => I18n.available_locales, label_method: ->(obj){ t("languages.#{obj}") }, input_html: { multiple: true }, include_blank: false, include_hidden: false
+        - @submission_config.locales.each do |language|
+          - klass = 'button secondary'
+          = link_to t('languages.' + language.to_s), current_page_params.merge(layer_id: params[:layer_id],place_id: params[:place_id], locale_mobility: language.to_s), class: "#{klass}", disabled: @locale_mobility.to_s == language.to_s
+
+        = f.input :title_intro
+        = f.input :subtitle_intro
+        = f.input :intro
+        = f.input :title_outro
+        = f.input :outro
+        = # f.input :start_time
+        = # f.input :end_time
+        = f.label "Do not look up full addresses"
+        = f.input :use_city_only
+      .form-actions
+        = f.button :submit, :class => "button"
