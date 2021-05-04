@@ -48,7 +48,7 @@ Rails.application.routes.draw do
 
   scope "/:locale" do
     scope "/:layer_id" do
-      resources :submissions, :controller => "public/submissions" do
+      resources :submissions, :controller => "public/submissions", only: [:new, :create, :edit, :update, :index] do
         get :new_place, :controller => "public/submissions", :action => 'new_place'
         post :create_place, :controller => "public/submissions", :action => 'create_place'
         scope "/:place_id" do
