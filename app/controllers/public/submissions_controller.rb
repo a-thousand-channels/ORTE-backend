@@ -26,6 +26,7 @@ class Public::SubmissionsController < ApplicationController
     @layer = Layer.find_by_id(layer_from_id)
     @locale = extract_locale
     return unless @layer.public_submission
+
     @map = @layer.map
 
     if @layer.submission_config
@@ -88,7 +89,7 @@ class Public::SubmissionsController < ApplicationController
 
   def edit
     if @layer&.public_submission
-      if session[:submission_id] && session[:submission_id].positive? && session[:submission_id] == params['id'].to_i
+      if session[:submission_id]&.positive? && session[:submission_id] == params['id'].to_i
         @submission = Submission.find(session[:submission_id])
       else
         redirect_to new_submission_path
