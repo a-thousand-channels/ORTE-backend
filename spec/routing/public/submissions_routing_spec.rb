@@ -10,8 +10,8 @@ RSpec.describe Public::SubmissionsController, type: :routing do
       expect(get: "/de/1/submissions/1/edit").to route_to("public/submissions#edit", locale: 'de', layer_id: "1", id: "1")
     end
 
-    it "routes to #show" do
-      expect(get: "/de/1/submissions/1").to route_to("public/submissions#show", locale: 'de', layer_id: "1", id: "1")
+    it "routes to #index" do
+      expect(get: "/de/1/submissions").to route_to("public/submissions#index", locale: 'de', layer_id: "1")
     end
 
     it "routes to #create" do

@@ -24,6 +24,7 @@ class Public::SubmissionsController < ApplicationController
 
   def load_layer_config
     @layer = Layer.find_by_id(layer_from_id)
+    @locale = extract_locale
     return unless @layer.public_submission
     @map = @layer.map
 
@@ -61,7 +62,7 @@ class Public::SubmissionsController < ApplicationController
       @submission.rights = params[:rights]
 
       @user = User.new
-      @action = 'create'
+      @form_url = submissions_path(locale: @locale, layer_id: @layer.id)
     else
       redirect_to submissions_path
     end
@@ -73,7 +74,7 @@ class Public::SubmissionsController < ApplicationController
     @submission = Submission.new(submission_params)
     @submission.status = SUBMISSION_STATUS_STEP1
 
-    @action = 'create'
+    @form_url = submissions_path(locale: @locale, layer_id: @layer.id)
 
     respond_to do |format|
       if @submission.save
@@ -94,7 +95,7 @@ class Public::SubmissionsController < ApplicationController
       end
 
       @user = User.new
-      @action = 'update'
+      @form_url = submission_path(layer_id: @layer.id)
     else
       redirect_to submissions_path
     end
@@ -110,7 +111,7 @@ class Public::SubmissionsController < ApplicationController
     end
 
     @submission.status = SUBMISSION_STATUS_STEP1
-    @action = 'update'
+    @form_url = submissions_path(@submission, locale: @locale, layer_id: @layer.id)
     respond_to do |format|
       if @submission.update(submission_params)
         session[:submission_id] = @submission.id
