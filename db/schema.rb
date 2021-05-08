@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_25_120134) do
+ActiveRecord::Schema.define(version: 2021_04_29_232339) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -73,6 +73,14 @@ ActiveRecord::Schema.define(version: 2021_03_25_120134) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
+  create_table "jwt_denylists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "jti"
+    t.datetime "exp"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["jti"], name: "index_jwt_denylists_on_jti"
+  end
+
   create_table "layers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
@@ -103,6 +111,31 @@ ActiveRecord::Schema.define(version: 2021_03_25_120134) do
     t.index ["group_id"], name: "index_maps_on_group_id"
   end
 
+  create_table "mobility_string_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "locale", null: false
+    t.string "key", null: false
+    t.string "value"
+    t.string "translatable_type"
+    t.bigint "translatable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
+    t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_string_translations_on_keys", unique: true
+    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
+  end
+
+  create_table "mobility_text_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "locale", null: false
+    t.string "key", null: false
+    t.text "value"
+    t.string "translatable_type"
+    t.bigint "translatable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_text_translations_on_translatable_attribute"
+    t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
+  end
+
   create_table "places", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "teaser"
@@ -125,6 +158,22 @@ ActiveRecord::Schema.define(version: 2021_03_25_120134) do
     t.integer "icon_id"
     t.boolean "featured"
     t.index ["layer_id"], name: "index_places_on_layer_id"
+  end
+
+  create_table "submission_configs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title_intro"
+    t.string "subtitle_intro"
+    t.text "intro"
+    t.string "title_outro"
+    t.text "outro"
+    t.datetime "start_time"
+    t.datetime "end_time"
+    t.boolean "use_city_only"
+    t.bigint "layer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "locales"
+    t.index ["layer_id"], name: "index_submission_configs_on_layer_id"
   end
 
   create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -205,6 +254,7 @@ ActiveRecord::Schema.define(version: 2021_03_25_120134) do
   add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
   add_foreign_key "places", "layers"
+  add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"
   add_foreign_key "users", "groups"

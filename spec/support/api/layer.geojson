@@ -1,23 +1,20 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "required": [
-    "type",
-    "features"
-  ],
+  "required": ["type", "features"],
   "properties": {
     "type": {
       "type": "string",
       "default": "FeatureCollection"
+    },
+    "id": {
+      "type": "integer"
     },
     "title": {
       "type": "string"
     },
     "text": {
       "type": "text"
-    },
-    "id": {
-      "type": "integer"
     },
     "features": {
       "type": "array",
@@ -46,15 +43,24 @@
                   ]
                 }
               },
-              "required": [
-                "type",
-                "coordinates"
-              ]
+              "required": ["type", "coordinates"]
             },
             "properties": {
               "type": "object",
               "properties": {
+                "id": {
+                  "type": "integer"
+                },
                 "name": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "country": {
                   "type": "string"
                 },
                 "teaser": {
@@ -65,24 +71,52 @@
                 },
                 "link": {
                   "type": "string"
+                },
+                "address": {
+                  "type": "text"
+                },
+                "city": {
+                  "type": "text"
+                },
+                "country": {
+                  "type": "text"
+                },
+                "images": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "id": "integer"
+                    },
+                    {
+                      "title": "string"
+                    },
+                    {
+                      "source": "string"
+                    },
+                    {
+                      "creator": "string"
+                    },
+                    {
+                      "alt": "string"
+                    },
+                    {
+                      "sorting": "string"
+                    },
+                    {
+                      "image_linktag": "string"
+                    },
+                    {
+                      "image_url": "string"
+                    }
+                  ]
                 }
               },
-              "required": [
-                "name",
-                "teaser",
-                "text",
-                "link"
-              ]
+              "required": ["name", "teaser", "text", "link"]
             }
           },
-          "required": [
-            "type",
-            "geometry",
-            "properties"
-          ]
+          "required": ["type", "geometry", "properties"]
         }
       ]
     }
   }
 }
-

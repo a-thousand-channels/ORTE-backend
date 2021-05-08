@@ -10,7 +10,7 @@
           - elsif (local_index < menu_index)
             %li{ :class => ''}
               - if local_index == 0
-                %a{'href'=> submission_edit_path()}
+                %a{'href'=> edit_submission_path(@layer,@submission)}
                   = (local_index+1)
                   = item[:label]
               - elsif local_index == 1
