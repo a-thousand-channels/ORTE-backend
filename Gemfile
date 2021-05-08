@@ -23,6 +23,7 @@ gem 'jbuilder'
 gem 'bcrypt'
 
 # custom
+gem 'mysql2'
 gem 'cancancan'
 gem 'devise'
 gem 'exception_notification'
@@ -58,7 +59,6 @@ gem 'mobility', '~> 1.1.2'
 
 group :staging, :production do
   # gem 'pg'
-  gem 'mysql2'
   gem 'passenger'
 end
 
@@ -77,7 +77,6 @@ group :development, :test, :localtest do
   gem 'rspec-rails'
   gem 'simplecov'
   gem 'rspec_junit_formatter'
-  gem 'sqlite3'
   gem 'json-schema'
   gem 'webmock'
 end
