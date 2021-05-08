@@ -1,0 +1,33 @@
+%p#notice= notice
+#form-wrapper.large-wrapper
+  %p
+    %b Title intro:
+    = @submission_config.title_intro
+  %p
+    %b Subtitle intro:
+    = @submission_config.subtitle_intro
+  %p
+    %b Intro:
+    = @submission_config.intro
+  %p
+    %b Title outro:
+    = @submission_config.title_outro
+  %p
+    %b Outro:
+    = @submission_config.outro
+  %p
+    %b Start time:
+    = @submission_config.start_time
+  %p
+    %b End time:
+    = @submission_config.end_time
+  %p
+    %b Use city only:
+    = @submission_config.use_city_only
+  - if @submission_config.layer_id  
+    %p
+      %b Layer:
+      = link_to layer.title, edit_map_layer_path(@map.id,@layer.id)    
+    
+
+  = link_to 'Edit', edit_submission_config_path(@submission_config), class: 'button'

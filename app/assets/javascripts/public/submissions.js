@@ -56,12 +56,12 @@
 
         $('input#place_address').on('keyup', function(e) {
             e.preventDefault();
-            LookupCity($(this).val());
+            LookupCity($(this).val(), $(this).data('lookupcityonly'));
         });
         $('button#place_addresslookup_button').click(function(e) {
           e.preventDefault();
           var val = $('input#place_address').val();
-          LookupCity(val);
+          LookupCity(val, $('input#place_address').data('lookupcityonly'));
         });
       }
 
@@ -70,7 +70,7 @@
   });
 
 
-  function LookupCity(address = '') {
+  function LookupCity(address = '', lookupCityOnly = false) {
     $.ajaxSetup({
       headers : {
         'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)',
@@ -97,7 +97,10 @@
       //example
       // https://nominatim.openstreetmap.org/search?q=135+pilkington+avenue,+birmingham&format=xml&polygon=1&addressdetails=1
       var nominatium_url = 'https://nominatim.openstreetmap.org/search';
-      var nominatium_url_params = '&format=json&addressdetails=1&featuretype=city'
+      var nominatium_url_params = '&format=json&addressdetails=1'
+      if(lookupCityOnly) {
+        nominatium_url_params = nominatium_url_params + '&featuretype=city'
+      }
 
       var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
 
