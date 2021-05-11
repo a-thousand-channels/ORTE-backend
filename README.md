@@ -70,10 +70,11 @@ $ bundle exec rails s
 
 Code + Design by Ulf Treger <ulf.treger@googlemail.com> with kind support from and collaboration with:
 
-* [Pragma Shift](https://www.pragma-shift.net/), Hamburg (code donation),
+* [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for code donation,
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
 * Participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
-* members of the working group "Queer narratives, mappped" 💖
+* Members of the working group "Queer narratives, mappped" 💖 for acceptance testing, ideas and requests for improving the user interface,
+* [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface.
 
 ## Feedback & Contributions
 
