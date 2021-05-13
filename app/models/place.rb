@@ -107,11 +107,21 @@ class Place < ApplicationRecord
     "#{full_address}#{c}"
   end
 
-  def self.to_csv
-    attributes = %w[id title teaser text startdate enddate lat lon location address zip city country]
+  def teaser_as_text
+    require 'nokogiri'
+    Nokogiri::HTML(teaser).text
+  end
 
-    CSV.generate(headers: true) do |csv|
-      csv << attributes
+  def text_as_text
+    require 'nokogiri'
+    Nokogiri::HTML(text).text
+  end
+
+  def self.to_csv
+    attributes = %w[id title teaser_as_text text_as_text startdate enddate lat lon location address zip city country]
+    headers = %w[id title teaser text startdate enddate lat lon location address zip city country]
+    CSV.generate(headers: false, force_quotes: false, strip: true ) do |csv|
+      csv << headers
       all.each do |user|
         csv << attributes.map { |attr| user.send(attr) }
       end
