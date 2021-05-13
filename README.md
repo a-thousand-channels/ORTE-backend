@@ -22,9 +22,9 @@ Basic steps for a local installation on your machine:
 ### Requirements
 
 * Webserver (Apache, NGINX)
-* Ruby 2.6+, RVM, ...
+* Ruby 2.6+, RVM, Rubygems
 * MySQL/Maria DB
-* ffmpeg (for the video upload feature), ImageMagick (fpr the image upload feature)
+* ffmpeg (for the video feature), ImageMagick (for the image feature)
 
 ### Get repository
 
@@ -58,17 +58,23 @@ If you need custom credentials, e.g for a server installation, you can secre the
 $ EDITOR=vim bundle exec rails credentials:edit
 ```
 
-
-
-### Run
+### Run locally
 
 ```bash
 $ bundle exec rails s
 ```
 
+### Test locally
+
+
+```bash
+$ RAILS_ENV=localtest bundle exec rails db:migrate
+$ RAILS_ENV=localtest COVERAGE=true bundle exec rspec spec
+```
+
 ## Credits
 
-Code + Design by Ulf Treger <ulf.treger@googlemail.com> with kind support from and collaboration with:
+Project by Ulf Treger <ulf.treger@googlemail.com> with kind support from and in collaboration with:
 
 * [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for code donation,
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
