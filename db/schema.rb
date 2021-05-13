@@ -73,14 +73,6 @@ ActiveRecord::Schema.define(version: 2021_04_29_232339) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
-  create_table "jwt_denylists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "jti"
-    t.datetime "exp"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["jti"], name: "index_jwt_denylists_on_jti"
-  end
-
   create_table "layers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
@@ -249,6 +241,7 @@ ActiveRecord::Schema.define(version: 2021_04_29_232339) do
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "icons", "iconsets"
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
