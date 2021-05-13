@@ -10,7 +10,7 @@ end
 gem 'rails', '~> 5.2'
 gem 'puma', '~> 5'
 # seg fault with sassc 2.3.0
-gem 'sassc', '~> 2.2.1'
+gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
 
@@ -51,7 +51,7 @@ gem 'color-generator'
 
 gem 'tinymce-rails'
 
-gem 'acts-as-taggable-on', '~> 6.0'
+gem 'acts-as-taggable-on', '~> 7'
 
 gem 'turnout'
 
