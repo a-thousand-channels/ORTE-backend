@@ -5,10 +5,14 @@ class Admin::UsersController < ApplicationController
 
   def create
     @admin_user = User.new(admin_user_params)
+    password_length = 10
+    password = Devise.friendly_token.first(password_length)
+    @admin_user.password = password
+    @admin_user.password_confirmation = password
 
     respond_to do |format|
       if @admin_user.save!
-        format.html { redirect_to admin_users_url, notice: 'User was successfully created.' }
+        format.html { redirect_to admin_users_url, notice: 'User was successfully created. An E-Mail has been sent to the User with all needed Informations (Link to Login, Password)' }
         format.json { render :show, status: :created, location: @admin_user }
       else
         format.html { render :new }
