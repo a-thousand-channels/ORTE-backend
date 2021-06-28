@@ -14,6 +14,8 @@ class User < ApplicationRecord
   validates :role,  presence: true,
                     inclusion: { in: Ability.role_symbols.map(&:to_s) }
 
+  after_create :notify_user_create
+
   belongs_to :group
 
   acts_as_tagger
@@ -37,5 +39,12 @@ class User < ApplicationRecord
 
   def self.perform_authorization?
     !!current_ability
+  end
+
+  private
+
+  def notify_user_create
+    ApplicationMailer.notify_user_created(self).deliver_now
+    ApplicationMailer.notify_admin_user_created(self).deliver_now
   end
 end
