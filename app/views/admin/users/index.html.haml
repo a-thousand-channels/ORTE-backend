@@ -10,12 +10,18 @@
       Settings
   %h1 Users
 
+
+  %p
+    = link_to new_admin_user_path, :class => "button secondary" do
+      %i.fi.fi-plus
+      New User
   %table
     %thead
       %tr
         %th Email
         %th Role
         %th Group
+        %th Created/Last&nbsp;login
         %th
         %th
 
@@ -23,23 +29,41 @@
       - @admin_users.each do |admin_user|
         %tr
           %td= admin_user.email
-          %td= admin_user.role
+          %td
+            - if admin_user.role == 'admin'
+              %label.label.warning admin
+            - else
+              %label.label #{admin_user.role}
           %td
             - if admin_user.group
-              = admin_user.group.title
+              %label.label
+                = admin_user.group.title
+          %td
+            %p.small
+              Created:
+              %br
+              = l(admin_user.created_at)
+              - if admin_user.created_at > ( Time.zone.now - 10.days )
+                %label.label.warning NEW
+            %p.small
+              Last visit:
+              %br
+              - if admin_user.last_sign_in_at
+                = l(admin_user.current_sign_in_at)
+              - else
+                \--
           %td
             = link_to edit_admin_user_path(admin_user), :class => 'button' do
               %i.fi.fi-pencil
-              Edit
+
           %td
             = link_to [:admin, admin_user ], :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
               %i.fi.fi-x
-              Destroy
+
 
       = paginate @admin_users
 
-  %br
-
-  = link_to new_admin_user_path, :class => "button secondary" do
-    %i.fi.fi-plus
-    New User
+  %p
+    = link_to new_admin_user_path, :class => "button secondary" do
+      %i.fi.fi-plus
+      New User
