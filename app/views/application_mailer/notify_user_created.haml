@@ -1,12 +1,20 @@
 %h3
   Hurray, we have created a profile at #{Settings.app_name} for you!
 %p
-  Please visit #{Settings.app_url} and login with these credentials:
+  Please visit
+  %a{href: "#{Settings.app_url}"}
+    #{Settings.app_url}
+  and login with your credentials:
 %p
   E-Mail:   #{@user.email}
   %br
   Password: #{@user.password}
 %p
-  Hint:
   %em
     The password has been generated automatically. Please change it in your user settings
+%p
+  This mapping tool is under development, if you have any questions, if you found a bug or if you have any idea to improve this tool and to make more fun to use, submit an issue at
+  %a{href: "https://github.com/ut/ORTE-backend/issues"}
+    https://github.com/ut/ORTE-backend/issues
+  %br
+  Any contributions are welcome!
