@@ -1,0 +1,128 @@
+= simple_form_for [@map, @submission, @place], :url => {:action => @action} do |f|
+  = f.input :layer_id, :as => :hidden, :input_html => { :value => @layer.id }
+  = f.input :locale, :as => :hidden, :input_html => { :value => params[:locale],:id => "locale" }
+
+  = f.input :lat, :as => :hidden, :input_html => { :value => @place.lat }
+  = f.input :lon, :as => :hidden, :input_html => { :value => @place.lon }
+  = f.input :zip, :as => :hidden, :input_html => { :value => @place.zip }
+  = f.input :city, :as => :hidden, :input_html => { :value => @place.city }
+  = f.input :country, :as => :hidden,  :input_html => { :value => @place.country }
+  = render partial: 'form_head', locals: { :menu_index => 1 }
+  = render partial: 'form_menu', locals: { :menu_index => 1 }
+  .grid-x.grid-padding-x
+    .large-6.medium-12.cell
+
+      .grid-x.grid-padding-x
+        .large-8.large-offset-2.medium-12.cell
+          = f.error_notification
+          - if @place.errors.full_messages.present?
+            %ul.hide
+              = @place.errors.full_messages.each do |item,msg|
+                %li= item
+
+      .grid-x.grid-padding-x
+        .large-8.large-offset-2.medium-12.cell
+          #selection{:data => { 'url' => "/#{params[:locale]}/submissions/#{@submission.id.to_s}/new_place?layer_id=1", 'map_id' => "#{@map.id}", 'layer_id' => "#{@layer.id}" }}
+            .form-inputs
+              = f.input :location, :as => :hidden, :label => t('simple_form.labels.location'), :placeholder => t('simple_form.placeholders.location')
+
+              = f.label :adddress, :label => t('simple_form.labels.location')
+              .input-group
+                = f.input :address,  :label => false, :placeholder => t('simple_form.placeholders.location'), input_html: {:class => "address-lookup-field input-group-field", :data => { 'lookupCityOnly' => @submission_config.use_city_only } }
+
+                .input-group-button
+                  %button{:id => 'place_addresslookup_button', :class => 'button secondary', :title => 'Lookup for address'}
+                    %i.fi-magnifying-glass.fi-24
+                    %i.fi-fast-forward.fi-24.hide
+              %p.hint= t('simple_form.hints.location')
+            #selection-hint
+              %p
+                = t('search.lookup.intro')
+
+
+      .grid-x.grid-padding-x
+        .large-8.large-offset-2.medium-12.cell
+          .form-inputs
+
+            = f.input :teaser, :label => t('simple_form.labels.teaser'), :as => 'text', :input_html => {:rows => 8, class: 'large-text tinymce', :placeholder => t('simple_form.placeholders.teaser') }
+            = #tinymce :onchange_callback => "submission_tinymce_preview"
+            :javascript
+              $(document).ready(function(){
+                tinymce.PluginManager.add('maxchars', function(editor) {
+
+                  //set a default value for the maxChars property
+                  editor.maxChars = editor.maxChars || 500;
+
+                  var label = $('#place_teaser_counter');
+
+                  function init() {
+                    updateStyle(); //check if the initial content is valid
+                  };
+
+                  function updateMsg(show, char_length) {
+                    if (!label) {
+                      return;
+                    }
+                    var msg = char_length + '/' + editor.maxChars;
+                    label.text(msg);
+                  }
+
+                  function updateStyle() {
+                    var content = editor.getContent({
+                      format: 'text'
+                    });
+                    var $body = editor.$('.mce-content-body');
+
+                    if (content.length > editor.maxChars) {
+                      label.addClass("warning");
+                      updateMsg(true,content.length);
+                      editor.setContent(content.substr(0, editor.maxChars));
+                      // set cursor to the end
+                      editor.selection.select(tinyMCE.activeEditor.getBody(), true);
+                      editor.selection.collapse(false);
+
+                    } else {
+                      label.removeClass("warning");
+                      updateMsg(false,content.length);
+                    }
+
+                  };
+                  editor.on('init', init);
+                  editor.on("change keyUp", updateStyle);
+                });
+                tinyMCE.init({
+                  selector: '#place_teaser',
+                  toolbar: 'bold italic bullist | link | undo redo | fullscreen',
+                  branding: false,
+                  menubar: false,
+                  statusbar: false,
+                  plugins: "link, lists, fullscreen, maxchars",
+                  setup:  function(editor) {
+                    editor.on('keyup', function(e) {
+                      $('#place_teaser_receiver').html(editor.getContent());
+                    });
+                    editor.on('ExecCommand', function(e) {
+                      if(e.command == 'mceToggleFormat' || e.command == 'mceInsertLink') {
+                        $('#place_teaser_receiver').html(editor.getContent());
+                      }
+                    });
+                  }
+
+                });
+              });
+            %p.hint
+              = t('simple_form.labels.teaser')
+              (max. 500)
+              &mdash;
+              %span#place_teaser_counter
+                \./.
+
+    .large-6.medium-12.cell
+      = render partial: 'form_preview', locals: { :index => 1 }
+
+
+  %hr
+  .grid-x
+    .large-11.medium-12.small-12.cell
+      .form-actions.text-right
+        = f.button :submit, t('simple_form.labels.button_step2'), :class => "button"

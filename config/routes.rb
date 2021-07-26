@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :submission_configs
   devise_for :users
 
   root 'start#index'
@@ -43,6 +44,22 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :groups
+  end
+
+  scope "/:locale" do
+    scope "/:layer_id" do
+      resources :submissions, :controller => "public/submissions", only: [:new, :create, :edit, :update, :index] do
+        get :new_place, :controller => "public/submissions", :action => 'new_place'
+        post :create_place, :controller => "public/submissions", :action => 'create_place'
+        scope "/:place_id" do
+          get :edit_place, :controller => "public/submissions", :action => 'edit_place'
+          patch :update_place, :controller => "public/submissions", :action => 'update_place'
+          get :new_image, :controller => "public/submissions", :action => 'new_image'
+          post :create_image, :controller => "public/submissions", :action => 'create_image'
+          get :finished, :controller => "public/submissions", :action => 'finished'
+        end
+      end
+    end
   end
 
   namespace :public do

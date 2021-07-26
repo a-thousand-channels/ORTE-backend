@@ -1,4 +1,4 @@
-lock "~> 3.15"
+lock "~> 3.16"
 
 # making Rails.application available here
 require File.expand_path("./environment", __dir__)

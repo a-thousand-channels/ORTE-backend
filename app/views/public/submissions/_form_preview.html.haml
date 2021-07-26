@@ -1,0 +1,33 @@
+.grid-x.grid-padding-x
+  .large-10.medium-12.cell
+    %p
+      = t('simple_form.preview.intro')
+    .callout#preview
+      %ul.no-bullet
+        %li{:class => preview_class(0,index)}
+          %h3{:id => 'submission_name_receiver'}
+            = @submission.name || t('simple_form.placeholders.title')
+        %li{:class => preview_class(1,index)}
+          %p{:id => 'place_address_receiver'}
+            - if @place && @place.location
+              = @place.location
+            - else
+              = t('simple_form.placeholders.location')
+        %li{:class => preview_class(1,index)}
+          %div{:id => 'place_teaser_receiver'}
+            - if @place && @place.teaser
+              = @place.teaser.html_safe
+            - else
+              = t('simple_form.placeholders.teaser')
+        %li{:id => 'place_image_placeholder', :class => preview_class(2,index)}
+          %div{:id => 'place_image_receiver'}
+            - if @place
+              - images = Image.where(place_id: @place.id)
+              - if images.count > 0
+                .grid-x#sortable{data: { map: @place.layer.map.id, layer: @place.layer.id, place: @place.id }}
+                  - images.order('sorting ASC').each_with_index do |img,i|
+                    .image.ui-state-default.thumbnail{id: "image_#{img.id}"}
+                      - if img.file.attached?
+                        = image_tag url_for(img.file)
+                      %p.image_title
+                        = img.title

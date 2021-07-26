@@ -1,0 +1,25 @@
+.grid-x.grid-padding-x.align-center
+  .large-10.large-offset-1.medium-12.cell.float-right
+    %nav(aria-label="You are here:" role="navigation")
+      %ul.breadcrumbs
+        - [ {:label => t('simple_form.form_menu.submission')},{:label => t('simple_form.form_menu.place')},{:label => t('simple_form.form_menu.image')}].each_with_index do |item, local_index|
+          - if(local_index == menu_index)
+            %li{ :class => 'current' }
+              = (local_index+1)
+              = item[:label]
+          - elsif (local_index < menu_index)
+            %li{ :class => ''}
+              - if local_index == 0
+                %a{'href'=> edit_submission_path(@layer,@submission)}
+                  = (local_index+1)
+                  = item[:label]
+              - elsif local_index == 1
+                %a{'href'=> submission_edit_place_path()}
+                  = (local_index+1)
+                  = item[:label]
+
+          - else
+            %li{ :class => 'disabled' }
+              = (local_index+1)
+              = item[:label]
+%hr

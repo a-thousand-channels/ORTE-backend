@@ -1,0 +1,65 @@
+---
+en:
+  simple_form:
+    "yes": "Yes"
+    "no": "No"
+    required:
+      text: required
+      mark: "*"
+    error_notification:
+      default_message: "Please review the problems below:"
+    preview:
+      intro: Preview of your submission
+    form_intro:
+      title: Submissions ORTE
+      subtitle: Putting places on a map
+      text: |-
+        We are looking forward to your contributions – thank you very much!
+    form_menu:
+      submission: Personal data
+      place: Location / Contribution
+      image: Image / Media
+    form_finished:
+      title: Thank you for your participation.
+      subtitle: After an editorial review, your contribution will be published.
+    labels:
+      defaults:
+        title_intro: Title Introduction
+        subtitle_intro: Subtitle Introduction
+        intro: Introduction text
+        locales: Translations for the submission form
+      title: Name (or Organisation)
+      teaser: Your contribution
+      email: E-Mail
+      location: Location
+      image: Would you like to upload an image?
+      image_description: Image description
+      rights: I hereby grant the rights to publish my
+        contribution (Text and Images). I confirm that I am owner
+        of the necessary copyright.
+      privacy: I hereby confirm that I/we have read and understood the privacy statement.
+      button_step1: Go to step 2
+      button_step2: Go to step 3
+      submit: Submit submission
+      start_again: Submit an other contribution
+      visit_site: Visit our website
+    hints:
+      title: Your name will be published
+      teaser: A text with maximum of 500 chars.
+      email: Your email address will not be published!
+      location:
+        Your location will be published with your name, please provide the
+        city (or village) plus the name of the country.
+      image: Please use formats like JPEG, GIF, PNG only, maximum size 5MB
+      image_description: Describe the image in a few words
+      image_switch: Upload an image file?
+    placeholders:
+      title: Your name and/or organisation
+      teaser: Your submission
+      email: Your email address
+      location: Your city and country
+      image_description: Title of the image
+    messages:
+      accepted: must be accepted.
+      blank: is blank.
+      empty: is empty.
