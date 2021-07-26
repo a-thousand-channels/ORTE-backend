@@ -1,0 +1,51 @@
+---
+nl:
+  time:
+    formats:
+      day_nr: "%d."
+      daydate: "%d.%m.%Y"
+      default: "%d.%m.%Y, %H:%M"
+  date:
+    formats:
+      default: "%d.%m.%Y"
+  layouts:
+    navigation:
+      sign_out: Afmelden
+      imprint: Impressum
+  activerecord:
+    messages:
+      models:
+        submission:
+          created: Uw gegevens zijn ingevoerd (Stap 1)
+        place:
+          created: Uw gegevens zijn ingevoerd (Stap 2)
+        image:
+          created: Uw bijdrage is opgeslagen
+    errors:
+      models:
+        submission:
+          attributes:
+            name:
+              blank: Voer s.v.p. een naam in
+            email:
+              taken: Email adres al in gebruik
+        image:
+          attributes:
+            title:
+              blank: Geef s.v.p. een beschrijving van de afbeelding aan
+  errors:
+    messages:
+      accepted: Toestemming vereist
+      blank: Verplicht
+      present: Geen invoer mogelijk
+      inclusion: Toestemming vereist
+  search:
+    lookup:
+      intro: Plaats zoeken door hierboven de naam van uw woonplaats in te voeren
+      address: Adres
+      no_input: "Geen input! Voer stad en land in."
+      too_short: "Input te kort! Voer stad en land in."
+      no_result: Er is niets gevonden. Probeer een andere locatie!
+      success_result:
+        Kies s.v.p. een van de onderstaande resultaten (of voer een
+        ander adres in).

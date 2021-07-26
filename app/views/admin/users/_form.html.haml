@@ -9,8 +9,6 @@
   %p
     = f.input :email
   %p
-    = f.input :password
-  %p
     = f.label :role
     = f.select :role, Ability.role_symbols, include_blank: false
   %p

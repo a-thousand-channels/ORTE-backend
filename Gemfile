@@ -10,7 +10,7 @@ end
 gem 'rails', '~> 5.2'
 gem 'puma', '~> 5'
 # seg fault with sassc 2.3.0
-gem 'sassc', '~> 2.2.1'
+gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
 
@@ -23,6 +23,7 @@ gem 'jbuilder'
 gem 'bcrypt'
 
 # custom
+gem 'mysql2'
 gem 'cancancan'
 gem 'devise'
 gem 'exception_notification'
@@ -41,8 +42,8 @@ gem 'rack-cors'
 gem 'settingslogic'
 gem 'simple_form'
 gem 'select2-rails'
+gem "i18n-js"
 
-# gem 'mini_racer', '0.2.15', platforms: :ruby
 gem 'mini_racer', platforms: :ruby
 gem 'image_processing', '~> 1.2'
 
@@ -50,13 +51,14 @@ gem 'color-generator'
 
 gem 'tinymce-rails'
 
-gem 'acts-as-taggable-on', '~> 6.0'
+gem 'acts-as-taggable-on', '~> 7'
 
 gem 'turnout'
 
+gem 'mobility', '~> 1.1.2'
+
 group :staging, :production do
   # gem 'pg'
-  gem 'mysql2'
   gem 'passenger'
 end
 
@@ -75,7 +77,6 @@ group :development, :test, :localtest do
   gem 'rspec-rails'
   gem 'simplecov'
   gem 'rspec_junit_formatter'
-  gem 'sqlite3'
   gem 'json-schema'
   gem 'webmock'
 end

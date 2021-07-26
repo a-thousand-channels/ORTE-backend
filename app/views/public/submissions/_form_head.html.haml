@@ -1,0 +1,26 @@
+
+.grid-x.grid-padding-x.align-center
+  .large-10.large-offset-1.medium-12.cell.float-right
+    - #TODO: %img.float-right{:src => asset_path("layer_logo.jpg"), "width" => '800px'}
+.grid-x.grid-padding-x
+  .large-10.large-offset-1.medium-12.cell
+    %h1
+      = @submission_config.title_intro
+    -if @submission_config.subtitle_intro
+      %h3
+        = @submission_config.subtitle_intro
+%hr
+- if menu_index == 0
+  .grid-x.grid-padding-x
+    .large-10.large-offset-1.medium-12.cell
+      %nav.menu
+        - @submission_config[:locales].each do |language|
+          - klass = 'button secondary'
+          - if params[:locale] == language.to_s
+            - klass = "#{klass} active"
+          = link_to t('languages.' + language.to_s), current_page_params.merge(layer_id: params[:layer_id],place_id: params[:place_id], locale: language.to_s), class: "#{klass}"
+  %hr
+  .grid-x.grid-padding-x
+    .large-10.large-offset-1.medium-12.cell
+      = @submission_config.intro
+  %hr

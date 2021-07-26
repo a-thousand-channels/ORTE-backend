@@ -8,9 +8,9 @@
         .image-toolbar
           = link_to map_layer_place_path(@place.layer.map,@place.layer,@place), class: 'button button-right tiny sortable_handle', title: 'Change sort order' do
             %i.fi-arrows-out
-          = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-show tiny", title: 'See details'  do
+          = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-show tiny", title: 'Show details'  do
             %i.fi-eye
-          = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-edit tiny", title: 'Delete image'  do
+          = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-edit tiny", title: 'Edit/change image'  do
             %i.fi-pencil
 
         - if img.file.attached?
@@ -26,3 +26,5 @@
               Oups, image file is missing.
               %br
               Please click here and upload an image file.
+        %small
+          = img.title      

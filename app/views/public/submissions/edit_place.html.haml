@@ -1,0 +1,6 @@
+#step_place
+  #form-wrapper.large-wrapper
+    - if @layer && @layer.public_submission && @place
+      = render 'form_place'
+    - else
+      = render 'nothing_found'

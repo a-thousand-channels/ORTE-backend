@@ -20,6 +20,29 @@
           = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }          
         %p
           = f.input :published, :label => 'Publish'
+        %p
+          = f.input :public_submission, :label => 'Public submissions' 
+        - if @layer.public_submission
+          - if @layer.submission_config
+            = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button" do
+              %i.fi-pencil.fi-24
+              Edit configuration
+            %br
+            Submission forms: 
+            %br 
+            - @layer.submission_config.locales.each do |language|
+              - klass = 'button secondary'
+              = link_to new_submission_path(layer_id: @layer.id, locale: language.to_s), class: "#{klass}", target: '_blank' do
+                %i.fi-web.fi-24
+                - title = @layer.submission_config.title_intro(locale: language)
+                - if title.nil?
+                  %i Missing title
+                - else 
+                  = title
+          - else  
+            = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button" do
+              %i.fi-pencil.fi-24
+              Create submission configuration 
         %p.compact
           = f.label :color, "Marker color"
         .grid-x

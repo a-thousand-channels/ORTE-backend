@@ -1,34 +1,4 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t 'hello'
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t('hello') %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   'true': 'foo'
-#
-# To learn more, please read the Rails Internationalization guide
-# available at http://guides.rubyonrails.org/i18n.html.
-
+---
 en:
   time:
     formats:
@@ -41,3 +11,52 @@ en:
   layouts:
     navigation:
       sign_out: Sign out
+      imprint: Legal Notice
+  languages:
+    en: "english"
+    de: "deutsch"
+    fr: "français"
+    it: "italiano"
+    nl: "nederlands"
+    pl: "polski"
+    ru: "русский"
+
+  search:
+    lookup:
+      intro:
+        "How to map: Search an address with the field above by adding your home
+        city name."
+      address: "Address:"
+      no_input: "<strong>No input!</strong> Please type in home city and country."
+      too_short: "<strong>Input too short.</strong> Please type in home city and country."
+      no_result: Nothing found. Please try another place!
+      success_result: Please select one result below (or type in another address).
+      nothing_found: Nothing found. Please try another place!
+  activerecord:
+    messages:
+      models:
+        submission:
+          created: Your data has been saved (Step 1).
+        place:
+          created: Your data has been saved (Step 2).
+        image:
+          created: Your contribution has been saved.
+    errors:
+      models:
+        submission:
+          attributes:
+            name:
+              blank: Name can't be blank
+            email:
+              taken: E-Mail is already taken.
+        image:
+          attributes:
+            title:
+              blank: Image description can not be blank
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      blank: can't be blank
+      present: can't be filled
+      inclusion: must be accepted

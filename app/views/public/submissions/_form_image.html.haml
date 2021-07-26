@@ -1,0 +1,43 @@
+= simple_form_for [@map, @submission, @place, @image], :url => {:action => "create_image"} do |f|
+  = f.association :place, as: :hidden, :input_html => { :value => @place.id }
+  = f.input 'image_input', as: :hidden, :input_html => {:name => 'image_input', :value => params[:image_input],:id => "image_input" }
+  = render partial: 'form_head', locals: { :menu_index => 2 }
+  = render partial: 'form_menu', locals: { :menu_index => 2 }
+  .grid-x
+    .large-8.large-offset-2.medium-12.cell
+      = f.error_notification
+      - if @image.errors.messages.present?
+        %ul.hide
+          = @image.errors.messages.each do |item,msg|
+            %li= item
+
+
+  .grid-x.grid-padding-x
+    .large-6.medium-12.cell
+      .grid-x.grid-padding-x
+
+        .large-10.large-offset-2.medium-12.cell
+          %ul.accordion{"id" => 'image_accordion',"data-accordion"=>true, "data-allow-all-closed"=>"true"}
+            %li.accordion-item{"id" => "image_form_item", "data-accordion-item"=>true}
+              %a.accordion-title{"href"=>"#"}
+                %p
+                  = t('simple_form.labels.image')
+              .accordion-content{"data-tab-content"=>true}
+                .form-inputs
+                  = f.input :file, as: :file, input_html: { accept: ('image'), multiple: false }, label: t('simple_form.labels.image')
+                  %p.hint= t('simple_form.hints.image')
+                .form-inputs
+                  = f.input :title, :label => t('simple_form.labels.image_description'), :placeholder => t('simple_form.placeholders.image_description')
+                  %p.hint= t('simple_form.hints.image_description')
+
+
+    .large-6.medium-12.cell
+      = render partial: 'form_preview', locals: { :index => 2 }
+
+
+
+  %hr
+  .grid-x
+    .large-11.medium-12.small-12.cell
+      .form-actions.text-right
+        = f.button :submit, t('simple_form.labels.submit'), :class => "button"

@@ -1,0 +1,59 @@
+---
+nl:
+  simple_form:
+    "yes": Ja
+    "no": Nee
+    required:
+      text: Verplicht
+      mark: "*"
+    error_notification:
+      default_message: "De volgende fouten zijn opgetreden:"
+    preview:
+      intro: Voorbeeld van uw bijdrage
+    form_intro:
+      title: Submissions ORTE
+      text: |-
+        Bij voorbaat hartelijk dank!
+    form_finished:
+      title: Dank U voor Uw bijdrage.
+      subtitle: Na een redactionele controle worden de bijdragen gepubliceerd.
+    labels:
+      title: Naam (of organisatie)
+      teaser: Uw bijdrage
+      email: E-mail
+      location: Plaats
+      image: Wilt u een afbeelding uploaden?
+      image_description: Beschrijving van beeldmateriaal
+      rights: Ik verklaar hiermee tevens
+        dat ik de kopierechten over het materiaal heb.
+      privacy:
+        Ik bevestig dat ik de Algemene verordening gegevensbescherming (AVG)
+        gelezen heb en begrijp
+      submit: Bijdrage verzenden
+      button_step1: Ga door naar stap 2
+      button_step2: Ga door naar stap 3
+      visit_site: Bezoek onze website
+    hints:
+      title: Uw naam wordt openbaar gemaakt
+      teaser: Tekst van maximaal 500 tekens
+      email: Uw e-mailadres wordt niet openbaar gemaakt!
+      location:
+        Uw locatie / woonplaats wordt met uw naam openbaar gemaakt. Geef s.v.p.
+        stad / plaats en land aan.
+      image: "Gebruik uitsluitend JPEG, GIF of PNG formaat. Maximale grootte: 5 MB"
+      image_description: Beschrijf s.v.p. de afbeelding in enkele woorden
+      image_switch: Afbeelding uploaden?
+    placeholders:
+      title: Uw naam of die van uw organisatie
+      teaser: Uw bijdrage
+      email: Uw e-mailadres
+      location: Stad / plaats en land
+      image_description: Titel van de afbeelding
+    messages:
+      accepted: Toestemming is vereist
+      blank: Is vrij
+      empty: Is vrij
+    form_menu:
+      submission: Uw gegevens
+      place: Plaats / Bijdrage
+      image: Afbeelding / Medium

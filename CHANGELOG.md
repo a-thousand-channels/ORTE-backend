@@ -4,6 +4,27 @@ All notable changes to this project (since Version 0.3) will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.51] - 2021-05-08
+
+Rails 5.2.6 + Ruby 2.7
+
+### Added
+- [Feature] Public submission interface (by @Sefux)
+- [Feature] Internationalisation for the public interfaces w/Mobility (by @Sefux)
+
+### Changed
+- [Improvement] More flexible geo to address resolution, allows city only results
+
+
+## [0.5] - 2021-03-05
+
+### Added
+- [Feature] Simple search within a map
+- [UI] Custom iconset per map
+- [UI] Tagging per place, tagcloud
+- [Feature] Videoupload w/Active Storage + simple html5 player
+- [App] Deployment setup w/Capistrano
+- plus several smaller improvements and fixes
 
 ## [0.41] - 2020-10-11
 

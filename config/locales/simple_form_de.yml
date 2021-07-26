@@ -1,0 +1,59 @@
+---
+de:
+  simple_form:
+    "yes": Ja
+    "no": Nein
+    required:
+      text: Pflichtfeld
+      mark: "*"
+    error_notification:
+      default_message: "Es sind Fehler aufgetreten:"
+    preview:
+      intro: Vorschau Ihres Beitrages
+    form_intro:
+      title: Einreichung ORTE
+      text: |
+        Wir freuen uns auf Ihre Beiträge - vielen Dank!
+    form_menu:
+      submission: Ihre Daten
+      place: Ort/Beitrag
+      image: Bild/Medium
+    form_finished:
+      title: Vielen Dank für Ihre Beteiligung.
+      subtitle: Nach einer redaktionellen Prüfung wird der Beitrag veröffentlicht.
+    labels:
+      title: Name (oder Organisation)
+      teaser: Ihr Beitrag
+      email: E-Mail
+      location: Ort
+      image: Wollen Sie ein Bild hochladen?
+      image_description: Bildbeschreibung
+      rights: Hiermit erteile ich die Erlaubnis, meinen Beitrag (Text und Bild) zu veröffentlichen. Ich bestätige, dass ich im Besitz der Urheberrechte bin.
+      privacy: Ich bestätige, dass ich die Datenschutzerklärung gelesen und verstanden habe.
+      button_step1: Weiter zu Schritt 2
+      button_step2: Weiter zu Schritt 3
+      submit: Beitrag einreichen
+      start_again: Einen weiteren Beitrag einreichen
+      visit_site: Besuchen Sie unsere Webseite
+    hints:
+      title: Ihr Name wird veröffentlicht.
+      teaser: Text mit einer Länge von bis zu 500 Zeichen.
+      email: Ihre E-Mail-Adresse wird nicht veröffentlicht!
+      location:
+        Ihr Standort wird zusammen mit Ihrem Namen veröffentlicht. Bitte geben
+        Sie die Stadt (oder den Ort) sowie das Land an.
+      image:
+        "Bitte nur die Formate JPEG, GIF und PNG verwenden. Maximale Größe: 5
+        MB."
+      image_description: Beschreiben Sie die Abbildung in wenigen Worten.
+      image_switch: Ein Bild hochladen?
+    placeholders:
+      title: Ihr Name und/oder Ihre Organisation
+      teaser: Ihr Beitrag
+      email: Ihre E-Mail-Adresse
+      location: Stadt/Dorf und Land
+      image_description: Titel der Abbildung
+    messages:
+      accepted: Zustimmung erforderlich.
+      blank: ist frei.
+      empty: ist frei.
