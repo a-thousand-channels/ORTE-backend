@@ -11,8 +11,10 @@
   %p
     = f.label :role
     = f.select :role, Ability.role_symbols, include_blank: false
+    %span.shy Admins can edit/add User
   %p
     = f.association :group, collection: @groups, include_blank: false
+    %span.shy Admins group can see all maps, all other groups are only allowed to see their groups
 
   %p.actions
     = f.submit 'Save', :class => 'button'

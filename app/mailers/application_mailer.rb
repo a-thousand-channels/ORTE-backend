@@ -23,7 +23,7 @@ class ApplicationMailer < ActionMailer::Base
   private
 
   def admin_adresses
-    User.where(role: :admin).collect(&:email)
+    User.where(role: :admin).joins(:group).where("groups.title = 'Admins'").collect(&:email)
   end
 
   def get_label(target)

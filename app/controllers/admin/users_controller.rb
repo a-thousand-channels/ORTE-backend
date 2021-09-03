@@ -29,13 +29,7 @@ class Admin::UsersController < ApplicationController
     end
   end
 
-  def edit
-    @groups = if current_user.admin?
-                Group.all
-              else
-                Group.by_user(current_user)
-              end
-  end
+  def edit; end
 
   def index
     @admin_users = User.by_group(current_user).order(:email).page params[:page]
@@ -72,6 +66,11 @@ class Admin::UsersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_admin_user
     @admin_user = User.find(params[:id])
+    @groups = if current_user.admin?
+                Group.all
+              else
+                Group.by_user(current_user)
+              end
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
@@ -79,5 +78,11 @@ class Admin::UsersController < ApplicationController
     permitted_attributes = %i[email password group_id]
     permitted_attributes << :role if current_user.try(:admin?)
     params.require(:admin_user).permit(permitted_attributes)
+  end
+
+  protected
+
+  def update_resource(resource, params)
+    resource.update_without_password(params)
   end
 end
