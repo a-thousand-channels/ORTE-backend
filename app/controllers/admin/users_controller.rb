@@ -44,7 +44,9 @@ class Admin::UsersController < ApplicationController
               end
   end
 
-  def show; end
+  def show
+    redirect_to edit_admin_user_path(@admin_user), notice: "Redirect to edit this User"
+  end
 
   def update
     sanitized_params = admin_user_params

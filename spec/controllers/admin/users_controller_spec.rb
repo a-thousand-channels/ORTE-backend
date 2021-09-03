@@ -51,9 +51,13 @@ RSpec.describe Admin::UsersController, type: :controller do
     end
 
     describe 'GET #show' do
-      xit 'assigns the requested admin_user as @admin_user' do
-        get :show, params: { id: @admin_user.to_param }, session: valid_session
-        expect(assigns(:admin_user)).to eq(@admin_user)
+      it 'assigns nil as @admin_user' do
+        expect(assigns(:admin_user)).to eq(nil)
+      end
+      it 'redirects to edit form' do
+        user = User.create! valid_attributes
+        get :show, params: { id: user.to_param }, session: valid_session
+        expect(response).to redirect_to(edit_admin_user_path(user))
       end
     end
 
