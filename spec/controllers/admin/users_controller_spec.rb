@@ -118,12 +118,12 @@ RSpec.describe Admin::UsersController, type: :controller do
           user = User.create! valid_attributes
           put :update, params: { id: user.to_param, admin_user: new_attributes }, session: valid_session
           user.reload
-          expect(user.email).to eq 'admin@domain.com'
+          expect(user.email).to eq 'abc@def.ghi'
         end
 
         it 'assigns the requested admin_user as @admin_user' do
           user = User.create! valid_attributes
-          put :update, params: { id: user.to_param, admin_user: valid_attributes }, session: valid_session
+          put :update, params: { id: user.to_param, admin_user: new_attributes }, session: valid_session
           expect(assigns(:admin_user)).to eq(user)
         end
 

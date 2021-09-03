@@ -10,7 +10,7 @@ class User < ApplicationRecord
   include ModelAuthorization
 
   validates :email, presence: true
-  validates :password, presence: true
+  # validates :password, presence: true
   validates :role,  presence: true,
                     inclusion: { in: Ability.role_symbols.map(&:to_s) }
 
