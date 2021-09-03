@@ -100,15 +100,12 @@ RSpec.describe Admin::UsersController, type: :controller do
       end
 
       context 'with invalid params' do
-        xit 'assigns a newly created but unsaved admin_user as @admin_user' do
-          post :create, params: { admin_user: invalid_attributes }, session: valid_session
-          expect(assigns(:admin_user)).to be_a_new(User)
+        it 'assigns a newly created but unsaved admin_user as @admin_user' do
+          expect {
+            post :create, params: { admin_user: invalid_attributes }, session: valid_session
+          }.to raise_error(ActiveRecord::RecordInvalid)
         end
 
-        xit "re-renders the 'new' template" do
-          post :create, params: { admin_user: invalid_attributes }, session: valid_session
-          expect(response).to render_template('new')
-        end
       end
     end
 
