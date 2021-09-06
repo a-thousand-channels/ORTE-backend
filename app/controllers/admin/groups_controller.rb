@@ -4,7 +4,7 @@ class Admin::GroupsController < ApplicationController
   before_action :set_admin_group, only: %i[edit update destroy]
 
   def index
-    @admin_groups = if current_user.admin?
+    @admin_groups = if current_user.admin? && current_user.group.title == 'Admins'
                       Group.all
                     else
                       Group.by_user(current_user)

@@ -14,7 +14,8 @@
     %span.shy Admins can edit/add User
   %p
     = f.association :group, collection: @groups, include_blank: false
-    %span.shy Admins group can see all maps, all other groups are only allowed to see their groups
+    - if admin?
+      %span.shy Admins group can see all maps, all other groups are only allowed to see their groups
 
   %p.actions
     = f.submit 'Save', :class => 'button'

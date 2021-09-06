@@ -15,8 +15,29 @@ RSpec.describe Admin::UsersController, type: :controller do
   describe "functionalities with logged in user with role 'user'" do
     before(:all) do
       User.destroy_all
+      @group = FactoryBot.create(:group)
+      @user = FactoryBot.create(:user, group_id: @group.id)
+    end
+
+    before(:each) do
+      sign_in(@user)
+    end
+
+    describe 'GET #index' do
+      xit 'Should redirect to startpage with a friendly message' do
+        pending('We need a role-based auth model')
+      end
+    end
+
+  end
+
+  describe "functionalities with logged in user with role 'admin'" do
+    before(:all) do
+      User.destroy_all
       @admin_group = FactoryBot.create(:group)
+      @other_group = FactoryBot.create(:group)
       @admin_user = FactoryBot.create(:admin_user, group_id: @admin_group.id)
+      @other_user = FactoryBot.create(:admin_user, group_id: @other_group.id)
     end
 
     before(:each) do
@@ -66,6 +87,11 @@ RSpec.describe Admin::UsersController, type: :controller do
         get :new, params: {}, session: valid_session
         expect(assigns(:admin_user)).to be_a_new(User)
       end
+
+      it 'assigns your groups as @groups ' do
+        get :new, params: {}, session: valid_session
+        expect(assigns(:groups)).to eq([@admin_group])
+      end
     end
 
     describe 'GET #edit' do
@@ -103,7 +129,12 @@ RSpec.describe Admin::UsersController, type: :controller do
         it 'assigns a newly created but unsaved admin_user as @admin_user' do
           expect {
             post :create, params: { admin_user: invalid_attributes }, session: valid_session
-          }.to raise_error(ActiveRecord::RecordInvalid)
+          }.not_to raise_error
+        end
+
+        it "returns a success response (i.e. to display the 'new' template)" do
+          post :create, params: { admin_user: invalid_attributes }, session: valid_session
+          expect(response).to have_http_status(200)
         end
 
       end
@@ -162,6 +193,30 @@ RSpec.describe Admin::UsersController, type: :controller do
         user = User.create! valid_attributes
         delete :destroy, params: { id: user.to_param }, session: valid_session
         expect(response).to redirect_to(admin_users_url)
+      end
+    end
+  end
+
+  describe "Functionalities with logged in user with role 'admin' and member of the group 'admin' (which makes them superuser)" do
+    before(:all) do
+      User.destroy_all
+      @admin_group = FactoryBot.create(:group, title: 'Admin')
+      @other_group = FactoryBot.create(:group)
+      @admin_user = FactoryBot.create(:admin_user, group_id: @admin_group.id)
+      @other_user = FactoryBot.create(:admin_user, group_id: @other_group.id)
+    end
+
+    before(:each) do
+      sign_in(@admin_user)
+    end
+
+    let(:valid_session) { {} }
+
+    describe 'GET #index' do
+      xit 'assigns all admin_users as @admin_users' do
+        get :index, params: {}, session: valid_session
+        expect(assigns(:admin_users)).to eq([@admin_user,@other_user])
+        expect(response).to render_template('index')
       end
     end
   end
