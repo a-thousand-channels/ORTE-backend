@@ -85,7 +85,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'listen', '~> 3'
-  gem 'web-console', '>= 3.3.0'
+  gem 'web-console', '~> 3'
 
   gem 'capistrano', "~> 3.15", require: false
   gem 'capistrano-rails', "~> 1.3", require: false
