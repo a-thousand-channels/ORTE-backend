@@ -11,7 +11,15 @@ class StartController < ApplicationController
 
   def settings
     @user = current_user
+    @users = User.by_group(current_user).order(:email)
+    @maps = Map.by_user(current_user).order(:title)
+    @groups = if current_user.admin? && current_user.group.title == 'Admins'
+                Group.all
+              else
+                Group.by_user(current_user)
+              end
   end
+
   def edit_profile
     @user = current_user
   end
