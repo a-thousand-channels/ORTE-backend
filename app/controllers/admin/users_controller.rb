@@ -11,7 +11,7 @@ class Admin::UsersController < ApplicationController
     @admin_user.password_confirmation = password
 
     respond_to do |format|
-      if @admin_user.save!
+      if @admin_user.save
         format.html { redirect_to admin_users_url, notice: 'User was successfully created. An E-Mail has been sent to the User with all needed Informations (Link to Login, Password)' }
         format.json { render :show, status: :created, location: @admin_user }
       else
@@ -32,12 +32,12 @@ class Admin::UsersController < ApplicationController
   def edit; end
 
   def index
-    @admin_users = User.by_group(current_user).order(:email).page params[:page]
+    @admin_users = User.by_group(current_user).order("last_sign_in_at DESC").page params[:page]
   end
 
   def new
     @admin_user = User.new
-    @groups = if current_user.admin?
+    @groups = if current_user.admin? && current_user.group.title == 'Admins'
                 Group.all
               else
                 Group.by_user(current_user)

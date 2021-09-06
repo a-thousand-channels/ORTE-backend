@@ -23,7 +23,6 @@
         %th Group
         %th Created/Last&nbsp;login
         %th
-        %th
 
     %tbody
       - @admin_users.each do |admin_user|
@@ -55,8 +54,7 @@
           %td
             = link_to edit_admin_user_path(admin_user), :class => 'button' do
               %i.fi.fi-pencil
-
-          %td
+            %br
             = link_to [:admin, admin_user ], :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
               %i.fi.fi-x
 
