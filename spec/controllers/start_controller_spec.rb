@@ -7,7 +7,10 @@ RSpec.describe StartController, type: :controller do
 
   before(:all) do
     User.destroy_all
-    @user = FactoryBot.create(:user)
+    @my_group = FactoryBot.create(:group)
+    @my_map1 = FactoryBot.create(:map, group_id: @my_group.id)
+    @my_map2 = FactoryBot.create(:map, group_id: @my_group.id)
+    @user = FactoryBot.create(:user, group_id: @my_group.id)
   end
 
   describe 'GET #index as user' do
@@ -27,10 +30,21 @@ RSpec.describe StartController, type: :controller do
   end
 
   describe 'GET #settings as user' do
-    it 'returns success' do
+    before do
       sign_in(@user)
+    end
+
+    it 'returns success' do
       get :settings
       expect(response).to have_http_status(200)
+    end
+
+    it 'assigns vars for site stats' do
+      get :settings
+      @other_group = FactoryBot.create(:group)
+      @other_map = FactoryBot.create(:map, group_id: @other_group.id )
+      expect(assigns(:groups)).to eq([@my_group])
+      expect(assigns(:maps)).to eq([@my_map1,@my_map2])
     end
   end
 
