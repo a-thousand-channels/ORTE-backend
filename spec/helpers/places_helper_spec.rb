@@ -19,7 +19,7 @@ RSpec.describe PlacesHelper, type: :helper do
     it 'it returns an polymorphic image link' do
       i = Image.new
       i.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(helper.image_link(i)).to eq("http://test.host#{polymorphic_path(i.file.variant(resize: "800x800").processed)}")
+      expect(helper.image_link(i)).to eq("http://test.host#{polymorphic_path(i.file.variant(resize: '800x800').processed)}")
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe PlacesHelper, type: :helper do
 
   describe 'icon_class' do
     it 'it returns an polymorphic icon link' do
-      expect(helper.icon_class('circle','Test')).to eq("icon_circle icon_test")
+      expect(helper.icon_class('circle', 'Test')).to eq('icon_circle icon_test')
     end
   end
 

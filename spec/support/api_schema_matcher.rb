@@ -4,7 +4,7 @@
 
 # JSON Schema infered with https://www.jsonschema.net/
 
-RSpec::Matchers.define :match_response_schema do |schema,format|
+RSpec::Matchers.define :match_response_schema do |schema, format|
   match do |response|
     schema_directory = "#{Dir.pwd}/spec/support/api/"
     schema_path = "#{schema_directory}/#{schema}.#{format}"

@@ -32,7 +32,7 @@ class Admin::UsersController < ApplicationController
   def edit; end
 
   def index
-    @admin_users = User.by_group(current_user).order("last_sign_in_at DESC").page params[:page]
+    @admin_users = User.by_group(current_user).order('last_sign_in_at DESC').page params[:page]
   end
 
   def new
@@ -45,7 +45,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def show
-    redirect_to edit_admin_user_path(@admin_user), notice: "Redirect to edit this User"
+    redirect_to edit_admin_user_path(@admin_user), notice: 'Redirect to edit this User'
   end
 
   def update

@@ -3,8 +3,7 @@
 class Ability
   include CanCan::Ability
 
-  attr_reader :role
-  attr_reader :user
+  attr_reader :role, :user
 
   def initialize(user = nil)
     @user = user
@@ -15,7 +14,7 @@ class Ability
     when :admin
       can :manage, :all
 
-    when :user then
+    when :user
       can :read,    User,             id: user.id
       can :update,  User,             id: user.id
 

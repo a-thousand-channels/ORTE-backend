@@ -28,7 +28,6 @@ RSpec.describe Admin::UsersController, type: :controller do
         pending('We need a role-based auth model')
       end
     end
-
   end
 
   describe "functionalities with logged in user with role 'admin'" do
@@ -127,16 +126,15 @@ RSpec.describe Admin::UsersController, type: :controller do
 
       context 'with invalid params' do
         it 'assigns a newly created but unsaved admin_user as @admin_user' do
-          expect {
+          expect do
             post :create, params: { admin_user: invalid_attributes }, session: valid_session
-          }.not_to raise_error
+          end.not_to raise_error
         end
 
         it "returns a success response (i.e. to display the 'new' template)" do
           post :create, params: { admin_user: invalid_attributes }, session: valid_session
           expect(response).to have_http_status(200)
         end
-
       end
     end
 
@@ -215,7 +213,7 @@ RSpec.describe Admin::UsersController, type: :controller do
     describe 'GET #index' do
       xit 'assigns all admin_users as @admin_users' do
         get :index, params: {}, session: valid_session
-        expect(assigns(:admin_users)).to eq([@admin_user,@other_user])
+        expect(assigns(:admin_users)).to eq([@admin_user, @other_user])
         expect(response).to render_template('index')
       end
     end

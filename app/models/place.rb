@@ -10,21 +10,18 @@ class Place < ApplicationRecord
 
   acts_as_taggable_on :tags
 
-  has_one_attached :audio, :dependent => :destroy
+  has_one_attached :audio, dependent: :destroy
 
-  has_many :images, :dependent => :destroy
-  has_many :videos, :dependent => :destroy
-  has_many :submissions, :dependent => :destroy
+  has_many :images, dependent: :destroy
+  has_many :videos, dependent: :destroy
+  has_many :submissions, dependent: :destroy
 
   validates :title, presence: true
   validate :check_audio_format
 
   scope :published, -> { where(published: true) }
 
-  attr_accessor :startdate_date
-  attr_accessor :startdate_time
-  attr_accessor :enddate_date
-  attr_accessor :enddate_time
+  attr_accessor :startdate_date, :startdate_time, :enddate_date, :enddate_time
 
   before_save do
     if startdate_date.present? && startdate_time.present?
@@ -39,9 +36,6 @@ class Place < ApplicationRecord
     end
   end
 
-
-
-
   def date
     ApplicationController.helpers.smart_date_display(startdate, enddate)
   end
@@ -55,37 +49,25 @@ class Place < ApplicationRecord
   end
 
   def icon_name
-    if self.icon
-      ApplicationController.helpers.icon_name(self.icon.title)
-    end
+    ApplicationController.helpers.icon_name(icon.title) if icon
   end
 
   def icon_link
-    if self.icon && self.icon.file.attached?
-      ApplicationController.helpers.icon_link(self.icon.file)
-    end
+    ApplicationController.helpers.icon_link(icon.file) if icon&.file&.attached?
   end
 
   def icon_class
-    if self.icon && self.icon.iconset.class_name
-      ApplicationController.helpers.icon_class(self.icon.iconset.class_name,self.icon.title)
-    end
+    ApplicationController.helpers.icon_class(icon.iconset.class_name, icon.title) if icon&.iconset&.class_name
   end
 
   def imagelink2
     i = Image.preview(id)
-    if i.count > 0
-      ApplicationController.helpers.image_link(i.first)
-    end
+    ApplicationController.helpers.image_link(i.first) if i.count.positive?
   end
 
   def audiolink
-    if self.audio
-      ApplicationController.helpers.audio_link(self.audio)
-    end
+    ApplicationController.helpers.audio_link(audio) if audio
   end
-
-
 
   def full_address
     if location.present? && address.present?
@@ -120,7 +102,7 @@ class Place < ApplicationRecord
   def self.to_csv
     attributes = %w[id title teaser_as_text text_as_text startdate enddate lat lon location address zip city country]
     headers = %w[id title teaser text startdate enddate lat lon location address zip city country]
-    CSV.generate(headers: false, force_quotes: false, strip: true ) do |csv|
+    CSV.generate(headers: false, force_quotes: false, strip: true) do |csv|
       csv << headers
       all.each do |user|
         csv << attributes.map { |attr| user.send(attr) }
@@ -131,8 +113,6 @@ class Place < ApplicationRecord
   private
 
   def check_audio_format
-    if audio.attached? && !audio.content_type.in?(%w(audio/mpeg))
-      errors.add(:audio, 'format must be MP3.')
-    end
+    errors.add(:audio, 'format must be MP3.') if audio.attached? && !audio.content_type.in?(%w[audio/mpeg])
   end
 end

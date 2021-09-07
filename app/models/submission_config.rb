@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SubmissionConfig < ApplicationRecord
   extend Mobility
   translates :title_intro,    type: :string
@@ -9,5 +11,4 @@ class SubmissionConfig < ApplicationRecord
   belongs_to :layer, optional: true
 
   serialize :locales, Array
-
 end

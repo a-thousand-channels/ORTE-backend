@@ -1,16 +1,14 @@
+# frozen_string_literal: true
+
 module SubmissionsHelper
   def preview_class(local_index, form_index)
-    return_class = 'preview'
-    if form_index == -1 
-      return ''
-    elsif local_index == form_index
-      return_class << ' active'
+    return '' if form_index == -1
+    if local_index == form_index
+      return ' active'
     elsif local_index < form_index
-      return_class << ' done'
+      return  ' done'
     else
-      return_class << ' todo'  
+      return  ' todo'
     end
-    return_class
   end
-
 end

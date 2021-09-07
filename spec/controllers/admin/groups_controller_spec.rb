@@ -155,11 +155,9 @@ RSpec.describe Admin::GroupsController, type: :controller do
     end
 
     describe 'DELETE #destroy' do
-
       before(:each) do
         @other_group = FactoryBot.create(:group)
         @other_user = FactoryBot.create(:admin_user, group_id: @other_group.id)
-
       end
       xit 'cant destroy the requested group (if a user is still there)' do
         expect do

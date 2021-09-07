@@ -4,13 +4,11 @@ class ApplicationMailer < ActionMailer::Base
   default from: 'technik@3plusx.de'
   layout 'mailer'
 
-
   def notify_user_created(user)
     @user = user
     mail(to: user.email,
-         subject: "Your profile for ORTE has been created")
+         subject: 'Your profile for ORTE has been created')
   end
-
 
   def notify_admin_user_created(user)
     @user = user

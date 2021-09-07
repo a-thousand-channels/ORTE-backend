@@ -17,7 +17,7 @@ RSpec.describe Place, type: :model do
       subject.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.m4a')), filename: 'test.mp3', content_type: 'audio/mpeg')
       # expect(subject.audio).not_to be_attached
       expect(subject).not_to be_valid
-      expect(subject.errors.full_messages).to include("Audio format must be MP3.")
+      expect(subject.errors.full_messages).to include('Audio format must be MP3.')
     end
   end
 
@@ -96,7 +96,6 @@ RSpec.describe Place, type: :model do
       expect(p.full_address_with_city).to eq('A location An address, 12345 City')
     end
   end
-
 
   describe 'CSV' do
     it 'is valid  ' do

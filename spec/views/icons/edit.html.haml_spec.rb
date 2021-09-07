@@ -13,7 +13,6 @@ RSpec.describe 'icons/edit', type: :view do
 
     assert_select 'form[action=?][method=?]', iconset_icon_path(@iconset, @icon), 'post' do
       assert_select 'input[name=?]', 'icon[title]'
-
     end
   end
 end

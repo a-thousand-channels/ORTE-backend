@@ -1,10 +1,11 @@
-module PlacesHelper
+# frozen_string_literal: true
 
+module PlacesHelper
   include Rails.application.routes.url_helpers
 
-   def default_url_options
-      { host: Settings.app_host, :protocol => Settings.app_host_protocol }
-    end
+  def default_url_options
+    { host: Settings.app_host, protocol: Settings.app_host_protocol }
+  end
 
   def show_link(title, map_id, layer_id, id)
     " <a href=\"/maps/#{map_id}/layers/#{layer_id}/places/#{id}\">#{title}</a>"
@@ -15,33 +16,32 @@ module PlacesHelper
   end
 
   def add_new_entry_link(place)
-    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{@place.location}&address=#{@place.address}&zip=#{@place.zip}&city=#{@place.city}&lat=#{@place.lat}&lon=#{@place.lon}";
+    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{@place.location}&address=#{@place.address}&zip=#{@place.zip}&city=#{@place.city}&lat=#{@place.lat}&lon=#{@place.lon}"
   end
 
   def icon_link(file)
     "<img src=\"#{polymorphic_url(file)}\">"
   end
 
-  def icon_class(klass_name,title)
+  def icon_class(klass_name, title)
     "icon_#{klass_name} icon_#{title.parameterize}"
   end
 
   def icon_name(title)
-    "#{title}"
+    title.to_s
   end
 
   def image_link(image)
-    if image.file.attached?
-      # polymorphic_url(image.file)
-      polymorphic_url(image.file.variant(resize: "800x800").processed)
-    end
+    return unless image.file.attached?
+
+    # polymorphic_url(image.file)
+    polymorphic_url(image.file.variant(resize: '800x800').processed)
   end
 
   def audio_link(audio)
-    if audio.attached?
-      # polymorphic_url(image.file)
-      audio_tag rails_blob_url(audio), autoplay: true, controls: true
-    end
-  end
+    return unless audio.attached?
 
+    # polymorphic_url(image.file)
+    audio_tag rails_blob_url(audio), autoplay: true, controls: true
+  end
 end

@@ -2,6 +2,6 @@
 
 module IconsetsHelper
   def class_name_collection
-    ['round','square']
+    %w[round square]
   end
 end

@@ -1,6 +1,8 @@
- require 'rails_helper'
+# frozen_string_literal: true
 
- RSpec.describe 'Layers', type: :request do
+require 'rails_helper'
+
+RSpec.describe 'Layers', type: :request do
   describe 'GET /submission_config/1' do
     it 'gets redirected to login' do
       get submission_config_path(1)

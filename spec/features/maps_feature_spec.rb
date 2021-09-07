@@ -18,13 +18,12 @@ RSpec.feature 'User may create a map ' do
     expect(page).to have_content 'Add a map'
     click_link 'Add a map'
     expect(page).to have_current_path '/maps/new'
-    fill_in 'map_title', with: "My first map"
+    fill_in 'map_title', with: 'My first map'
     # TODO: capybara does not find the button
     # save_and_open_page
     # expect(page).to have_button("Create map")
     # click_button 'Create map', disabled: true
     # expect(page).to have_content 'Map was successfully created.'
-
   end
 
   scenario 'shows a create form and saves a map (on any further maps)', js: true do
@@ -34,7 +33,7 @@ RSpec.feature 'User may create a map ' do
     expect(page).to have_content 'Select a map...'
     click_link 'new_map_button'
     expect(page).to have_current_path '/maps/new'
-    fill_in 'map_title', with: "My second map"
+    fill_in 'map_title', with: 'My second map'
     # click_button 'Create map'
     # expect(page).to have_content 'Map was successfully created.'
   end

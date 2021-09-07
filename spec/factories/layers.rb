@@ -3,11 +3,11 @@
 FactoryBot.define do
   factory :layer do
     title { 'MyString' }
-    subtitle { 'MyString' }    
+    subtitle { 'MyString' }
     text { 'MyString' }
     published { false }
     map
-    submission_config {false}
+    submission_config { false }
     trait :invalid do
       title { nil }
     end
