@@ -27,7 +27,7 @@ RSpec.describe 'places/new', type: :view do
   it 'renders new place form' do
     render
 
-    assert_select 'form[action=?][method=?]', map_layer_places_path(@map,@layer), 'post' do
+    assert_select 'form[action=?][method=?]', map_layer_places_path(@map, @layer), 'post' do
       assert_select 'input[name=?]', 'place[title]'
 
       assert_select 'textarea[name=?]', 'place[teaser]'

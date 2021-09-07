@@ -101,7 +101,6 @@ RSpec.describe ImagesController, type: :controller do
         it 'redirects to related place url' do
           post :create, params: { image: valid_attributes, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
           expect(response).to redirect_to(edit_map_layer_place_url(@map, @layer, @place))
-
         end
       end
 
@@ -110,7 +109,6 @@ RSpec.describe ImagesController, type: :controller do
           post :create, params: { image: invalid_attributes, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
           expect(response).to render_template('new')
           expect(response).to have_http_status(200)
-
         end
       end
       context 'wit wrong fileformat' do
@@ -171,7 +169,7 @@ RSpec.describe ImagesController, type: :controller do
       it 'redirects to the place edit view' do
         image = Image.create! valid_attributes
         delete :destroy, params: { id: image.to_param, layer_id: @layer.id, map_id: @map.id, place_id: @place.id }, session: valid_session
-          expect(response).to redirect_to(edit_map_layer_place_url(@map, @layer, @place))
+        expect(response).to redirect_to(edit_map_layer_place_url(@map, @layer, @place))
       end
     end
   end

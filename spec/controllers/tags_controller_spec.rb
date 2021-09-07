@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe TagsController, type: :controller do
-
   describe "functionalities with logged in user with role 'admin'" do
     before do
       group = FactoryBot.create(:group)
@@ -17,7 +16,7 @@ RSpec.describe TagsController, type: :controller do
 
     describe 'GET #index' do
       it 'returns a success response' do
-        place = FactoryBot.create(:place, layer_id: @layer.id )
+        place = FactoryBot.create(:place, layer_id: @layer.id)
         get :index, params: { map_id: @map.id }, session: valid_session
         expect(response).to have_http_status(200)
       end
@@ -25,7 +24,7 @@ RSpec.describe TagsController, type: :controller do
 
     describe 'GET #show' do
       it 'returns a success response' do
-        place = FactoryBot.create(:place, layer_id: @layer.id )
+        place = FactoryBot.create(:place, layer_id: @layer.id)
         tag = FactoryBot.create(:tag)
         get :show, params: { map_id: @map.to_param, id: tag.to_param }, session: valid_session
         expect(response).to have_http_status(200)

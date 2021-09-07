@@ -12,7 +12,6 @@ class Public::LayersController < ActionController::Base
     headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
   end
 
-
   # GET /maps/1/layers/1.json
   def show
     @layer = Layer.published.find_by_id(params[:id])
@@ -20,7 +19,7 @@ class Public::LayersController < ActionController::Base
     respond_to do |format|
       if @layer.present?
         format.json { render :show }
-        format.geojson { render :show, mime_type: Mime::Type.lookup("application/geo+json")}
+        format.geojson { render :show, mime_type: Mime::Type.lookup('application/geo+json') }
       else
         # format.json { head :no_content }
         format.json { render json: { error: 'Layer not accessible' }, status: :forbidden }

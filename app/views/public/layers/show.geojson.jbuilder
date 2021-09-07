@@ -1,13 +1,15 @@
 # frozen_string_literal: true
-if @layer && @layer.published
-  json.type "FeatureCollection"
+
+if @layer&.published
+  json.type 'FeatureCollection'
   json.title @layer.title
   json.text @layer.text
   json.id @layer.id
 
   json.features @layer.places do |place|
     next unless place.published
-    json.type "Feature"
+
+    json.type 'Feature'
     json.geometry do
       json.type 'Point'
       json.coordinates [place.lon, place.lat]

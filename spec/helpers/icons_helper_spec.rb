@@ -3,7 +3,6 @@
 require 'rails_helper'
 
 RSpec.describe IconsHelper, type: :helper do
-
   describe 'icon_url' do
     it 'it returns an polymorphic image link' do
       i = Icon.new

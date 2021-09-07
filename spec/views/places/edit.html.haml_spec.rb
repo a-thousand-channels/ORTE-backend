@@ -12,7 +12,7 @@ RSpec.describe 'places/edit', type: :view do
   it 'renders the edit place form' do
     render
 
-    assert_select 'form[action=?][method=?]', map_layer_place_path(@map,@layer,@place), 'post' do
+    assert_select 'form[action=?][method=?]', map_layer_place_path(@map, @layer, @place), 'post' do
       assert_select 'input[name=?]', 'place[title]'
 
       assert_select 'textarea[name=?]', 'place[teaser]'

@@ -17,7 +17,6 @@ RSpec.describe 'iconsets/edit', type: :view do
       assert_select 'input[name=?]', 'iconset[title]'
 
       assert_select 'textarea[name=?]', 'iconset[text]'
-
     end
   end
 end

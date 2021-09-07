@@ -42,9 +42,9 @@ RSpec.describe StartController, type: :controller do
     it 'assigns vars for site stats' do
       get :settings
       @other_group = FactoryBot.create(:group)
-      @other_map = FactoryBot.create(:map, group_id: @other_group.id )
+      @other_map = FactoryBot.create(:map, group_id: @other_group.id)
       expect(assigns(:groups)).to eq([@my_group])
-      expect(assigns(:maps)).to eq([@my_map1,@my_map2])
+      expect(assigns(:maps)).to eq([@my_map1, @my_map2])
     end
   end
 

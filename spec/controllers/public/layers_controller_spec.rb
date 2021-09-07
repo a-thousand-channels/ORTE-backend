@@ -26,7 +26,6 @@ RSpec.describe Public::LayersController, type: :controller do
 
     let(:valid_session) { {} }
 
-
     describe 'GET #show w/JSON format' do
       it 'returns a success response for a published layer' do
         layer = Layer.create! valid_attributes
@@ -47,7 +46,7 @@ RSpec.describe Public::LayersController, type: :controller do
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
         # puts response.body
-        expect(response).to match_response_schema('layer','json')
+        expect(response).to match_response_schema('layer', 'json')
       end
 
       it 'returns an 403 + error response for unpublished resources' do
@@ -78,7 +77,7 @@ RSpec.describe Public::LayersController, type: :controller do
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'geojson' }, session: valid_session
         # puts response.body
-        expect(response).to match_response_schema('layer','geojson')
+        expect(response).to match_response_schema('layer', 'geojson')
       end
 
       it 'returns an 403 + error response for unpublished resources' do

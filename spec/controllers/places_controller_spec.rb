@@ -198,7 +198,6 @@ RSpec.describe PlacesController, type: :controller do
       end
     end
 
-
     describe 'POST #sort' do
       it 'sort images of a place (via XHR)' do
         place = Place.create! valid_attributes

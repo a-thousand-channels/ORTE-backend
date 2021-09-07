@@ -16,7 +16,6 @@ RSpec.describe IconsController, type: :routing do
       expect(get: '/iconsets/1/icons/new').not_to be_routable
     end
 
-
     it 'routes to #edit' do
       expect(get: '/iconsets/1/icons/1/edit').to route_to('icons#edit', id: '1', iconset_id: '1')
     end

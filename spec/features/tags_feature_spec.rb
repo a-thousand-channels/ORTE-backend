@@ -18,7 +18,7 @@ RSpec.feature 'Adding and removing tags ' do
     @layer = FactoryBot.create(:layer, map_id: @map.id, title: 'my layer')
     tag1 = FactoryBot.create(:tag, name: 'alpha')
     tag2 = FactoryBot.create(:tag, name: 'beta')
-    @place = FactoryBot.create(:place, layer_id: @layer.id, tag_list: [tag1,tag2])
+    @place = FactoryBot.create(:place, layer_id: @layer.id, tag_list: [tag1, tag2])
     visit edit_map_layer_place_path(@map, @layer, @place)
     option1 = find('#place_tag_list').find(:xpath, 'option[1]')
     expect(option1).to have_content 'alpha'

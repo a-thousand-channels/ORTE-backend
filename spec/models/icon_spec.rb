@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-
 RSpec.describe Icon, type: :model do
   it 'has a valid factory' do
     expect(build(:icon)).to be_valid
@@ -14,7 +13,6 @@ RSpec.describe Icon, type: :model do
   end
 
   describe 'Image attachment' do
-
     let(:iconset) { FactoryBot.create(:iconset) }
 
     it 'is attached' do
@@ -25,7 +23,7 @@ RSpec.describe Icon, type: :model do
       subject.iconset = iconset
       subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'test.txt', content_type: '')
       expect(subject).not_to be_valid
-      expect(subject.errors.full_messages).to include("File format must be either SVG (preferred), PNG, GIF or JPEG.")
+      expect(subject.errors.full_messages).to include('File format must be either SVG (preferred), PNG, GIF or JPEG.')
     end
   end
 end
