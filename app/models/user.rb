@@ -14,7 +14,7 @@ class User < ApplicationRecord
   validates :role,  presence: true,
                     inclusion: { in: Ability.role_symbols.map(&:to_s) }
 
-  after_create :notify_user_create
+  # after_create :notify_user_create
 
   belongs_to :group
 

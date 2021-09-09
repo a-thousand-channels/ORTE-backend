@@ -122,6 +122,12 @@ RSpec.describe Admin::UsersController, type: :controller do
           post :create, params: { admin_user: @new_admin_user_attributes }, session: valid_session
           expect(response).to redirect_to(admin_users_url)
         end
+
+        xit 'should enqueue a mailer job' do
+          expect do
+            post :create, params: { admin_user: @new_admin_user_attributes }, session: valid_session
+          end.to change { ActionMailer::Base.deliveries.size }.by(2)
+        end
       end
 
       context 'with invalid params' do
