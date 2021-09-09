@@ -10,7 +10,7 @@ class ApplicationMailer < ActionMailer::Base
          subject: 'Your profile for ORTE has been created')
   end
 
-  def notify_admin_user_created(user)
+  def notify_admin_user_created(user,admin_adresses)
     @user = user
     return unless admin_adresses.any?
 
@@ -19,10 +19,6 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   private
-
-  def admin_adresses
-    User.where(role: :admin).joins(:group).where("groups.title = 'Admins'").collect(&:email)
-  end
 
   def get_label(target)
     if Rails.env == 'production'
