@@ -11,13 +11,6 @@ class VideosController < ApplicationController
     @videos = Video.where(place_id: @place_id)
   end
 
-  def transition
-    @places = Place.all
-    # This joins statement returns all Places with an attachement,  "Place.with_attached_videos" just counts all places!
-    @places_videos = Place.joins(:videos_attachments)
-    @videos_file = Video.joins(:file_attachment)
-  end
-
   # GET /videos/1
   # GET /videos/1.json
   def show
