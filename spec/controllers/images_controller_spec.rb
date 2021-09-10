@@ -19,7 +19,6 @@ RSpec.describe ImagesController, type: :controller do
 
     let(:valid_attributes) do
       FactoryBot.attributes_for(:image, :with_file, place_id: @place.id)
-      # FactoryBot.build(:image, :with_file, place_id: @place.id).attributes
     end
 
     let(:invalid_attributes) do
