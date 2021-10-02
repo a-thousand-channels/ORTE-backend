@@ -7,9 +7,9 @@ RSpec.describe Icon, type: :model do
     expect(build(:icon)).to be_valid
   end
 
-  xit 'icon_linktag' do
+  it 'icon_linktag' do
     subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.png', content_type: 'image/jpeg')
-    expect(subject.icon_linktag).to eq(Rails.application.routes.url_helpers.url_for(subject.file))
+    expect(subject.icon_linktag).to eq("<img src=\"#{Rails.application.routes.url_helpers.url_for(subject.file)}\">")
   end
 
   describe 'Image attachment' do
