@@ -24,10 +24,10 @@
   %p
     %b Use city only:
     = @submission_config.use_city_only
-  - if @submission_config.layer_id  
+  - if @submission_config.layer_id
     %p
       %b Layer:
-      = link_to layer.title, edit_map_layer_path(@map.id,@layer.id)    
-    
+      = link_to @layer.title, edit_map_layer_path(@map.id,@layer.id)
+
 
   = link_to 'Edit', edit_submission_config_path(@submission_config), class: 'button'
