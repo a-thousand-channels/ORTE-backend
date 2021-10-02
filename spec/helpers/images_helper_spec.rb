@@ -2,16 +2,19 @@
 
 require 'rails_helper'
 
-# Specs in this file have access to a helper object that includes
-# the ImagesHelper. For example:
-#
-# describe ImagesHelper do
-#   describe "string concat" do
-#     it "concats two strings with spaces" do
-#       expect(helper.concat_strings("this","that")).to eq("this that")
-#     end
-#   end
-# end
 RSpec.describe ImagesHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'image_url' do
+    it 'it returns an polymorphic image link' do
+      i = Image.new
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
+      expect(helper.image_url(i.file)).to eq("#{polymorphic_url(i.file.variant(resize: '800x800').processed)}")
+    end
+  end
+  describe 'image_linktag' do
+    it 'it returns an image link tag' do
+      i = Image.new
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      expect(helper.image_linktag(i.file)).to eq("<img src=\"#{polymorphic_url(i.file.variant(resize: '800x800').processed)}\" title=\"\">")
+    end
+  end
 end

@@ -16,6 +16,6 @@ module ImagesHelper
     filename = ActiveStorage::Blob.service.path_for(file.key)
     return unless File.exist?(filename)
 
-    "<img src=\"#{polymorphic_url(file.variant(resize: '800x800').processed)}\"   title=\"#{title.present? ? title : ''}\">".html_safe
+    "<img src=\"#{polymorphic_url(file.variant(resize: '800x800').processed)}\" title=\"#{title.present? ? title : ''}\">".html_safe
   end
 end

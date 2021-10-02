@@ -22,7 +22,7 @@ class Video < ApplicationRecord
   end
 
   def video_linktag
-    ApplicationController.helpers.video_url(file, title)
+    ApplicationController.helpers.video_linktag(file, filmstill)
   end
 
   private
