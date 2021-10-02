@@ -49,4 +49,6 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { :host => "test.domain.com" }
 
+  routes.default_url_options[:host] = '127.0.0.1:3000'
+
 end
