@@ -37,6 +37,8 @@ class SubmissionConfigsController < ApplicationController
   # POST /submission_configs or /submission_configs.json
   def create
     @submission_config = SubmissionConfig.new(submission_config_params)
+    @layer = Layer.find_by_id(@submission_config.layer_id)
+    @map = @layer.map
 
     respond_to do |format|
       if @submission_config.save
