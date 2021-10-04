@@ -10,7 +10,7 @@ class ApplicationMailer < ActionMailer::Base
          subject: 'Your profile for ORTE has been created')
   end
 
-  def notify_admin_user_created(user,admin_adresses)
+  def notify_admin_user_created(user, admin_adresses)
     @user = user
     return unless admin_adresses.any?
 

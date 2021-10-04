@@ -13,7 +13,7 @@ class Admin::UsersController < ApplicationController
     respond_to do |format|
       if @admin_user.save
         ApplicationMailer.notify_user_created(@admin_user).deliver_now
-        ApplicationMailer.notify_admin_user_created(@admin_user,admin_adresses).deliver_now
+        ApplicationMailer.notify_admin_user_created(@admin_user, admin_adresses).deliver_now
         format.html { redirect_to admin_users_url, notice: 'User was successfully created. An E-Mail has been sent to the User with all needed Informations (Link to Login, Password)' }
         format.json { render :show, status: :created, location: @admin_user }
       else

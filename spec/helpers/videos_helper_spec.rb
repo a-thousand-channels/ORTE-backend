@@ -7,7 +7,7 @@ RSpec.describe VideosHelper, type: :helper do
     it 'it returns an polymorphic video link' do
       i = Video.new
       i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp4')), filename: 'video.mp4', content_type: 'video/mp4')
-      expect(helper.video_url(i.file)).to eq("#{polymorphic_url(i.file)}")
+      expect(helper.video_url(i.file)).to eq(polymorphic_url(i.file).to_s)
     end
   end
   describe 'video_linktag' do

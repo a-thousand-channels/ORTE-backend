@@ -94,7 +94,6 @@ RSpec.describe SubmissionConfigsController, type: :controller do
           post :create, params: { submission_config: valid_attributes, layer_id: @layer.id }, session: valid_session
           expect(response).to redirect_to(edit_map_layer_url(@layer.map, @layer))
         end
-
       end
 
       context 'with invalid params' do
@@ -151,6 +150,5 @@ RSpec.describe SubmissionConfigsController, type: :controller do
         expect(response).to redirect_to(submission_configs_url)
       end
     end
-
   end
 end
