@@ -3,12 +3,13 @@
 module SubmissionsHelper
   def preview_class(local_index, form_index)
     return '' if form_index == -1
+
     if local_index == form_index
-      return ' active'
+      ' active'
     elsif local_index < form_index
-      return  ' done'
+      ' done'
     else
-      return  ' todo'
+      ' todo'
     end
   end
 end

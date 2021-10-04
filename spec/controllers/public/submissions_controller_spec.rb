@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Public::SubmissionsController, type: :controller do
   render_views
 
-  describe "functionalities with no login" do
+  describe 'functionalities with no login' do
     before do
       @map = FactoryBot.create(:map)
       @layer = FactoryBot.create(:layer, map: @map, public_submission: true)
@@ -70,7 +70,6 @@ RSpec.describe Public::SubmissionsController, type: :controller do
           post :create, params: { submission: valid_attributes, place_id: @place.id, layer_id: @layer.id, locale: 'de' }, session: valid_session
           expect(response).to redirect_to(submission_new_place_url(locale: 'de', submission_id: Submission.last, layer_id: @layer.id))
         end
-
       end
 
       context 'with invalid params' do
@@ -114,6 +113,5 @@ RSpec.describe Public::SubmissionsController, type: :controller do
         end
       end
     end
-
   end
 end
