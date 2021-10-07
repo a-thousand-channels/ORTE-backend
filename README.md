@@ -29,7 +29,7 @@ Basic steps for a local installation on your machine:
 ### Get repository
 
 ```bash
-$ git clone git@github.com:ut/ORTE-backend.git
+$ git clone git@github.com:a-thousand-channels/ORTE-backend.git
 ```
 ### Prepare Rails
 
@@ -74,27 +74,27 @@ $ RAILS_ENV=localtest COVERAGE=true bundle exec rspec spec
 
 ## Credits
 
-Project by Ulf Treger <ulf.treger@googlemail.com> with kind support from and in collaboration with:
+Project by A thousand channels, initiated by [Ulf Treger](https://github.com/ut) with kind support by and in collaboration with:
 
-* [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for code donation,
+* [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for initial code donation,
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
 * Participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
-* Members of the working group "Queer narratives, mappped" 💖 for acceptance testing, ideas and requests for improving the user interface,
-* [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface.
+* Members of the working group "Queer narratives, mappped" 💖 for acceptance testing, ideas and requests for improving the user interface and the maps.
+* [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface and to [Sefux](https://github.com/Sefux) for coding it.
 
 ## Feedback & Contributions
 
 Feedback, bug reports and code contributions are most welcome.
 
-Send Feedback to ulf.treger@googlemail.com
+Send Feedback to hello@a-thousand-channels.xyz
 
-Please file bug reports and feature request to our Github Repository at https://github.com/ut/ORTE-backend
+Please file bug reports and feature request to our Github Repository at https://github.com/a-thousand-channels/ORTE-backend
 
 For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 
-All contributors shall respect the [Contributor Covenant Code of Conduct](https://github.com/ut/ORTE-backend/blob/main/CODE_OF_CONDUCT.md)
+All contributors shall respect the [Contributor Covenant Code of Conduct](https://github.com/a-thousand-channels/ORTE-backend/blob/main/CODE_OF_CONDUCT.md)
 
 
 ## Licence
 
-This project is licensed under a [GNU General Public Licence v3](https://github.com/ut/ORTE-backend/blob/master/LICENSE)
+This project is licensed under a [GNU General Public Licence v3](https://github.com/a-thousand-channels/ORTE-backend/blob/master/LICENSE)
