@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_28_170727) do
+ActiveRecord::Schema.define(version: 2021_10_12_151857) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -83,7 +83,9 @@ ActiveRecord::Schema.define(version: 2021_06_28_170727) do
     t.string "color"
     t.text "text"
     t.boolean "public_submission"
+    t.string "slug"
     t.index ["map_id"], name: "index_layers_on_map_id"
+    t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
 
   create_table "maps", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -100,7 +102,9 @@ ActiveRecord::Schema.define(version: 2021_06_28_170727) do
     t.integer "iconset_id"
     t.string "basemap_url"
     t.string "basemap_attribution"
+    t.string "slug"
     t.index ["group_id"], name: "index_maps_on_group_id"
+    t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
 
   create_table "mobility_string_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -221,8 +225,8 @@ ActiveRecord::Schema.define(version: 2021_06_28_170727) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.bigint "group_id"
-    t.datetime "created_at", default: "2021-09-03 18:56:32", null: false
-    t.datetime "updated_at", default: "2021-09-03 18:56:32", null: false
+    t.datetime "created_at", default: "2021-09-03 18:29:24", null: false
+    t.datetime "updated_at", default: "2021-09-03 18:29:24", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

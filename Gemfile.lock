@@ -156,6 +156,8 @@ GEM
       railties (>= 3.1.0)
       sass (>= 3.3.0)
       sprockets-es6 (>= 0.9.0)
+    friendly_id (5.4.2)
+      activerecord (>= 4.0.0)
     globalid (0.5.2)
       activesupport (>= 5.0)
     haml (5.2.2)
@@ -462,6 +464,7 @@ DEPENDENCIES
   factory_bot_rails
   foundation-icons-sass-rails
   foundation-rails (~> 6)
+  friendly_id (~> 5.4.0)
   haml-rails (~> 2.0)
   i18n-js
   image_processing (~> 1.2)
