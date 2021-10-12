@@ -14,6 +14,8 @@ gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
 
+gem 'friendly_id', '~> 5.4.0'
+
 gem 'coffee-rails'
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production

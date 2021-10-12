@@ -3,6 +3,9 @@
 class MapsController < ApplicationController
   before_action :set_map, only: %i[show edit update destroy]
 
+  before_action :redirect_to_friendly_id
+
+
   # GET /maps
   # GET /maps.json
   def index
@@ -78,9 +81,23 @@ class MapsController < ApplicationController
 
   private
 
+
+
+  def redirect_to_friendly_id
+    map = Map.by_user(current_user).friendly.find(params[:id])
+
+    # If an old id or a numeric id was used to find the record, then
+    # the request path will not match the post_path, and we should do
+    # a 301 redirect that uses the current friendly id.
+    if request.path != map_path(map)
+      return redirect_to map, :status => :moved_permanently
+    end
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_map
-    @map = Map.by_user(current_user).find_by_id(params[:id])
+    # @map = Map.by_user(current_user).find_by_id(params[:id])
+    @map = Map.by_user(current_user).friendly.find(params[:id])
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
