@@ -26,18 +26,18 @@ class SubmissionConfigsController < ApplicationController
   # GET /submission_configs/new
   def new
     @submission_config = SubmissionConfig.new
-    @layer = Layer.find(layer_from_id)
+    @layer = Layer.friendly.find(layer_from_id)
   end
 
   # GET /submission_configs/1/edit
   def edit
-    @layer = Layer.find(@submission_config.layer_id)
+    @layer = Layer.friendly.find(@submission_config.layer_id)
   end
 
   # POST /submission_configs or /submission_configs.json
   def create
     @submission_config = SubmissionConfig.new(submission_config_params)
-    @layer = Layer.find_by_id(@submission_config.layer_id)
+    @layer = Layer.friendly.find_by_id(@submission_config.layer_id)
     @map = @layer.map
 
     respond_to do |format|
@@ -82,7 +82,7 @@ class SubmissionConfigsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_submission_config
     @submission_config = SubmissionConfig.find(params[:id])
-    @layer = Layer.find_by_id(@submission_config.layer_id)
+    @layer = Layer.friendly.find_by_id(@submission_config.layer_id)
     @map = @layer.map
   end
 

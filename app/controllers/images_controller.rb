@@ -20,8 +20,8 @@ class ImagesController < ApplicationController
   # GET /images/new
   def new
     @image = Image.new
-    @map = Map.by_user(current_user).find(params[:map_id])
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
     redirect_to root_url, notice: 'No place defined for adding an image' unless @place || (@place && @place.layer.map.group == current_user.group)
   end
@@ -36,8 +36,8 @@ class ImagesController < ApplicationController
   # POST /images.json
   def create
     @image = Image.new(image_params)
-    @map = Map.by_user(current_user).find(params[:map_id])
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
     respond_to do |format|
       if @image.save

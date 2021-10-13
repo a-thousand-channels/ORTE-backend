@@ -3,7 +3,7 @@
 class LayersController < ApplicationController
   before_action :set_layer, only: %i[images show edit update destroy]
 
-  before_action :redirect_to_friendly_id
+  before_action :redirect_to_friendly_id, only: %i[show]
 
   protect_from_forgery except: :show
 
@@ -46,7 +46,7 @@ class LayersController < ApplicationController
     @layer = Layer.new
     generator = ColorGenerator.new saturation: 0.7, lightness: 0.75
     @layer.color = "##{generator.create_hex}"
-    @map = Map.by_user(current_user).find(params[:map_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @colors_selectable = []
     6.times do
       @colors_selectable << "##{generator.create_hex}"
@@ -73,7 +73,7 @@ class LayersController < ApplicationController
   def create
     @layer = Layer.new(layer_params)
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
-    @map = Map.by_user(current_user).find(params[:map_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
     respond_to do |format|
       if @layer.save
         format.html { redirect_to map_path(@map), notice: 'Layer was created.' }
@@ -116,11 +116,10 @@ class LayersController < ApplicationController
 
     layer = Layer.friendly.find(params[:id])
     map = layer.map
-
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if request.path != map_layer_path(map,layer)
+    if request.path != map_layer_path(map,layer) && request.format == 'html'
       return redirect_to map_layer_path(map, layer), :status => :moved_permanently
     end
   end
