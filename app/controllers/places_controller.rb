@@ -6,7 +6,7 @@ class PlacesController < ApplicationController
   # GET /places
   # GET /places.json
   def index
-    @layer = Layer.find(params[:layer_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @map = @layer.map
     @places = @layer.places
   end
@@ -25,8 +25,8 @@ class PlacesController < ApplicationController
     @place.lat = params[:lat]
     @place.lon = params[:lon]
     @place.layer_id = params[:layer_id]
-    @map = Map.by_user(current_user).find(params[:map_id])
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
   end
 
   # GET /places/1/edit
@@ -52,15 +52,15 @@ class PlacesController < ApplicationController
     @place.lat = params[:lat]
     @place.lon = params[:lon]
     @place.layer_id = params[:layer_id]
-    @map = Map.by_user(current_user).find(params[:map_id])
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
   end
 
   # POST /places
   # POST /places.json
   def create
     @place = Place.new(place_params)
-    @layer = Layer.find(@place.layer_id)
+    @layer = Layer.friendly.find(@place.layer_id)
     @map = @layer.map
 
     respond_to do |format|
@@ -138,8 +138,8 @@ class PlacesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_place
-    @map = Map.by_user(current_user).find(params[:map_id])
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:id])
   end
 

@@ -170,7 +170,7 @@ RSpec.describe PlacesController, type: :controller do
         it 'redirects to the place' do
           place = Place.create! valid_attributes
           put :update, params: { id: place.to_param, place: valid_attributes, layer_id: @layer.id, map_id: @map.id }, session: valid_session
-          expect(response).to redirect_to(map_layer_url(@map, @layer))
+          expect(response).to redirect_to(map_layer_url(@map.id, @layer.id))
         end
       end
 
