@@ -57,21 +57,34 @@ RSpec.describe LayersController, type: :controller do
     describe 'GET #show' do
       it 'returns a success response' do
         layer = Layer.create! valid_attributes
-        get :show, params: { map_id: @map.id, id: layer.to_param }, session: valid_session
+        get :show, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
+      end
+      it 'returns a redirect to an friendly_id' do
+        layer = Layer.create! valid_attributes
+        get :show, params: { map_id: @map.friendly_id, id: layer.id }, session: valid_session
+        expect(response).to have_http_status(301)
+      end
+      it 'returns a no success response (for a non-accesible map)' do
+        another_group = FactoryBot.create(:group)
+        map = FactoryBot.create(:map, group_id: another_group.id)
+        layer = FactoryBot.create(:layer, map_id: map.id)
+        get :show, params: { map_id: map.friendly_id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(302)
+        expect(flash[:notice]).to match 'Sorry, this map could not be found.'
       end
     end
 
     describe 'GET #show as json' do
       it 'returns a success reponse' do
         layer = Layer.create! valid_attributes
-        get :show, params: { id: layer.to_param, map_id: @map.id }, session: valid_session, format: 'json'
+        get :show, params: { id: layer.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
         expect(response).to have_http_status(200)
       end
 
       it 'a layer w/title for a published layer' do
         layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
-        get :show, params: { id: layer.to_param, map_id: @map.id }, session: valid_session, format: 'json'
+        get :show, params: { id: layer.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
         json = JSON.parse(response.body)
         expect(json['title']).to eq layer.title
       end
@@ -82,7 +95,7 @@ RSpec.describe LayersController, type: :controller do
         p1 = FactoryBot.create(:place, :published, layer_id: layer.id, title: 'Place1')
         p2 = FactoryBot.create(:place, :published, layer_id: layer.id, title: 'Place2')
         p3 = FactoryBot.create(:place, layer_id: layer.id, title: 'Place3')
-        get :show, params: { id: layer.to_param, map_id: @map.id }, session: valid_session, format: 'json'
+        get :show, params: { id: layer.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
         json = JSON.parse(response.body)
         expect(json['places'][0]['title']).to eq p1.title
         expect(json['places'][1]['title']).to eq p2.title
@@ -105,7 +118,7 @@ RSpec.describe LayersController, type: :controller do
     describe 'GET #edit' do
       it 'returns a success response' do
         layer = Layer.create! valid_attributes
-        get :edit, params: { map_id: @map.id, id: layer.to_param }, session: valid_session
+        get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
@@ -114,13 +127,13 @@ RSpec.describe LayersController, type: :controller do
       context 'with valid params' do
         it 'creates a new Layer' do
           expect do
-            post :create, params: { map_id: @map.id, layer: valid_attributes }, session: valid_session
+            post :create, params: { map_id: @map.friendly_id, layer: valid_attributes }, session: valid_session
           end.to change(Layer, :count).by(1)
         end
 
         it 'redirects to the map' do
-          post :create, params: { map_id: @map.id, layer: valid_attributes }, session: valid_session
-          expect(response).to redirect_to(map_path(@map.id))
+          post :create, params: { map_id: @map.friendly_id, layer: valid_attributes }, session: valid_session
+          expect(response).to redirect_to(map_path(@map.friendly_id))
         end
       end
 
@@ -140,22 +153,22 @@ RSpec.describe LayersController, type: :controller do
 
         it 'updates the requested layer' do
           layer = Layer.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: layer.to_param, layer: new_attributes }, session: valid_session
+          put :update, params: { map_id: @map.id, id: layer.id, layer: new_attributes }, session: valid_session
           layer.reload
           expect(layer.title).to eq('OtherTitle')
         end
 
         it 'redirects to the layer' do
           layer = Layer.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: layer.to_param, layer: valid_attributes }, session: valid_session
-          expect(response).to redirect_to(map_path(@map.id))
+          put :update, params: { map_id: @map.id, id: layer.id, layer: valid_attributes }, session: valid_session
+          expect(response).to redirect_to(map_path(@map.friendly_id))
         end
       end
 
       context 'with invalid params' do
         it "returns a success response (i.e. to display the 'edit' template)" do
           layer = Layer.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: layer.to_param, layer: invalid_attributes }, session: valid_session
+          put :update, params: { map_id: @map.id, id: layer.friendly_id, layer: invalid_attributes }, session: valid_session
           expect(response.status).to eq(200)
         end
       end
@@ -165,13 +178,13 @@ RSpec.describe LayersController, type: :controller do
       it 'destroys the requested layer' do
         layer = Layer.create! valid_attributes
         expect do
-          delete :destroy, params: { map_id: @map.id, id: layer.to_param }, session: valid_session
+          delete :destroy, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
         end.to change(Layer, :count).by(-1)
       end
 
       it 'redirects to the layers list' do
         layer = Layer.create! valid_attributes
-        delete :destroy, params: { map_id: @map.id, id: layer.to_param }, session: valid_session
+        delete :destroy, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
         expect(response).to redirect_to(map_url(@map))
       end
     end

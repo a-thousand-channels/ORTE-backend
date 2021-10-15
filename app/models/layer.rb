@@ -7,5 +7,8 @@ class Layer < ApplicationRecord
 
   validates :title, presence: true
 
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   scope :published, -> { where(published: true) }
 end

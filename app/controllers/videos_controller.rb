@@ -20,8 +20,8 @@ class VideosController < ApplicationController
   # GET /videos/new
   def new
     @video = Video.new
-    @map = Map.by_user(current_user).find(params[:map_id])
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
     redirect_to root_url, notice: 'No place defined for adding an video' unless @place || (@place && @place.layer.map.group == current_user.group)
   end
