@@ -65,6 +65,14 @@ RSpec.describe LayersController, type: :controller do
         get :show, params: { map_id: @map.friendly_id, id: layer.id }, session: valid_session
         expect(response).to have_http_status(301)
       end
+      it 'returns a no success response (for a non-accesible map)' do
+        another_group = FactoryBot.create(:group)
+        map = FactoryBot.create(:map, group_id: another_group.id)
+        layer = FactoryBot.create(:layer, map_id: map.id)
+        get :show, params: { map_id: map.friendly_id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(302)
+        expect(flash[:notice]).to match 'Sorry, this map could not be found.'
+      end
     end
 
     describe 'GET #show as json' do
