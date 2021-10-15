@@ -19,7 +19,7 @@ RSpec.describe 'layers/new', type: :view do
   it 'renders new layer form' do
     render
 
-    assert_select 'form[action=?][method=?]', map_layers_path(@map.id), 'post' do
+    assert_select 'form[action=?][method=?]', map_layers_path(@map.friendly_id), 'post' do
       assert_select 'input[name=?]', 'layer[title]'
     end
   end

@@ -20,7 +20,7 @@ RSpec.describe 'layers/edit', type: :view do
   it 'renders the edit layer form' do
     render
 
-    assert_select 'form[action=?][method=?]', map_layer_path(@layer, map_id: @map.id), 'post' do
+    assert_select 'form[action=?][method=?]', map_layer_path(@layer.friendly_id, map_id: @map.friendly_id), 'post' do
       assert_select 'input[name=?]', 'layer[title]'
       assert_select 'input[name=?]', 'layer[subtitle]'
       assert_select 'textarea[name=?]', 'layer[text]'

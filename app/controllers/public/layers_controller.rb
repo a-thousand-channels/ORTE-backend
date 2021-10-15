@@ -14,7 +14,7 @@ class Public::LayersController < ActionController::Base
 
   # GET /maps/1/layers/1.json
   def show
-    @layer = Layer.published.find_by_id(params[:id])
+    @layer = Layer.published.friendly.find_by_friendly_id(params[:id])
 
     respond_to do |format|
       if @layer.present?
