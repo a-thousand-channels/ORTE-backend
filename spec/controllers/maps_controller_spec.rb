@@ -41,12 +41,24 @@ RSpec.describe MapsController, type: :controller do
         get :show, params: { id: map.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
       end
-
-      xit 'returns a no success response' do
+      it 'returns a redirect to an friendly_id' do
+        map = Map.create! valid_attributes
+        get :show, params: { id: map.id }, session: valid_session
+        expect(response).to have_http_status(301)
+      end
+      it 'returns a no success response (for a non-accesible map)' do
         another_group = FactoryBot.create(:group)
         map = FactoryBot.create(:map, group_id: another_group.id)
         get :show, params: { id: map.friendly_id }, session: valid_session
         expect(response).to have_http_status(302)
+        expect(flash[:notice]).to match 'Sorry, this map could not be found.'
+      end
+      it 'returns a no success response (for a non-existin map)' do
+        another_group = FactoryBot.create(:group)
+        map = FactoryBot.create(:map, group_id: another_group.id)
+        get :show, params: { id: 'UNKNOWN' }, session: valid_session
+        expect(response).to have_http_status(302)
+        expect(flash[:notice]).to match 'Sorry, this map could not be found.'
       end
     end
 
