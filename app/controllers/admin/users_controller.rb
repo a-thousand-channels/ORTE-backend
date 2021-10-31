@@ -65,6 +65,12 @@ class Admin::UsersController < ApplicationController
     end
   end
 
+  protected
+
+  def update_resource(resource, account_update_params)
+    resource.update_without_password(account_update_params)
+  end
+
   private
 
   def admin_adresses
