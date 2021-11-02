@@ -1,5 +1,6 @@
 class Annotation < ApplicationRecord
   belongs_to :place
+  belongs_to :person
 
   validates :title, presence: true
 

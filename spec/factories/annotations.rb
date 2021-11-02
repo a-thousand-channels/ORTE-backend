@@ -1,10 +1,11 @@
 FactoryBot.define do
   factory :annotation do
-    title { "MyString" }
-    text { "MyText" }
-    published { "" }
+    title { 'MyString' }
+    text { 'MyText' }
+    published { '' }
     sorting { 1 }
-    source { "MyText" }
+    source { 'MyText' }
     place
+    person
   end
 end
