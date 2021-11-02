@@ -34,7 +34,7 @@ class LayersController < ApplicationController
     if @map
       @map_layers = @map.layers
     else
-      redirect_to maps_path, notice: "Sorry, this map could not be found." and return
+      redirect_to maps_path, notice: 'Sorry, this map could not be found.' and return
     end
 
     if @layer
@@ -46,7 +46,7 @@ class LayersController < ApplicationController
         format.csv { send_data @places.to_csv, filename: "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.csv" }
       end
     else
-      redirect_to maps_path, notice: "Sorry, this layer could not be found."
+      redirect_to maps_path, notice: 'Sorry, this layer could not be found.'
     end
   end
 
@@ -122,15 +122,11 @@ class LayersController < ApplicationController
   private
 
   def redirect_to_friendly_id
-
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if @map && @layer && request.path != map_layer_path(@map,@layer) && request.format == 'html'
-      return redirect_to map_layer_path(@map, @layer), :status => :moved_permanently
-    end
+    redirect_to map_layer_path(@map, @layer), status: :moved_permanently if @map && @layer && request.path != map_layer_path(@map, @layer) && request.format == 'html'
   end
-
 
   # Use callbacks to share common setup or constraints between actions.
   def set_layer
