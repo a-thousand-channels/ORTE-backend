@@ -128,46 +128,10 @@
           = f.association :icon, :collection => @map.iconset.icons, :label_method => lambda { |icon| ("#{icon.title}".html_safe) if icon.title }, :value_method => :id, label: false, include_blank: true
           %p.hint Select one item from list
         - if @place.submissions
-          %hr
-          - @place.submissions.each do |sub|
-            %label
-              ID: 
-              = sub.id
-            %table.stacked
-              %tbody
-                %tr
-                  %td
-                    Name: 
-                  %td  
-                    #{sub.name} 
-                %tr
-                  %td
-                    Email: 
-                  %td  
-                    #{sub.email} 
-                %tr
-                  %td
-                    Sprache: 
-                  %td  
-                    = t('languages.' + sub.locale.to_s)
-                %tr
-                  %td
-                    Erstellt: 
-                  %td  
-                    #{sub.created_at} 
-                %tr
-                  %td
-                    Status: 
-                  %td
-                    - case sub.status
-                    - when 1 
-                    - when 2  
-                      %i.fi.fi-x
-                      #{sub.status}   
-                    - when 3
-                      .success
-                        %i.fi.fi-check
-                        #{sub.status} 
+          = render 'places/list/submissions'
+        - if @place.annotations
+          = render 'places/list/annotations'
+          = link_to new_annotations_path(place: @place.id), class: 'button'
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
@@ -179,7 +143,7 @@
             = f.input :zip
           .small-8.cell
             = f.input :city
-        = f.input :country, :input_html => {:placeholder => 'Land' }    
+        = f.input :country, :input_html => {:placeholder => 'Land' }
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
         %hr
