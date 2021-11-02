@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 2021_11_02_103921) do
     t.string "imagelink"
     t.integer "icon_id"
     t.boolean "featured"
-    t.string "ptype", default: "place"
+    t.string "ptype", default: "info"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
@@ -226,8 +226,8 @@ ActiveRecord::Schema.define(version: 2021_11_02_103921) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.bigint "group_id"
-    t.datetime "created_at", default: "2021-09-03 18:56:32", null: false
-    t.datetime "updated_at", default: "2021-09-03 18:56:32", null: false
+    t.datetime "created_at", default: "2021-09-03 18:29:24", null: false
+    t.datetime "updated_at", default: "2021-09-03 18:29:24", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
