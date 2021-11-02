@@ -2,6 +2,7 @@
   .grid-x.grid-padding-x
     .large-2.medium-3.cell
       %h1 Place
+      %p= f.input :ptype, :collection => ptype_for_select, :input_html => { :class => '' }, label: 'Type'
     .large-4.medium-4.cell
       %div#layer_change
         - if @place.layer.title && params[:action] == 'new'
@@ -131,43 +132,43 @@
           %hr
           - @place.submissions.each do |sub|
             %label
-              ID: 
+              ID:
               = sub.id
             %table.stacked
               %tbody
                 %tr
                   %td
-                    Name: 
-                  %td  
-                    #{sub.name} 
+                    Name:
+                  %td
+                    #{sub.name}
                 %tr
                   %td
-                    Email: 
-                  %td  
-                    #{sub.email} 
+                    Email:
+                  %td
+                    #{sub.email}
                 %tr
                   %td
-                    Sprache: 
-                  %td  
+                    Sprache:
+                  %td
                     = t('languages.' + sub.locale.to_s)
                 %tr
                   %td
-                    Erstellt: 
-                  %td  
-                    #{sub.created_at} 
+                    Erstellt:
+                  %td
+                    #{sub.created_at}
                 %tr
                   %td
-                    Status: 
+                    Status:
                   %td
                     - case sub.status
-                    - when 1 
-                    - when 2  
+                    - when 1
+                    - when 2
                       %i.fi.fi-x
-                      #{sub.status}   
+                      #{sub.status}
                     - when 3
                       .success
                         %i.fi.fi-check
-                        #{sub.status} 
+                        #{sub.status}
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
@@ -179,7 +180,7 @@
             = f.input :zip
           .small-8.cell
             = f.input :city
-        = f.input :country, :input_html => {:placeholder => 'Land' }    
+        = f.input :country, :input_html => {:placeholder => 'Land' }
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
         %hr
