@@ -15,6 +15,7 @@ class Place < ApplicationRecord
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
+  has_many :annotations, dependent: :destroy
 
   validates :title, presence: true
   validate :check_audio_format
