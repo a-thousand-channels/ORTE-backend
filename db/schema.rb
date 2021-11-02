@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_12_151857) do
+ActiveRecord::Schema.define(version: 2021_11_02_182202) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -31,6 +31,18 @@ ActiveRecord::Schema.define(version: 2021_10_12_151857) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "title"
+    t.text "text"
+    t.bigint "place_id"
+    t.boolean "published", default: false
+    t.integer "sorting"
+    t.text "source"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["place_id"], name: "index_annotations_on_place_id"
   end
 
   create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -153,6 +165,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_151857) do
     t.string "imagelink"
     t.integer "icon_id"
     t.boolean "featured"
+    t.string "ptype", default: "info"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
@@ -225,8 +238,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_151857) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.bigint "group_id"
-    t.datetime "created_at", default: "2021-09-03 18:56:32", null: false
-    t.datetime "updated_at", default: "2021-09-03 18:56:32", null: false
+    t.datetime "created_at", default: "2021-09-03 18:29:24", null: false
+    t.datetime "updated_at", default: "2021-09-03 18:29:24", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -248,6 +261,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_151857) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "annotations", "places"
   add_foreign_key "icons", "iconsets"
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
