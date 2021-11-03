@@ -65,10 +65,10 @@
         = @place.title
         = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
           %i.fi.fi-pencil.fi-24
-      %p
+      %div
         %strong
           =h @place.teaser.html_safe
-      %p
+      %div
         =h @place.text
       %p
         - if @place.link
@@ -80,6 +80,8 @@
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
+      = render 'places/list/annotations'
+
       - if @place.tag_list
         %p
           - @place.tags.each do |tag|

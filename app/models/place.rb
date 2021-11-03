@@ -16,6 +16,8 @@ class Place < ApplicationRecord
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
   has_many :annotations, dependent: :destroy
+  accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
+
 
   validates :title, presence: true
   validate :check_audio_format

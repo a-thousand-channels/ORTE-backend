@@ -1,25 +1,39 @@
-%h1 Listing people
+- content_for(:title) { "People" }
 
-%table
-  %thead
-    %tr
-      %th Name
-      %th Annotation
-      %th Info
-      %th
-      %th
-      %th
+#table-wrapper
 
-  %tbody
-    - @people.each do |person|
+  %h1 Listing people
+
+  %p
+    = link_to new_person_path, :class=>'button small' do
+      %i.fi-plus.fi-24
+      Add Person
+
+  %table
+    %thead
       %tr
-        %td= person.name
-        %td= person.annotation
-        %td= person.info
-        %td= link_to 'Show', person
-        %td= link_to 'Edit', edit_person_path(person)
-        %td= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' }
+        %th Name
+        %th Info
+        %th Annotations?
+        %th Actions
+        %th
+        %th
 
-%br
+    %tbody
+      - @people.each do |person|
+        %tr
+          %td= person.name
+          %td= person.info
+          %td
+            - if person.annotations.count > 0
+              - person.annotations.each do |annotate|
+                = annotate.id
+          %td= link_to 'Show', person
+          %td= link_to 'Edit', edit_person_path(person)
+          %td= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' }
 
-= link_to 'New Person', new_person_path
+  %p
+    = link_to new_person_path, :class=>'button small' do
+      %i.fi-plus.fi-24
+      Add Person
+
