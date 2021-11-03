@@ -1,4 +1,5 @@
 - if @place.annotations.count > 0
+  %label Annotations
   %hr
   - @place.annotations.each do |annotation|
     #saved_annotations
@@ -10,5 +11,8 @@
         =h annotation.text.html_safe
 
       .annotation_metadata
-        %p.hint #{l(annotation.created_at)}
+        %p.hint
+
+          #{annotation.source} &mdash;
+          #{l(annotation.created_at)}
     %hr
