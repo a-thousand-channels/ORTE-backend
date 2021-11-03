@@ -41,7 +41,7 @@ staging:
 
 production:
   adapter: mysql2
-  database: orte_production
+  database: orte
   host: localhost
   username: orte
   password: <%= Rails.application.credentials.dig(:mysql, :password, :production) %>
