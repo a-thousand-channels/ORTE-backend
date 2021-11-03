@@ -28,7 +28,7 @@ class PlacesController < ApplicationController
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
     @people = Person.all
-    1.times { @place.annotations.build }
+    @place.annotations.build
   end
 
   # GET /places/1/edit
@@ -42,6 +42,8 @@ class PlacesController < ApplicationController
       @place.enddate_date = @place.enddate.to_date
       @place.enddate_time = @place.enddate.to_time
     end
+    @people = Person.all
+    @place.annotations.build
 
     return unless params[:lat].present?
 
@@ -56,8 +58,7 @@ class PlacesController < ApplicationController
     @place.layer_id = params[:layer_id]
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
-    @people = Person.all
-    1.times { @place.annotations.build }
+
 
   end
 
@@ -150,6 +151,6 @@ class PlacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :imagelink, :layer_id, :icon_id, :audio, annotations_attributes: [:title, :text, :person_id ], tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :imagelink, :layer_id, :icon_id, :audio, annotations_attributes: [:title, :text, :person_id, :source ], tag_list: [], images: [], videos: [])
   end
 end

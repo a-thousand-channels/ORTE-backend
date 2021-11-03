@@ -1,7 +1,14 @@
 
+$(function() {
+
+  $('form.edit_place').find('button#add_annotation').show();
+  $('form.edit_place').find('#new_annotations').hide();
 
 
-$('button#add_annotation').click(function(e) {
-  e.preventDefault();
+  $('button#add_annotation').click(function(e) {
+    e.preventDefault();
+    $('#new_annotations').show();
+    $('button#add_annotation').hide();
+  });
 
-});
+})
