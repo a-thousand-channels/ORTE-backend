@@ -95,14 +95,14 @@ namespace :deploy do
   desc 'Backup the remote database'
   task :db_backup do
     on roles(:db) do
-      filename = "pg_#{fetch(:application)}.dump.#{Time.now.to_i}.sql"
+      filename = "#{fetch(:application)}-#{fetch(:rails_env)}.dump.#{Time.now.to_i}.sql"
       dump_dir = "#{shared_path}/dumps"
       file = "#{dump_dir}/#{filename}"
       execute "mkdir -p #{dump_dir}"
-      db = YAML.safe_load(ERB.new(IO.read(File.join(File.dirname(__FILE__), 'database.yml'))).result,[],[],true)[fetch(:rails_env).to_s]
-      execute "PGPASSWORD=#{db['password']} pg_dump -c -U #{db['username']} -h #{db['host']} #{db['database']} > #{file}"
-    end
-  end
+      db = YAML.safe_load(ERB.new(IO.read(File.join(File.dirname(__FILE__), 'database.yml'))).result, [], [], true)[fetch(:rails_env).to_s]
+
+      execute "mysqldump -u #{db['username']} --password=#{db['password']} #{db['database']} > #{file}"
+    en
 
   before :migrate,    'deploy:db_backup'
   after :updating,    'deploy:tagit'
