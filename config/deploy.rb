@@ -104,8 +104,8 @@ namespace :deploy do
     end
   end
 
-  # before :migrate,    'deploy:db_backup'
-  # after :updating,    'deploy:tagit'
-  # after :publishing,  'deploy:send_notification'
+  before :migrate,    'deploy:db_backup'
+  after :updating,    'deploy:tagit'
+  after :publishing,  'deploy:send_notification'
 
 end
