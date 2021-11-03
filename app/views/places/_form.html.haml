@@ -118,24 +118,38 @@
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
         - # = f.input :tag_list, label: 'Tags', input_html: {value: f.object.tag_list.join(", "), placeholder: 'Tags, seperate with comma'}
-        = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name
-        %p.hint To add a tag, just type into the field and hit return. You can add multiple tags. If you start typing you will see most used tags as a proposal
+        = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name, label: 'Tags'
+        %p.hint.text-left
+          To add a tag, just type the tag into the field and hit return.
+          %br
+          You can add multiple tags.
+          If you start typing you will see most used tags as a proposal
         - if @map.iconset
           %hr
-
           = link_to iconset_path(@map.iconset) do
             = @map.iconset.title
           = f.association :icon, :collection => @map.iconset.icons, :label_method => lambda { |icon| ("#{icon.title}".html_safe) if icon.title }, :value_method => :id, label: false, include_blank: true
           %p.hint Select one item from list
-        - if @place.submissions
+        - if @place.submissions.count > 0
           = render 'places/list/submissions'
-        - if @place.annotations
-          = render 'places/list/annotations'
-          = link_to new_annotations_path(place: @place.id), class: 'button'
+        %hr
+        = render 'places/list/annotations'
+        %p.hint.text-left Annotations might be comments or quotes about this place or event.
+        #new_annotations
+          - @annotation = @place.annotations.build
+          %h4 Annotation
+          %fieldset
+            = f.fields_for @annotation do |a|
+              = a.input :title
+              = a.input :text, :input_html => {:rows => 8, class: 'large-text tinymce' }
+        %button#add_annotation.button
+          %i.fi.fi-plus
+          Add annotation
+        %hr.show-for-small-only
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
-        %p.hint Only needed, if the location has different official name
+        %p.hint Needed only, if the name is different to the title
         %hr
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
@@ -154,7 +168,11 @@
             Add image
           %p.hint
             Please upload one image and describe its content and metadata. You can repeat this to add multiple images to this place.
+        - else
+          %p.hint.text-left
+            You have to create this place before you can add images
         = render 'places/form/images'
+        %hr
         - if params[:action] == 'edit'
           %hr
           %label Videos
@@ -164,7 +182,6 @@
           %p.hint
             Please upload one video and describe its content and metadata. You can repeat this to add multiple videos to this place.
         = render 'places/form/videos'
-        %hr
         %label Audio
         - if @place.audio && @place.audio.attached?
           %p

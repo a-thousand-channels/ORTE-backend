@@ -1,8 +1,8 @@
-%hr
 - @place.annotations.each do |annotation|
-  %h4
-    = annotation.title
-  %div.annotation_text
-    = annotation.text
-  %div.annotation_metadata
-    Created: #{annotation.created_at}
+  #saved_annotations
+    %h4
+      = annotation.title
+    .annotation_text
+      = annotation.text
+    .annotation_metadata
+      Created: #{annotation.created_at}
