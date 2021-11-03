@@ -102,7 +102,8 @@ namespace :deploy do
       db = YAML.safe_load(ERB.new(IO.read(File.join(File.dirname(__FILE__), 'database.yml'))).result, [], [], true)[fetch(:rails_env).to_s]
 
       execute "mysqldump -u #{db['username']} --password=#{db['password']} #{db['database']} > #{file}"
-    en
+    end
+  end
 
   before :migrate,    'deploy:db_backup'
   after :updating,    'deploy:tagit'
