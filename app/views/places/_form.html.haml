@@ -140,7 +140,10 @@
         - if params[:action] == 'edit'
           %button#add_annotation.button
             %i.fi.fi-plus
-            Add another annotation
+            - if @place.annotations.count > 0
+              Add another annotation
+            - else
+              Add an annotation
         #new_annotations
           %h4 New annotation
           %fieldset
