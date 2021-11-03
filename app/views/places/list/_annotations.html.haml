@@ -1,8 +1,14 @@
-- @place.annotations.each do |annotation|
-  #saved_annotations
-    %h4
-      = annotation.title
-    .annotation_text
-      = annotation.text
-    .annotation_metadata
-      Created: #{annotation.created_at}
+- if @place.annotations.count > 0
+  %hr
+  - @place.annotations.each do |annotation|
+    #saved_annotations
+      - if annotation.person
+        %p= annotation.person.name
+      %h5
+        = annotation.title
+      .annotation_text
+        =h annotation.text.html_safe
+
+      .annotation_metadata
+        %p.hint #{l(annotation.created_at)}
+    %hr
