@@ -78,7 +78,7 @@ group :development, :test, :localtest do
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'simplecov'
-  gem 'webdrivers', '~> 4.0'
+  gem 'webdrivers', '~> 5'
   gem 'webmock'
 end
 
