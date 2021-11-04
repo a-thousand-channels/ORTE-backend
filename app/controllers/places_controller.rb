@@ -27,8 +27,6 @@ class PlacesController < ApplicationController
     @place.layer_id = params[:layer_id]
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
-    @people = Person.all
-    @place.annotations.build
   end
 
   # GET /places/1/edit
@@ -42,8 +40,6 @@ class PlacesController < ApplicationController
       @place.enddate_date = @place.enddate.to_date
       @place.enddate_time = @place.enddate.to_time
     end
-    @people = Person.all
-    @place.annotations.build
 
     return unless params[:lat].present?
 
@@ -68,7 +64,6 @@ class PlacesController < ApplicationController
     @place = Place.new(place_params)
     @layer = Layer.friendly.find(@place.layer_id)
     @map = @layer.map
-    @people = Person.all
 
     respond_to do |format|
       if @place.save
@@ -86,7 +81,6 @@ class PlacesController < ApplicationController
   def update
     @layer = @place.layer
     @map = @place.layer.map
-    @people = Person.all
 
     # quirks, because foundation switch generates 'on'/'off' values,
     # rails expect true/false
