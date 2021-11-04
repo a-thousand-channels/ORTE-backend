@@ -1,5 +1,6 @@
 - videos = Video.where(place_id: @place.id)
 - if videos.count > 0
+  %hr
   %p
     Videos:
   .grid-x#sortable{data: { map: @place.layer.map.id, layer: @place.layer.id, place: @place.id }}
