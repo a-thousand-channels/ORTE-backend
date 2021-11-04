@@ -1,22 +1,25 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'people/index', type: :view do
   before(:each) do
     assign(:people, [
              Person.create!(
-               name: 'Name',
-               info: 'MyText'
+               name: 'Name1',
+               info: 'MyText1'
              ),
              Person.create!(
-               name: 'Name',
-               info: 'MyText'
+               name: 'Name2',
+               info: 'MyText2'
              )
            ])
   end
 
   it 'renders a list of people' do
     render
-    assert_select 'tr>td', text: 'Name'.to_s, count: 2
-    assert_select 'tr>td', text: 'MyText'.to_s, count: 2
+    expect(rendered).to match(/Name1/)
+    expect(rendered).to match(/Name2/)
+    expect(rendered).to match(/MyText1/)
   end
 end
