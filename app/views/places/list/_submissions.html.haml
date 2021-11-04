@@ -1,0 +1,40 @@
+%hr
+- @place.submissions.each do |sub|
+  %label
+    ID:
+    = sub.id
+  %table.stacked
+    %tbody
+      %tr
+        %td
+          Name:
+        %td
+          #{sub.name}
+      %tr
+        %td
+          Email:
+        %td
+          #{sub.email}
+      %tr
+        %td
+          Sprache:
+        %td
+          = t('languages.' + sub.locale.to_s)
+      %tr
+        %td
+          Erstellt:
+        %td
+          #{sub.created_at}
+      %tr
+        %td
+          Status:
+        %td
+          - case sub.status
+          - when 1
+          - when 2
+            %i.fi.fi-x
+            #{sub.status}
+          - when 3
+            .success
+              %i.fi.fi-check
+              #{sub.status}

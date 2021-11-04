@@ -118,60 +118,27 @@
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
         - # = f.input :tag_list, label: 'Tags', input_html: {value: f.object.tag_list.join(", "), placeholder: 'Tags, seperate with comma'}
-        = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name
-        %p.hint To add a tag, just type into the field and hit return. You can add multiple tags. If you start typing you will see most used tags as a proposal
+        = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name, label: 'Tags'
+        %p.hint.text-left
+          To add a tag, just type the tag into the field and hit return.
+          %br
+          You can add multiple tags.
+          If you start typing you will see most used tags as a proposal
         - if @map.iconset
           %hr
-
           = link_to iconset_path(@map.iconset) do
             = @map.iconset.title
           = f.association :icon, :collection => @map.iconset.icons, :label_method => lambda { |icon| ("#{icon.title}".html_safe) if icon.title }, :value_method => :id, label: false, include_blank: true
           %p.hint Select one item from list
-        - if @place.submissions
-          %hr
-          - @place.submissions.each do |sub|
-            %label
-              ID: 
-              = sub.id
-            %table.stacked
-              %tbody
-                %tr
-                  %td
-                    Name: 
-                  %td  
-                    #{sub.name} 
-                %tr
-                  %td
-                    Email: 
-                  %td  
-                    #{sub.email} 
-                %tr
-                  %td
-                    Sprache: 
-                  %td  
-                    = t('languages.' + sub.locale.to_s)
-                %tr
-                  %td
-                    Erstellt: 
-                  %td  
-                    #{sub.created_at} 
-                %tr
-                  %td
-                    Status: 
-                  %td
-                    - case sub.status
-                    - when 1 
-                    - when 2  
-                      %i.fi.fi-x
-                      #{sub.status}   
-                    - when 3
-                      .success
-                        %i.fi.fi-check
-                        #{sub.status} 
+        - if @place.submissions.count > 0
+          = render 'places/list/submissions'
+        %hr
+        = render 'places/list/annotations'
+        %hr.show-for-small-only
     .large-6.medium-6.cell
       .form-inputs
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
-        %p.hint Only needed, if the location has different official name
+        %p.hint Needed only, if the name is different to the title
         %hr
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
@@ -179,7 +146,7 @@
             = f.input :zip
           .small-8.cell
             = f.input :city
-        = f.input :country, :input_html => {:placeholder => 'Land' }    
+        = f.input :country, :input_html => {:placeholder => 'Land' }
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
         %hr
@@ -190,9 +157,12 @@
             Add image
           %p.hint
             Please upload one image and describe its content and metadata. You can repeat this to add multiple images to this place.
+        - else
+          %p.hint.text-left
+            You have to create this place before you can add images
         = render 'places/form/images'
+        %hr
         - if params[:action] == 'edit'
-          %hr
           %label Videos
           = link_to new_map_layer_place_video_path(@place.layer.map,@place.layer,@place), class: 'button' do
             %i.fi.fi-plus
@@ -209,6 +179,7 @@
           %p.shy Upload a new file:
         = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
         %p.hint Please upload MP3 only
+        %hr
   %hr
   .grid-x
     .large-6.medium-6.small-12.cell

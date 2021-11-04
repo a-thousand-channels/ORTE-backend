@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :people
+  resources :annotations
   resources :submission_configs
   devise_for :users
 

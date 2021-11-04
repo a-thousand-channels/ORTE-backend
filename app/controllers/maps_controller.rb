@@ -5,7 +5,6 @@ class MapsController < ApplicationController
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
-
   # GET /maps
   # GET /maps.json
   def index
@@ -23,7 +22,7 @@ class MapsController < ApplicationController
         format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
       end
     else
-      redirect_to maps_path, notice: "Sorry, this map could not be found."
+      redirect_to maps_path, notice: 'Sorry, this map could not be found.'
     end
   end
 
@@ -82,17 +81,13 @@ class MapsController < ApplicationController
   private
 
   def redirect_to_friendly_id
-
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if @map && request.path != map_path(@map) && request.format == 'html'
-      return redirect_to @map, :status => :moved_permanently
-    end
+    redirect_to @map, status: :moved_permanently if @map && request.path != map_path(@map) && request.format == 'html'
   end
 
   def set_map
-
     # flexible query: Find slugged resource, if not, find a non-slugged resoure. All that to avoid an exception if a resource is unknown or not accessible (which would happen with friendly.find)
     @map = Map.by_user(current_user).find_by_slug(params[:id]) || Map.by_user(current_user).find_by_id(params[:id])
   end

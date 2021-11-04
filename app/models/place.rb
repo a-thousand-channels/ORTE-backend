@@ -15,6 +15,9 @@ class Place < ApplicationRecord
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
+  has_many :annotations, dependent: :destroy
+  accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
+
 
   validates :title, presence: true
   validate :check_audio_format
@@ -89,6 +92,24 @@ class Place < ApplicationRecord
     "#{full_address}#{c}"
   end
 
+  def annotations_as_text
+    t = ''
+    if annotations && annotations.count > 0
+      annotations.each do |a|
+        if a.person
+          t = t + a.person.name + ":\n"
+        end
+        if a.title
+          t = t +  a.title + "\n"
+        end
+        t = t +  a.text.html_safe  + "\n"
+        t = t + "---------------\n"
+      end
+      "#{t}"
+    end
+  end
+
+
   def teaser_as_text
     require 'nokogiri'
     Nokogiri::HTML(teaser).text
@@ -100,8 +121,8 @@ class Place < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w[id title teaser_as_text text_as_text startdate enddate lat lon location address zip city country]
-    headers = %w[id title teaser text startdate enddate lat lon location address zip city country]
+    attributes = %w[id title teaser_as_text text_as_text annotations_as_text startdate enddate lat lon location address zip city country]
+    headers = %w[id title teaser text annotations startdate enddate lat lon location address zip city country]
     CSV.generate(headers: false, force_quotes: false, strip: true) do |csv|
       csv << headers
       all.each do |user|

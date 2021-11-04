@@ -54,6 +54,8 @@ class PlacesController < ApplicationController
     @place.layer_id = params[:layer_id]
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
+
+
   end
 
   # POST /places
@@ -80,16 +82,14 @@ class PlacesController < ApplicationController
     @layer = @place.layer
     @map = @place.layer.map
 
-    # quirks, because foundation switch generats 'on'/'off' values,
+    # quirks, because foundation switch generates 'on'/'off' values,
     # rails expect true/false
     # TODO: render this at generating the form
-    # puts params[:place][:published]
     params[:place][:published] = if params[:place][:published] == 'on' || params[:place][:published] == 'true'
                                    true
                                  else
                                    false
                                  end
-    # params[:place][:published]
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })
@@ -145,6 +145,6 @@ class PlacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :imagelink, :layer_id, :icon_id, :audio, tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :imagelink, :layer_id, :icon_id, :audio, annotations_attributes: [:title, :text, :person_id, :source ], tag_list: [], images: [], videos: [])
   end
 end
