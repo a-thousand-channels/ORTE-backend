@@ -134,26 +134,6 @@
           = render 'places/list/submissions'
         %hr
         = render 'places/list/annotations'
-        %p.hint.text-left
-          Annotation could be comments or quotes about this place or event.
-
-        - if params[:action] == 'edit'
-          %button#add_annotation.button
-            %i.fi.fi-plus
-            - if @place.annotations.count > 0
-              Add another annotation
-            - else
-              Add an annotation
-        #new_annotations
-          %h4 New annotation
-          %fieldset
-            = f.fields_for :annotations do |aa|
-              = aa.input :title
-              = aa.input :text, :input_html => {:rows => 8, class: 'large-text tinymce' }
-              = aa.association :person, collection: Person.all, include_blank: true
-              %p.hint Who is speaking here?
-              = aa.input :source
-              %p.hint Where this annotation come from?
         %hr.show-for-small-only
     .large-6.medium-6.cell
       .form-inputs

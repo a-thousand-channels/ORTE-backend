@@ -2,17 +2,40 @@
   %label Annotations
   %hr
   - @place.annotations.each do |annotation|
-    #saved_annotations
-      - if annotation.person
-        %p= annotation.person.name
-      %h5
-        = annotation.title
-      .annotation_text
-        =h annotation.text.html_safe
 
+    #saved_annotations
+
+      .grid-x.grid-padding-x
+        .large-8.medium-8.cell
+          - if annotation.person
+            %p
+              %i.fi.fi-comment-quotes
+              = annotation.person.name
+        .large-4.medium-4.cell
+          %p.text-right
+
+      - if annotation.title
+        %h5
+          = annotation.title
+      - if annotation.text
+        .annotation_text
+          - if params[:action] == 'show'
+            =h annotation.text.html_safe
+          - else
+            = truncate annotation.text.html_safe, length: 100, separator: /.../
       .annotation_metadata
         %p.hint
-
           #{annotation.source} &mdash;
           #{l(annotation.created_at)}
+          \&mdash;
+          = link_to edit_annotation_path(annotation, back_to: params[:action]), class: 'button small rounded', title: 'Edit this annotation' do
+            %i.fi.fi-pencil.fi-18
     %hr
+- if params[:action] != 'new'
+  = link_to new_annotation_path(place_id: @place.id), class: 'button' do
+    %i.fi.fi-plus
+    - if @place.annotations.count > 0
+      Add another annotation
+    - else
+      Add an annotation
+

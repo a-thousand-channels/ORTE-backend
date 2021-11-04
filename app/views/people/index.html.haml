@@ -13,22 +13,22 @@
     %thead
       %tr
         %th Name
-        %th Info
         %th Annotations?
         %th Actions
-        %th
         %th
 
     %tbody
       - @people.each do |person|
         %tr
-          %td= person.name
-          %td= person.info
+          %td
+            = person.name
+            %br
+            = person.info
           %td
             - if person.annotations.count > 0
               - person.annotations.each do |annotate|
-                = annotate.id
-          %td= link_to 'Show', person
+                = link_to map_layer_place_path(annotate.place.layer.map,annotate.place.layer,annotate.place) do
+                  = annotate.id
           %td= link_to 'Edit', edit_person_path(person)
           %td= link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' }
 

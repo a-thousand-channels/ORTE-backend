@@ -119,6 +119,16 @@ a.button.small {
     line-height: 1;
     position: absolute;
 }
+a.small.button.rounded {
+    border-radius: 20px;
+    padding: 5px 6px;
+    background-color: white;
+    color: darken(#c6c600,5%) !important;
+    font-size: 0.9rem;
+}
+a.small.button.rounded:hover {
+    color: darken(#c6c600,15%) !important;
+}
 a.button.action {
   font-size: 13pt;
   i {
