@@ -23,13 +23,20 @@
             =h annotation.text.html_safe
           - else
             = truncate annotation.text.html_safe, length: 100, separator: /.../
-      .annotation_metadata
-        %p.hint
-          #{annotation.source} &mdash;
-          #{l(annotation.created_at)}
-          \&mdash;
-          = link_to edit_annotation_path(annotation, back_to: params[:action]), class: 'button small rounded', title: 'Edit this annotation' do
-            %i.fi.fi-pencil.fi-18
+        - if annotation.tag_list
+          %p
+            - annotation.tags.each do |tag|
+              %span.label.secondary.tag
+                = link_to map_tag_path(@map,tag) do
+                  %i.fi-price-tag
+                  = tag
+          .annotation_metadata
+            %p.hint
+              #{annotation.source} &mdash;
+              #{l(annotation.created_at)}
+              \&mdash;
+              = link_to edit_annotation_path(annotation, back_to: params[:action]), class: 'button small rounded', title: 'Edit this annotation' do
+                %i.fi.fi-pencil.fi-18
     %hr
 - if params[:action] != 'new'
   = link_to new_annotation_path(place_id: @place.id), class: 'button' do
