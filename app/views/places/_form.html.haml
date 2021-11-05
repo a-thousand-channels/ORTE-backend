@@ -117,7 +117,6 @@
         = tinymce
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
-        - # = f.input :tag_list, label: 'Tags', input_html: {value: f.object.tag_list.join(", "), placeholder: 'Tags, seperate with comma'}
         = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name, label: 'Tags'
         %p.hint.text-left
           To add a tag, just type the tag into the field and hit return.
