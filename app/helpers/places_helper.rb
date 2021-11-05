@@ -4,7 +4,7 @@ module PlacesHelper
   include Rails.application.routes.url_helpers
 
   def ptype_for_select
-    ptypes = %w[info event text]
+    ptypes = %w[info event group]
     ptypes.each_with_object({}) { |e, m| m[e.capitalize] = e; }
   end
 
