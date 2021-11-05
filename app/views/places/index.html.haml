@@ -61,6 +61,10 @@
               = place.zip
               = place.city
 
+            - if place.annotations && place.annotations.count > 0
+              %p
+                = link_to map_layer_place_path(place.layer.map,place.layer,place) do
+                  #{place.annotations.count} Annotations
             - if place.tags
               %p
                 - place.tags.each do |tag|
