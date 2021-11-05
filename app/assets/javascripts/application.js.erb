@@ -36,10 +36,14 @@
       $('#flash').slideUp(2000);
     }, 3500);
 
-      $('#place_tag_list').select2({
-        tags: true,
-        tokenSeparators: [',']
-      });
+    $('#place_tag_list').select2({
+      tags: true,
+      tokenSeparators: [',']
+    });
+    $('#annotation_tag_list').select2({
+      tags: true,
+      tokenSeparators: [',']
+    });
       // tags option enables free text responses
 
     // select another color (for layers)

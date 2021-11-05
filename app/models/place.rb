@@ -15,7 +15,7 @@ class Place < ApplicationRecord
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
-  has_many :annotations, dependent: :destroy
+  has_many :annotations
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
 

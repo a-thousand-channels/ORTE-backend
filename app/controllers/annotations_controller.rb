@@ -11,12 +11,16 @@ class AnnotationsController < ApplicationController
   def new
     @annotation = Annotation.new
     @annotation.place_id = params[:place_id]
+    @annotations = Annotation.all
   end
 
-  def edit; end
+  def edit
+    @annotations = Annotation.all
+  end
 
   def create
     @annotation = Annotation.new(annotation_params)
+    @annotations = Annotation.all
 
     respond_to do |format|
       if @annotation.save
@@ -34,6 +38,7 @@ class AnnotationsController < ApplicationController
 
   # PATCH/PUT /annotation/1 or /annotation/1.json
   def update
+    @annotations = Annotation.all
     respond_to do |format|
       if @annotation.update(annotation_params)
         if params[:back_to] == 'edit'
@@ -62,6 +67,6 @@ class AnnotationsController < ApplicationController
   end
 
   def annotation_params
-    params.require(:annotation).permit(:title, :text, :annotation_id, :source, :place_id, :person_id)
+    params.require(:annotation).permit(:title, :text, :annotation_id, :source, :place_id, :person_id, tag_list: [] )
   end
 end
