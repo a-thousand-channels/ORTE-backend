@@ -2,6 +2,11 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
 
   var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
+  if ( !layer_json_url ) {
+    layer_json_url = $('#info-wrapper').data('url');
+  }
+
+
   if(typeof layer_json_url !== 'undefined') {
 
     console.log("Drawing placemarks w/data from "+layer_json_url);
@@ -25,7 +30,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         clustercolor = data.color;
         var places = new Array();
         if ( level === 'places') {
-          places = data
+          places = data.places;
         } else {
           places = data.places;
         }
@@ -101,7 +106,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         ");
 
         console.log("fit to bounds");
-        var bounds = marker_meta_layers.getBounds().pad(0.25);
+        var bounds = marker_meta_layers.getBounds().pad(0.35);
         var northeast = bounds.getNorthEast();
         var southwest = bounds.getSouthWest();
         if ( $('#selection').data('map-extent-northeast') ) {
@@ -176,6 +181,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
 
           });
         }
+
     });
   }
 }
@@ -203,7 +209,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         if ( place.published === true ) {
           var opacity="0.7"
         } else {
-          var opacity="0.3"
+          var opacity="0.5"
         }
         if (color.indexOf('#') == -1) {
           color = '#'+color;
