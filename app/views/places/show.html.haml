@@ -1,7 +1,6 @@
 - content_for(:title) { "#{@place.title} — #{@place.layer.title}" }
 
-
-#info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}" }}
+#info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}", 'layer_id' => "#{@layer.id}" }}
 
   %p.text-right.close_link_wrapper
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
