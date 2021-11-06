@@ -9,12 +9,14 @@
     .large-6.medium-12.cell
       .form-inputs
         = f.input :title
+        = tinymce
         = f.input :text, :input_html => {:rows => 8, class: 'large-text tinymce' }
         = f.association :person, collection: Person.all, include_blank: true
         %p.hint Who is speaking here?
         = f.input :source
         %p.hint Where this annotation come from?
         = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @annotations.all_tags, value_method: :name, label: 'Tags'
+        %p.hint What tags can describe this annotation?
       .form-actions
         = f.button :submit, :class => "button"
     .large-3.cell
