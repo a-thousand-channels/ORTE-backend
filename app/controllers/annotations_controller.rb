@@ -55,8 +55,11 @@ class AnnotationsController < ApplicationController
   def destroy
     @annotation.destroy
     respond_to do |format|
-      format.html { redirect_to annotations_url, notice: 'Annotation was successfully destroyed.' }
-      format.json { head :no_content }
+      if params[:back_to] == 'edit'
+        format.html { redirect_to edit_map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully updated.' }
+      else
+        format.html { redirect_to map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully updated.' }
+      end
     end
   end
 
