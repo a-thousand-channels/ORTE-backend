@@ -7,4 +7,11 @@ class Annotation < ApplicationRecord
   validates :text, presence: true
 
   scope :published, -> { where(published: true) }
+
+
+  def person_name
+    if person
+      "#{person.name}"
+    end
+  end
 end
