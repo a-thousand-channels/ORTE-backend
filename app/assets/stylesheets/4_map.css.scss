@@ -1,6 +1,9 @@
 
 /* leaflet overrides */
 #map {
+  background: #454545
+}
+#map.lightmode {
   background: #fefefe;
 }
 #map .leaflet-top {
