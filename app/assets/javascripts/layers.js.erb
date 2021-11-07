@@ -328,10 +328,11 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       });
       if ( $('#selection').data('map-popup-display-mode') != 'click' ) {
         marker.on('mouseover', function (e) {
+            map.closePopup();
             this.openPopup();
         });
         marker.on('mouseout', function (e) {
-            this.closePopup();
+            // this.closePopup();
         });
       }
       // NEW 2021: Add annotations on the map, if any
