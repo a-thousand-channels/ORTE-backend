@@ -175,7 +175,6 @@ ActiveRecord::Schema.define(version: 2021_11_07_114508) do
     t.string "imagelink"
     t.integer "icon_id"
     t.boolean "featured"
-    t.string "ptype", default: "info"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
@@ -248,8 +247,8 @@ ActiveRecord::Schema.define(version: 2021_11_07_114508) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.bigint "group_id"
-    t.datetime "created_at", default: "2021-09-03 18:29:24", null: false
-    t.datetime "updated_at", default: "2021-09-03 18:29:24", null: false
+    t.datetime "created_at", default: "2021-06-28 17:20:16", null: false
+    t.datetime "updated_at", default: "2021-06-28 17:20:16", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -270,6 +269,7 @@ ActiveRecord::Schema.define(version: 2021_11_07_114508) do
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
   add_foreign_key "icons", "iconsets"
