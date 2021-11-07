@@ -241,8 +241,9 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
 
 
       // alternative place display image instead of a marker
-      opacity="0.7";
-      var small_svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
+      var small_opacity="0.8";
+      var small_color=color;
+      var small_svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+small_color+"' fill-opacity='"+small_opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
       var small_icon_url = encodeURI("data:image/svg+xml," + small_svg).replace(new RegExp('#', 'g'),'%23');
       var small_icon =new CustomSmallIcon({iconUrl: small_icon_url})
       var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(image_layers);
