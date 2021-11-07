@@ -43,6 +43,14 @@
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"You can select one of these iconsets, which will be used to display your places on the map. If none is selected, coloured circles are used as the default icons."}
         %hr
         .grid-x.grid-padding-x
+          .large-6.medium-6.small-6.cell
+            %p
+              = f.input :popup_display_mode, :collection => popup_display_mode_for_select, :input_html => { :class => '' }, label: 'Popup display mode'
+          .large-6.medium-6.small-6.cell
+            \&nbsp;
+
+        %hr
+        .grid-x.grid-padding-x
           .large-6.medium-6.small-12.cell
 
             %p
