@@ -326,13 +326,14 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         }
 
       });
-      marker.on('mouseover', function (e) {
-          this.openPopup();
-      });
-      marker.on('mouseout', function (e) {
-          this.closePopup();
-      });
-
+      if ( $('#selection').data('map-popup-display-mode') != 'click' ) {
+        marker.on('mouseover', function (e) {
+            this.openPopup();
+        });
+        marker.on('mouseout', function (e) {
+            this.closePopup();
+        });
+      }
       // NEW 2021: Add annotations on the map, if any
       if ( place.annotations ) {
         $.each(place.annotations, function(kkey,annotation) {
