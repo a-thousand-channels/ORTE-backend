@@ -76,8 +76,8 @@ class ImagesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_image
-    @map = Map.by_user(current_user).where(id: params[:map_id]).first
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
     @image = Image.find(params[:id])
   end
