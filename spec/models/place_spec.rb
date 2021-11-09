@@ -103,13 +103,25 @@ RSpec.describe Place, type: :model do
       l = FactoryBot.create(:layer, map: m)
       p1 = FactoryBot.create(:place, layer: l, address: 'An address1', location: 'A location', zip: '12345', city: 'City')
       p2 = FactoryBot.create(:place, layer: l, address: 'An address2', location: 'A location', zip: '12345', city: 'City')
-      places = Place.all
-      csv_header = 'id,title,teaser,text,startdate,enddate,lat,lon,location,address,zip,city,country'
+      a1 = FactoryBot.create(:annotation, place: p1, title: 'Annotation 1')
+      a2 = FactoryBot.create(:annotation, place: p2, title: 'Annotation 2')
+
+      other_map = FactoryBot.create(:map)
+      other_layer = FactoryBot.create(:layer, map: other_map)
+      p3 = FactoryBot.create(:place, layer: other_layer, address: 'An address3', location: 'A location', zip: '12345', city: 'City')
+      a3 = FactoryBot.create(:annotation, place: p3, title: 'Annotation 3')
+      places = l.places
+      csv_header = 'id,title,teaser,text,annotations,startdate,enddate,lat,lon,location,address,zip,city,country'
       csv_line1 = 'An address1,12345,City,Country'
       csv_line2 = 'An address2,12345,City,Country'
+      csv_line3 = 'An address3,12345,City,Country'
       expect(places.to_csv).to include(csv_header)
       expect(places.to_csv).to include(csv_line1)
       expect(places.to_csv).to include(csv_line2)
+      expect(places.to_csv).to include(a1.title)
+      expect(places.to_csv).to include(a2.title)
+      expect(places.to_csv).not_to include(csv_line3)
+      expect(places.to_csv).not_to include(a3.title)
     end
   end
 end
