@@ -120,6 +120,31 @@
     }
 }
 
+/* ............................. */
+
+.spiderfied-places {
+    filter: saturate(0.8);
+    transition: 0.25s filter;
+}
+.spiderfied-places:hover {
+    filter: saturate(3);
+    transition: 0.5s filter;
+}
+.leaflet-zoom-animated.leaflet-interactiveXX {
+    background-color: rgba(25,25,25,0);
+    border-radius: 23px;
+    padding: 2px;
+    box-shadow: 0 0 5px #333;
+}
+/* another try: colorize the helpingCircles by the Leaflet.MarkerCluster.PlacementStrategies sub-plugin; */
+/*
+.leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path {
+    stroke: red;
+    stroke-width: 60px;
+    opacity: 0.5;
+}
+/* ............................. */
+
 /* iconset settings */
 
 
