@@ -5,6 +5,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
   if ( !layer_json_url ) {
     layer_json_url = $('#info-wrapper').data('url');
   }
+  if ( !layer_json_url ) {
+    layer_json_url = $('#form-wrapper').data('url');
+  }
 
 
   if(typeof layer_json_url !== 'undefined') {

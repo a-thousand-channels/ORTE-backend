@@ -153,12 +153,21 @@
     // ---------------
     // baselayer map
 
+    var MAP_LAT = 53.55;
+    var MAP_LON = 9.99;
+
+
+    if ( $('#form-wrapper').data('lat') ) {
+      MAP_LAT = $('#form-wrapper').data('lat');
+      MAP_LON = $('#form-wrapper').data('lon');
+    }
+
     var map = L.map('map', {
         zoomControl: false,
         layers: [marker_meta_layers],
         minZoom: 1,
         maxZoom: 18
-    }).setView([53.55, 9.99], 12);
+    }).setView([MAP_LAT, MAP_LON], 12);
 
 
     L.control.layers(overlays).addTo(map);
