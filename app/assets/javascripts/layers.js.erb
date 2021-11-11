@@ -28,7 +28,37 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         console.log("Render places of one layer");
         console.log(data);
         var marker_layers = L.markerClusterGroup({
-          maxClusterRadius: 20
+          maxClusterRadius: 20,
+          animate: true,
+
+          spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
+
+          elementsPlacementStrategy: "clock",
+          helpingCircles: true,
+
+          spiderfyDistanceSurplus: 45,
+          spiderfyDistanceMultiplier: 1,
+
+          spiderfiedClassName: 'spiderfied-places',
+
+          elementsMultiplier: 1.4,
+          firstCircleElements: 10,
+          spiderfyShapePositions: function(count, centerPt) {
+                var distanceFromCenter = 100,
+                    markerDistance = 145,
+                    lineLength = markerDistance * (count - 1),
+                    lineStart = centerPt.y - lineLength / 4,
+                    res = [],
+                    i;
+
+                res.length = count;
+
+                for (i = count - 1; i >= 0; i--) {
+                    res[i] = new Point(centerPt.x + distanceFromCenter, lineStart + markerDistance * i);
+                }
+
+                return res;
+            }
         });
         clustercolor = data.color;
         var places = new Array();
@@ -195,14 +225,14 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       options: {
         iconSize:     [30, 30],
         iconAnchor:   [15, 15],
-        popupAnchor:  [-2, -20]
+        popupAnchor:  [-2, -15]
       }
     });
     var CustomSmallIcon = L.Icon.extend({
       options: {
         iconSize:     [20, 20],
         iconAnchor:   [10, 10],
-        popupAnchor:  [-2, -20]
+        popupAnchor:  [-1, -8]
       }
     });
 
@@ -245,12 +275,11 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
 
       // alternative place display image instead of a marker
       var small_opacity="0.8";
-      var small_color=color;
+      var small_color=adjustColor(color, -60);
       var small_svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+small_color+"' fill-opacity='"+small_opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
       var small_icon_url = encodeURI("data:image/svg+xml," + small_svg).replace(new RegExp('#', 'g'),'%23');
       var small_icon =new CustomSmallIcon({iconUrl: small_icon_url})
       var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(image_layers);
-      var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(text_layers);
 
       var html = '';
 
@@ -330,6 +359,15 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         }
 
       });
+      marker.on('click', function (e) {
+        console.log('marker');
+        console.log(e);
+      });
+      marker.on('clusterclick', function (e) {
+        // a.layer is actually a cluster
+        console.log('cluster ' + e);
+        console.log('cluster ' + e.layer.getAllChildMarkers().length);
+      });
       if ( $('#selection').data('map-popup-display-mode') != 'click' ) {
         marker.on('mouseover', function (e) {
             map.closePopup();
@@ -342,8 +380,8 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       // NEW 2021: Add annotations on the map, if any
       if ( place.annotations ) {
         $.each(place.annotations, function(kkey,annotation) {
-          var marker = L.marker([place.lat, place.lon], {icon: small_icon})
-          marker_layers.addLayer(marker);
+          var a_marker = L.marker([place.lat, place.lon], {icon: small_icon})
+          marker_layers.addLayer(a_marker);
           var content = '';
           content += '<div class="leaflet-popup-content-text">';
           if ( annotation.person_name ) {
@@ -357,7 +395,15 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
             content += 'NN';
           }
           content += "</h5>";
-          marker.bindPopup(content).on('click');
+          a_marker.bindPopup(content).on('click');
+          a_marker.on('click', function (e) {
+            console.log('marker');
+            console.log(e);
+          });
+          a_marker.on('clusterclick', function (e) {
+            // a.layer is actually a cluster
+            console.log('cluster ' + e);
+          });
         });
       };
       c++;
@@ -389,5 +435,8 @@ function getParams() {
   return vars;
 }
 
-
+/* cudos to https://stackoverflow.com/users/1031454/supersan */
+function adjustColor(color, amount) {
+    return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+}
 
