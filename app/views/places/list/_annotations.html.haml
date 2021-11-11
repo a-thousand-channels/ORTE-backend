@@ -23,13 +23,17 @@
             =h annotation.text.html_safe
           - else
             = truncate annotation.text.html_safe, length: 100, separator: /.../
-        - if annotation.tag_list
-          %p
-            - annotation.tags.each do |tag|
-              %span.label.secondary.tag
-                = link_to map_tag_path(@map,tag) do
-                  %i.fi-price-tag
-                  = tag
+          - if annotation.tag_list
+            %p
+              - annotation.tags.each do |tag|
+                %span.label.secondary.tag
+                  = link_to map_tag_path(@map,tag) do
+                    %i.fi-price-tag
+                    = tag
+          - if annotation.audio.attached?
+            %p
+              = audio_tag rails_blob_url(annotation.audio), autoplay: true, controls: true
+              = link_to annotation.audio.filename, rails_blob_path(annotation.audio, disposition: "attachment")
           .annotation_metadata
             %p.hint
               #{annotation.source} &mdash;
