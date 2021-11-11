@@ -7,5 +7,8 @@ FactoryBot.define do
     source { 'MyText' }
     place
     person
+    trait :with_audio do
+      audio { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')] }
+    end
   end
 end

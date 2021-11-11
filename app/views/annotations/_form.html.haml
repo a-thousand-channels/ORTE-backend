@@ -17,6 +17,15 @@
         %p.hint Where this annotation come from?
         = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @annotations.all_tags, value_method: :name, label: 'Tags'
         %p.hint What tags can describe this annotation?
+        %hr
+        %label Audio
+        - if @annotation.audio && @annotation.audio.attached?
+          %p
+            = link_to rails_blob_path(@annotation.audio, disposition: 'attachment') do
+              = @annotation.audio.filename
+          %p.shy Upload a new file:
+        = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
+        %p.hint Please upload MP3 only
       .form-actions
         = f.button :submit, :class => "button"
     .large-3.cell

@@ -70,6 +70,6 @@ class AnnotationsController < ApplicationController
   end
 
   def annotation_params
-    params.require(:annotation).permit(:title, :text, :annotation_id, :source, :place_id, :person_id, tag_list: [] )
+    params.require(:annotation).permit(:title, :text, :annotation_id, :source, :audio, :place_id, :person_id, tag_list: [] )
   end
 end
