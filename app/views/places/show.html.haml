@@ -79,8 +79,15 @@
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
+      %label Annotations
+      %hr.small
       = render 'places/list/annotations'
-
+      = link_to new_annotation_path(place_id: @place.id), class: 'button' do
+        %i.fi.fi-plus
+        - if @place.annotations.count > 0
+          Add another annotation
+        - else
+          Add an annotation
       - if @place.tag_list
         %p
           - @place.tags.each do |tag|
