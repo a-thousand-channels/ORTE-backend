@@ -392,7 +392,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
           if ( annotation.title ) {
             content += annotation.title;
           } else {
-            content += 'NN';
+            content += annotaton.text.substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
           }
           content += "</h5>";
           a_marker.bindPopup(content).on('click');
