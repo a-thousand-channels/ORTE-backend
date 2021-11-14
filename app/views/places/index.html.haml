@@ -6,15 +6,20 @@
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
       %span{"aria-hidden"=>"true"}
         %i.fi.fi-x
-  %h3
+  %h1
     = link_to map_path(@layer.map) do
       = @layer.map.title
-    \:
+    —
     = link_to map_layer_path(@layer.map,@layer) do
       = @layer.title
     (#{@places.count})
 
-
+  %p.text-right.hint
+    See also a list of
+    = link_to annotations_map_layer_path(@map,@layer) do
+      annotations
+  %p
+    &nbsp;
   %table
     %thead
       %tr

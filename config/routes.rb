@@ -30,6 +30,7 @@ Rails.application.routes.draw do
         post :search
       end
       member do
+        get :annotations
         get :images, only: [:index]
       end
       resources :places do

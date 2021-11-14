@@ -1,0 +1,31 @@
+- content_for(:title) { "Search in #{@map.title}" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link', "aria-label"=>"Close back" do
+      %span{"aria-hidden"=>"true"}
+        %i.fi.fi-x
+  %h1
+    = link_to map_path(@map) do
+      = @map.title
+    —
+    = link_to map_layer_path(@layer.map,@layer) do
+      = @layer.title
+  %h4 Annotations
+  %p.text-right.hint
+    %br
+    See also
+    = link_to map_layer_places_path(@map,@layer) do
+      Places
+    of this layer
+  %hr
+  - @layer.places.each do |place|
+    - @place = place
+    - if @place.annotations.count > 0
+      %label
+        = link_to map_layer_place_path(@map,@layer,@place) do
+          = @place.title
+        = link_to edit_map_layer_place_path(@map,@layer,@place), class: 'button small rounded ' do
+          %i.fi.fi-pencil.fi-20
+      %hr
+    = render 'places/list/annotations'
