@@ -34,9 +34,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
           spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
 
           elementsPlacementStrategy: "clock",
-          helpingCircles: true,
+          helpingCircles: false,
 
-          spiderfyDistanceSurplus: 45,
+          spiderfyDistanceSurplus: 28,
           spiderfyDistanceMultiplier: 1,
 
           spiderfiedClassName: 'spiderfied-places',
@@ -388,13 +388,16 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
             content += "<p>"+annotation.person_name;
             content += "</p>";
           }
-          content += "<h5>";
+
+          content += "<p>";
           if ( annotation.title ) {
+            content += "<strong>";
             content += annotation.title;
-          } else {
-            content += annotation.text.substring(0, 100).split(" ").slice(0, -1).join(" ") + "...";
+            content += "</strong>";
           }
-          content += "</h5>";
+          content += annotation.text.substring(0, 150).split(" ").slice(0, -1).join(" ") + "...";
+          content += "</p>";
+
           a_marker.bindPopup(content).on('click');
           a_marker.on('click', function (e) {
             console.log('marker');
