@@ -12,6 +12,13 @@ class Place < ApplicationRecord
 
   has_one_attached :audio, dependent: :destroy
 
+  has_many :relations_tos, foreign_key: 'relation_to_id',
+                class_name: 'Relation',
+                dependent: :destroy
+  has_many :relations_froms, foreign_key: 'relation_from_id',
+                class_name: 'Relation',
+                dependent: :destroy
+
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy

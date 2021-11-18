@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_07_114508) do
+ActiveRecord::Schema.define(version: 2021_11_18_180932) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -177,6 +177,14 @@ ActiveRecord::Schema.define(version: 2021_11_07_114508) do
     t.boolean "featured"
     t.string "ptype", default: "place"
     t.index ["layer_id"], name: "index_places_on_layer_id"
+  end
+
+  create_table "relations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "relation_from_id"
+    t.integer "relation_to_id"
+    t.string "rtype"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "submission_configs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
