@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :relation do
-    relation_from_id { 1 }
-    relation_to_id { 2 }
+    relation_from_id { relation_from }
+    relation_to_id { relation_to }
     rtype { 'all' }
     trait :invalid do
       relation_from_id { nil }
