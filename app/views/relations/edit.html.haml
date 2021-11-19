@@ -1,0 +1,21 @@
+
+#form-wrapper.large-wrapper
+  %h1 Editing relation
+
+  = render 'form'
+
+
+
+  %hr
+  .grid-x.grid-padding-x
+    .large-6.cell
+
+      = link_to map_relations_path(@map), class: "button" do
+        %i.fi.fi-arrow-left
+        All relations
+
+    .large-6.cell
+      %p.text-right
+        = link_to map_relation_path(@map,@relation), :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
+          %i.fi.fi-x
+          Delete

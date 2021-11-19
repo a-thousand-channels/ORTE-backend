@@ -1,0 +1,38 @@
+#table-wrapper
+
+
+  %h1 Relations
+
+  %table
+    %thead
+      %tr
+        %th
+        %th
+
+    %tbody
+      - @layers.each do |layer|
+        %tr
+          %th{colspan: 2}
+            = link_to map_path(layer.map) do
+              = layer.map.title
+            —
+            = link_to map_layer_path(layer.map,layer) do
+              = layer.title
+        - layer.places.each do |place|
+          - if place.relations_froms.count > 0
+            %tr
+              %td= place.title
+              %td
+                - place.relations_froms.each do |r|
+                  %p
+                    \---->
+                    = r.relation_to.title
+                    = link_to edit_map_relation_path(@map,r), class: "button small rounded" do
+                      %i.fi.fi-pencil
+                      Edit
+
+
+
+  %br
+
+  = link_to 'New Relation', new_map_relation_path(@map)
