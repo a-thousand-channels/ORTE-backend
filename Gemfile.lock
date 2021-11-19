@@ -365,6 +365,8 @@ GEM
       rubyzip (>= 1.2.2)
     settingslogic (2.0.9)
     sexp_processor (4.16.0)
+    shoulda-matchers (5.0.0)
+      activesupport (>= 5.2.0)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -496,6 +498,7 @@ DEPENDENCIES
   secure_headers
   select2-rails
   settingslogic
+  shoulda-matchers
   simple_form
   simplecov
   spring
