@@ -18,6 +18,8 @@ class Place < ApplicationRecord
   has_many :relations_froms, foreign_key: 'relation_from_id',
                 class_name: 'Relation',
                 dependent: :destroy
+  accepts_nested_attributes_for :relations_tos, allow_destroy: true
+  accepts_nested_attributes_for :relations_froms, allow_destroy: true
 
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy

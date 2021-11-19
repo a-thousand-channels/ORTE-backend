@@ -1,0 +1,13 @@
+= simple_form_for([@map,@relation]) do |f|
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x
+    .large-3.cell
+      &nbsp;
+    .large-6.medium-12.cell
+      .form-inputs
+      .form-actions
+        = f.button :submit, :class => "button"
+    .large-3.cell
+      &nbsp;
