@@ -10,21 +10,25 @@ class RelationsController < ApplicationController
 
   # GET /relations/new
   def new
-
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layers = @map.layers
     @relation = Relation.new
   end
 
   # GET /relations/1/edit
   def edit
+
   end
 
   # POST /relations or /relations.json
   def create
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layers = @map.layers
     @relation = Relation.new(relation_params)
 
     respond_to do |format|
       if @relation.save
-        format.html { redirect_to @relation, notice: "Relation was successfully created." }
+        format.html { redirect_to map_relations_path(@map,@relation), notice: "Relation was successfully created." }
         format.json { render :show, status: :created, location: @relation }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -37,7 +41,7 @@ class RelationsController < ApplicationController
   def update
     respond_to do |format|
       if @relation.update(relation_params)
-        format.html { redirect_to @relation, notice: "Relation was successfully updated." }
+        format.html { redirect_to map_relations_path(@map,@relation), notice: "Relation was successfully updated." }
         format.json { render :show, status: :ok, location: @relation }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,7 +54,7 @@ class RelationsController < ApplicationController
   def destroy
     @relation.destroy
     respond_to do |format|
-      format.html { redirect_to relations_url, notice: "Relation was successfully destroyed." }
+      format.html { redirect_to map_relations_path(@map,@relation), notice: "Relation was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -59,11 +63,14 @@ class RelationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_relation
       @map = Map.by_user(current_user).friendly.find(params[:map_id])
+      @layers = @map.layers
+      layers_ids = @layers.pluck(:id)
+      @all_places = Place.where(layer: layers_ids)
       @relation = Relation.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def relation_params
-      params.fetch(:relation, {})
+      params.require(:relation).permit(:relation_from_id, :relation_to_id)
     end
 end

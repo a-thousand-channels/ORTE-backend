@@ -48,6 +48,14 @@ class Place < ApplicationRecord
     end
   end
 
+  def title_and_location
+    if !location.blank?
+      "#{title} (#{location})"
+    else
+      title
+    end
+  end
+
   def date
     ApplicationController.helpers.smart_date_display(startdate, enddate)
   end

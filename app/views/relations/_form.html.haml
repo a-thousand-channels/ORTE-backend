@@ -7,6 +7,15 @@
       &nbsp;
     .large-6.medium-12.cell
       .form-inputs
+        - if params[:action] == 'edit'
+          = @relation.relation_from.title
+          \⟶
+          = f.input :relation_to_id, collection: @layers, as: :grouped_select, group_method: :places, group_label_method: :title, label_method: :title_and_location, selected: @relation.relation_to.id
+        - else
+          = f.input :relation_from_id, collection: @layers, as: :grouped_select, group_method: :places, group_label_method: :title, label_method: :title_and_location
+          = f.input :relation_to_id, collection: @layers, as: :grouped_select, group_method: :places, group_label_method: :title, label_method: :title_and_location
+
+
       .form-actions
         = f.button :submit, :class => "button"
     .large-3.cell
