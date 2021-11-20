@@ -28,7 +28,7 @@ class RelationsController < ApplicationController
 
     respond_to do |format|
       if @relation.save
-        format.html { redirect_to map_relations_path(@map,@relation), notice: "Relation was successfully created." }
+        format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully created." }
         format.json { render :show, status: :created, location: @relation }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -41,7 +41,7 @@ class RelationsController < ApplicationController
   def update
     respond_to do |format|
       if @relation.update(relation_params)
-        format.html { redirect_to map_relations_path(@map,@relation), notice: "Relation was successfully updated." }
+        format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully updated." }
         format.json { render :show, status: :ok, location: @relation }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,7 +54,7 @@ class RelationsController < ApplicationController
   def destroy
     @relation.destroy
     respond_to do |format|
-      format.html { redirect_to map_relations_path(@map,@relation), notice: "Relation was successfully destroyed." }
+      format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -71,6 +71,6 @@ class RelationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def relation_params
-      params.require(:relation).permit(:relation_from_id, :relation_to_id)
+      params.require(:relation).permit(:relation_from_id, :relation_to_id, :rtype)
     end
 end
