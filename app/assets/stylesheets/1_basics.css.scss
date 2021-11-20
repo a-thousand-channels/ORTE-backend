@@ -85,6 +85,11 @@ span.name.middle {
 
 hr {border-bottom: 1px solid #aaa;}
 hr.small { margin: 0.25rem auto; }
+
+
+tbody th, tbody td {
+    text-align: left;
+}
 /* -------------------- */
 /* foundation adapations */
 .callout {

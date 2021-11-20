@@ -2,7 +2,10 @@
 
 
   %h1 Relations
-
+  %p.text-right
+    = link_to new_map_relation_path(@map), class: "button small"  do
+      %i.fi-plus.fi-18
+      New Relation
   %table
     %thead
       %tr
@@ -21,18 +24,28 @@
         - layer.places.each do |place|
           - if place.relations_froms.count > 0
             %tr
-              %td= place.title
-              %td
+              %td{colspan: 2}
                 - place.relations_froms.each do |r|
                   %p
-                    \---->
-                    = r.relation_to.title
+                    %label
+                      = place.title
+                    \⟶
+                    = r.relation_to.layer.title
+                    \:
+                    = link_to map_layer_place_url(r.relation_to.layer.map, r.relation_to.layer, r.relation_to) do
+                      = r.relation_to.title
                     = link_to edit_map_relation_path(@map,r), class: "button small rounded" do
                       %i.fi.fi-pencil
                       Edit
 
+        %tr
+          %td{colspan: 2}
+            \...
 
 
-  %br
+  %p.text-right
 
-  = link_to 'New Relation', new_map_relation_path(@map)
+
+    = link_to new_map_relation_path(@map), class: "button small" do
+      %i.fi-plus.fi-18
+      New Relation
