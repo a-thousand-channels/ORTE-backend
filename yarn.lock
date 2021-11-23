@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+leaflet-curve@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/leaflet-curve/-/leaflet-curve-1.0.0.tgz#9053038c59f8630ff82bb55d3009fd017c3c8602"
+  integrity sha1-kFMDjFn4Yw/4K7VdMAn9AXw8hgI=
+
 leaflet-draw@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-1.0.4.tgz#45be92f378ed253e7202fdeda1fcc71885198d46"
