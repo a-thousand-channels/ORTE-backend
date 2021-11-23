@@ -145,6 +145,35 @@
 }
 /* ............................. */
 
+
+.leaflet-marker-icon svg circle {
+  transform: scale(0.9);
+    fill: #cc0000;
+    opacity: 0.45;
+}
+.leaflet-marker-icon svg circle:hover,
+.leaflet-marker-icon:hover svg circle {
+  fill: #cc0000;
+  opacity: 1;
+  transition: all 1s linear;
+  transform: scale(1);
+}
+
+.curve_normal {
+   stroke-width: 7;
+   opacity: 1;
+   // stroke: rgba(25,25,25,0.1);
+   transition: all 1s linear;
+}
+.curve_normal:hover,
+.curve_hover {
+    stroke-width: 7;
+    // stroke: rgba(25,25,25,0.4);
+    transition: all 1s linear;
+}
+
+/* ............................. */
+
 /* iconset settings */
 
 

@@ -24,7 +24,8 @@
 //= require leaflet.markercluster.placementstrategies/dist/leaflet-markercluster.placementstrategies
 //= require leaflet-draw/dist/leaflet.draw
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
-//= require leaflet-color-markers
+// # = require leaflet-color-markers
+//= require leaflet-curve/leaflet.curve.js
 //= require tinymce-jquery
 //= require select2-full
 
@@ -144,11 +145,14 @@
     var text_layers = L.featureGroup();
     var image_layers = L.layerGroup();
     var marker_meta_layers = L.featureGroup();
+    var curve_layers = L.featureGroup();
+
 
      var overlays = {
         'Text': text_layers,
         'Image': image_layers,
-        'Place': marker_meta_layers
+        'Place': marker_meta_layers,
+        'Curves': curve_layers
     };
 
     // ---------------
@@ -243,13 +247,13 @@
 
     // layers: show all places
     if ( $('body').attr('id') === 'layers' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'layers');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
     }
     if ( $('body').attr('id') === 'places' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'places');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'places');
     }
     if ( $('body').attr('id') === 'maps' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'maps');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'maps');
     }
 
 
@@ -274,6 +278,7 @@
 
 
     map.addLayer(marker_meta_layers);
+    map.addLayer(curve_layers);
 
 
 
