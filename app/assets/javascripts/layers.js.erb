@@ -219,6 +219,98 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
     });
   }
 }
+
+function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_relations) {
+
+  var boost = 2.9;
+
+  $.each(places_with_relations, function(key,place) {
+
+    console.log("places_with_relations");
+    console.log(key);
+    console.log(place.relations);
+    console.log(place.relations.length);
+    console.log(place.relations);
+
+    $.each(place.relations, function(key,relation) {
+
+      console.log(relation.from.lat);
+      console.log(relation.from.lon);
+      console.log("Relation_from ID:  "+relation.from.id);
+      var point1 = [Number(relation.from.lat), Number(relation.from.lon)];
+      var point2 = [Number(relation.to.lat), Number(relation.to.lon)];
+      console.log(point1);
+      console.log(point2);
+
+      var color = 'rgba(25,25,25,0.75)';
+      var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+
+      var pathOptions = {
+        color: color,
+        weight: 8,
+        opacity: 0.7,
+        animate: {duration: 3000, iterations: Infinity},
+        className: 'curve_normal curve_'+relation.from.id
+      }
+      var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
+      let distance_in_kms = ((distance) / 1000).toFixed(0);
+      console.log("distance: "+distance_in_kms)
+      var controlpoint = calcControlPoint(point2,point1,distance_in_kms,boost);
+      console.log("controlpoint: "+controlpoint);
+      // var marker = L.marker(controlpoint).addTo(curve_layers);
+      var curvedPath = L.curve(
+        [
+          'M', point1,
+          'Q', controlpoint,
+             point2
+        ], pathOptions);
+      // curvedPath.addTo(marker_layers);
+      curve_layers.addLayer(curvedPath);
+    });
+
+  });
+
+}
+
+
+// kudos to Ryan Catalani for this approach, CC_BY
+function calcControlPoint(point1,point2,distance_in_kms,boost) {
+
+  var d = 2;
+  // TODO: need of distance between the endpoints of the curve
+  // if transcontinental
+  if ( distance_in_kms > 5000 ) {
+    d = 4
+  // if continental
+  } else if ( distance_in_kms > 1000 ) {
+    d = 4
+  // if regional
+  } else if ( distance_in_kms > 100 ) {
+    d = 7
+  // if local
+  } else if ( distance_in_kms > 10 ) {
+    d = 10
+  // if close
+  } else if ( distance_in_kms > 1 ) {
+    d = 40
+  } else if ( distance_in_kms < 1 ) {
+    d = 800
+  }
+
+
+  var offsetX = point2[1] - point1[1],
+  offsetY = point2[0] - point1[0];
+  var r = Math.sqrt( Math.pow(offsetX, 0) + Math.pow(offsetY, 2) ),
+            theta = Math.atan2(offsetY, offsetX);
+  var thetaOffset = (3.14/boost);
+  var r2 = (r/d)/(Math.cos(thetaOffset)),
+            theta2 = theta + thetaOffset;
+  var midpointX = (r2 * Math.cos(theta2)) + point1[1],
+            midpointY = (r2 * Math.sin(theta2)) + point1[0];
+  return midpointLatLng = [midpointY, midpointX];
+}
+
+
 function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
     var c = 0;
     console.log("places: "+places.length);
