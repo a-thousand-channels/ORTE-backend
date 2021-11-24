@@ -17,10 +17,10 @@
           = annotation.title
       - if annotation.text
         .annotation_text
-          - if params[:action] == 'show'
-            =h annotation.text.html_safe
+          - if params[:action] == 'edit'
+            =(truncate(strip_tags(annotation.text), escape: false, length: 200))
           - else
-            = truncate annotation.text.html_safe, length: 100, separator: /.../
+            =h annotation.text.html_safe
           - if annotation.tag_list
             %p
               - annotation.tags.each do |tag|
