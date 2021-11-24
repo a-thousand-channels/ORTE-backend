@@ -82,12 +82,19 @@
       %label Annotations
       %hr.small
       = render 'places/list/annotations'
-      = link_to new_annotation_path(place_id: @place.id), class: 'button' do
-        %i.fi.fi-plus
-        - if @place.annotations.count > 0
-          Add another annotation
-        - else
-          Add an annotation
+      %p
+        = link_to new_annotation_path(place_id: @place.id), class: 'button' do
+          %i.fi.fi-plus
+          - if @place.annotations.count > 0
+            Add another annotation
+          - else
+            Add an annotation
+      %hr.small
+      %p
+        = link_to new_map_relation_path(map_id: @place.layer.map.id, relations_from_id: @place.id), class: 'button' do
+          %i.fi.fi-plus
+          Add a relation to another place
+
       - if @place.tag_list
         %p
           - @place.tags.each do |tag|
