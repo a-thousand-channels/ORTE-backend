@@ -82,6 +82,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         DrawCurves(map,data.id,curve_layers,data.color,clustercolor,places_with_relations);
         marker_meta_layers.addLayer(marker_layers);
 
+
       } else  {
         $.each(data.layers, function(key,data) {
           console.log("Render places of layer "+key+" (\""+data.title+"\") on map");
@@ -272,6 +273,8 @@ function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_rel
 
   });
 
+
+
 }
 
 
@@ -332,6 +335,20 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         iconAnchor:   [10, 10],
         popupAnchor:  [-1, -8]
       }
+    });
+
+    var iconSettings = {
+      mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
+      color: '#cc756b',
+      opacity: 1,
+      radius: 30
+    };
+    var divIcon = L.divIcon({
+      className: "leaflet-data-marker",
+      html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
+      iconAnchor  : [15, 15],
+      iconSize    : [30, 30],
+      popupAnchor : [0, -28]
     });
 
     $.each(places, function(key,place) {
@@ -401,8 +418,15 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       // TODO: add to layer, not map
       // var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
       // layercluster
-      var marker = L.marker([place.lat, place.lon], {icon: icon})
+      var marker = L.marker([place.lat, place.lon], {icon: divIcon});
+
+      // THIS!
+      // marker._icon.id = 'marker_to_'+place.id;
       marker_layers.addLayer(marker);
+      console.log(marker);
+
+
+
 
 
 
@@ -461,10 +485,14 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         console.log('marker');
         console.log(e);
       });
-      marker.on('clusterclick', function (e) {
+
+      // TODO: change color of marker
+      marker_layers.on('clusterclick', function (a) {
         // a.layer is actually a cluster
-        console.log('cluster ' + e);
-        console.log('cluster ' + e.layer.getAllChildMarkers().length);
+        // console.log('cluster ' + a.layer.getAllChildMarkers().length);
+        // console.log(a.originalEvent.target);
+        // console.log(a.originalEvent.target.closest(".leaflet-interactive").classList);
+        // $(a.originalEvent.target).closest(".leaflet-interactive").toggleClass("cluster_expanded");
       });
       if ( $('#selection').data('map-popup-display-mode') != 'click' ) {
         marker.on('mouseover', function (e) {
