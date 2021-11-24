@@ -9,27 +9,19 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
     layer_json_url = $('#form-wrapper').data('url');
   }
 
+  // TODO: how to set data.id dynamically?
+  // data.id
 
-  if(typeof layer_json_url !== 'undefined') {
+  var data_id = 1;
 
-    console.log("Drawing placemarks w/data from "+layer_json_url);
-
-    var request = $.getJSON(layer_json_url, function(data) {
-
-      console.log("-----------------------------");
-      console.log(data);
-
-      // read params, place id is given, render this place special
-      console.log("Check for url params");
-      var params = getParams();
-
-      var clustercolor = '#445';
-      if ( level !== 'maps') {
-        console.log("Render places of one layer");
-        console.log(data);
-        var marker_layers = L.markerClusterGroup({
+  var markerclusterSettings = {
           maxClusterRadius: 20,
           animate: true,
+
+          iconCreateFunction: function(cluster) {
+              return L.divIcon({ html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data_id+'"><div>' + cluster.getChildCount() + '</div></div>' });
+            },
+
 
           spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
 
@@ -59,7 +51,27 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
                 return res;
             }
-        });
+  }
+
+
+  if(typeof layer_json_url !== 'undefined') {
+
+    console.log("Drawing placemarks w/data from "+layer_json_url);
+
+    var request = $.getJSON(layer_json_url, function(data) {
+
+      console.log("-----------------------------");
+      console.log(data);
+
+      // read params, place id is given, render this place special
+      console.log("Check for url params");
+      var params = getParams();
+
+      var clustercolor = '#445';
+      if ( level !== 'maps') {
+        console.log("Render places of one layer");
+        console.log(data);
+        var marker_layers = L.markerClusterGroup(markerclusterSettings);
         clustercolor = data.color;
         var places = new Array();
         if ( level === 'places') {
@@ -93,15 +105,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             DrawIconset(map,data.id,marker_layers,params,data.iconset,data.places);
             $('.marker-cluster-small').addClass('marker-layer-'+data.id);
           } else {
-            var marker_layers = L.markerClusterGroup({
-              maxClusterRadius: 20,
-              iconCreateFunction: function(cluster) {
-                  return L.divIcon({ html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data.id+'"><div>' + cluster.getChildCount() + '</div></div>' });
-                }
-            });
+            var marker_layers = L.markerClusterGroup(markerclusterSettings);
             clustercolor = data.color;
             DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
           }
+          console.log("places_with_relations: "+data.places_with_relations.length)
+          DrawCurves(map,data.id,curve_layers,data.color,clustercolor,data.places_with_relations);
           marker_meta_layers.addLayer(marker_layers);
 
         });
@@ -418,7 +427,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       // TODO: add to layer, not map
       // var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
       // layercluster
-      var marker = L.marker([place.lat, place.lon], {icon: divIcon});
+      var marker = L.marker([place.lat, place.lon], {icon: icon});
 
       // THIS!
       // marker._icon.id = 'marker_to_'+place.id;
