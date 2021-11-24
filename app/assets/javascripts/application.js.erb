@@ -140,6 +140,8 @@
       $('#layer_selector').addClass('hide');
       $('#layer_display').show();
     });
+
+
     // ---------------
 
     var text_layers = L.featureGroup();
@@ -280,7 +282,16 @@
     map.addLayer(marker_meta_layers);
     map.addLayer(curve_layers);
 
-
+    $('.leaflet-marker-icon').on('mouseover', function(e) {
+        // get index
+        var id = $(this).attr('id');
+        var pattern = /marker_to_/g;
+        var index = id.replace(pattern, '');
+        console.log(index);
+          // change all curves from here
+        $('.curve_normal').removeClass('curve_hover');
+        $('.curve_'+index).addClass('curve_hover');
+     });
 
 
     /* special overlay for treffentotal map */
@@ -300,6 +311,7 @@
 
   });
 // });
+
 
 function ClearLookUpField() {
       $('#addresslookup_address').addClass('hide');
