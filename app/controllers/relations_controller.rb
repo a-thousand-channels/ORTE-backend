@@ -11,8 +11,17 @@ class RelationsController < ApplicationController
   # GET /relations/new
   def new
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layers = @map.layers
+    if params[:layer_id]
+      @layer = Layer.find(params[:layer_id])
+      @layers_from = [@layer]
+    else
+      @layers_from = @map.layers
+    end
+    @layers_to = @map.layers
     @relation = Relation.new
+    if params[:relations_from_id]
+      @relation.relation_from = Place.find(params[:relations_from_id])
+    end
   end
 
   # GET /relations/1/edit
@@ -23,7 +32,8 @@ class RelationsController < ApplicationController
   # POST /relations or /relations.json
   def create
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layers = @map.layers
+    @layers_from = @map.layers
+    @layers_to = @map.layers
     @relation = Relation.new(relation_params)
 
     respond_to do |format|
@@ -63,7 +73,8 @@ class RelationsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_relation
       @map = Map.by_user(current_user).friendly.find(params[:map_id])
-      @layers = @map.layers
+      @layers_from = @map.layers
+      @layers_to = @map.layers
       layers_ids = @layers.pluck(:id)
       @all_places = Place.where(layer: layers_ids)
       @relation = Relation.find(params[:id])
