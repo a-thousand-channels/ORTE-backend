@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images show edit update destroy annotations]
+  before_action :set_layer, only: %i[images show edit update destroy annotations relations]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -27,8 +27,9 @@ class LayersController < ApplicationController
     @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@query}%")
   end
 
-  def annotations
-  end
+  def relations; end
+
+  def annotations; end
 
   # GET /layers/1
   # GET /layers/1.json

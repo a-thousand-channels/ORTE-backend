@@ -13,35 +13,17 @@
         %th
 
     %tbody
+
       - @layers.each do |layer|
+        - @layer = layer
         %tr
           %th{colspan: 2}
-            = link_to map_path(layer.map) do
-              = layer.map.title
+            = link_to map_path(@layer.map) do
+              = @layer.map.title
             —
-            = link_to map_layer_path(layer.map,layer) do
-              = layer.title
-        - layer.places.each do |place|
-          - if place.relations_froms.count > 0
-            %tr
-              %td{colspan: 2}
-                - place.relations_froms.each do |r|
-                  %p
-                    %label
-                      = place.title
-                    \⟶
-                    = r.relation_to.layer.title
-                    \:
-                    = link_to map_layer_place_url(r.relation_to.layer.map, r.relation_to.layer, r.relation_to) do
-                      = r.relation_to.title
-                    = link_to edit_map_relation_path(@map,r), class: "button small rounded" do
-                      %i.fi.fi-pencil
-                      Edit
-
-        %tr
-          %td{colspan: 2}
-            \...
-
+            = link_to map_layer_path(@layer.map,@layer) do
+              = @layer.title
+        = render 'list_as_table'
 
   %p.text-right
 
