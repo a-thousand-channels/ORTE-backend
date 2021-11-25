@@ -19,14 +19,27 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           animate: true,
 
           iconCreateFunction: function(cluster) {
-              return L.divIcon({ html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data_id+'"><div>' + cluster.getChildCount() + '</div></div>' });
+              return L.divIcon({
+                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data_id+'"><div>' + cluster.getChildCount() + '</div></div>',
+                className: "leaflet-data-markercluster",
+                iconAnchor  : [15, 15],
+                iconSize    : [30, 30],
+                popupAnchor : [0, -28]
+              });
             },
 
 
           spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
 
           elementsPlacementStrategy: "clock",
-          helpingCircles: false,
+          helpingCircles: true,
+          clockHelpingCircleOptions: {
+            weight: 40,
+            opacity: 0.35,
+            color: "black",
+            fill: "black",
+            fillOpacity: 0
+          },
 
           spiderfyDistanceSurplus: 28,
           spiderfyDistanceMultiplier: 1,
@@ -36,8 +49,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           elementsMultiplier: 1.4,
           firstCircleElements: 10,
           spiderfyShapePositions: function(count, centerPt) {
-                var distanceFromCenter = 100,
-                    markerDistance = 145,
+                var distanceFromCenter = 50,
+                    markerDistance = 105,
                     lineLength = markerDistance * (count - 1),
                     lineStart = centerPt.y - lineLength / 4,
                     res = [],
@@ -252,8 +265,10 @@ function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_rel
       console.log(point1);
       console.log(point2);
 
-      var color = 'rgba(25,25,25,0.75)';
+      var color = 'rgba(225,25,25,0.75)';
       var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+      var color = "hsl(" + Math.random() * 360 + ", 100%, 85%)";
+      // var color = clustercolor;
 
       var pathOptions = {
         color: color,
