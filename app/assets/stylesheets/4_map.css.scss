@@ -148,15 +148,19 @@
 
 .leaflet-marker-icon svg circle {
   transform: scale(0.9);
-    fill: #cc0000;
-    opacity: 0.45;
+  /* fill: #cc0000; */
+  opacity: 0.55;
 }
 .leaflet-marker-icon svg circle:hover,
 .leaflet-marker-icon:hover svg circle {
-  fill: #cc0000;
+  /* fill: #cc0000; */
   opacity: 1;
   transition: all 1s linear;
   transform: scale(1);
+}
+.leaflet-data-outside-marker.leaflet-marker-icon svg circle {
+  /*  fill: #555; */
+  opacity: 0.85;
 }
 
 .spiderfied-places {
