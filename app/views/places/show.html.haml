@@ -91,12 +91,9 @@
             Add an annotation
       %hr.small
       - if @place.relations_from_ids
-        %p Relations:
+        %label Relations
         - @place.relations_froms.each do |r|
           %p
-            = r.relation_from.layer.title
-            \:
-            = r.relation_from.title
             \⟶
             = r.relation_to.layer.title
             \:
@@ -112,6 +109,7 @@
 
 
       - if @place.tag_list
+        %hr.small
         %p
           - @place.tags.each do |tag|
             %span.label.secondary.tag
