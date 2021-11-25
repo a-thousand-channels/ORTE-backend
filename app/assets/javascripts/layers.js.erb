@@ -292,6 +292,27 @@ function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_rel
         // curvedPath.addTo(marker_layers);
         curve_layers.addLayer(curvedPath);
 
+        // draw endpoint, if it resides on an different layer
+        var iconSettings = {
+            mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
+            color: color,
+            opacity: 1,
+            radius: 30
+        };
+        var divIcon = L.divIcon({
+          className: "leaflet-data-outside-marker",
+          html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
+          iconAnchor  : [15, 15],
+          iconSize    : [30, 30],
+          popupAnchor : [0, -28]
+        });
+        if ( relation.from.layer_id != relation.to.layer_id) {
+          var endpoint2_marker = L.marker(point2, {icon: divIcon}).addTo(curve_layers);
+          var content = PopupFullContent(relation.to);
+          endpoint2_marker.bindPopup(content);
+        }
+
+
       }
     });
 
@@ -450,59 +471,17 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       console.log(marker);
 
 
-
-
-
-
-      var content = '';
-      if ( place.images && place.images[0] ) {
-        $.each(place.images, function(kkey, image) {
-          content += "<img src='"+image.image_url+"' />";
-        });
-      }
-      if ( place.imagelink2 ) {
-        content += "<img src='"+place.imagelink2+"' />";
-      } else if ( place.imagelink ) {
-        content += "<img src='"+place.imagelink+"' />";
-      }
-      content += '<div class="leaflet-popup-content-text">';
-      if ( place.date ) {
-        content += "<p>"+place.date;
-        if ( place.address ) {
-          content += " // "+place.address;
-        }
-        content += "</p>";
-      }
-      // console.log(content);
-      content += "<h4>";
-      if ( place.show_link ) {
-        content += place.show_link;
-        if ( place.published !== true ) {
-          content += " <i class='fi-lock fi-18'></i>";
-        }
-      }
-      content += "</h4>";
-      var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
-      teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
-      if ( teaser.length > 400 ) {
-        teaser = place.teaser.trim()    // remove leading and trailing spaces
-                .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
-      }
-      content += "<p>"+teaser;
-      if ( place.edit_link ) {
-        content += place.edit_link;
-      }
-      content += "</p>";
-      content += '</div>';
+      var content = PopupFullContent(place);
       marker.bindPopup(content).on('click', function(){
-        // map.panTo(marker.getLatLng());
-        // map.panToOffset(marker.getLatLng(),[0,60]);
 
-        if ( $('#addresslookup_address').hasClass('hide') ) {
-          // ShowLookUpField();
-        } else {
-          ClearLookUpField();
-        }
+          // map.panTo(marker.getLatLng());
+          // map.panToOffset(marker.getLatLng(),[0,60]);
+
+          if ( $('#addresslookup_address').hasClass('hide') ) {
+            // ShowLookUpField();
+          } else {
+            ClearLookUpField();
+          }
 
       });
       marker.on('click', function (e) {
@@ -571,6 +550,53 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         return this.setView(point, this._zoom, { pan: options })
     }
 
+}
+
+function PopupFullContent(place) {
+
+      var content = '';
+      if ( place.images && place.images[0] ) {
+        $.each(place.images, function(kkey, image) {
+          content += "<img src='"+image.image_url+"' />";
+        });
+      }
+      if ( place.imagelink2 ) {
+        content += "<img src='"+place.imagelink2+"' />";
+      } else if ( place.imagelink ) {
+        content += "<img src='"+place.imagelink+"' />";
+      }
+      content += '<div class="leaflet-popup-content-text">';
+      if ( place.date ) {
+        content += "<p>"+place.date;
+        if ( place.address ) {
+          content += " // "+place.address;
+        }
+        content += "</p>";
+      }
+      // console.log(content);
+      content += "<h4>";
+      if ( place.show_link ) {
+        content += place.show_link;
+        if ( place.published !== true ) {
+          content += " <i class='fi-lock fi-18'></i>";
+        }
+      }
+      content += "</h4>";
+      if ( place.teaser ) {
+        var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
+        teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
+        if ( teaser.length > 400 ) {
+          teaser = place.teaser.trim()    // remove leading and trailing spaces
+                  .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
+        }
+        content += "<p>"+teaser;
+      }
+      if ( place.edit_link ) {
+        content += place.edit_link;
+      }
+      content += "</p>";
+      content += '</div>';
+      return content;
 }
 
 function getParams() {
