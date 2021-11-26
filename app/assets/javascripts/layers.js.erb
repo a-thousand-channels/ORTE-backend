@@ -1,4 +1,4 @@
-function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,level) {
+function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,level) {
 
   var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
@@ -7,6 +7,63 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
   }
   if ( !layer_json_url ) {
     layer_json_url = $('#form-wrapper').data('url');
+  }
+
+  // TODO: how to set data.id dynamically?
+  // data.id
+
+  var data_id = 1;
+
+  var markerclusterSettings = {
+          maxClusterRadius: 20,
+          animate: true,
+
+          iconCreateFunction: function(cluster) {
+              return L.divIcon({
+                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data_id+'"><div>' + cluster.getChildCount() + '</div></div>',
+                className: "leaflet-data-markercluster",
+                iconAnchor  : [15, 15],
+                iconSize    : [30, 30],
+                popupAnchor : [0, -28]
+              });
+            },
+
+
+          spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
+
+          elementsPlacementStrategy: "clock",
+          helpingCircles: true,
+          clockHelpingCircleOptions: {
+            weight: 40,
+            opacity: 0.35,
+            color: "black",
+            fill: "black",
+            fillOpacity: 0
+          },
+
+          spiderfyDistanceSurplus: 28,
+          spiderfyDistanceMultiplier: 1,
+
+          spiderfiedClassName: 'spiderfied-places',
+
+          elementsMultiplier: 1.4,
+          firstCircleElements: 10,
+          spiderfyShapePositions: function(count, centerPt) {
+                var distanceFromCenter = 50,
+                    markerDistance = 105,
+                    lineLength = markerDistance * (count - 1),
+                    lineStart = centerPt.y - lineLength / 4,
+                    res = [],
+                    i;
+
+                res.length = count;
+
+                for (i = count - 1; i >= 0; i--) {
+                    res[i] = new Point(centerPt.x + distanceFromCenter, lineStart + markerDistance * i);
+                }
+
+                return res;
+            }
   }
 
 
@@ -27,39 +84,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
       if ( level !== 'maps') {
         console.log("Render places of one layer");
         console.log(data);
-        var marker_layers = L.markerClusterGroup({
-          maxClusterRadius: 20,
-          animate: true,
-
-          spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
-
-          elementsPlacementStrategy: "clock",
-          helpingCircles: false,
-
-          spiderfyDistanceSurplus: 28,
-          spiderfyDistanceMultiplier: 1,
-
-          spiderfiedClassName: 'spiderfied-places',
-
-          elementsMultiplier: 1.4,
-          firstCircleElements: 10,
-          spiderfyShapePositions: function(count, centerPt) {
-                var distanceFromCenter = 100,
-                    markerDistance = 145,
-                    lineLength = markerDistance * (count - 1),
-                    lineStart = centerPt.y - lineLength / 4,
-                    res = [],
-                    i;
-
-                res.length = count;
-
-                for (i = count - 1; i >= 0; i--) {
-                    res[i] = new Point(centerPt.x + distanceFromCenter, lineStart + markerDistance * i);
-                }
-
-                return res;
-            }
-        });
+        var marker_layers = L.markerClusterGroup(markerclusterSettings);
         clustercolor = data.color;
         var places = new Array();
         if ( level === 'places') {
@@ -67,6 +92,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
         } else {
           places = data.places;
         }
+        var places_with_relations = data.places_with_relations;
         if ( data.iconset ) {
           console.log("DRAW ICONSET");
           $('body').addClass('iconset');
@@ -77,9 +103,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
           console.log("DRAW MARKER");
           DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
-
         }
+        DrawCurves(map,data.id,curve_layers,data.color,clustercolor,places_with_relations);
         marker_meta_layers.addLayer(marker_layers);
+
 
       } else  {
         $.each(data.layers, function(key,data) {
@@ -91,15 +118,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
             DrawIconset(map,data.id,marker_layers,params,data.iconset,data.places);
             $('.marker-cluster-small').addClass('marker-layer-'+data.id);
           } else {
-            var marker_layers = L.markerClusterGroup({
-              maxClusterRadius: 20,
-              iconCreateFunction: function(cluster) {
-                  return L.divIcon({ html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data.id+'"><div>' + cluster.getChildCount() + '</div></div>' });
-                }
-            });
+            var marker_layers = L.markerClusterGroup(markerclusterSettings);
             clustercolor = data.color;
             DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
           }
+          console.log("places_with_relations: "+data.places_with_relations.length)
+          DrawCurves(map,data.id,curve_layers,data.color,clustercolor,data.places_with_relations);
           marker_meta_layers.addLayer(marker_layers);
 
         });
@@ -218,6 +242,128 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,leve
     });
   }
 }
+
+function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_relations) {
+
+  var boost = 2.9;
+
+  $.each(places_with_relations, function(key,place) {
+
+    console.log("places_with_relations");
+    console.log(key);
+    console.log(place.relations);
+    console.log(place.relations.length);
+    console.log(place.relations);
+
+    $.each(place.relations, function(key,relation) {
+
+      console.log(relation.from.lat);
+      console.log(relation.from.lon);
+      console.log("Relation_from ID:  "+relation.from.id);
+      var point1 = [Number(relation.from.lat), Number(relation.from.lon)];
+      var point2 = [Number(relation.to.lat), Number(relation.to.lon)];
+      console.log(point1);
+      console.log(point2);
+
+      var color = 'rgba(225,25,25,0.75)';
+      var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+      var color = "hsl(" + Math.random() * 360 + ", 100%, 85%)";
+      // var color = clustercolor;
+
+      var pathOptions = {
+        color: color,
+        weight: 8,
+        opacity: 0.7,
+        animate: {duration: 3000, iterations: Infinity},
+        className: 'curve_normal curve_'+relation.from.id
+      }
+      var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
+      let distance_in_kms = ((distance) / 1000).toFixed(2);
+      console.log("distance: "+distance_in_kms)
+      if ( distance_in_kms > 0.1 ) {
+        var controlpoint = calcControlPoint(point2,point1,distance_in_kms,boost);
+        console.log("controlpoint: "+controlpoint);
+        var curvedPath = L.curve(
+          [
+            'M', point1,
+            'Q', controlpoint,
+               point2
+          ], pathOptions);
+        // curvedPath.addTo(marker_layers);
+        curve_layers.addLayer(curvedPath);
+
+        // draw endpoint, if it resides on an different layer
+        var iconSettings = {
+            mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
+            color: color,
+            opacity: 1,
+            radius: 30
+        };
+        var divIcon = L.divIcon({
+          className: "leaflet-data-outside-marker",
+          html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
+          iconAnchor  : [15, 15],
+          iconSize    : [30, 30],
+          popupAnchor : [0, -28]
+        });
+        if ( relation.from.layer_id != relation.to.layer_id) {
+          var endpoint2_marker = L.marker(point2, {icon: divIcon}).addTo(curve_layers);
+          var content = PopupFullContent(relation.to);
+          endpoint2_marker.bindPopup(content);
+        }
+
+
+      }
+    });
+
+  });
+
+
+
+}
+
+
+// kudos to Ryan Catalani for this approach, CC_BY
+function calcControlPoint(point1,point2,distance_in_kms,boost) {
+
+  var d = 2;
+  // if transcontinental
+  if ( distance_in_kms > 5000 ) {
+    d = 4
+  // if continental
+  } else if ( distance_in_kms > 1000 ) {
+    d = 4
+  // if regional
+  } else if ( distance_in_kms > 100 ) {
+    d = 7
+  // if local
+  } else if ( distance_in_kms > 10 ) {
+    d = 10
+  // if close
+  } else if ( distance_in_kms > 5 ) {
+    d = 40
+  } else if ( distance_in_kms > 1 ) {
+    d = 120
+  } else if ( distance_in_kms <= 1 ) {
+    d = 1600 // sic!
+  } else if ( distance_in_kms < 0.1 ) {
+    // none;
+  }
+
+
+  var offsetX = point2[1] - point1[1],
+  offsetY = point2[0] - point1[0];
+  var r = Math.sqrt( Math.pow(offsetX, 0) + Math.pow(offsetY, 2) ),
+            theta = Math.atan2(offsetY, offsetX);
+  var thetaOffset = (3.14/boost);
+  var r2 = (r/d)/(Math.cos(thetaOffset)),
+            theta2 = theta + thetaOffset;
+  var midpointX = (r2 * Math.cos(theta2)) + point1[1],
+            midpointY = (r2 * Math.sin(theta2)) + point1[0];
+  return midpointLatLng = [midpointY, midpointX];
+}
+
+
 function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
     var c = 0;
     console.log("places: "+places.length);
@@ -234,6 +380,20 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         iconAnchor:   [10, 10],
         popupAnchor:  [-1, -8]
       }
+    });
+
+    var iconSettings = {
+      mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
+      color: '#cc756b',
+      opacity: 1,
+      radius: 30
+    };
+    var divIcon = L.divIcon({
+      className: "leaflet-data-marker",
+      html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
+      iconAnchor  : [15, 15],
+      iconSize    : [30, 30],
+      popupAnchor : [0, -28]
     });
 
     $.each(places, function(key,place) {
@@ -303,70 +463,39 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
       // TODO: add to layer, not map
       // var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
       // layercluster
-      var marker = L.marker([place.lat, place.lon], {icon: icon})
+      var marker = L.marker([place.lat, place.lon], {icon: icon});
+
+      // THIS!
+      // marker._icon.id = 'marker_to_'+place.id;
       marker_layers.addLayer(marker);
+      console.log(marker);
 
 
-
-      var content = '';
-      if ( place.images && place.images[0] ) {
-        $.each(place.images, function(kkey, image) {
-          content += "<img src='"+image.image_url+"' />";
-        });
-      }
-      if ( place.imagelink2 ) {
-        content += "<img src='"+place.imagelink2+"' />";
-      } else if ( place.imagelink ) {
-        content += "<img src='"+place.imagelink+"' />";
-      }
-      content += '<div class="leaflet-popup-content-text">';
-      if ( place.date ) {
-        content += "<p>"+place.date;
-        if ( place.address ) {
-          content += " // "+place.address;
-        }
-        content += "</p>";
-      }
-      // console.log(content);
-      content += "<h4>";
-      if ( place.show_link ) {
-        content += place.show_link;
-        if ( place.published !== true ) {
-          content += " <i class='fi-lock fi-18'></i>";
-        }
-      }
-      content += "</h4>";
-      var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
-      teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
-      if ( teaser.length > 400 ) {
-        teaser = place.teaser.trim()    // remove leading and trailing spaces
-                .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
-      }
-      content += "<p>"+teaser;
-      if ( place.edit_link ) {
-        content += place.edit_link;
-      }
-      content += "</p>";
-      content += '</div>';
+      var content = PopupFullContent(place);
       marker.bindPopup(content).on('click', function(){
-        // map.panTo(marker.getLatLng());
-        // map.panToOffset(marker.getLatLng(),[0,60]);
 
-        if ( $('#addresslookup_address').hasClass('hide') ) {
-          // ShowLookUpField();
-        } else {
-          ClearLookUpField();
-        }
+          // map.panTo(marker.getLatLng());
+          // map.panToOffset(marker.getLatLng(),[0,60]);
+
+          if ( $('#addresslookup_address').hasClass('hide') ) {
+            // ShowLookUpField();
+          } else {
+            ClearLookUpField();
+          }
 
       });
       marker.on('click', function (e) {
         console.log('marker');
         console.log(e);
       });
-      marker.on('clusterclick', function (e) {
+
+      // TODO: change color of marker
+      marker_layers.on('clusterclick', function (a) {
         // a.layer is actually a cluster
-        console.log('cluster ' + e);
-        console.log('cluster ' + e.layer.getAllChildMarkers().length);
+        // console.log('cluster ' + a.layer.getAllChildMarkers().length);
+        // console.log(a.originalEvent.target);
+        // console.log(a.originalEvent.target.closest(".leaflet-interactive").classList);
+        // $(a.originalEvent.target).closest(".leaflet-interactive").toggleClass("cluster_expanded");
       });
       if ( $('#selection').data('map-popup-display-mode') != 'click' ) {
         marker.on('mouseover', function (e) {
@@ -421,6 +550,53 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         return this.setView(point, this._zoom, { pan: options })
     }
 
+}
+
+function PopupFullContent(place) {
+
+      var content = '';
+      if ( place.images && place.images[0] ) {
+        $.each(place.images, function(kkey, image) {
+          content += "<img src='"+image.image_url+"' />";
+        });
+      }
+      if ( place.imagelink2 ) {
+        content += "<img src='"+place.imagelink2+"' />";
+      } else if ( place.imagelink ) {
+        content += "<img src='"+place.imagelink+"' />";
+      }
+      content += '<div class="leaflet-popup-content-text">';
+      if ( place.date ) {
+        content += "<p>"+place.date;
+        if ( place.address ) {
+          content += " // "+place.address;
+        }
+        content += "</p>";
+      }
+      // console.log(content);
+      content += "<h4>";
+      if ( place.show_link ) {
+        content += place.show_link;
+        if ( place.published !== true ) {
+          content += " <i class='fi-lock fi-18'></i>";
+        }
+      }
+      content += "</h4>";
+      if ( place.teaser ) {
+        var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
+        teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
+        if ( teaser.length > 400 ) {
+          teaser = place.teaser.trim()    // remove leading and trailing spaces
+                  .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
+        }
+        content += "<p>"+teaser;
+      }
+      if ( place.edit_link ) {
+        content += place.edit_link;
+      }
+      content += "</p>";
+      content += '</div>';
+      return content;
 }
 
 function getParams() {

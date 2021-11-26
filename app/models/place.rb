@@ -12,6 +12,15 @@ class Place < ApplicationRecord
 
   has_one_attached :audio, dependent: :destroy
 
+  has_many :relations_tos, foreign_key: 'relation_to_id',
+                class_name: 'Relation',
+                dependent: :destroy
+  has_many :relations_froms, foreign_key: 'relation_from_id',
+                class_name: 'Relation',
+                dependent: :destroy
+  accepts_nested_attributes_for :relations_tos, allow_destroy: true
+  accepts_nested_attributes_for :relations_froms, allow_destroy: true
+
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
@@ -36,6 +45,14 @@ class Place < ApplicationRecord
       self.enddate = "#{enddate_date} #{enddate_time}"
     elsif enddate_date.present?
       self.enddate = "#{enddate_date} 00:00:00"
+    end
+  end
+
+  def title_and_location
+    if !location.blank?
+      "#{title} (#{location})"
+    else
+      title
     end
   end
 

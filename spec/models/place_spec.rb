@@ -97,6 +97,25 @@ RSpec.describe Place, type: :model do
     end
   end
 
+  describe 'Relations' do
+
+    describe 'Relation associations' do
+      subject { build(:place) }
+      it { is_expected.to have_many(:relations_tos) }
+      it { is_expected.to have_many(:relations_froms) }
+    end
+
+    it 'has valid relations' do
+      p1 = create(:place, title: 'Yellow')
+      p2 = create(:place, title: 'Green')
+      r = create(:relation, relation_from_id: p1.id, relation_to_id: p2.id)
+      expect(p1.relations_froms.first.relation_from.title).to eq('Yellow')
+      expect(p1.relations_froms.first.relation_to.title).to eq('Green')
+      expect(p2.relations_tos.first.relation_from.title).to eq('Yellow')
+      expect(p2.relations_tos.first.relation_to.title).to eq('Green')
+    end
+  end
+
   describe 'CSV' do
     it 'is valid  ' do
       m = FactoryBot.create(:map)

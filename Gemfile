@@ -77,6 +77,7 @@ group :development, :test, :localtest do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'webdrivers', '~> 5'
   gem 'webmock'
