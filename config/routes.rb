@@ -25,12 +25,14 @@ Rails.application.routes.draw do
   end
   resources :maps do
     resources :tags, only: [:index, :show]
+    resources :relations
     resources :layers do
       collection do
         post :search
       end
       member do
         get :annotations
+        get :relations
         get :images, only: [:index]
       end
       resources :places do

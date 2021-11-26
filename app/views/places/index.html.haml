@@ -15,9 +15,13 @@
     (#{@places.count})
 
   %p.text-right.hint
-    See also a list of
+    See also:
+    %br
     = link_to annotations_map_layer_path(@map,@layer) do
-      annotations
+      Annotations (about Places)
+  %p.text-right.hint
+    = link_to relations_map_layer_path(@map,@layer) do
+      Relations (between places)
   %p
     &nbsp;
   %table
