@@ -14,10 +14,27 @@
 
 RSpec.describe "/relations", type: :request do
 
+  before do
+
+    group = FactoryBot.create(:group)
+    @user = FactoryBot.create(:user, group: group)
+    sign_in @user
+
+    @map = create(:map, group: group)
+    layer = create(:layer, map: @map)
+    another_layer = create(:layer, map: @map)
+    @layers = [layer, another_layer]
+    @p1 = create(:place, layer: layer)
+    @p2 = create(:place, layer: layer)
+    @relation = create(:relation, relation_from_id: @p1.id, relation_to_id: @p2.id)
+
+
+  end
+
   # Relation. As you add validations to Relation, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+      FactoryBot.build(:relation, relation_from_id: @p1.id, relation_to_id: @p2.id).attributes
   }
 
   let(:invalid_attributes) {
@@ -27,14 +44,14 @@ RSpec.describe "/relations", type: :request do
   describe "GET /index" do
     it "renders a successful response" do
       Relation.create! valid_attributes
-      get relations_url
+      get map_relations_url(@map)
       expect(response).to be_successful
     end
   end
 
   describe "GET /new" do
     it "renders a successful response" do
-      get new_relation_url
+      get new_map_relation_url(@map)
       expect(response).to be_successful
     end
   end
@@ -42,7 +59,7 @@ RSpec.describe "/relations", type: :request do
   describe "GET /edit" do
     it "render a successful response" do
       relation = Relation.create! valid_attributes
-      get edit_relation_url(relation)
+      get edit_map_relation_url(@map,relation)
       expect(response).to be_successful
     end
   end
@@ -51,25 +68,25 @@ RSpec.describe "/relations", type: :request do
     context "with valid parameters" do
       it "creates a new Relation" do
         expect {
-          post relations_url, params: { relation: valid_attributes }
+          post map_relations_url(@map), params: { relation: valid_attributes }
         }.to change(Relation, :count).by(1)
       end
 
       it "redirects to the created relation" do
-        post relations_url, params: { relation: valid_attributes }
-        expect(response).to redirect_to(relation_url(Relation.last))
+        post map_relations_url(@map), params: { relation: valid_attributes }
+        expect(response).to redirect_to(map_relations_url(@map))
       end
     end
 
     context "with invalid parameters" do
       it "does not create a new Relation" do
         expect {
-          post relations_url, params: { relation: invalid_attributes }
+          post map_relations_url(@map), params: { relation: invalid_attributes }
         }.to change(Relation, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
-        post relations_url, params: { relation: invalid_attributes }
+        post map_relations_url(@map), params: { relation: invalid_attributes }
         expect(response).to be_successful
       end
     end
@@ -83,23 +100,23 @@ RSpec.describe "/relations", type: :request do
 
       it "updates the requested relation" do
         relation = Relation.create! valid_attributes
-        patch relation_url(relation), params: { relation: new_attributes }
+        patch map_relation_url(@map, relation), params: { relation: new_attributes }
         relation.reload
         skip("Add assertions for updated state")
       end
 
       it "redirects to the relation" do
         relation = Relation.create! valid_attributes
-        patch relation_url(relation), params: { relation: new_attributes }
+        patch map_relation_url(@map, relation), params: { relation: new_attributes }
         relation.reload
-        expect(response).to redirect_to(relation_url(relation))
+        expect(response).to redirect_to(map_relation_url(@map, relation))
       end
     end
 
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
         relation = Relation.create! valid_attributes
-        patch relation_url(relation), params: { relation: invalid_attributes }
+        patch map_relation_url(@map, relation), params: { relation: invalid_attributes }
         expect(response).to be_successful
       end
     end
@@ -109,14 +126,14 @@ RSpec.describe "/relations", type: :request do
     it "destroys the requested relation" do
       relation = Relation.create! valid_attributes
       expect {
-        delete relation_url(relation)
+        delete map_relation_url(@map,relation)
       }.to change(Relation, :count).by(-1)
     end
 
     it "redirects to the relations list" do
       relation = Relation.create! valid_attributes
-      delete relation_url(relation)
-      expect(response).to redirect_to(relations_url)
+      delete map_relation_url(@map,relation)
+      expect(response).to redirect_to(map_relations_url(@map))
     end
   end
 end

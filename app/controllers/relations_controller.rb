@@ -48,7 +48,7 @@ class RelationsController < ApplicationController
   end
 
   # PATCH/PUT /relations/1 or /relations/1.json
-  def update
+    def update
     respond_to do |format|
       if @relation.update(relation_params)
         format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully updated." }
@@ -75,6 +75,7 @@ class RelationsController < ApplicationController
       @map = Map.by_user(current_user).friendly.find(params[:map_id])
       @layers_from = @map.layers
       @layers_to = @map.layers
+      @layers = @map.layers
       layers_ids = @layers.pluck(:id)
       @all_places = Place.where(layer: layers_ids)
       @relation = Relation.find(params[:id])
