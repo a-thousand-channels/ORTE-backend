@@ -14,7 +14,7 @@
             = f.association :layer, as: :hidden
         - else
           %div.inline#layer_selector.hide
-            = f.association :layer, :collection => @place.layer.map.layers, :label_method => :title, :value_method => :id, label: false, include_blank: false
+            = f.association :layer, :collection => @place.layer.map.layers, :label_method => :title, :value_method => :id, label: false, include_blank: 'Select layer:'
             %span#layer_display_cancel{:title => "Cancel" }
               %i.fi.fi-x.fi-13
 
@@ -22,9 +22,10 @@
             = link_to map_url(@place.layer.map) do
               = @place.layer.map.title
             \>
-            = link_to map_layer_url(@place.layer.map,@place.layer), title: "Change layer for this place" do
+            = link_to map_layer_url(@place.layer.map,@place.layer) do
               = @place.layer.title
-            %i.fi.fi-pencil.fi-13{title: "Click to change layer for this place"}
+            %a{href: '', title: 'Move this place to another layer', id: 'move_to_layer'}
+              %i.fi.fi-pencil.fi-13
       %p.clear.hint.text-left
         %span.name Address
         - if @old_place
@@ -39,8 +40,12 @@
           \-->
         - if @place.lat && @place.lon
           #{@place.lat[0..4]}/#{@place.lon[0..4]}
-        = f.input :lat, as: :hidden
-        = f.input :lon, as: :hidden
+          %a{href: '', title: 'Edit coordinates', id: 'edit_coordinates'}
+            %i.fi.fi-pencil.fi-13
+          %a{href: '', title: 'Edit coordinates', id: 'edit_coordinates_cancel'}
+            %i.fi.fi-x.fi-13
+        = f.input :lat, as: :hidden, label: "Lat"
+        = f.input :lon, as: :hidden, label: "Lon"
 
     .large-6.medium-5.cell
       .grid-x.grid-padding-x
