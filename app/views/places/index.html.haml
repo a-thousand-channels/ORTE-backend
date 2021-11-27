@@ -87,7 +87,7 @@
               - if place.lat
                 #{place.lat[0..6]}/#{place.lon[0..5]}
           %td
-            = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button" do
+            = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-pencil.fi-21
               Edit
             %br
@@ -103,17 +103,21 @@
               = videos.count
               Videos
               %br
-            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button" do
+            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-plus.fi-21
               Image
-            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button" do
+            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-plus.fi-21
               Video
+            %br
+            = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small', :title=>'Seite kopieren' do
+              %i.fi-page-copy.fi-21
+              Clone
             %br
             - if place.images.count > 0 || place.videos.count > 0
               - warning = 'Are you sure to delete this place and all attached images and/or videos?'
             - else
               - warning = 'Are you sure to delete this place?'
-            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button warning" do
+            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button warning small" do
               %i.fi-trash.fi-21
               Destroy

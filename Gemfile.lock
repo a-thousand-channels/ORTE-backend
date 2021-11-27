@@ -118,6 +118,8 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
+    deep_cloneable (3.1.0)
+      activerecord (>= 3.1.0, < 7)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     devise (4.8.0)
@@ -464,6 +466,7 @@ DEPENDENCIES
   color-generator
   coveralls_reborn (~> 0)
   database_cleaner
+  deep_cloneable (~> 3)
   devise
   exception_notification
   factory_bot_rails

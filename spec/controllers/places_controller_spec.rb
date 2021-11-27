@@ -58,6 +58,15 @@ RSpec.describe PlacesController, type: :controller do
       end
     end
 
+    describe 'GET #clone' do
+      it 'deep clones the admin_page' do
+        place = FactoryBot.create(:place)
+        expect do
+          get :clone, params: { id: place.to_param, layer_id: @layer.id, map_id: @map.id }, session: valid_session
+        end.to change(Place, :count).by(+1)
+      end
+    end
+
     describe 'POST #create' do
       context 'with valid params' do
         it 'creates a new Place' do
