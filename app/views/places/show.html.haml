@@ -6,7 +6,6 @@
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
       %span{"aria-hidden"=>"true"}
         %i.fi.fi-x
-  %p#notice= notice
 
   .grid-x.grid-padding-x
     - images = Image.where(place_id: @place.id)

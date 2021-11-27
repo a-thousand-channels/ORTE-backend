@@ -43,11 +43,13 @@
               - images.each do |img|
                 - begin
                   - if img.attached?
-                    = image_tag img.variant(resize: "120x120").processed, class: "thumbnail", title: img.title
-                    %small
-                      #{img.title}
-                      - if img.alt
-                        (#{img.alt})
+                    %p
+                      = image_tag img.variant(resize: "120x120").processed, class: "thumbnail", title: img.title
+                      %br
+                      %small.nowrap
+                        #{img.title}
+                        - if img.alt.present?
+                          %i.fi-info{title: img.alt}
                 - rescue
                   %p.shy Image could not be loaded
             %h4
