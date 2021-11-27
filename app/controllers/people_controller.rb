@@ -42,10 +42,15 @@ class PeopleController < ApplicationController
   end
 
   def destroy
-    @person.destroy
-    respond_to do |format|
-      format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
-      format.json { head :no_content }
+    if @person.destroy
+      respond_to do |format|
+        format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to people_url, notice: 'Person could not be destroyed, since its connected to 1 or more annotations.' }
+      end
     end
   end
 
