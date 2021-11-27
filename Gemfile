@@ -22,6 +22,7 @@ gem 'jbuilder'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
+gem 'deep_cloneable', '~> 3'
 
 # custom
 gem 'cancancan'

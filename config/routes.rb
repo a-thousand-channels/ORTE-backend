@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         member do
           delete :delete_image_attachment
           post :sort
+          get :clone
         end
       end
     end
