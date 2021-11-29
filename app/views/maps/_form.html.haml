@@ -47,7 +47,8 @@
             %p
               = f.input :popup_display_mode, :collection => popup_display_mode_for_select, :input_html => { :class => '' }, label: 'Popup display mode'
           .large-6.medium-6.small-6.cell
-            \&nbsp;
+            %p
+              = f.input :show_annotations_on_map, :input_html => { :class => '' }, label: 'Show annotations on the map'
 
         %hr
         .grid-x.grid-padding-x

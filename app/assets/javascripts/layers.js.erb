@@ -69,7 +69,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
   if(typeof layer_json_url !== 'undefined') {
 
-    console.log("Drawing placemarks w/data from "+layer_json_url);
+    console.log("Drawing placemarks w/data from "+layer_json_url + " at level "+level);
 
     var request = $.getJSON(layer_json_url, function(data) {
 
@@ -533,7 +533,7 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
         });
       }
       // NEW 2021: Add annotations on the map, if any
-      if ( place.annotations ) {
+      if ( map.show_annotations_on_map && place.annotations ) {
         $.each(place.annotations, function(kkey,annotation) {
           var a_marker = L.marker([place.lat, place.lon], {icon: small_icon})
           marker_layers.addLayer(a_marker);

@@ -94,6 +94,6 @@ class MapsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def map_params
-    params.require(:map).permit(:title, :subtitle, :text, :published, :script, :group_id, :northeast_corner, :southwest_corner, :iconset_id, :basemap_url, :basemap_attribution, :popup_display_mode)
+    params.require(:map).permit(:title, :subtitle, :text, :published, :script, :group_id, :northeast_corner, :southwest_corner, :iconset_id, :basemap_url, :basemap_attribution, :popup_display_mode, :show_annotations_on_map)
   end
 end
