@@ -153,6 +153,7 @@ input#addresslookup_address.hide {
   padding: 10px 20px;
   min-width: 450px;
   max-width: 90%;
+  max-width: 60em;
   @media screen and (max-width: 39.9375em) {
     padding: 10px;
     min-width: none;
