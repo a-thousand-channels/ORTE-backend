@@ -2,6 +2,16 @@
 
   %h1 New relation
 
+  %p
+    Map:
+    = link_to map_path(@map) do
+      = @map.title
+
+    - if params[:layer_id]
+      —
+      = link_to map_layer_path(@map, @layer) do
+        = @layer.title
+
   = render 'form'
 
   = link_to 'All relation', map_relations_path(@map), :class => 'button'

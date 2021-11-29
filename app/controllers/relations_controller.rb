@@ -29,20 +29,25 @@ class RelationsController < ApplicationController
 
   end
 
-  # POST /relations or /relations.json
+  # POST /relations
   def create
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layers_from = @map.layers
     @layers_to = @map.layers
     @relation = Relation.new(relation_params)
+    @layer = @relation.relation_from.layer
 
     respond_to do |format|
       if @relation.save
-        format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully created." }
-        format.json { render :show, status: :created, location: @relation }
+        if params[:back] == 'place'
+          format.html { redirect_to map_layer_place_path(@map,@layer,@relation.relation_from_id), notice: "Relation was successfully created." }
+        elsif params[:back] == 'layer'
+          format.html { redirect_to relations_map_layer_path(@map,@layer), notice: "Relation was successfully created." }
+        else
+          format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully created." }
+        end
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @relation.errors, status: :unprocessable_entity }
       end
     end
   end
