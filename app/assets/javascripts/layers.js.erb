@@ -35,10 +35,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           helpingCircles: true,
           clockHelpingCircleOptions: {
             weight: 40,
-            opacity: 0.35,
-            color: "black",
-            fill: "black",
-            fillOpacity: 0
+            opacity: 0.25,
+            color: "#cc0000",
+            fill: "#cc0000",
+            fillOpacity: 0.25
           },
 
           spiderfyDistanceSurplus: 28,
@@ -272,7 +272,7 @@ function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_rel
 
       var pathOptions = {
         color: color,
-        weight: 8,
+        weight: 3,
         opacity: 0.7,
         animate: {duration: 3000, iterations: Infinity},
         className: 'curve_normal curve_'+relation.from.id
@@ -513,18 +513,22 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
           marker_layers.addLayer(a_marker);
           var content = '';
           content += '<div class="leaflet-popup-content-text">';
+          content += "<p>";
           if ( annotation.person_name ) {
-            content += "<p>"+annotation.person_name;
-            content += "</p>";
+            content += annotation.person_name;
           }
-
+          if ( place.show_link ) {
+            content += ' @ ';
+            content += place.show_link;
+          }
+          content += "</p>";
           content += "<p>";
           if ( annotation.title ) {
             content += "<strong>";
             content += annotation.title;
             content += "</strong>";
           }
-          content += annotation.text.substring(0, 150).split(" ").slice(0, -1).join(" ") + "...";
+          content += annotation.text.substring(0, 550).split(" ").slice(0, -1).join(" ") + "...";
           content += "</p>";
 
           a_marker.bindPopup(content).on('click');

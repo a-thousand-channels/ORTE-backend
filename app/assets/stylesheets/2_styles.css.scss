@@ -52,6 +52,10 @@ body#start main {
 #layers #table-wrapper {
     max-width: unset;
     max-width: min-content;
+    min-width: 500px;
+    @media screen and (max-width: 39.9375em) {
+      min-width: 300px;
+    }
 }
 #layers .grid-x.grid-images {
 
