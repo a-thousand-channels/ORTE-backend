@@ -16,7 +16,7 @@ module PlacesHelper
   end
 
   def add_new_entry_link(place)
-    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{@place.location}&address=#{@place.address}&zip=#{@place.zip}&city=#{@place.city}&lat=#{@place.lat}&lon=#{@place.lon}"
+    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{place.location}&address=#{place.address}&zip=#{place.zip}&city=#{place.city}&lat=#{place.lat}&lon=#{place.lon}"
   end
 
   def icon_link(file)
