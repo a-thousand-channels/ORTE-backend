@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PlacesController < ApplicationController
-  before_action :set_place, only: %i[show edit clone update destroy]
+  before_action :set_place, only: %i[show edit edit_clone update destroy]
 
   # GET /places
   # GET /places.json
@@ -54,8 +54,6 @@ class PlacesController < ApplicationController
     @place.layer_id = params[:layer_id]
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
-
-
   end
 
   def clone
@@ -65,7 +63,18 @@ class PlacesController < ApplicationController
 
     respond_to do |format|
       if @new_place.save!
-        format.html { redirect_to edit_map_layer_place_path(@map, @layer,@new_place), notice: 'Place copied with all assets, submissions and annottions. Place is now unpublished' }
+        format.html { redirect_to edit_map_layer_place_path(@map, @layer,@new_place), notice: 'Place cloned with all assets, submissions and annotations. Place is automatically set to unpublished' }
+      else
+        format.html { redirect_to map_layer_places_path(@map, @layer), notice: 'Place could not be copied' }
+      end
+    end
+  end
+
+  def edit_clone
+
+    respond_to do |format|
+      if @new_place.save!
+        format.html { redirect_to edit_map_layer_place_path(@map, @layer,@new_place), notice: 'Place has been updated.' }
       else
         format.html { redirect_to map_layer_places_path(@map, @layer), notice: 'Place could not be copied' }
       end
