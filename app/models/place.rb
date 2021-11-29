@@ -68,6 +68,10 @@ class Place < ApplicationRecord
     ApplicationController.helpers.edit_link(layer.map.id, layer.id, id)
   end
 
+  def layer_color
+    self.layer.color
+  end
+
   def icon_name
     ApplicationController.helpers.icon_name(icon.title) if icon
   end
