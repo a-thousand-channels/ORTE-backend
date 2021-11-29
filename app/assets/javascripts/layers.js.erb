@@ -36,8 +36,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           clockHelpingCircleOptions: {
             weight: 40,
             opacity: 0.25,
-            color: "#cc0000",
-            fill: "#cc0000",
+            color: "#000000",
+            fill: "#000000",
             fillOpacity: 0.25
           },
 
@@ -109,8 +109,30 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
 
       } else  {
+
+
+        // layers combined
+        var all_places = []
+        var layers_count = data.layers.length;
+
         $.each(data.layers, function(key,data) {
-          console.log("Render places of layer "+key+" (\""+data.title+"\") on map");
+          all_places.push(...data.places);
+        });
+        console.log('----------------------------------')
+        console.log(all_places);
+
+        var marker_layers = L.markerClusterGroup(markerclusterSettings);
+        $.each(all_places, function(key,data) {
+          clustercolor = 'rgba(0, 54, 193, 0.9)';
+          DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
+        });
+        marker_meta_layers.addLayer(marker_layers);
+
+
+        // layers as batches
+        $.each(data.layers, function(key,data) {
+          // console.log("Render places of layer "+key+" (\""+data.title+"\") on map");
+          /*
           if ( data.iconset ) {
             console.log("DRAW ICONSET");
             $('body').addClass('iconset');
@@ -120,12 +142,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           } else {
             var marker_layers = L.markerClusterGroup(markerclusterSettings);
             clustercolor = data.color;
-            DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
+            // DrawMarkers(map,data.id,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
           }
+          */
           console.log("places_with_relations: "+data.places_with_relations.length)
           DrawCurves(map,data.id,curve_layers,data.color,clustercolor,data.places_with_relations);
           marker_meta_layers.addLayer(marker_layers);
-
         });
 
       }
@@ -397,8 +419,8 @@ function DrawMarkers(map,layer_id,text_layers,image_layers,marker_layers,params,
     });
 
     $.each(places, function(key,place) {
-      // console.log("Place ID "+place.id+"//"+layer_id+"//////");
-      // console.log(place.title+" @ "+place.lat+"/"+place.lon);
+      console.log("Place ID "+place.id+"//"+layer_id+"//////");
+      console.log(place.title+" @ "+place.lat+"/"+place.lon);
       if ( color ) {
         if ( place.published === true ) {
           var opacity="0.7"
