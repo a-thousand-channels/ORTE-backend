@@ -6,7 +6,7 @@ FactoryBot.define do
     relation_to_id { relation_to }
     rtype { 'all' }
     trait :invalid do
-      relation_from_id { nil }
+      relation_to_id { nil }
     end
     trait :changed do
       rtype { 'sequence' }
