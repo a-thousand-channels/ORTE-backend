@@ -58,7 +58,7 @@ RSpec.describe PlacesController, type: :controller do
       end
     end
 
-    describe 'GET #clone', focus: true do
+    describe 'GET #clone' do
       it 'deep clones the admin_page' do
         @place = FactoryBot.create(:place, layer_id: @layer.id)
         expect do
