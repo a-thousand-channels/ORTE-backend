@@ -105,7 +105,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           DrawMarkers(map,data.id,String(false),text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         }
-        DrawCurves(map,data.id,curve_layers,data.color,clustercolor,places_with_relations);
+        DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,places_with_relations);
         marker_meta_layers.addLayer(marker_layers);
 
 
@@ -152,7 +152,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           }
           */
           console.log("places_with_relations: "+data.places_with_relations.length)
-          DrawCurves(map,data.id,curve_layers,data.color,clustercolor,data.places_with_relations);
+          DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations);
           marker_meta_layers.addLayer(marker_layers);
         });
 
@@ -271,7 +271,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   }
 }
 
-function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_relations) {
+function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,places_with_relations) {
 
   var boost = 2.9;
 
@@ -335,7 +335,8 @@ function DrawCurves(map,layer_id,curve_layers,color,clustercolor,places_with_rel
           popupAnchor : [0, -28]
         });
         if ( relation.from.layer_id != relation.to.layer_id) {
-          var endpoint2_marker = L.marker(point2, {icon: divIcon}).addTo(curve_layers);
+          var endpoint2_marker = L.marker(point2, {icon: divIcon}); // .addTo(curve_layers);
+          marker_layers.addLayer(endpoint2_marker);
           var content = PopupFullContent(relation.to);
           endpoint2_marker.bindPopup(content);
         }
