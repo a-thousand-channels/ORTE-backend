@@ -43,6 +43,7 @@ Rails.application.routes.draw do
           post :sort
           get :clone
           get :edit_clone
+          patch :update_clone
         end
       end
     end

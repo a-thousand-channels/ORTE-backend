@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "annotations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.bigint "place_id"
@@ -72,7 +72,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.string "class_name"
   end
 
-  create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "images", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
 
-  create_table "mobility_string_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "mobility_string_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "locale", null: false
     t.string "key", null: false
     t.string "value"
@@ -133,9 +133,10 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.datetime "updated_at", null: false
     t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_string_translations_on_keys", unique: true
+    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
   end
 
-  create_table "mobility_text_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "mobility_text_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "locale", null: false
     t.string "key", null: false
     t.text "value"
@@ -147,7 +148,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_text_translations_on_keys", unique: true
   end
 
-  create_table "people", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "people", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.text "info"
     t.datetime "created_at", null: false
@@ -175,6 +176,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.string "imagelink"
     t.integer "icon_id"
     t.boolean "featured"
+    t.string "ptype", default: "info"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
@@ -186,7 +188,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "submission_configs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "submission_configs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title_intro"
     t.string "subtitle_intro"
     t.text "intro"
@@ -202,7 +204,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.index ["layer_id"], name: "index_submission_configs_on_layer_id"
   end
 
-  create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "submissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.boolean "rights"
@@ -215,7 +217,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.index ["place_id"], name: "index_submissions_on_place_id"
   end
 
-  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -234,7 +236,7 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", collation: "utf8_bin"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -255,14 +257,14 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.bigint "group_id"
-    t.datetime "created_at", default: "2021-07-26 21:10:00", null: false
-    t.datetime "updated_at", default: "2021-07-26 21:10:00", null: false
+    t.datetime "created_at", default: "2021-09-03 18:29:24", null: false
+    t.datetime "updated_at", default: "2021-09-03 18:29:24", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "videos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "videos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"
@@ -277,7 +279,6 @@ ActiveRecord::Schema.define(version: 2021_11_29_174035) do
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
   add_foreign_key "icons", "iconsets"

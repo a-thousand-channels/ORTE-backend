@@ -1,16 +1,9 @@
 = simple_form_for([@map,@layer,@place]) do |f|
   .grid-x.grid-padding-x
-    .large-2.medium-3.cell
-      %h1 Place
-    .large-4.medium-4.cell
-      %div#layer_change
-          %div.inline#map_selector
-            = f.input :relation_to_id, collection: @layers_to, as: :grouped_select, group_method: :places, group_label_method: :title, label_method: :title_and_location, selected: @relation.relation_to.id
-
-            = f.association :layer, :collection => @place.layer.map.layers, :label_method => :title, :value_method => :id, label: false, include_blank: 'Select layer:'
-            %span#layer_display_cancel{:title => "Cancel" }
-              %i.fi.fi-x.fi-13
-
+    .large-6.medium-3.cell
+      %h1 Clone place
+    .large-6.medium-4.cell
+      &nbsp;
   .grid-x.grid-padding-x
     .large-12.cell
       = f.error_notification
@@ -18,8 +11,16 @@
         %ul.hide
           = @place.errors.full_messages.each do |item,msg|
             %li= item
+      %p
+        Place
+        %strong "#{@place.title}"
+        has been cloned from #{@place.layer.map.title}: #{@place.layer.title}:
+      %p
+        Please select a map and a layer!
+      %div#layer_change
+        %div.inline#map_selector
+          = f.input :layer_id, collection: @maps, as: :grouped_select, group_method: :layers, group_label_method: :title, label_method: :title, selected: @place.layer
 
-      = f.input :title
 
   %hr
   .grid-x
