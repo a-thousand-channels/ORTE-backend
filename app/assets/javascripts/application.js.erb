@@ -224,8 +224,18 @@
       }).addTo(map);
     } else {
       var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>'
+    attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
+          minZoom: 0,
+          maxZoom: 18
+
     }).addTo(map);
+     L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
+              attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
+              minZoom: 19,
+              maxZoom: 21
+    }).addTo(map);
+
+
     }
 
     if ( $('#selection').data('layer-id') ) {
