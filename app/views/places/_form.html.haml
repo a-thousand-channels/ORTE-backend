@@ -184,6 +184,9 @@
         = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
         %p.hint Please upload MP3 only
         %hr
+        - if admin?
+          = f.input :shy, label: "Don't show this place on the map level (with all layers)"
+          %p.hint This option is useful, if have the same place on several layers. Define all but one of those places as shy to hide them on the map level"
   %hr
   .grid-x
     .large-6.medium-6.small-12.cell
