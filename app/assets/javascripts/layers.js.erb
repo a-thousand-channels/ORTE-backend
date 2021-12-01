@@ -496,10 +496,8 @@ function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
       // marker.CustomID = 'marker_to_'+place.id;
       if ( ( level != 'maps' ) || ( place.shy == false )) {
         marker_layers.addLayer(marker);
+        text_layers.addLayer(marker);
       }
-      text_layers.addLayer(marker);
-      console.log(marker);
-
 
       var content = PopupFullContent(place);
       marker.bindPopup(content).on('click', function(){
