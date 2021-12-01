@@ -478,12 +478,12 @@ function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
       if ( place.imagelink2 ) {
         html = "<img src='"+place.imagelink2+"' />";
       }
-      var texticon= L.divIcon({
+      var imageicon= L.divIcon({
           html: '<div class="image_inner">'+html+'</div>',
           iconAnchor:[0,0],
           iconSize:null,
           popupAnchor:[0,0] });
-      var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon}).addTo(image_layers);
+      var imagemarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: imageicon}).addTo(image_layers);
 
 
 
@@ -496,7 +496,7 @@ function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
       // marker.CustomID = 'marker_to_'+place.id;
       if ( ( level != 'maps' ) || ( place.shy == false )) {
         marker_layers.addLayer(marker);
-        text_layers.addLayer(text_marker);
+        text_layers.addLayer(textmarker);
         text_layers.addLayer(marker);
       }
 
