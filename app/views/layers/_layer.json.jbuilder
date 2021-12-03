@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.extract! layer, :id, :title, :text, :published, :map_id, :color, :created_at, :updated_at
+json.extract! layer, :id, :title, :text, :credits, :image_link, :published, :map_id, :color, :created_at, :updated_at
 json.url map_layer_url(layer, format: :json)
 json.iconset layer.map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if layer.map.iconset
 json.places layer.places do |place|

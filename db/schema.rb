@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_01_111511) do
+ActiveRecord::Schema.define(version: 2021_12_03_131943) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2021_12_01_111511) do
     t.text "text"
     t.boolean "public_submission"
     t.string "slug"
+    t.text "credits"
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
@@ -119,6 +120,7 @@ ActiveRecord::Schema.define(version: 2021_12_01_111511) do
     t.string "slug"
     t.string "popup_display_mode", default: "click"
     t.boolean "show_annotations_on_map", default: false
+    t.text "credits"
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
