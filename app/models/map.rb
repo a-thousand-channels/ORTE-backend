@@ -6,6 +6,8 @@ class Map < ApplicationRecord
   has_many :layers
   has_many :places, through: :layers
 
+  has_one_attached :image, dependent: :destroy
+
   validates :title, presence: true
 
   extend FriendlyId
@@ -18,4 +20,11 @@ class Map < ApplicationRecord
   scope :sorted, -> { order(title: :asc) }
 
   scope :published, -> { where(published: true) }
+
+
+  def image_link
+    ApplicationController.helpers.image_url(image) if image && image.attached?
+  end
+
 end
+

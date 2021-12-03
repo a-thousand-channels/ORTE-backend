@@ -140,6 +140,6 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :text, :published, :public_submission, :map_id, :color)
+    params.require(:layer).permit(:title, :subtitle, :text, :credits, :published, :public_submission, :map_id, :color, :image)
   end
 end
