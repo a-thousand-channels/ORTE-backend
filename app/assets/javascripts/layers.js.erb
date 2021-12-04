@@ -296,7 +296,6 @@ function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,p
         color: color,
         weight: 3,
         opacity: 0.7,
-        animate: {duration: 3000, iterations: Infinity},
         className: 'curve_normal curve_'+relation.from.id
       }
       var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
