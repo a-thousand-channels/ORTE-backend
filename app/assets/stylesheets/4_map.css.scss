@@ -100,7 +100,11 @@
       p {
         margin: 0.5rem 1rem 0.5rem 0.5rem;
         padding-right: 10px;
-        font-size: 9pt;
+        font-size: 11pt;
+        @media screen and (max-width: 39.9375em) {
+          font-size: 9pt;
+
+        }
         a {
           color: black;
           text-decoration: underline;
@@ -116,6 +120,10 @@
         width: 100%;
         margin-top: 0;
 
+      }
+      div.leaflet-popup-content-image {
+        max-height: 215px;
+        overflow: hidden;
       }
     }
 }

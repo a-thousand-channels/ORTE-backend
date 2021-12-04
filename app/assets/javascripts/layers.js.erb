@@ -589,11 +589,11 @@ function PopupFullContent(place) {
       var content = '';
       if ( place.images && place.images[0] ) {
         $.each(place.images, function(kkey, image) {
-          content += "<img src='"+image.image_url+"' />";
+          content += "<div class='leaflet-popup-content-image'><img src='"+image.image_url+"' /></div>";
         });
       }
       if ( place.imagelink2 ) {
-        content += "<img src='"+place.imagelink2+"' />";
+        content += "<div class='leaflet-popup-content-image'><img src='"+place.imagelink2+"' /></div>";
       } else if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
       }
