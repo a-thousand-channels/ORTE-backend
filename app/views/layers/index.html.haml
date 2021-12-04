@@ -20,23 +20,29 @@
               (#{@map.places.tagged_with(["#{tag.name}"]).count})
 
   .grid-x.grid-padding-x
-    .cell.medium-4
+    .cell.medium-3
       - if @map.places.all_tags
         %p
           = link_to map_tags_path(@map), :class => "button small" do
             %i.fi-pricetag-multiple
             List of all tags
-    .cell.medium-8
+    .cell.medium-6
       = render 'searchform', object: @map
+    .cell.medium-3
+      %p.text-right.hint
+        = link_to map_relations_path(@map) do
+          All Relations in this map
 
   %table
     %thead
       %tr
         %th Layer
         %th.show-for-medium
+          \&nbsp;
+        %th.show-for-medium
           %i.fi-eye.fi-24
         %th.show-for-medium
-          %i.fi-web.fi-24  
+          %i.fi-web.fi-24
         %th
 
     %tbody
@@ -59,15 +65,19 @@
                   %circle{cx:"15",cy:"15",r:"15",fill:"#{layer.color}"}
               %span.icons{:style=>"height: 40px; vertical-align: middle;"}
           %td.show-for-medium
+            - if layer.image && layer.image.attached?
+              = link_to url_for(layer.image) do
+                = image_tag layer.image.variant(resize: "120x120").processed, class: "thumbnail", title: layer.title
+          %td.show-for-medium
             - if layer.published
               %i.fi-check.fi-24
             - else
               %i.fi-x.fi-24
           %td.show-for-medium
             - if layer.public_submission
-              %i.fi-check.fi-24
+              %i.fi-check.fi-24{title: 'Submissions enabled'}
             - else
-              %i.fi-x.fi-24
+              \-
           %td
             = link_to edit_map_layer_path(@map, layer), :class=>"button" do
               %i.fi-pencil.fi-24

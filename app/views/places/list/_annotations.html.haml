@@ -1,0 +1,43 @@
+- if @place.annotations.count > 0
+  - @place.annotations.each do |annotation|
+
+    #saved_annotations
+
+      .grid-x.grid-padding-x
+        .large-8.medium-8.cell
+          - if annotation.person
+            %p
+              %i.fi.fi-comment-quotes
+              = annotation.person.name
+        .large-4.medium-4.cell
+          %p.text-right
+
+      - if annotation.title
+        %h5
+          = annotation.title
+      - if annotation.text
+        .annotation_text
+          - if params[:action] == 'edit'
+            =(truncate(strip_tags(annotation.text), escape: false, length: 200))
+          - else
+            =h annotation.text.html_safe
+          - if annotation.tag_list
+            %p
+              - annotation.tags.each do |tag|
+                %span.label.secondary.tag
+                  = link_to map_tag_path(@map,tag) do
+                    %i.fi-price-tag
+                    = tag
+          - if annotation.audio.attached?
+            %p
+              = audio_tag rails_blob_url(annotation.audio), autoplay: true, controls: true
+              = link_to annotation.audio.filename, rails_blob_path(annotation.audio, disposition: "attachment")
+          .annotation_metadata
+            %p.hint
+              #{annotation.source} &mdash;
+              #{l(annotation.created_at)}
+              \&mdash;
+              = link_to edit_annotation_path(annotation, back_to: params[:action]), class: 'button small rounded', title: 'Edit this annotation' do
+                %i.fi.fi-pencil.fi-18
+    %hr
+

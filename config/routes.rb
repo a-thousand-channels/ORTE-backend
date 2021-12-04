@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :people
+  resources :annotations
   resources :submission_configs
   devise_for :users
 
@@ -23,11 +25,14 @@ Rails.application.routes.draw do
   end
   resources :maps do
     resources :tags, only: [:index, :show]
+    resources :relations
     resources :layers do
       collection do
         post :search
       end
       member do
+        get :annotations
+        get :relations
         get :images, only: [:index]
       end
       resources :places do
@@ -36,6 +41,9 @@ Rails.application.routes.draw do
         member do
           delete :delete_image_attachment
           post :sort
+          get :clone
+          get :edit_clone
+          patch :update_clone
         end
       end
     end

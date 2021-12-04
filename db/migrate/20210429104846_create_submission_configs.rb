@@ -9,7 +9,7 @@ class CreateSubmissionConfigs < ActiveRecord::Migration[5.2]
       t.datetime :start_time
       t.datetime :end_time
       t.boolean :use_city_only
-      t.belongs_to :layer, foreign_key: true  
+      t.belongs_to :layer, foreign_key: true
 
       t.timestamps
     end

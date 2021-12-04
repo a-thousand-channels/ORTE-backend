@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images show edit update destroy]
+  before_action :set_layer, only: %i[images show edit update destroy annotations relations]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -27,6 +27,10 @@ class LayersController < ApplicationController
     @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@query}%")
   end
 
+  def relations; end
+
+  def annotations; end
+
   # GET /layers/1
   # GET /layers/1.json
   def show
@@ -34,7 +38,7 @@ class LayersController < ApplicationController
     if @map
       @map_layers = @map.layers
     else
-      redirect_to maps_path, notice: "Sorry, this map could not be found." and return
+      redirect_to maps_path, notice: 'Sorry, this map could not be found.' and return
     end
 
     if @layer
@@ -46,7 +50,7 @@ class LayersController < ApplicationController
         format.csv { send_data @places.to_csv, filename: "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.csv" }
       end
     else
-      redirect_to maps_path, notice: "Sorry, this layer could not be found."
+      redirect_to maps_path, notice: 'Sorry, this layer could not be found.'
     end
   end
 
@@ -122,15 +126,11 @@ class LayersController < ApplicationController
   private
 
   def redirect_to_friendly_id
-
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    if @map && @layer && request.path != map_layer_path(@map,@layer) && request.format == 'html'
-      return redirect_to map_layer_path(@map, @layer), :status => :moved_permanently
-    end
+    redirect_to map_layer_path(@map, @layer), status: :moved_permanently if @map && @layer && request.path != map_layer_path(@map, @layer) && request.format == 'html'
   end
-
 
   # Use callbacks to share common setup or constraints between actions.
   def set_layer
@@ -140,6 +140,6 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :text, :published, :public_submission, :map_id, :color)
+    params.require(:layer).permit(:title, :subtitle, :text, :credits, :published, :public_submission, :map_id, :color, :image)
   end
 end

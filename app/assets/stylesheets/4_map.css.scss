@@ -1,6 +1,9 @@
 
 /* leaflet overrides */
 #map {
+  background: #454545
+}
+#map.lightmode {
   background: #fefefe;
 }
 #map .leaflet-top {
@@ -88,7 +91,7 @@
       margin: 0;
       padding: 0;
 
-      h4 {
+      h4, h5 {
         margin: 0.5rem 1rem 0.5rem 0.5rem;
         line-height: 1;
         padding-right: 10px;
@@ -105,6 +108,9 @@
         a:hover {
           text-decoration: underline;
         }
+        a.button, a.button:hover {
+          text-decoration: none;
+        }
       }
       img {
         width: 100%;
@@ -113,6 +119,70 @@
       }
     }
 }
+
+/* ............................. */
+
+.spiderfied-places {
+    filter: saturate(0.8);
+    transition: 0.25s filter;
+}
+.spiderfied-places:hover {
+    filter: saturate(3);
+    transition: 0.5s filter;
+}
+.leaflet-zoom-animated.leaflet-interactiveXX {
+    background-color: rgba(25,25,25,0);
+    border-radius: 23px;
+    padding: 2px;
+    box-shadow: 0 0 5px #333;
+}
+/* another try: colorize the helpingCircles by the Leaflet.MarkerCluster.PlacementStrategies sub-plugin; */
+/*
+.leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path {
+    stroke: red;
+    stroke-width: 60px;
+    opacity: 0.5;
+}
+/* ............................. */
+
+
+.leaflet-marker-icon svg circle {
+  transform: scale(0.9);
+  /* fill: #cc0000; */
+  opacity: 0.55;
+}
+.leaflet-marker-icon svg circle:hover,
+.leaflet-marker-icon:hover svg circle {
+  /* fill: #cc0000; */
+  opacity: 1;
+  transition: all 1s linear;
+  transform: scale(1);
+}
+.leaflet-data-outside-marker.leaflet-marker-icon svg circle {
+  /*  fill: #555; */
+  opacity: 0.85;
+}
+
+.spiderfied-places {
+
+}
+.cluster_expanded {
+   color: #999;
+}
+
+.curve_normal {
+   stroke-width: 3;
+   opacity: 0.85;
+   /* stroke: rgba(25,25,25,0.1); */
+   transition: all 1s linear;
+}
+.curve_normalX:hover,
+.curve_hover {
+    stroke-width: 7;
+    transition: all 1s linear;
+}
+
+/* ............................. */
 
 /* iconset settings */
 

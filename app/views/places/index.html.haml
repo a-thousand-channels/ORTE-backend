@@ -6,15 +6,24 @@
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
       %span{"aria-hidden"=>"true"}
         %i.fi.fi-x
-  %h3
+  %h1
     = link_to map_path(@layer.map) do
       = @layer.map.title
-    \:
+    —
     = link_to map_layer_path(@layer.map,@layer) do
       = @layer.title
     (#{@places.count})
 
-
+  %p.text-right.hint
+    See also:
+    %br
+    = link_to annotations_map_layer_path(@map,@layer) do
+      Annotations (about Places)
+  %p.text-right.hint
+    = link_to relations_map_layer_path(@map,@layer) do
+      Relations (between places)
+  %p
+    &nbsp;
   %table
     %thead
       %tr
@@ -34,11 +43,13 @@
               - images.each do |img|
                 - begin
                   - if img.attached?
-                    = image_tag img.variant(resize: "120x120").processed, class: "thumbnail", title: img.title
-                    %small
-                      #{img.title}
-                      - if img.alt
-                        (#{img.alt})
+                    %p
+                      = image_tag img.variant(resize: "120x120").processed, class: "thumbnail", title: img.title
+                      %br
+                      %small.nowrap
+                        #{img.title}
+                        - if img.alt.present?
+                          %i.fi-info{title: img.alt}
                 - rescue
                   %p.shy Image could not be loaded
             %h4
@@ -61,6 +72,10 @@
               = place.zip
               = place.city
 
+            - if place.annotations && place.annotations.count > 0
+              %p
+                = link_to map_layer_place_path(place.layer.map,place.layer,place) do
+                  #{place.annotations.count} Annotations
             - if place.tags
               %p
                 - place.tags.each do |tag|
@@ -72,7 +87,7 @@
               - if place.lat
                 #{place.lat[0..6]}/#{place.lon[0..5]}
           %td
-            = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button" do
+            = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-pencil.fi-21
               Edit
             %br
@@ -88,17 +103,22 @@
               = videos.count
               Videos
               %br
-            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button" do
+            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-plus.fi-21
               Image
-            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button" do
+            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-plus.fi-21
               Video
+            - if admin? && current_user.group.title == 'Admins'
+              %br
+              = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small', :title=>'Seite kopieren' do
+                %i.fi-page-copy.fi-21
+                Clone
             %br
             - if place.images.count > 0 || place.videos.count > 0
               - warning = 'Are you sure to delete this place and all attached images and/or videos?'
             - else
               - warning = 'Are you sure to delete this place?'
-            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button warning" do
+            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button warning small" do
               %i.fi-trash.fi-21
               Destroy

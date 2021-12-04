@@ -22,6 +22,7 @@ gem 'jbuilder'
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
+gem 'deep_cloneable', '~> 3'
 
 # custom
 gem 'cancancan'
@@ -77,8 +78,9 @@ group :development, :test, :localtest do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'simplecov'
-  gem 'webdrivers', '~> 4.0'
+  gem 'webdrivers', '~> 5'
   gem 'webmock'
 end
 

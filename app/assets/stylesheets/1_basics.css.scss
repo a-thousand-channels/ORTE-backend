@@ -84,6 +84,12 @@ span.name.middle {
 }
 
 hr {border-bottom: 1px solid #aaa;}
+hr.small { margin: 0.25rem auto 0.65rem; }
+
+tbody th, tbody td {
+    text-align: left;
+}
+
 /* -------------------- */
 /* foundation adapations */
 .callout {
@@ -118,6 +124,16 @@ a.button.small {
     font-size: 1em;
     line-height: 1;
     position: absolute;
+}
+a.small.button.rounded {
+    border-radius: 20px;
+    padding: 5px 6px;
+    background-color: white;
+    color: darken(#c6c600,5%) !important;
+    font-size: 0.9rem;
+}
+a.small.button.rounded:hover {
+    color: darken(#c6c600,15%) !important;
 }
 a.button.action {
   font-size: 13pt;
@@ -226,7 +242,7 @@ select {
 .menu a.button.logout {
     background-color: #333;
     color: #aaaa00 !important;
-    margin-top: 3px;
+    /* margin-top: 3px; */
     padding: 0.5rem 0.75rem;
     border-radius: 30px;
 }
@@ -291,6 +307,7 @@ p.date {
   margin-top: 1em;
   margin-bottom: 0;
 }
+span.hint,
 p.hint {
   font-size: 0.8em;
   color: grey;
