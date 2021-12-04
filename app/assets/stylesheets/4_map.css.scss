@@ -173,13 +173,12 @@
 .curve_normal {
    stroke-width: 3;
    opacity: 0.85;
-   // stroke: rgba(25,25,25,0.1);
+   /* stroke: rgba(25,25,25,0.1); */
    transition: all 1s linear;
 }
-.curve_normal:hover,
+.curve_normalX:hover,
 .curve_hover {
     stroke-width: 7;
-    // stroke: rgba(25,25,25,0.4);
     transition: all 1s linear;
 }
 
