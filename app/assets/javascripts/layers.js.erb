@@ -294,9 +294,10 @@ function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,p
 
       var pathOptions = {
         color: color,
-        weight: 3,
-        opacity: 0.7,
-        className: 'curve_normal curve_'+relation.from.id
+        weight: 4,
+        opacity: 0.5,
+        className: 'curve_normal curve_'+relation.from.id,
+        animate: false
       }
       var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
       let distance_in_kms = ((distance) / 1000).toFixed(2);
