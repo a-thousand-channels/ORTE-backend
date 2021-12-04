@@ -57,7 +57,7 @@ class PlacesController < ApplicationController
   end
 
   def clone
-    @new_place = @place.deep_clone include: [ :images, :videos, :submissions, :annotations ]
+    @new_place = @place.deep_clone include: [ { images: [ :file_attachment, :file_blob] }, { videos: [ :file_attachment, :file_blob, :filmstill_attachment, :filmstill_blob ] }, :submissions, :annotations ]
     @new_place.title = "#{@new_place.title} (Copy)"
     @new_place.published = false
 
