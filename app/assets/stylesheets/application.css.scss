@@ -34,7 +34,15 @@
 @import 'worksans';
 @import 'orte';
 
+/* --------------------------- */
 
+body.development .top-bar, body.development  .top-bar ul,
+body.staging .top-bar, body.staging  .top-bar ul
+{
+  background-image: linear-gradient(130deg, #47473c 25%, #333333 25%, #333333 50%, #47473c 50%, #47473c 75%, #333333 75%, #333333 100%);
+  background-size: 52.22px 62.23px;
+}
+/* --------------------------- */
 main {
   min-height: 450px;
 }

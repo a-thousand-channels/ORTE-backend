@@ -21,6 +21,11 @@
               %i.fi-price-tag
               = tag.name
               (#{@map.places.tagged_with(["#{tag.name}"]).count})
+    %div.tags.hidden
+      - ActsAsTaggableOn::Tag.all.each do |tag|
+        %span.label.secondary.tag
+          %i.fi-price-tag
+          = tag.name
 
   .grid-x.grid-padding-x
     .cell.medium-4

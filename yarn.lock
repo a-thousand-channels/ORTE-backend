@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+leaflet-curve@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/leaflet-curve/-/leaflet-curve-1.0.0.tgz#9053038c59f8630ff82bb55d3009fd017c3c8602"
+  integrity sha1-kFMDjFn4Yw/4K7VdMAn9AXw8hgI=
+
 leaflet-draw@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/leaflet-draw/-/leaflet-draw-1.0.4.tgz#45be92f378ed253e7202fdeda1fcc71885198d46"
@@ -11,6 +16,11 @@ leaflet.locatecontrol@^0.72.0:
   version "0.72.0"
   resolved "https://registry.yarnpkg.com/leaflet.locatecontrol/-/leaflet.locatecontrol-0.72.0.tgz#7de5c109a0e10a928bae85e4996e5efa49a3c905"
   integrity sha512-enAf10UG9Z1bV0siTP/+vG/ZVncDqSA3V8c6iZ3s6KWL5Ngkk4A4mk9Ssefj46ey98I9HSYWqoS+k2Y7EaKjwQ==
+
+leaflet.markercluster.placementstrategies@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/leaflet.markercluster.placementstrategies/-/leaflet.markercluster.placementstrategies-0.2.1.tgz#cc5bd34cfd3ab8ecf5541e1fa7a5a8e16ae40543"
+  integrity sha512-9sgCuBDE+Eeaz61csa6/bmyIPMAT6eLWPjhj4m6dSveYcJBEIOQgUOAQm+cnE6o/SOV2p+drfCgtl3ouwkXyXA==
 
 leaflet.markercluster@^1.4.1:
   version "1.4.1"

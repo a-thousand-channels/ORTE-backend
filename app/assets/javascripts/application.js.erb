@@ -21,9 +21,11 @@
 //= require_tree .
 //= require leaflet/dist/leaflet
 //= require leaflet.markercluster/dist/leaflet.markercluster
+//= require leaflet.markercluster.placementstrategies/dist/leaflet-markercluster.placementstrategies
 //= require leaflet-draw/dist/leaflet.draw
 //= require leaflet.locatecontrol/dist/L.Control.Locate.min
-//= require leaflet-color-markers
+// # = require leaflet-color-markers
+//= require leaflet-curve/leaflet.curve.js
 //= require tinymce-jquery
 //= require select2-full
 
@@ -36,10 +38,14 @@
       $('#flash').slideUp(2000);
     }, 3500);
 
-      $('#place_tag_list').select2({
-        tags: true,
-        tokenSeparators: [',']
-      });
+    $('#place_tag_list').select2({
+      tags: true,
+      tokenSeparators: [',']
+    });
+    $('#annotation_tag_list').select2({
+      tags: true,
+      tokenSeparators: [',']
+    });
       // tags option enables free text responses
 
     // select another color (for layers)
@@ -125,7 +131,8 @@
 
 
     // places > form: toggle layer dropdown
-    $('#layer_display').click(function(e){
+    $('#move_to_layer').click(function(e){
+      e.preventDefault();
       $('#layer_selector').removeClass('hide');
       $('#layer_display').hide();
     });
@@ -134,27 +141,68 @@
       $('#layer_selector').addClass('hide');
       $('#layer_display').show();
     });
+    // places > form: toggle coordinates form fields
+    $('#edit_coordinates_cancel').hide();
+    $('#edit_coordinates').click(function(e){
+      e.preventDefault();
+      $('.place_lat').removeClass('hidden');
+      $('.place_lon').removeClass('hidden');
+      $('.place_lat > label').removeClass('hidden');
+      $('.place_lon > label').removeClass('hidden');
+      $('#place_lat').removeClass('hidden');
+      $('#place_lon').removeClass('hidden');
+      $('#place_lat').prop('type','text');
+      $('#place_lon').prop('type','text');
+      $('#edit_coordinates').hide();
+      $('#edit_coordinates_cancel').show();
+    });
+    $('#edit_coordinates_cancel').click(function(e){
+      e.preventDefault();
+      $('.place_lat').addClass('hidden');
+      $('.place_lon').addClass('hidden');
+      $('.place_lat > label').addClass('hidden');
+      $('.place_lon > label').addClass('hidden');
+      $('#place_lat').addClass('hidden');
+      $('#place_lon').addClass('hidden');
+      $('#place_lat').prop('type','hidden');
+      $('#place_lon').prop('type','hidden');
+      $('#edit_coordinates_cancel').hide();
+      $('#edit_coordinates').show();
+    });
+
     // ---------------
 
     var text_layers = L.featureGroup();
     var image_layers = L.layerGroup();
     var marker_meta_layers = L.featureGroup();
+    var curve_layers = L.featureGroup();
+
 
      var overlays = {
         'Text': text_layers,
         'Image': image_layers,
-        'Place': marker_meta_layers
+        'Place': marker_meta_layers,
+        'Curves': curve_layers
     };
 
     // ---------------
     // baselayer map
 
+    var MAP_LAT = 53.55;
+    var MAP_LON = 9.99;
+
+
+    if ( $('#form-wrapper').data('lat') ) {
+      MAP_LAT = $('#form-wrapper').data('lat');
+      MAP_LON = $('#form-wrapper').data('lon');
+    }
+
     var map = L.map('map', {
         zoomControl: false,
         layers: [marker_meta_layers],
         minZoom: 1,
-        maxZoom: 18
-    }).setView([53.55, 9.99], 12);
+        maxZoom: 20
+    }).setView([MAP_LAT, MAP_LON], 12);
 
 
     L.control.layers(overlays).addTo(map);
@@ -176,8 +224,18 @@
       }).addTo(map);
     } else {
       var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>'
+    attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
+          minZoom: 0,
+          maxZoom: 18
+
     }).addTo(map);
+     L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
+              attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
+              minZoom: 19,
+              maxZoom: 21
+    }).addTo(map);
+
+
     }
 
     if ( $('#selection').data('layer-id') ) {
@@ -229,13 +287,13 @@
 
     // layers: show all places
     if ( $('body').attr('id') === 'layers' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'layers');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
     }
     if ( $('body').attr('id') === 'places' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'places');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'places');
     }
     if ( $('body').attr('id') === 'maps' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,'maps');
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'maps');
     }
 
 
@@ -260,8 +318,18 @@
 
 
     map.addLayer(marker_meta_layers);
+    map.addLayer(curve_layers);
 
-
+    $('.leaflet-marker-icon').on('mouseover', function(e) {
+        // get index
+        var id = $(this).attr('id');
+        var pattern = /marker_to_/g;
+        var index = id.replace(pattern, '');
+        console.log(index);
+          // change all curves from here
+        $('.curve_normal').removeClass('curve_hover');
+        $('.curve_'+index).addClass('curve_hover');
+     });
 
 
     /* special overlay for treffentotal map */
@@ -281,6 +349,7 @@
 
   });
 // });
+
 
 function ClearLookUpField() {
       $('#addresslookup_address').addClass('hide');

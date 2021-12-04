@@ -1,0 +1,33 @@
+#table-wrapper
+
+
+  %h1 Relations
+  %p.text-right
+    = link_to new_map_relation_path(@map), class: "button small"  do
+      %i.fi-plus.fi-18
+      New Relation
+  %table
+    %thead
+      %tr
+        %th
+        %th
+
+    %tbody
+
+      - @layers.each do |layer|
+        - @layer = layer
+        %tr
+          %th{colspan: 2}
+            = link_to map_path(@layer.map) do
+              = @layer.map.title
+            —
+            = link_to map_layer_path(@layer.map,@layer) do
+              = @layer.title
+        = render 'list_as_table'
+
+  %p.text-right
+
+
+    = link_to new_map_relation_path(@map), class: "button small" do
+      %i.fi-plus.fi-18
+      New Relation

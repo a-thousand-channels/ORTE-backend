@@ -16,7 +16,7 @@ module PlacesHelper
   end
 
   def add_new_entry_link(place)
-    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{@place.location}&address=#{@place.address}&zip=#{@place.zip}&city=#{@place.city}&lat=#{@place.lat}&lon=#{@place.lon}"
+    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{place.location}&address=#{place.address}&zip=#{place.zip}&city=#{place.city}&lat=#{place.lat}&lon=#{place.lon}"
   end
 
   def icon_link(file)
@@ -33,15 +33,16 @@ module PlacesHelper
 
   def image_link(image)
     return unless image.file.attached?
-
-    # polymorphic_url(image.file)
-    polymorphic_url(image.file.variant(resize: '800x800').processed)
+    begin
+      polymorphic_url(image.file.variant(resize: '800x800').processed)
+    rescue Errno::ENOENT => e
+      # nothing
+    end
   end
 
   def audio_link(audio)
     return unless audio.attached?
 
-    # polymorphic_url(image.file)
     audio_tag rails_blob_url(audio), autoplay: true, controls: true
   end
 end

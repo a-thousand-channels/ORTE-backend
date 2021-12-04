@@ -1,13 +1,11 @@
 - content_for(:title) { "#{@place.title} — #{@place.layer.title}" }
 
-
-#info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}" }}
+#info-wrapper{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}/places/#{@place.id}.json", 'map_id' => "#{@map.id}", 'layer_id' => "#{@layer.id}" }}
 
   %p.text-right.close_link_wrapper
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
       %span{"aria-hidden"=>"true"}
         %i.fi.fi-x
-  %p#notice= notice
 
   .grid-x.grid-padding-x
     - images = Image.where(place_id: @place.id)
@@ -65,10 +63,10 @@
         = @place.title
         = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
           %i.fi.fi-pencil.fi-24
-      %p
+      %div
         %strong
           =h @place.teaser.html_safe
-      %p
+      %div
         =h @place.text
       %p
         - if @place.link
@@ -80,7 +78,37 @@
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
+      %label Annotations
+      %hr.small
+      = render 'places/list/annotations'
+      %p
+        = link_to new_annotation_path(place_id: @place.id), class: 'button' do
+          %i.fi.fi-plus
+          - if @place.annotations.count > 0
+            Add another annotation
+          - else
+            Add an annotation
+      %hr.small
+      - if @place.relations_from_ids
+        %label Relations
+        - @place.relations_froms.each do |r|
+          %p
+            \⟶
+            = r.relation_to.layer.title
+            \:
+            = link_to map_layer_place_url(r.relation_to.layer.map, r.relation_to.layer, r.relation_to) do
+              = r.relation_to.title
+            = link_to edit_map_relation_path(@map,r), class: "button small rounded" do
+              %i.fi.fi-pencil
+              Edit
+      %p
+        = link_to new_map_relation_path(map_id: @place.layer.map.id, relations_from_id: @place.id), class: 'button' do
+          %i.fi.fi-plus
+          Add a relation to another place
+
+
       - if @place.tag_list
+        %hr.small
         %p
           - @place.tags.each do |tag|
             %span.label.secondary.tag

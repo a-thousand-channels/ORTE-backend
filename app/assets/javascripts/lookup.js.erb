@@ -196,18 +196,18 @@ function ReverseLookupNominatim(map,latlng,lat,lon,url) {
 
       // show found place instead
       items.push( "<li id='1'><a href='"+href+"'>"+full_address + "</a></li>" );
-    /*  $( "<ul/>", {
+      /*  $( "<ul/>", {
           "id": "response",
           html: items.join( "" ),
         }).appendTo( "#selection" );
-*/
+      */
       var params = getParams();
       if ( params.remap )  {
-        var hint = 'Re-map this place: ';
+        var hint = 'Re-map to this place';
       } else {
-        var hint = 'Map this place: ';
+        var hint = 'Map this place';
       }
-      L.popup().setLatLng(latlng).setContent("<p>"+hint+"<br/><a href='"+href+"'>"+full_address +"</a></p>").openOn(map);
+      L.popup().setLatLng(latlng).setContent("<p class='map_this_button text-center'><a href='"+href+"' class='button'>"+hint+"</a><br/>"+full_address +"</p>").openOn(map);
     }).done(function() {
       console.log( "success" );
       // $('#selection-hint').html("<p>Please select the address shown in the popup or try another input.</p>");

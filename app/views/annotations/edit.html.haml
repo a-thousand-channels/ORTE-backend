@@ -1,0 +1,25 @@
+
+#form-wrapper.large-wrapper
+
+  %h1 Editing an annotation
+
+  = render 'form'
+
+
+  %hr
+  .grid-x.grid-padding-x
+    .large-6.cell
+
+      - if params[:back_to] == 'edit'
+        = link_to edit_map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), :class => 'button' do
+          %i.fi.fi-arrow-left
+          Back to place
+      - else
+        = link_to map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), :class => 'button' do
+          %i.fi.fi-arrow-left
+          Back to place
+    .large-6.cell
+      %p.text-right
+        = link_to annotation_path(@annotation,back_to: 'show'), :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
+          %i.fi.fi-x
+          Delete

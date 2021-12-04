@@ -31,9 +31,9 @@
 
   - klass = "lang-" + I18n.locale.to_s
   - if current_user
-    - klass = klass + " logged_in "
-  - if Rails.env == 'staging' || Rails.env == 'developement'
-    - klass = klass + "#{Rails.env.parameterize}"
+    - klass = klass + " logged_in"
+  - if Rails.env == 'staging' || Rails.env == 'development'
+    - klass = klass + " #{Rails.env.parameterize}"
   - id = ''
   - if controller_name
     - id = "#{controller_name.parameterize}"

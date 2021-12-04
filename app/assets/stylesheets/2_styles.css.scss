@@ -51,6 +51,11 @@ body#start main {
 
 #layers #table-wrapper {
     max-width: unset;
+    max-width: min-content;
+    min-width: 500px;
+    @media screen and (max-width: 39.9375em) {
+      min-width: 300px;
+    }
 }
 #layers .grid-x.grid-images {
 
@@ -89,6 +94,7 @@ input#addresslookup_address.hide {
 #layers main #selection {
   /* avoid 100% width for a nav elements  */
   width: max-content;
+  min-width: 250px;
 }
 
 #selection {
@@ -147,6 +153,7 @@ input#addresslookup_address.hide {
   padding: 10px 20px;
   min-width: 450px;
   max-width: 90%;
+  max-width: 60em;
   @media screen and (max-width: 39.9375em) {
     padding: 10px;
     min-width: none;
@@ -230,13 +237,14 @@ p.close_link_wrapper {
 .text_inner {
     color: white;
     background-color: rgba(200,200,200,0);
-    line-height: 0.6;
-    font-size: 14px;
+    line-height: 1;
+    font-size: 18px;
     font-weight: bold;
     padding: 2px 8px;
     border: none;
     text-shadow: 0 0 7px #333;
     transform: rotate(-45deg);
+    transform-origin: bottom left;
     width: 200px;
 }
 

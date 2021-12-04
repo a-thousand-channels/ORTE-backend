@@ -1,0 +1,18 @@
+
+#form-wrapper.large-wrapper
+
+  %h1 Add an annotation
+
+  %p.hint.text-left
+    Annotation could be comments or quotes about this place or event.
+
+
+  = render 'form'
+
+
+  %hr
+  - if @annotation.place
+    - if params[:back_to] == 'edit'
+      = link_to 'Back to place', edit_map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), :class => 'button'
+    - else
+      = link_to 'Back to place', map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), :class => 'button'

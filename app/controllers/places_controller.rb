@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PlacesController < ApplicationController
-  before_action :set_place, only: %i[show edit update destroy]
+  before_action :set_place, only: %i[show edit clone edit_clone update_clone update destroy]
 
   # GET /places
   # GET /places.json
@@ -56,6 +56,36 @@ class PlacesController < ApplicationController
     @layer = Layer.friendly.find(params[:layer_id])
   end
 
+  def clone
+    @new_place = @place.deep_clone include: [ { images: [ :file_attachment, :file_blob] }, { videos: [ :file_attachment, :file_blob, :filmstill_attachment, :filmstill_blob ] }, :submissions, :annotations ]
+    @new_place.title = "#{@new_place.title} (Copy)"
+    @new_place.published = false
+
+    respond_to do |format|
+      if @new_place.save!
+        format.html { redirect_to edit_clone_map_layer_place_path(@map, @layer,@new_place), notice: 'Place cloned with all assets, submissions and annotations. Place is automatically set to unpublished' }
+      else
+        format.html { redirect_to map_layer_places_path(@map, @layer), notice: 'Place could not be copied' }
+      end
+    end
+  end
+
+  def edit_clone
+    @maps = Map.by_user(current_user).all
+  end
+
+
+  def update_clone
+
+    respond_to do |format|
+      if @place.save!
+        format.html { redirect_to edit_map_layer_place_path(@map, @layer, @place), notice: 'Place has been saved.' }
+      else
+        format.html { redirect_to map_layer_places_path(@map, @layer), notice: 'Place could not be updated' }
+      end
+    end
+  end
+
   # POST /places
   # POST /places.json
   def create
@@ -80,16 +110,14 @@ class PlacesController < ApplicationController
     @layer = @place.layer
     @map = @place.layer.map
 
-    # quirks, because foundation switch generats 'on'/'off' values,
+    # quirks, because foundation switch generates 'on'/'off' values,
     # rails expect true/false
     # TODO: render this at generating the form
-    # puts params[:place][:published]
     params[:place][:published] = if params[:place][:published] == 'on' || params[:place][:published] == 'true'
                                    true
                                  else
                                    false
                                  end
-    # params[:place][:published]
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })
@@ -145,6 +173,6 @@ class PlacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :imagelink, :layer_id, :icon_id, :audio, tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: [:title, :text, :person_id, :source ], tag_list: [], images: [], videos: [])
   end
 end
