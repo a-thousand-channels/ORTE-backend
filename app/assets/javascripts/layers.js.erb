@@ -294,9 +294,10 @@ function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,p
 
       var pathOptions = {
         color: color,
-        weight: 3,
-        opacity: 0.7,
-        className: 'curve_normal curve_'+relation.from.id
+        weight: 4,
+        opacity: 0.5,
+        className: 'curve_normal curve_'+relation.from.id,
+        animate: false
       }
       var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
       let distance_in_kms = ((distance) / 1000).toFixed(2);
@@ -589,11 +590,11 @@ function PopupFullContent(place) {
       var content = '';
       if ( place.images && place.images[0] ) {
         $.each(place.images, function(kkey, image) {
-          content += "<img src='"+image.image_url+"' />";
+          content += "<div class='leaflet-popup-content-image'><img src='"+image.image_url+"' /></div>";
         });
       }
       if ( place.imagelink2 ) {
-        content += "<img src='"+place.imagelink2+"' />";
+        content += "<div class='leaflet-popup-content-image'><img src='"+place.imagelink2+"' /></div>";
       } else if ( place.imagelink ) {
         content += "<img src='"+place.imagelink+"' />";
       }
