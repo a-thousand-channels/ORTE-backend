@@ -61,6 +61,7 @@ gem 'mobility', '~> 1.1.2'
 
 gem 'bundler-audit', require: false
 gem 'ruby_audit', require: false
+gem 'brakeman', require: false
 
 group :staging, :production do
   # gem 'pg'
@@ -104,6 +105,5 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
-  gem 'brakeman', require: false
   gem 'rubycritic', require: false
 end
