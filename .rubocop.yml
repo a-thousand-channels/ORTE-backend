@@ -79,3 +79,4 @@ AllCops:
     - "script/**/*"
     - "contrib/**/*"
     - "scaffolding.rb"
+    - vendor/**/*
