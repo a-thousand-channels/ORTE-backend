@@ -107,25 +107,24 @@ class Public::SubmissionsController < ApplicationController
 
     if session[:submission_id]&.positive? && session[:submission_id] == params['id'].to_i
       @submission = Submission.find(session[:submission_id])
+      @submission.status = SUBMISSION_STATUS_STEP1
+      @form_url = submission_path(@submission, locale: @locale, layer_id: @layer.id)
+      respond_to do |format|
+        if @submission.update(submission_params)
+          session[:submission_id] = @submission.id
+          if @submission.place
+            @submission.place.title = @submission.name
+            @submission.place.save!
+            format.html { redirect_to submission_edit_place_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id, place_id: @submission.place.id), notice: t('activerecord.messages.models.submission.created') }
+          else
+            format.html { redirect_to submission_new_place_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id), notice: t('activerecord.messages.models.submission.created')}
+          end
+        else
+          format.html { render :edit }
+        end
+      end
     else
       redirect_to new_submission_path
-    end
-
-    @submission.status = SUBMISSION_STATUS_STEP1
-    @form_url = submissions_path(@submission, locale: @locale, layer_id: @layer.id)
-    respond_to do |format|
-      if @submission.update(submission_params)
-        session[:submission_id] = @submission.id
-        if @submission.place
-          @submission.place.title = @submission.name
-          @submission.place.save!
-          format.html { redirect_to submission_edit_place_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id, place_id: @submission.place.id), notice: t('activerecord.messages.models.submission.created') }
-        else
-          format.html { redirect_to submission_new_place_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id), notice: t('activerecord.messages.models.submission.created') }
-        end
-      else
-        format.html { render :edit }
-      end
     end
   end
 
@@ -240,13 +239,6 @@ class Public::SubmissionsController < ApplicationController
     params[:layer_id].to_i
     # ? direct call via http://127.0.0.1:3000/de/public/submissions/new?layer_id=1 doesn't work anymore
     # 1
-  end
-
-  def place_from_id
-    return params[:place_id].to_i unless params[:place_id].nil?
-    return params[:image_place_id].to_i unless params[:image_place_id].nil?
-
-    0
   end
 
   def submission_from_id
