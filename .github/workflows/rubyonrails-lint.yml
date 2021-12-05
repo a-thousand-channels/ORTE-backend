@@ -7,9 +7,9 @@ name: Rails - Install dependencies and run linters
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 jobs:
   run-lint:
     runs-on: ubuntu-latest
@@ -24,9 +24,9 @@ jobs:
       # Add or Replace any other security checks here
       - name: Run security checks
         run: |
-          bin/bundler-audit --update
-          bin/brakeman -q -w2
+          bundle exec bundle audit --update
+          brakeman -q -w2
       # Add or Replace any other Linters here
       - name: Run linters
         run: |
-          bin/rubocop --parallel
+          rubocop --parallel
