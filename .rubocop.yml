@@ -28,9 +28,6 @@ Metrics/ClassLength:
 Metrics/CyclomaticComplexity:
   Exclude:
     - app/helpers/application_helper.rb
-    - app/services/statistic_field_calculator.rb
-    - app/helpers/cases_helper.rb
-    - app/controllers/statistics_controller.rb
 
 Metrics/MethodLength:
   Enabled: false
@@ -70,18 +67,15 @@ Style/RegexpLiteral:
 
 Style/SymbolProc:
   Exclude:
-    - app/services/statistic_field_calculator.rb
 
 Style/ClassVars:
   Exclude:
-    - app/controllers/statistics_controller.rb
 
 AllCops:
   Exclude:
-    - 'bin/**/*'
-    - 'db/**/*'
-    - 'config/**/*'
-    - 'script/**/*'
-    - 'contrib/**/*'
-    - 'app/views/cases/_case.json.jbuilder'
-    - 'scaffolding.rb'
+    - "bin/**/*"
+    - "db/**/*"
+    - "config/**/*"
+    - "script/**/*"
+    - "contrib/**/*"
+    - "scaffolding.rb"
