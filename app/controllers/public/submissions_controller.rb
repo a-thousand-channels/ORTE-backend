@@ -117,7 +117,7 @@ class Public::SubmissionsController < ApplicationController
             @submission.place.save!
             format.html { redirect_to submission_edit_place_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id, place_id: @submission.place.id), notice: t('activerecord.messages.models.submission.created') }
           else
-            format.html { redirect_to submission_new_place_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id), notice: t('activerecord.messages.models.submission.created')}
+            format.html { redirect_to submission_new_place_path(locale: params[:locale], submission_id: @submission.id, layer_id: layer_from_id), notice: t('activerecord.messages.models.submission.created') }
           end
         else
           format.html { render :edit }
