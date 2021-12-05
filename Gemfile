@@ -61,6 +61,9 @@ gem 'mobility', '~> 1.1.2'
 
 gem 'bundler-audit', require: false
 gem 'ruby_audit', require: false
+gem 'rubocop'
+gem 'rubocop-rspec'
+
 
 group :staging, :production do
   # gem 'pg'
@@ -85,8 +88,6 @@ group :development, :test, :localtest do
   gem 'simplecov'
   gem 'webdrivers', '~> 5'
   gem 'webmock'
-  gem 'rubocop'
-  gem 'rubocop-rspec'
 end
 
 group :development do
