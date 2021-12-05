@@ -85,6 +85,8 @@ group :development, :test, :localtest do
   gem 'simplecov'
   gem 'webdrivers', '~> 5'
   gem 'webmock'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
 end
 
 group :development do
