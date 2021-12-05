@@ -25,7 +25,8 @@ jobs:
       - name: Run security checks
         run: |
           bundle exec bundle audit --update
-          brakeman -q -w2
+        # TODO:
+        # brakeman -q -w2
       # Add or Replace any other Linters here
       - name: Run linters
         run: |
