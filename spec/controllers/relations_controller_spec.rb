@@ -72,8 +72,6 @@ RSpec.describe RelationsController, type: :controller do
       end
     end
 
-
-
     describe 'PUT #update' do
       context 'with valid params' do
         let(:new_attributes) do
@@ -97,11 +95,11 @@ RSpec.describe RelationsController, type: :controller do
       end
 
       context 'with invalid params' do
-        it "returns an error response" do
+        it 'returns an error response' do
           relation = Relation.create! valid_attributes
-          expect{
+          expect do
             post :update, params: { map_id: @map.id, id: relation.to_param, relation: invalid_attributes }
-          }.to_not change(Relation,:count)
+          end.to_not change(Relation, :count)
 
           expect(response).to have_http_status(422)
         end

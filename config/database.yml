@@ -20,8 +20,9 @@ test:
   adapter: mysql2
   database: orte_test
   host: localhost
-  username: root
+  username: orte
   encoding: utf8
+  password: orte00
 # test w/password-secured database (e.g. local setup)
 localtest:
   adapter: mysql2
@@ -46,5 +47,3 @@ production:
   username: orte
   password: <%= Rails.application.credentials.dig(:mysql, :password, :production) %>
   encoding: utf8
-
-
