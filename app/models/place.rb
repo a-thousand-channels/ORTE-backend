@@ -114,15 +114,15 @@ class Place < ApplicationRecord
 
   def annotations_as_text
     t = ''
-    if annotations&.count&.positive?
-      annotations.each do |a|
-        t = "#{t}#{a.person.name}:\n" if a.person
-        t = "#{t}#{a.title}\n" if a.title
-        t = "#{t}#{a.text.html_safe}\n"
-        t += "---------------\n"
-      end
-      t.to_s
+    return unless annotations&.count&.positive?
+
+    annotations.each do |a|
+      t = "#{t}#{a.person.name}:\n" if a.person
+      t = "#{t}#{a.title}\n" if a.title
+      t = "#{t}#{a.text.html_safe}\n"
+      t += "---------------\n"
     end
+    t.to_s
   end
 
   def teaser_as_text

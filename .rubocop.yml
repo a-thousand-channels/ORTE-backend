@@ -3,9 +3,6 @@
 Style/AsciiComments:
   Enabled: false
 
-Style/GuardClause:
-  Enabled: false
-
 Layout/LineLength:
   Enabled: false
 
