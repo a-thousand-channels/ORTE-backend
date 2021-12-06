@@ -126,6 +126,16 @@
                 ],
                 "pattern": "^(.*)$"
               },
+              "subtitle": {
+                "$id": "#/properties/map/properties/layer/items/properties/subtitle",
+                "type": "string",
+                "title": "The Subtitle Schema",
+                "default": "",
+                "examples": [
+                  "Events in public space"
+                ],
+                "pattern": "^(.*)$"
+              },
               "text": {
                 "$id": "#/properties/map/properties/layer/items/properties/text",
                 "type": "string",
@@ -135,6 +145,25 @@
                   ""
                 ],
                 "pattern": "^(.*)$"
+              },
+              "credits": {
+                "$id": "#/properties/map/properties/layer/items/properties/credits",
+                "type": "null",
+                "title": "The Credits Schema",
+                "default": null,
+                "examples": [
+                  "Some credits"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "image_link": {
+                "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/image_link",
+                "type": "null",
+                "title": "The Image_link Schema",
+                "default": null,
+                "examples": [
+                  null
+                ]
               },
               "created_at": {
                 "$id": "#/properties/map/properties/layer/items/properties/created_at",
