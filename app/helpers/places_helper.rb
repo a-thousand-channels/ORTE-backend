@@ -33,6 +33,7 @@ module PlacesHelper
 
   def image_link(image)
     return unless image.file.attached?
+
     begin
       polymorphic_url(image.file.variant(resize: '800x800').processed)
     rescue Errno::ENOENT => e

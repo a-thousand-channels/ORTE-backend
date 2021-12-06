@@ -13,11 +13,11 @@ class Place < ApplicationRecord
   has_one_attached :audio, dependent: :destroy
 
   has_many :relations_tos, foreign_key: 'relation_to_id',
-                class_name: 'Relation',
-                dependent: :destroy
+                           class_name: 'Relation',
+                           dependent: :destroy
   has_many :relations_froms, foreign_key: 'relation_from_id',
-                class_name: 'Relation',
-                dependent: :destroy
+                             class_name: 'Relation',
+                             dependent: :destroy
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
 
@@ -26,7 +26,6 @@ class Place < ApplicationRecord
   has_many :submissions, dependent: :destroy
   has_many :annotations
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
-
 
   validates :title, presence: true
   validate :check_audio_format
@@ -69,7 +68,7 @@ class Place < ApplicationRecord
   end
 
   def layer_color
-    self.layer.color
+    layer.color
   end
 
   def icon_name
@@ -115,21 +114,16 @@ class Place < ApplicationRecord
 
   def annotations_as_text
     t = ''
-    if annotations && annotations.count > 0
+    if annotations&.count&.positive?
       annotations.each do |a|
-        if a.person
-          t = t + a.person.name + ":\n"
-        end
-        if a.title
-          t = t +  a.title + "\n"
-        end
-        t = t +  a.text.html_safe  + "\n"
-        t = t + "---------------\n"
+        t = "#{t}#{a.person.name}:\n" if a.person
+        t = "#{t}#{a.title}\n" if a.title
+        t = "#{t}#{a.text.html_safe}\n"
+        t += "---------------\n"
       end
-      "#{t}"
+      t.to_s
     end
   end
-
 
   def teaser_as_text
     require 'nokogiri'

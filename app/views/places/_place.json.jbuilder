@@ -8,9 +8,7 @@ json.places do
   json[] do
     json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :lat, :lon, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :layer_id, :created_at, :updated_at, :date, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name
     json.images(place.images) do |image|
-      if image.file && image.file.attached?
-        json.image_url rails_blob_path(image)
-      end
+      json.image_url rails_blob_path(image) if image.file&.attached?
     end
   end
 end
