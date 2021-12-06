@@ -21,13 +21,14 @@ jobs:
         uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
         with:
           bundler-cache: true
-      - run: gem install rubocop
+        run: |
+          gem install rubocop
+          gem install brakeman
       # Add or Replace any other security checks here
       - name: Run security checks
         run: |
           bundle exec bundle audit --update
-        # TODO:
-        # brakeman -q -w2
+          brakeman -q -w2
       # Add or Replace any other Linters here
       - name: Run linters
         run: |
