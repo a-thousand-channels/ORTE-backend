@@ -3,7 +3,7 @@
 json.map do
   next unless @map.published
 
-  json.call(@map, :id, :title, :text, :created_at, :updated_at, :published)
+  json.call(@map, :id, :title, :subtitle, :text, :credits, :image_link, :created_at, :updated_at, :published)
   json.owner @map.group.title
   json.iconset @map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if @map.iconset
   json.layer do
@@ -20,6 +20,20 @@ json.map do
           json.images do
             json.array! place.images do |image|
               json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
+            end
+          end
+        end
+      end
+      json.places_with_relations layer.places.published do |place|
+        next unless place.published
+        if place.relations_froms.count > 0
+          json.relations place.relations_froms do |relation|
+            json.id relation.id
+            json.from do
+              json.extract! relation.relation_from, :id, :lat, :lon
+            end
+            json.to do
+              json.extract! relation.relation_to, :id, :lat, :lon
             end
           end
         end
