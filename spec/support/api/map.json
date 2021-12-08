@@ -13,7 +13,10 @@
       "required": [
         "id",
         "title",
+        "subtitle",
         "text",
+        "credits",
+        "image_link",
         "created_at",
         "updated_at",
         "published",
@@ -40,15 +43,45 @@
           ],
           "pattern": "^(.*)$"
         },
+        "subtitle": {
+          "$id": "#/properties/map/properties/subtitle",
+          "type": "string",
+          "title": "The Subtitle Schema",
+          "default": "",
+          "examples": [
+            "Events in public space"
+          ],
+          "pattern": "^(.*)$"
+        },
         "text": {
           "$id": "#/properties/map/properties/text",
           "type": "string",
           "title": "The Text Schema",
           "default": "",
           "examples": [
-            ""
+            "Some text in 1 or more phrases"
           ],
           "pattern": "^(.*)$"
+        },
+        "credits": {
+          "$id": "#/properties/map/properties/credits",
+          "type": "string",
+          "title": "The Credits Schema",
+          "default": "",
+          "examples": [
+            "Some credits"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "image_link": {
+          "$id": "#/properties/map/properties/image_link",
+          "pattern": "^(.*)$",
+          "type": "null",
+          "title": "The Imagelink Schema",
+          "default": null,
+          "examples": [
+            null
+          ]
         },
         "created_at": {
           "$id": "#/properties/map/properties/created_at",
@@ -126,15 +159,45 @@
                 ],
                 "pattern": "^(.*)$"
               },
+              "subtitle": {
+                "$id": "#/properties/map/properties/layer/items/properties/subtitle",
+                "type": "string",
+                "title": "The Subtitle Schema",
+                "default": "",
+                "examples": [
+                  "Events in public space"
+                ],
+                "pattern": "^(.*)$"
+              },
               "text": {
                 "$id": "#/properties/map/properties/layer/items/properties/text",
                 "type": "string",
                 "title": "The Text Schema",
-                "default": "",
+                "default": "Some tex in 1 or more phrases",
                 "examples": [
                   ""
                 ],
                 "pattern": "^(.*)$"
+              },
+              "credits": {
+                "$id": "#/properties/map/properties/layer/items/properties/credits",
+                "type": "string",
+                "title": "The Credits Schema",
+                "default": "",
+                "examples": [
+                  "Some credits"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "image_link": {
+                "$id": "#/properties/map/properties/layer/items/properties/image_link",
+                "pattern": "^(.*)$",
+                "type": "null",
+                "title": "The Imagelink Schema",
+                "default": null,
+                "examples": [
+                  null
+                ]
               },
               "created_at": {
                 "$id": "#/properties/map/properties/layer/items/properties/created_at",
@@ -512,6 +575,124 @@
                             "examples": [
                               null
                             ]
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "places_with_relations": {
+                "$id": "#/properties/map/properties/layer/items/properties/places_with_relations",
+                "type": "array",
+                "title": "The Places Schema",
+                "items": {
+                  "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items",
+                  "type": "object",
+                  "title": "The Items Schema",
+                  "required": [
+                    "id",
+                    "from",
+                    "to"
+                  ],
+                  "properties": {
+                    "id": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/id",
+                      "type": "integer",
+                      "title": "The Id Schema",
+                      "default": 0,
+                      "examples": [
+                        4
+                      ]
+                    },
+                    "from": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/properties/from",
+                      "type": "array",
+                      "title": "The From Schema",
+                      "items": {
+                        "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items/images/item",
+                        "type": "object",
+                        "title": "The Items Schema",
+                        "required": [
+                          "id",
+                          "lat",
+                          "lon"
+                        ],
+                        "properties": {
+                          "id": {
+                            "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/id",
+                            "type": "integer",
+                            "title": "The Id Schema",
+                            "default": 0,
+                            "examples": [
+                              4
+                            ]
+                          },
+                          "lat": {
+                            "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/lat",
+                            "type": "string",
+                            "title": "The Lat Schema",
+                            "default": "",
+                            "examples": [
+                              "10.0"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "source": {
+                            "$id": "#/properties/source/properties/layer/items/properties/places_with_relations/items/properties/lon",
+                            "type": "string",
+                            "title": "The Lon Schema",
+                            "default": "",
+                            "examples": [
+                              "0.0"
+                            ],
+                            "pattern": "^(.*)$"
+                          }
+                        }
+                      }
+                    },
+                    "to": {
+                      "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/properties/to",
+                      "type": "array",
+                      "title": "The to Schema",
+                      "items": {
+                        "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items/images/item",
+                        "type": "object",
+                        "title": "The Items Schema",
+                        "required": [
+                          "id",
+                          "lat",
+                          "lon"
+                        ],
+                        "properties": {
+                          "id": {
+                            "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/id",
+                            "type": "integer",
+                            "title": "The Id Schema",
+                            "default": 0,
+                            "examples": [
+                              4
+                            ]
+                          },
+                          "lat": {
+                            "$id": "#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/lat",
+                            "type": "string",
+                            "title": "The Lat Schema",
+                            "default": "",
+                            "examples": [
+                              "10.0"
+                            ],
+                            "pattern": "^(.*)$"
+                          },
+                          "source": {
+                            "$id": "#/properties/source/properties/layer/items/properties/places_with_relations/items/properties/lon",
+                            "type": "string",
+                            "title": "The Lon Schema",
+                            "default": "",
+                            "examples": [
+                              "0.0"
+                            ],
+                            "pattern": "^(.*)$"
                           }
                         }
                       }

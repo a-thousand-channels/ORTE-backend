@@ -5,6 +5,7 @@ FactoryBot.define do
     title { 'MyString' }
     subtitle { 'MyString' }
     text { 'MyString' }
+    credits { 'MyString' }
     published { false }
     basemap_url { 'MyBasemapUrl' }
     basemap_attribution { 'Basemap made by' }
