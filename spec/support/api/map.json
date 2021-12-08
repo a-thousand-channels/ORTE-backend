@@ -160,7 +160,7 @@
                 "pattern": "^(.*)$"
               },
               "subtitle": {
-                "$id": "#/properties/map/properties/layer/properties/subtitle",
+                "$id": "#/properties/map/properties/layer/items/properties/subtitle",
                 "type": "string",
                 "title": "The Subitle Schema",
                 "default": "",
@@ -170,7 +170,7 @@
                 "pattern": "^(.*)$"
               },
               "text": {
-                "$id": "#/properties/map/properties/layer/properties/text",
+                "$id": "#/properties/map/properties/layer/items/properties/text",
                 "type": "string",
                 "title": "The Text Schema",
                 "default": "Some tex in 1 or more phrases",
@@ -180,7 +180,7 @@
                 "pattern": "^(.*)$"
               },
               "credits": {
-                "$id": "#/properties/map/properties/layer/properties/credits",
+                "$id": "#/properties/map/properties/layer/items/properties/credits",
                 "type": "string",
                 "title": "The Credits Schema",
                 "default": "",
@@ -190,7 +190,7 @@
                 "pattern": "^(.*)$"
               },
               "image_link": {
-                "$id": "#/properties/map/properties/layer/properties/image_link",
+                "$id": "#/properties/map/properties/layer/items/properties/image_link",
                 "pattern": "^(.*)$",
                 "type": "null",
                 "title": "The Imagelink Schema",
