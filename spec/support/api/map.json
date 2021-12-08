@@ -46,7 +46,7 @@
         "subtitle": {
           "$id": "#/properties/map/properties/subtitle",
           "type": "string",
-          "title": "The Subitle Schema",
+          "title": "The Subtitle Schema",
           "default": "",
           "examples": [
             "Events in public space"
