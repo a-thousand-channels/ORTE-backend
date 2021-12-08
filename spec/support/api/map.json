@@ -165,7 +165,7 @@
                 "title": "The Subitle Schema",
                 "default": "",
                 "examples": [
-                  "A festival"
+                  "Events in public space"
                 ],
                 "pattern": "^(.*)$"
               },
@@ -185,7 +185,7 @@
                 "title": "The Credits Schema",
                 "default": "",
                 "examples": [
-                  "Made by someone"
+                  "Some credits"
                 ],
                 "pattern": "^(.*)$"
               },
