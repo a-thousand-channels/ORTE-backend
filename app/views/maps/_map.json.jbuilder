@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.extract! map, :id, :title, :text, :credits, :image_link, :published, :group_id, :created_at, :updated_at, :show_annotations_on_map
+json.extract! map, :id, :title, :subtitle, :text, :credits, :image_link, :published, :group_id, :created_at, :updated_at, :show_annotations_on_map
 json.url map_url(map, format: :json)
 json.layers map.layers do |layer|
   json.extract! layer, :id, :title, :subtitle, :text, :credits, :image_link, :published, :map_id, :color, :created_at, :updated_at

@@ -26,7 +26,7 @@ class Public::MapsController < ActionController::Base
 
   # GET /maps/1.json
   def show
-    @map = Map.published.friendly.find_by_friendly_id(params[:id])
+    @map = Map.published.find_by_slug(params[:id]) || Map.published.find_by_id(params[:id])
 
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
