@@ -15,6 +15,6 @@ class Layer < ApplicationRecord
   scope :published, -> { where(published: true) }
 
   def image_link
-    ApplicationController.helpers.image_url(image) if image && image.attached?
+    ApplicationController.helpers.image_url(image) if image&.attached?
   end
 end

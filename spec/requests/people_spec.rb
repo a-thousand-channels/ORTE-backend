@@ -3,12 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe '/people', type: :request do
-
   before do
     user = FactoryBot.create(:admin_user)
     sign_in user
   end
-
 
   let(:valid_attributes) do
     FactoryBot.build(:person).attributes
@@ -62,7 +60,7 @@ RSpec.describe '/people', type: :request do
         end.to change(Person, :count).by(0)
       end
 
-      it "renders a un-successful response" do
+      it 'renders a un-successful response' do
         post people_url, params: { person: invalid_attributes }
         expect(response).not_to be_successful
       end
@@ -91,7 +89,7 @@ RSpec.describe '/people', type: :request do
     end
 
     context 'with invalid parameters' do
-      it "renders a non-successful response" do
+      it 'renders a non-successful response' do
         person = Person.create! valid_attributes
         patch person_url(person), params: { person: invalid_attributes }
         expect(response).not_to be_successful

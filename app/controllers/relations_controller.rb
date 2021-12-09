@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class RelationsController < ApplicationController
-  before_action :set_relation, only: %i[ edit update destroy ]
+  before_action :set_relation, only: %i[edit update destroy]
 
   # GET /relations or /relations.json
   def index
@@ -19,15 +21,11 @@ class RelationsController < ApplicationController
     end
     @layers_to = @map.layers
     @relation = Relation.new
-    if params[:relations_from_id]
-      @relation.relation_from = Place.find(params[:relations_from_id])
-    end
+    @relation.relation_from = Place.find(params[:relations_from_id]) if params[:relations_from_id]
   end
 
   # GET /relations/1/edit
-  def edit
-
-  end
+  def edit; end
 
   # POST /relations
   def create
@@ -39,12 +37,13 @@ class RelationsController < ApplicationController
 
     respond_to do |format|
       if @relation.save
-        if params[:back] == 'place'
-          format.html { redirect_to map_layer_place_path(@map,@layer,@relation.relation_from_id), notice: "Relation was successfully created." }
-        elsif params[:back] == 'layer'
-          format.html { redirect_to relations_map_layer_path(@map,@layer), notice: "Relation was successfully created." }
+        case params[:back]
+        when 'place'
+          format.html { redirect_to map_layer_place_path(@map, @layer, @relation.relation_from_id), notice: 'Relation was successfully created.' }
+        when 'layer'
+          format.html { redirect_to relations_map_layer_path(@map, @layer), notice: 'Relation was successfully created.' }
         else
-          format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully created." }
+          format.html { redirect_to map_relations_path(@map), notice: 'Relation was successfully created.' }
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -53,10 +52,10 @@ class RelationsController < ApplicationController
   end
 
   # PATCH/PUT /relations/1 or /relations/1.json
-    def update
+  def update
     respond_to do |format|
       if @relation.update(relation_params)
-        format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully updated." }
+        format.html { redirect_to map_relations_path(@map), notice: 'Relation was successfully updated.' }
         format.json { render :show, status: :ok, location: @relation }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -69,25 +68,26 @@ class RelationsController < ApplicationController
   def destroy
     @relation.destroy
     respond_to do |format|
-      format.html { redirect_to map_relations_path(@map), notice: "Relation was successfully destroyed." }
+      format.html { redirect_to map_relations_path(@map), notice: 'Relation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_relation
-      @map = Map.by_user(current_user).friendly.find(params[:map_id])
-      @layers_from = @map.layers
-      @layers_to = @map.layers
-      @layers = @map.layers
-      layers_ids = @layers.pluck(:id)
-      @all_places = Place.where(layer: layers_ids)
-      @relation = Relation.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def relation_params
-      params.require(:relation).permit(:relation_from_id, :relation_to_id, :rtype)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_relation
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layers_from = @map.layers
+    @layers_to = @map.layers
+    @layers = @map.layers
+    layers_ids = @layers.pluck(:id)
+    @all_places = Place.where(layer: layers_ids)
+    @relation = Relation.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def relation_params
+    params.require(:relation).permit(:relation_from_id, :relation_to_id, :rtype)
+  end
 end

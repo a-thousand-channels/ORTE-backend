@@ -35,11 +35,9 @@ class LayersController < ApplicationController
   # GET /layers/1.json
   def show
     @maps = Map.sorted.by_user(current_user)
-    if @map
-      @map_layers = @map.layers
-    else
-      redirect_to maps_path, notice: 'Sorry, this map could not be found.' and return
-    end
+    redirect_to maps_path, notice: 'Sorry, this map could not be found.' and return unless @map
+
+    @map_layers = @map.layers
 
     if @layer
       @places = @layer.places

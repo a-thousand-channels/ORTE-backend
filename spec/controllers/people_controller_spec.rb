@@ -68,8 +68,6 @@ RSpec.describe PeopleController, type: :controller do
       end
     end
 
-
-
     describe 'PUT #update' do
       context 'with valid params' do
         let(:new_attributes) do
@@ -91,11 +89,11 @@ RSpec.describe PeopleController, type: :controller do
       end
 
       context 'with invalid params' do
-        it "returns an error response" do
+        it 'returns an error response' do
           person = Person.create! valid_attributes
-          expect{
+          expect do
             post :update, params: { id: person.to_param, person: invalid_attributes }
-          }.to_not change(Person,:count)
+          end.to_not change(Person, :count)
 
           expect(response).to have_http_status(422)
         end
