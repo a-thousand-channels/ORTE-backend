@@ -19,4 +19,18 @@ json.layer do
       end
     end
   end
+  json.places_with_relations @layer.places.published do |place|
+    next unless place.published
+    if place.relations_froms.count > 0
+      json.relations place.relations_froms do |relation|
+        json.id relation.id
+        json.from do
+          json.extract! relation.relation_from, :id, :lat, :lon, :title, :show_link, :published, :layer_id
+        end
+        json.to do
+          json.extract! relation.relation_to, :id, :lat, :lon, :title, :show_link, :published, :layer_id
+        end
+      end
+    end
+  end
 end

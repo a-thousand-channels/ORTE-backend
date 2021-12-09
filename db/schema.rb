@@ -15,8 +15,8 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
+    t.integer "record_id", null: false
+    t.integer "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -46,7 +46,18 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
     t.index ["place_id"], name: "index_annotations_on_place_id"
   end
 
-  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
+  create_table "friendly_id_slugs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true, length: { slug: 70, scope: 70 }
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type", length: { slug: 140 }
+    t.index ["sluggable_type", "sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_type_and_sluggable_id"
+  end
+
+  create_table "groups", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -54,7 +65,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
 
   create_table "icons", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "title"
-    t.bigint "iconset_id"
+    t.integer "iconset_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["iconset_id"], name: "index_icons_on_iconset_id"
@@ -76,7 +87,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
+    t.integer "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
@@ -98,7 +109,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
     t.string "title"
     t.string "subtitle"
     t.boolean "published"
-    t.bigint "map_id"
+    t.integer "map_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
@@ -114,7 +125,7 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
     t.string "title"
     t.string "subtitle"
     t.boolean "published"
-    t.bigint "group_id"
+    t.integer "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "script"
@@ -179,12 +190,13 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
     t.string "city"
     t.string "country"
     t.boolean "published"
-    t.bigint "layer_id"
+    t.integer "layer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "imagelink"
     t.integer "icon_id"
     t.boolean "featured"
+    t.string "ptype", default: "info"
     t.boolean "shy", default: false
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
@@ -289,14 +301,8 @@ ActiveRecord::Schema.define(version: 2021_12_03_131943) do
   end
 
   add_foreign_key "annotations", "places"
-  add_foreign_key "icons", "iconsets"
-  add_foreign_key "images", "places"
-  add_foreign_key "layers", "maps"
-  add_foreign_key "maps", "groups"
-  add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"
-  add_foreign_key "users", "groups"
   add_foreign_key "videos", "places"
 end
