@@ -3,7 +3,7 @@
 json.layer do
   next unless @layer.published
 
-  json.call(@layer, :id, :title, :subtitle, :text, :credits, :image_link, :created_at, :updated_at, :published)
+  json.call(@layer, :id, :title, :subtitle, :text, :credits, :image_link, :color, :created_at, :updated_at, :published)
   json.places do
     json.array! @layer.places.published do |place|
       next unless place.published
