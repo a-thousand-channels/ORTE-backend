@@ -25,9 +25,9 @@ class AnnotationsController < ApplicationController
     respond_to do |format|
       if @annotation.save
         if params[:back_to] == 'edit'
-          format.html { redirect_to edit_map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully created.' }
+          format.html { redirect_to edit_map_layer_place_path(@annotation.place.layer.map, @annotation.place.layer, @annotation.place), notice: 'Annotation was successfully created.' }
         else
-          format.html { redirect_to map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully created.' }
+          format.html { redirect_to map_layer_place_path(@annotation.place.layer.map, @annotation.place.layer, @annotation.place), notice: 'Annotation was successfully created.' }
         end
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -42,9 +42,9 @@ class AnnotationsController < ApplicationController
     respond_to do |format|
       if @annotation.update(annotation_params)
         if params[:back_to] == 'edit'
-          format.html { redirect_to edit_map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully updated.' }
+          format.html { redirect_to edit_map_layer_place_path(@annotation.place.layer.map, @annotation.place.layer, @annotation.place), notice: 'Annotation was successfully updated.' }
         else
-          format.html { redirect_to map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully updated.' }
+          format.html { redirect_to map_layer_place_path(@annotation.place.layer.map, @annotation.place.layer, @annotation.place), notice: 'Annotation was successfully updated.' }
         end
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -56,9 +56,9 @@ class AnnotationsController < ApplicationController
     @annotation.destroy
     respond_to do |format|
       if params[:back_to] == 'edit'
-        format.html { redirect_to edit_map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully updated.' }
+        format.html { redirect_to edit_map_layer_place_path(@annotation.place.layer.map, @annotation.place.layer, @annotation.place), notice: 'Annotation was successfully updated.' }
       else
-        format.html { redirect_to map_layer_place_path(@annotation.place.layer.map,@annotation.place.layer,@annotation.place), notice: 'Annotation was successfully updated.' }
+        format.html { redirect_to map_layer_place_path(@annotation.place.layer.map, @annotation.place.layer, @annotation.place), notice: 'Annotation was successfully updated.' }
       end
     end
   end
@@ -70,6 +70,6 @@ class AnnotationsController < ApplicationController
   end
 
   def annotation_params
-    params.require(:annotation).permit(:title, :text, :annotation_id, :source, :audio, :place_id, :person_id, tag_list: [] )
+    params.require(:annotation).permit(:title, :text, :annotation_id, :source, :audio, :place_id, :person_id, tag_list: [])
   end
 end

@@ -11,14 +11,10 @@ class Annotation < ApplicationRecord
   validates :text, presence: true
   validate :check_audio_format
 
-
   scope :published, -> { where(published: true) }
 
-
   def person_name
-    if person
-      "#{person.name}"
-    end
+    person.name.to_s if person
   end
 
   def audiolink

@@ -59,6 +59,11 @@ gem 'turnout'
 
 gem 'mobility', '~> 1.1.2'
 
+gem 'bundler-audit', require: false
+gem 'rubocop'
+gem 'rubocop-rspec'
+gem 'ruby_audit', require: false
+
 group :staging, :production do
   # gem 'pg'
   gem 'passenger'

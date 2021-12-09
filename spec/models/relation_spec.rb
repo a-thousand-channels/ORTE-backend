@@ -22,5 +22,4 @@ RSpec.describe Relation, type: :model do
     expect(r.relation_from.title).to eq('Yellow')
     expect(r.relation_to.title).to eq('Green')
   end
-
 end

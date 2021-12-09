@@ -7,7 +7,7 @@ FactoryBot.define do
     rights { true }
     privacy { true }
     locale { 'en' }
-    status {0}
+    status { 0 }
     place
   end
 end
