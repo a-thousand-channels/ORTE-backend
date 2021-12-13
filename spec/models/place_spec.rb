@@ -98,7 +98,6 @@ RSpec.describe Place, type: :model do
   end
 
   describe 'Relations' do
-
     describe 'Relation associations' do
       subject { build(:place) }
       it { is_expected.to have_many(:relations_tos) }
