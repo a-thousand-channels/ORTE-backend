@@ -12,7 +12,7 @@ json.layers map.layers do |layer|
     end
   end
   json.places_with_relations layer.places do |place|
-    if place.relations_froms.count > 0
+    if place.relations_froms.count.positive?
       json.relations place.relations_froms do |relation|
         json.id relation.id
         json.from do

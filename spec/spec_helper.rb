@@ -27,7 +27,6 @@ Capybara.register_driver :headless_chrome do |app|
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
                                  capabilities: options
-
 end
 
 Selenium::WebDriver.logger.ignore(:driver_path)
