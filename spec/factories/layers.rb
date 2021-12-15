@@ -7,6 +7,10 @@ FactoryBot.define do
     text { 'MyString' }
     credits { 'MyString' }
     published { false }
+    color { '#cc0000' }
+    mapcenter_lat { '0.1' }
+    mapcenter_lon { '10' }
+    zoom { 12 }
     map
     submission_config { false }
     trait :invalid do
