@@ -8,7 +8,7 @@
         %i.fi.fi-x
 
   .grid-x.grid-padding-x
-    - images = Image.where(place_id: @place.id)
+    - images = Image.sorted_by_place(@place.id)
     - if images.count > 0
       - textcol = 8
       .cell.small-4.medium-4
