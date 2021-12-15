@@ -34,6 +34,13 @@
   $(function() {
     $(document).foundation();
 
+    $(document).on('open.zf.reveal', '[data-reveal]', function () {
+      $(window).trigger('resize');
+    });
+    $(document).on('slidechange.zf.orbit', '[data-orbit]', function () {
+      $(window).trigger('resize');
+    });
+
     setTimeout(function(){
       $('#flash').slideUp(2000);
     }, 3500);
