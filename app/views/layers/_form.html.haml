@@ -30,21 +30,22 @@
               %span.hint.text-left Enable public submissions
             - if @layer.public_submission
               - if @layer.submission_config
-                = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button" do
+                = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button small" do
                   %i.fi-pencil.fi-24
                   Edit configuration
-                %br
-                Submission forms:
-                %br
-                - @layer.submission_config.locales.each do |language|
-                  - klass = 'button secondary'
-                  = link_to new_submission_path(layer_id: @layer.id, locale: language.to_s), class: "#{klass}", target: '_blank' do
-                    %i.fi-web.fi-24
-                    - title = @layer.submission_config.title_intro(locale: language)
-                    - if title.nil?
-                      %i Missing title
-                    - else
-                      = title
+                - if @layer.submission_config.locales.count > 0
+                  %br
+                  Submission forms:
+                  %br
+                  - @layer.submission_config.locales.each do |language|
+                    - klass = 'button secondary'
+                    = link_to new_submission_path(layer_id: @layer.id, locale: language.to_s), class: "#{klass}", target: '_blank' do
+                      %i.fi-web.fi-24
+                      - title = @layer.submission_config.title_intro(locale: language)
+                      - if title.nil?
+                        %i Missing title
+                      - else
+                        = title
               - else
                 = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button" do
                   %i.fi-pencil.fi-24
@@ -72,6 +73,17 @@
                       %svg{height:24,width:24,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
                         %circle{cx:"12",cy:"12",r:"12",fill:"#{c}"}
 
+        %hr
+        %div.compact
+          %label Mapcenter
+          %span.hint.text-left Set these values if you want a different map focus then the automatic calculation of alle places would give
+          .grid-x.grid-padding-x
+            .medium-5.cell
+              = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}
+            .medium-5.cell
+              = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}
+            .medium-2.cell
+              = f.input :zoom, label: "Zoom (1-18)", input_html: { placeholder: '12'}
 
 
         %hr
