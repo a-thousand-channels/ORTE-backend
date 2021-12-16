@@ -53,6 +53,56 @@
             ],
             "pattern": "^(.*)$"
           },
+          "image_link": {
+            "$id": "#/properties/map/properties/layer/items/properties/image_link",
+            "type": "string",
+            "title": "The Image_link Schema",
+            "default": "",
+            "examples": [
+              ""
+            ],
+            "pattern": "^(.*)$"
+          },
+          "color": {
+            "$id": "#/properties/map/properties/layer/items/properties/color",
+            "type": "string",
+            "title": "The Color Schema",
+            "default": "",
+            "examples": [
+              ""
+            ],
+            "pattern": "^(.*)$"
+          },
+          "mapcenter_lat": {
+            "$id": "#/properties/map/properties/layer/items/properties/mapcenter_lat",
+            "type": "string",
+            "title": "The Mapcenter_lat Schema",
+            "default": "",
+            "examples": [
+              ""
+            ],
+            "pattern": "^(.*)$"
+          },
+          "mapcenter_lon": {
+            "$id": "#/properties/map/properties/layer/items/properties/mapcenter_lon",
+            "type": "string",
+            "title": "The Mapcenter_lon Schema",
+            "default": "",
+            "examples": [
+              ""
+            ],
+            "pattern": "^(.*)$"
+          },
+          "zoom": {
+            "$id": "#/properties/map/properties/layer/items/properties/zoom",
+            "type": "string",
+            "title": "The Zoom Schema",
+            "default": "",
+            "examples": [
+              ""
+            ],
+            "pattern": "^(.*)$"
+          },
           "created_at": {
             "$id": "#/properties/map/properties/layer/items/properties/created_at",
             "type": "string",
