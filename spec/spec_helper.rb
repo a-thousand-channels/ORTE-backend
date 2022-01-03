@@ -54,9 +54,6 @@ RSpec.configure do |config|
     stub_request(:get, /server.arcgisonline.com/)
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
       .to_return(status: 200, body: 'stubbed response', headers: {})
-  end
-
-  config.before(:each) do
     stub_request(:get, /api.mapbox.com/)
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
       .to_return(status: 200, body: 'stubbed response', headers: {})
