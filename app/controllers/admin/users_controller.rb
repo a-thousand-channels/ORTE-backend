@@ -93,10 +93,4 @@ class Admin::UsersController < ApplicationController
     permitted_attributes << :role if current_user.try(:admin?)
     params.require(:admin_user).permit(permitted_attributes)
   end
-
-  protected
-
-  def update_resource(resource, params)
-    resource.update_without_password(params)
-  end
 end
