@@ -12,5 +12,11 @@ FactoryBot.define do
     trait :with_audio do
       audio { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')] }
     end
+    trait :invalid do
+      text { nil }
+    end
+    trait :changed do
+      text { 'OtherText' }
+    end
   end
 end

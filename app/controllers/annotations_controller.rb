@@ -5,7 +5,7 @@ class AnnotationsController < ApplicationController
 
   # GET /annotation or /annotation.json
   def index
-    @annotation = Annotation.all
+    redirect_to root_url
   end
 
   def new
