@@ -20,8 +20,6 @@ class LayersController < ApplicationController
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
   end
 
-
-
   def search
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
     @layers = @map.layers
