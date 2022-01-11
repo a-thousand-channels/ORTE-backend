@@ -31,6 +31,7 @@ Rails.application.routes.draw do
         post :search
       end
       member do
+        get :pack
         get :annotations
         get :relations
         get :images, only: [:index]

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images show edit update destroy annotations relations]
+  before_action :set_layer, only: %i[images show edit update destroy annotations relations pack]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -20,12 +20,16 @@ class LayersController < ApplicationController
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
   end
 
+
+
   def search
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
     @layers = @map.layers
     @query = params[:q][:query]
     @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@query}%")
   end
+
+  def pack; end
 
   def relations; end
 

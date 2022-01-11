@@ -1,0 +1,103 @@
+- content_for(:title) { "Map To Go: #{@layer.title}" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %p
+    = link_to map_path(@map) do
+      = @map.title
+    —
+    = link_to map_layer_path(@layer.map,@layer) do
+      = @layer.title
+  %h1
+    Map To Go:
+    = link_to map_layer_path(@map,@layer) do
+      = @layer.title
+  %h4
+
+  %p.hint.hint-margin.text-left
+    Here you can have your map "to go". Clicking the button, all places and all content (text, metadata and media assets) will be packed and combined with a standalone map. This package you can download and then publish your map on a webserver of your choice
+
+  - if !@layer.published
+    .alert-box
+      Your layer is not published!
+      %br
+      Please
+      = link_to edit_map_layer_path(@map,@layer) do
+        edit the settings
+        %i.fi.fi-pencil.fi-20
+      for this layer to make it public accessible
+  %hr
+  %p
+    Please check the settings of your layer:
+  %table
+    %tr
+      %td
+        Title
+      %td
+        = link_to map_layer_path(@map,@layer) do
+          = @layer.title
+        = link_to edit_map_layer_path(@map,@layer), class: 'button small rounded rounded-grey ' do
+          %i.fi.fi-pencil.fi-20
+    %tr
+      %td
+        Places, published
+      %td
+        =@layer.places.published.count
+        of
+        =@layer.places.count
+
+  %p
+    %button{class: "button"}
+      %i.fi.fi-shopping-bag.fi-20
+      Create your map to go
+
+  %hr
+  %div.pack_log
+    %p
+      Started packing...
+    %p
+      1. Cloning the web client (from Repository)
+      \—
+      %span.confirmation
+        %i.fi.fi-check
+        %small DONE
+    %p
+      2. Adding metadata (like title...)
+      \—
+      %span.confirmation
+        %i.fi.fi-check
+        %small DONE
+    %p
+      3. Adding places (via JSON)
+      \—
+      %span.confirmation
+        %i.fi.fi-check
+        %small DONE
+    %p
+      4. Adding images
+      \—
+      %span.confirmation
+        %i.fi.fi-check
+        %small DONE
+    %p
+      5. Adding audio/video
+      \—
+      %span.confirmation
+        %i.fi.fi-check
+        %small DONE
+    %p
+      6. Packing all together
+      \—
+      %span.confirmation
+        %i.fi.fi-check
+        %small DONE
+  %hr
+  %p
+    %button{class: "button"}
+      %i.fi.fi-archive
+      Download your map to go
+      (2,5 MB)
+
+
