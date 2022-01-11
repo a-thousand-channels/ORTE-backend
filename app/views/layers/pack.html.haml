@@ -30,7 +30,7 @@
       for this layer to make it public accessible
   %hr
   %p
-    Please check the settings of your layer:
+    Please check the metadata of your layer:
   %table
     %tr
       %td
@@ -42,16 +42,26 @@
           %i.fi.fi-pencil.fi-20
     %tr
       %td
-        Places, published
+        Subtitle
+      %td
+        = @layer.subtitle
+    %tr
+      %td
+        Places (published)
       %td
         =@layer.places.published.count
         of
         =@layer.places.count
 
   %p
-    %button{class: "button"}
-      %i.fi.fi-shopping-bag.fi-20
-      Create your map to go
+    - if @layer.published
+      %button{class: "button"}
+        %i.fi.fi-shopping-bag.fi-20
+        Create your map to go
+    - else
+      %button{class: "button", disabled: 'true'}
+        %i.fi.fi-shopping-bag.fi-20
+        Create your map to go
 
   %hr
   %div.pack_log
