@@ -7,8 +7,8 @@ env:
   RUBY_VERSION: 2.7
   MYSQL_HOST: 127.0.0.1
   MYSQL_DB: orte_test
-  MYSQL_USER: root
-  MYSQL_PASSWORD: root
+  MYSQL_USER: orte
+  MYSQL_PASSWORD: orte00
 name: Rails - Install dependencies, run linters & rspec
 
 on:
@@ -17,32 +17,32 @@ on:
   pull_request:
     branches: [main]
 jobs:
-  # run-lint:
-  #   name: Rubocop & Brakeman
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
-  #     - name: Setup Ruby and install gems
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         bundler-cache: true
-  #     - name: Install rubocop/brakeman
-  #       run: |
-  #         gem install rubocop
-  #         gem install brakeman
-  #     # Add or Replace any other security checks here
-  #     - name: Run security checks
-  #       run: |
-  #         bundle exec bundle audit --update
-  #         brakeman -q -w2
-  #     # Add or Replace any other Linters here
-  #     - name: Run linters
-  #       run: |
-  #         rubocop --parallel
+  run-lint:
+    name: Rubocop & Brakeman
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Install rubocop/brakeman
+        run: |
+          gem install rubocop
+          gem install brakeman
+      # Add or Replace any other security checks here
+      - name: Run security checks
+        run: |
+          bundle exec bundle audit --update
+          brakeman -q -w2
+      # Add or Replace any other Linters here
+      - name: Run linters
+        run: |
+          rubocop --parallel
   run-rspec:
     name: RSpec
-    #    needs: run-lint
+    needs: run-lint
     runs-on: ubuntu-latest
     services:
       mysql:
@@ -50,8 +50,8 @@ jobs:
         env:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: orte_test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
+          MYSQL_USER: orte
+          MYSQL_PASSWORD: orte00
           MYSQL_ROOT_PASSWORD: root
         ports:
           - "3306:3306"
@@ -61,14 +61,13 @@ jobs:
         with:
           bundler: default
           bundler-cache: true
-      - name: Verify MySQL connection from host
+      - name: Start MySQL server
         run: |
           sudo /etc/init.d/mysql start
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_PORT: 3306
-          DATABASE_URL: mysql2://root:root@127.0.0.1:3306/orte_test
+          DATABASE_URL: mysql2://orte:orte00@127.0.0.1:3306/orte_test
         run: |
           bin/rails db:setup
           bundler exec rspec spec
