@@ -71,9 +71,6 @@ jobs:
           DATABASE_URL: mysql2://root:root@127.0.0.1:3306/orte_test
         run: |
           bin/rails db:setup
-          echo 'database created'
-          bin/rails db:schema:load
-          bin/rails db:migrate
           bundler exec rspec spec
       - name: Upload coverage results
         uses: actions/upload-artifact@master
