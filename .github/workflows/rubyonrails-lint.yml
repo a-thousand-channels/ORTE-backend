@@ -66,7 +66,7 @@ jobs:
           DATABASE_PORT: 3306
         run: |
           sudo /etc/init.d/mysql start
-          bundler exec rails db:create RAILS_ENV=test
+          mysql --port 3306 -u orte -porte00 -e 'CREATE DATABASE IF NOT EXISTS orte_test;'
           bundler exec rails db:schema:load RAILS_ENV=test
           bundler exec rails db:migrate RAILS_ENV=test
           bundler exec rspec spec RAILS_ENV=test
