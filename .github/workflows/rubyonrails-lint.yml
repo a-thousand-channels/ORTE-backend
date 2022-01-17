@@ -7,8 +7,8 @@ env:
   RUBY_VERSION: 2.7
   MYSQL_HOST: 127.0.0.1
   MYSQL_DB: orte_test
-  MYSQL_USER: orte
-  MYSQL_PASSWORD: orte00
+  MYSQL_USER: root
+  MYSQL_PASSWORD: root
 name: Rails - Install dependencies, run linters & rspec
 
 on:
@@ -46,12 +46,13 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: orte_test
-          MYSQL_USER: orte
-          MYSQL_PASSWORD: orte00
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
         ports:
           - "3306:3306"
     steps:
@@ -60,17 +61,23 @@ jobs:
         with:
           bundler: default
           bundler-cache: true
+      - name: Verify MySQL connection from host
+        run: |
+          sudo /etc/init.d/mysql start
+          sudo apt-get install -y mysql-client libmysqlclient-dev
+          mysql --host 127.0.0.1 --port 3306 -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
+          mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql --host 127.0.0.1 --port 3306 -uroot -proot mysql
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_PORT: 3306
+          DATABASE_URL: mysql2://root:root@127.0.0.1:3306/orte_test
         run: |
-          sudo /etc/init.d/mysql start
-          mysql -h 127.0.0.1 --port 3306 -u orte -porte00 -e 'CREATE DATABASE IF NOT EXISTS orte_test;'
+          bin/rails db:setup
           echo 'database created'
-          RAILS_ENV=test bundler exec rails db:schema:load
-          RAILS_ENV=test bundler exec rails db:migrate
-          RAILS_ENV=test bundler exec rspec spec
+          bin/rails db:schema:load
+          bin/rails db:migrate
+          bundler exec rspec spec
       - name: Upload coverage results
         uses: actions/upload-artifact@master
         if: always()
