@@ -5,10 +5,10 @@
 # This workflow will download a prebuilt Ruby version, install dependencies, and  run linters
 env:
   RUBY_VERSION: 2.7
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: postgres
-  POSTGRES_DB: postgres
-
+  MYSQL_HOST: 127.0.0.1
+  MYSQL_DB: orte_test
+  MYSQL_USER: root
+  MYSQL_PASSWORD: orte00
 name: Rails - Install dependencies, run linters & rspec
 
 on:
