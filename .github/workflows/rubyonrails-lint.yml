@@ -67,9 +67,9 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
           mysql -h 127.0.0.1 --port 3306 -u orte -porte00 -e 'CREATE DATABASE IF NOT EXISTS orte_test;'
-          bundler exec rails db:schema:load RAILS_ENV=test
-          bundler exec rails db:migrate RAILS_ENV=test
-          bundler exec rspec spec RAILS_ENV=test
+          RAILS_ENV=test bundler exec rails db:schema:load
+          RAILS_ENV=test bundler exec rails db:migrate
+          RAILS_ENV=test bundler exec rspec spec
       - name: Upload coverage results
         uses: actions/upload-artifact@master
         if: always()
