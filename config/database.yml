@@ -21,6 +21,7 @@ test:
   database: orte_test
   host: localhost
   username: root
+  password: orte00
   encoding: utf8
 # test w/password-secured database (e.g. local setup)
 localtest:
