@@ -61,9 +61,6 @@ jobs:
         with:
           bundler: default
           bundler-cache: true
-      - name: Start MySQL server
-        run: |
-          sudo /etc/init.d/mysql start
       - name: Run tests
         env:
           RAILS_ENV: test
