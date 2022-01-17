@@ -7,8 +7,8 @@ env:
   RUBY_VERSION: 2.7
   MYSQL_HOST: 127.0.0.1
   MYSQL_DB: orte_test
-  MYSQL_USER: orte
-  MYSQL_PASSWORD: orte00
+  MYSQL_USER: root
+  MYSQL_PASSWORD: root
 name: Rails - Install dependencies, run linters & rspec
 
 on:
@@ -50,8 +50,8 @@ jobs:
         env:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: orte_test
-          MYSQL_USER: orte
-          MYSQL_PASSWORD: orte00
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
           MYSQL_ROOT_PASSWORD: root
         ports:
           - "3306:3306"
@@ -64,7 +64,7 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: mysql2://orte:orte00@127.0.0.1:3306/orte_test
+          DATABASE_URL: mysql2://root:root@127.0.0.1:3306/orte_test
         run: |
           bin/rails db:setup
           bundler exec rspec spec
