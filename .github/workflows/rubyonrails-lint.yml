@@ -50,9 +50,8 @@ jobs:
         env:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: orte_test
-          MYSQL_USER: root
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_PASSWORD:
+          MYSQL_USER: orte
+          MYSQL_PASSWORD: orte00
         ports:
           - "3306:3306"
     steps:
@@ -63,14 +62,14 @@ jobs:
           bundler-cache: true
       - name: Run tests
         env:
-          RAILS_ENV: test
+          RAILS_ENV: localtest
           DATABASE_PORT: 3306
         run: |
           sudo /etc/init.d/mysql start
-          bundler exec rails db:create RAILS_ENV=test
-          bundler exec rails db:schema:load RAILS_ENV=test
-          bundler exec rails db:migrate RAILS_ENV=test
-          bundler exec rspec spec RAILS_ENV=test
+          bundler exec rails db:create RAILS_ENV=localtest
+          bundler exec rails db:schema:load RAILS_ENV=localtest
+          bundler exec rails db:migrate RAILS_ENV=localtest
+          bundler exec rspec spec RAILS_ENV=localtest
       - name: Upload coverage results
         uses: actions/upload-artifact@master
         if: always()
