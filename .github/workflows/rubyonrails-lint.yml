@@ -18,6 +18,7 @@ on:
     branches: [main]
 jobs:
   run-lint:
+    name: Rubocop & Brakeman
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
