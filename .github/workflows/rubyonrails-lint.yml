@@ -45,10 +45,18 @@ jobs:
     #    needs: run-lint
     runs-on: ubuntu-latest
     services:
-      postgres:
-        image: postgres:latest
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: orte_test
         ports:
-          - 5432:5432
+          - 3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
@@ -59,17 +67,16 @@ jobs:
       - name: Create database
         env:
           RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: postgres
+          DB_PORT: 3306
         run: |
+          sudo service mysql start
           bundler exec rails db:create RAILS_ENV=test
           bundler exec rails db:migrate RAILS_ENV=test
       - name: Run tests
         env:
           RAILS_ENV: test
-          PGHOST: localhost
-          PGUSER: postgres
-        run: bundler exec rspec spec
+          DB_PORT: 3306
+        run: bundler exec rspec spec RAILS_ENV=test
       - name: Upload coverage results
         uses: actions/upload-artifact@master
         if: always()
