@@ -48,10 +48,13 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_DB: orte_test
+          MYSQL_USER: root
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: orte_test
+          MYSQL_PASSWORD:
         ports:
-          - 3306
+          - "3306:3306"
         options: >-
           --health-cmd="mysqladmin ping"
           --health-interval=10s
@@ -61,22 +64,17 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
+          bundler: default
           bundler-cache: true
-      - name: Install postgres client
-        run: sudo apt-get install libpq-dev
-      - name: Create database
-        env:
-          RAILS_ENV: test
-          DB_PORT: 3306
-        run: |
-          sudo service mysql start
-          bundler exec rails db:create RAILS_ENV=test
-          bundler exec rails db:migrate RAILS_ENV=test
       - name: Run tests
         env:
           RAILS_ENV: test
-          DB_PORT: 3306
-        run: bundler exec rspec spec RAILS_ENV=test
+          DATABASE_PORT: 3306
+        run: |
+          bundler exec rails db:create RAILS_ENV=test
+          bundler exec rails db:schema:load RAILS_ENV=test
+          bundler exec rails db:migrate RAILS_ENV=test
+          bundler exec rspec spec RAILS_ENV=test
       - name: Upload coverage results
         uses: actions/upload-artifact@master
         if: always()
