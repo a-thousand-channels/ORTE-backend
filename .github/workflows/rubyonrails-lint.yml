@@ -7,7 +7,7 @@ env:
   RUBY_VERSION: 2.7
   MYSQL_HOST: 127.0.0.1
   MYSQL_DB: orte_test
-  MYSQL_USER: root
+  MYSQL_USER: orte
   MYSQL_PASSWORD: orte00
 name: Rails - Install dependencies, run linters & rspec
 
@@ -50,7 +50,7 @@ jobs:
         env:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: orte_test
-          MYSQL_USER: root
+          MYSQL_USER: orte
           MYSQL_PASSWORD: orte00
         ports:
           - "3306:3306"
