@@ -66,6 +66,7 @@ jobs:
           RAILS_ENV: test
           DATABASE_PORT: 3306
         run: |
+          sudo /etc/init.d/mysql start
           bundler exec rails db:create RAILS_ENV=test
           bundler exec rails db:schema:load RAILS_ENV=test
           bundler exec rails db:migrate RAILS_ENV=test
