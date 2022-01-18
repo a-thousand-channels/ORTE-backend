@@ -33,11 +33,7 @@ class LayersController < ApplicationController
 
   def build
     if params['layer']['build']
-      1.upto(5) do |n|
-        ActionCable.server.broadcast 'build', content: "Building STEP #{n}"
-        head :ok
-        sleep 1 # second
-      end
+      Build::Maptogo.new().build
     else
       ActionCable.server.broadcast 'build', content: 'Nothing to do...'
     end
