@@ -33,7 +33,7 @@ RSpec.describe Public::LayersController, type: :controller do
         expect(response).to have_http_status(200)
       end
 
-      it 'returns geojson for a published layer' do
+      it 'returns json for a published layer' do
         layer = Layer.create! valid_attributes
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
         expect(response).to have_http_status(200)
@@ -41,7 +41,7 @@ RSpec.describe Public::LayersController, type: :controller do
         expect(response.content_type).to eq('application/json')
       end
 
-      it 'returns geojson with a valid scheme' do
+      it 'returns json with a valid scheme' do
         layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
@@ -75,7 +75,6 @@ RSpec.describe Public::LayersController, type: :controller do
         layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'geojson' }, session: valid_session
-        # puts response.body
         expect(response).to match_response_schema('layer', 'geojson')
       end
 

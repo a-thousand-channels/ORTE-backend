@@ -3,9 +3,9 @@
 json.layer do
   next unless @layer.published
 
-  json.call(@layer, :id, :title, :subtitle, :text, :credits, :image_link, :color, :mapcenter_lat, :mapcenter_lon, :zoom, :created_at, :updated_at, :published)
+  json.call(@layer, :id, :title, :subtitle, :text, :teaser, :credits, :image_link, :color,:style, :basemap_url, :basemap_attribution, :tooltip_display_mode, :mapcenter_lat, :mapcenter_lon, :zoom, :created_at, :updated_at, :published)
   json.places do
-    json.array! @layer.places.published do |place|
+    json.array! @places do |place|
       next unless place.published
 
       json.call(place, :id, :title, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :lat, :lon, :location, :address, :zip, :city, :text, :country, :featured, :layer_id, :icon_link, :icon_class, :icon_name)
@@ -19,7 +19,7 @@ json.layer do
       end
     end
   end
-  json.places_with_relations @layer.places.published do |place|
+  json.places_with_relations @places do |place|
     next unless place.published
 
     if place.relations_froms.count.positive?
