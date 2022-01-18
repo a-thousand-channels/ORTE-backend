@@ -60,7 +60,7 @@ RSpec.describe AnnotationsController, type: :controller do
 
         it 'redirects to the created annotation' do
           post :create, params: { annotation: valid_attributes }, session: valid_session
-          expect(response).to redirect_to(map_layer_place_url(@map,@layer,@place))
+          expect(response).to redirect_to(map_layer_place_url(@map, @layer, @place))
         end
       end
 
@@ -88,7 +88,7 @@ RSpec.describe AnnotationsController, type: :controller do
         it 'redirects to the place' do
           annotation = Annotation.create! valid_attributes
           put :update, params: { id: annotation.to_param, annotation: valid_attributes }, session: valid_session
-          expect(response).to redirect_to(map_layer_place_url(@map,@layer,@place))
+          expect(response).to redirect_to(map_layer_place_url(@map, @layer, @place))
         end
       end
 
@@ -115,7 +115,7 @@ RSpec.describe AnnotationsController, type: :controller do
       it 'redirects to the place' do
         annotation = Annotation.create! valid_attributes
         delete :destroy, params: { id: annotation.to_param }, session: valid_session
-        expect(response).to redirect_to(map_layer_place_url(@map,@layer,@place))
+        expect(response).to redirect_to(map_layer_place_url(@map, @layer, @place))
       end
     end
   end

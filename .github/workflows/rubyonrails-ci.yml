@@ -1,0 +1,74 @@
+# This workflow will download a prebuilt Ruby version, install dependencies, and  run linters
+env:
+  RUBY_VERSION: 2.7
+  MYSQL_HOST: 127.0.0.1
+  MYSQL_DB: orte_test
+  MYSQL_USER: root
+  MYSQL_PASSWORD: root
+name: Rails - Install dependencies, run linters & rspec
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  run-lint:
+    name: Rubocop & Brakeman
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Setup Ruby and install gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler: default
+          bundler-cache: true
+      - name: Install rubocop/brakeman
+        run: |
+          gem install rubocop
+          gem install brakeman
+      - name: Run security checks
+        run: |
+          bundle exec bundle audit --update
+          brakeman -q -w2
+      - name: Run linters
+        run: |
+          rubocop --parallel
+  run-rspec:
+    name: RSpec
+    needs: run-lint
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_HOST: 127.0.0.1
+          MYSQL_DB: orte_test
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - "3306:3306"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler: default
+          bundler-cache: true
+      - name: Start MySQL server
+        run: |
+          sudo /etc/init.d/mysql start
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: mysql2://root:root@127.0.0.1:3306/orte_test
+          COVERAGE: true
+        run: |
+          bin/rails db:setup
+          bundler exec rspec spec
+      - name: Upload coverage results
+        uses: actions/upload-artifact@master
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage
