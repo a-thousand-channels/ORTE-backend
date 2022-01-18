@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_15_112115) do
+ActiveRecord::Schema.define(version: 2022_01_18_101126) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -102,6 +102,12 @@ ActiveRecord::Schema.define(version: 2021_12_15_112115) do
     t.string "mapcenter_lat"
     t.string "mapcenter_lon"
     t.integer "zoom", default: 12
+    t.text "teaser"
+    t.text "style"
+    t.text "basemap_url"
+    t.text "basemap_attribution"
+    t.string "tooltip_display_mode", default: "shy"
+    t.string "places_sort_order"
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
@@ -124,6 +130,14 @@ ActiveRecord::Schema.define(version: 2021_12_15_112115) do
     t.string "popup_display_mode", default: "click"
     t.boolean "show_annotations_on_map", default: false
     t.text "credits"
+    t.text "teaser"
+    t.text "style"
+    t.string "color"
+    t.string "mapcenter_lat"
+    t.string "mapcenter_lon"
+    t.integer "zoom", default: 12
+    t.string "tooltip_display_mode", default: "shy"
+    t.string "places_sort_order"
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
