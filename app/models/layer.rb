@@ -6,6 +6,8 @@ class Layer < ApplicationRecord
   has_one :submission_config
 
   has_one_attached :image, dependent: :destroy
+  has_one_attached :backgroundimage, dependent: :destroy
+  has_one_attached :favicon, dependent: :destroy
 
   validates :title, presence: true
 
