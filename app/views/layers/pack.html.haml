@@ -55,15 +55,19 @@
 
   %p
     - if @layer.published
-      %button{class: "button"}
-        %i.fi.fi-shopping-bag.fi-20
-        Create your map to go
+      = form_for [@map, @layer], :url => url_for(:controller => 'layers', :action => 'build'), remote: true, authenticity_token: true do |f|
+        = f.hidden_field :build, value: true
+        = f.button :submit, class: "button btn-primary", data: {send: "message"} do 
+          %i.fi.fi-shopping-bag.fi-20
+          Create your map to go
     - else
       %button{class: "button", disabled: 'true'}
         %i.fi.fi-shopping-bag.fi-20
         Create your map to go
 
   %hr
+  %div.build_log
+    
   %div.pack_log
     %p
       Started packing...
