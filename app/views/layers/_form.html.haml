@@ -49,11 +49,23 @@
                       - else
                         = title
               - else
-                = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button" do
+                = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button small" do
                   %i.fi-pencil.fi-24
                   Create submission configuration
           .small-7.cell
             = f.input :image, as: :file, label: 'Image', required: false
+            - if @layer.image && @layer.image.attached?
+              = image_tag @layer.image.variant(resize: "200x200").processed, class: "thumbnail"
+            %hr
+            = f.input :backgroundimage, as: :file, label: 'Background Image', required: false
+            - if @layer.backgroundimage && @layer.backgroundimage.attached?
+              = image_tag @layer.backgroundimage.variant(resize: "200x200").processed, class: "thumbnail"
+            %hr
+            = f.input :favicon, as: :file, label: 'Favicon Image', required: false
+            - if @layer.favicon && @layer.favicon.attached?
+              = image_tag @layer.favicon.variant(resize: "200x200").processed, class: "thumbnail"
+            %p.hint
+              These images will be available at your client
         %hr
         %p.compact
           = f.label :color, "Marker color"
