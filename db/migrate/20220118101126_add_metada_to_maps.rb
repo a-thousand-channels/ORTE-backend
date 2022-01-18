@@ -6,6 +6,7 @@ class AddMetadaToMaps < ActiveRecord::Migration[5.2]
     add_column :maps, :mapcenter_lat, :string
     add_column :maps, :mapcenter_lon, :string
     add_column :maps, :zoom, :integer, default: 12
-    add_column :maps, :tooltip_display_mode, :string, default: 'false'
+    add_column :maps, :tooltip_display_mode, :string, default: 'shy'
+    add_column :maps, :places_sort_order, :string
   end
 end

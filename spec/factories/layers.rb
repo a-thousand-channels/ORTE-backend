@@ -15,8 +15,8 @@ FactoryBot.define do
     mapcenter_lat { '0.1' }
     mapcenter_lon { '10' }
     zoom { 12 }
-    popup_display_mode { 'click' }
     tooltip_display_mode { 'false' }
+    places_sort_order { 'startdate' }
     submission_config { false }
     map
 

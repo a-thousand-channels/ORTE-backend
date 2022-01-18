@@ -17,6 +17,7 @@ FactoryBot.define do
     zoom { 12 }
     popup_display_mode { 'click' }
     tooltip_display_mode { 'false' }
+    places_sort_order { 'startdate' }
     group
     trait :invalid do
       title { nil }
