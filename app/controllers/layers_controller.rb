@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images show edit update destroy annotations relations]
+  before_action :set_layer, only: %i[images show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -25,6 +25,22 @@ class LayersController < ApplicationController
     @layers = @map.layers
     @query = params[:q][:query]
     @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@query}%")
+  end
+
+  def pack
+    ActionCable.server.broadcast 'build', content: 'Lala says: BONG'
+  end
+
+  def build
+    if params['layer']['build']
+      1.upto(5) do |n|
+        ActionCable.server.broadcast 'build', content: "Building STEP #{n}"
+        head :ok
+        sleep 1 # second
+      end
+    else
+      ActionCable.server.broadcast 'build', content: 'Nothing to do...'
+    end
   end
 
   def relations; end
@@ -122,6 +138,10 @@ class LayersController < ApplicationController
   end
 
   private
+
+  def build_params
+    params.require(:layer).permit(:content, :build)
+  end
 
   def redirect_to_friendly_id
     # If an old id or a numeric id was used to find the record, then
