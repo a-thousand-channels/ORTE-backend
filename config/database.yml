@@ -20,8 +20,8 @@ test:
   adapter: mysql2
   database: orte_test
   host: 127.0.0.1
-  username: root
-  password: root
+  username: orte
+  password: orte00
   encoding: utf8
 # test w/password-secured database (e.g. local setup)
 localtest:
