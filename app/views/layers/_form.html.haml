@@ -18,16 +18,18 @@
           = f.input :subtitle
           = tinymce
           = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
+          = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
           = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
         .grid-x
           .small-5.cell
+
             %p
               = f.input :published, :label => 'Publish'
-              %span.hint.text-left Set this layers as published
+              %p.hint.text-left Set this layers as published
             %p
               = f.input :public_submission, :label => 'Submissions'
-              %span.hint.text-left Enable public submissions
+              %p.hint.text-left Enable public submissions
             - if @layer.public_submission
               - if @layer.submission_config
                 = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button small" do
@@ -74,16 +76,47 @@
                         %circle{cx:"12",cy:"12",r:"12",fill:"#{c}"}
 
         %hr
+        %div.compactX
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-12.cell
+              %p
+                = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}
+              %p.shy
+                URL for an alternative basemap
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
+            .large-6.medium-6.small-12.cell
+              %p
+                = f.input :basemap_attribution, :input_html => {:placeholder => ''}
+              %p.shy
+                Attribution for this basemap
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
+        %hr
         %div.compact
-          %label Mapcenter
-          %span.hint.text-left Set these values if you want a different map focus then the automatic calculation of all places would give
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-12.cell
+              %label Tooltip
+              = f.input :tooltip_display_mode, :collection => tooltip_display_mode_for_select, include_blank: 'Select:', label: false, :selected => @layer.tooltip_display_mode
+              %p.hint.text-left
+                Tooltips can show the title of a place on the map. Here you can decide if tooltips should be shown, either permanently or per mouse-over
+            .large-6.medium-6.small-12.cell
+              %label Sorting
+              = f.input :places_sort_order, :collection => places_sort_order_for_select, label: false, :selected => @layer.places_sort_order
+              %p.hint.text-left
+                As a list, how the places should be sorted: By ID oder by Startdate?
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .medium-12.cell
+              %label Mapcenter
+              %p.hint.text-left Set these values if you want a to override the automatic map center (by the extent of all places)
           .grid-x.grid-padding-x
             .medium-5.cell
               = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}
             .medium-5.cell
               = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}
             .medium-2.cell
-              = f.input :zoom, label: "Zoom (1-18)", input_html: { placeholder: '12'}
+              = f.input :zoom, label: "Zoom", input_html: { placeholder: '12'}
+              %p.hint 1-18
 
 
         %hr
