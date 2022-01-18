@@ -65,7 +65,6 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: mysql2://orte:orte00@127.0.0.1:3306/orte_test
           COVERAGE: true
         run: |
           bin/rails db:setup
