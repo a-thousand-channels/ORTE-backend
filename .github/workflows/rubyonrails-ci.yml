@@ -61,7 +61,7 @@ jobs:
           mysql --version
           mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS orte_test;'
           mysql -uroot -h127.0.0.1 -proot -e "CREATE USER 'orte'@'localhost' IDENTIFIED BY 'orte00';"
-          mysql -uroot -h127.0.0.1 -proot -e "GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';"
+          mysql -uroot -h127.0.0.1 -proot -e "GRANT ALL PRIVILEGES ON orte_test.* TO 'orte'@'localhost';"
       - name: Run tests
         env:
           RAILS_ENV: test
