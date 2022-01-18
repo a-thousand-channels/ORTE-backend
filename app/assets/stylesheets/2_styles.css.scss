@@ -96,17 +96,19 @@ input#addresslookup_address.hide {
 }
 
 /* -------------------- */
-#layers main
-/*
+
+/* --
+#layers main,
 #layers main .grid-x,
 #layers main .cell,
 #layers main #selection
-*/
 {
-  /* avoid 100% width for a nav elements  */
   width: max-content;
   min-width: 250px;
 }
+-- */
+
+
 
 #selection {
 }

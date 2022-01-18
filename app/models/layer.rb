@@ -19,4 +19,24 @@ class Layer < ApplicationRecord
   def image_link
     ApplicationController.helpers.image_url(image) if image&.attached?
   end
+
+  def image_filename
+    image.filename  if image&.attached?
+  end
+
+  def backgroundimage_link
+    ApplicationController.helpers.image_url(backgroundimage) if backgroundimage&.attached?
+  end
+
+  def backgroundimage_filename
+    backgroundimage.filename if backgroundimage&.attached?
+  end
+
+  def favicon_link
+    ApplicationController.helpers.image_url(favicon) if favicon&.attached?
+  end
+
+  def favicon_filename
+    favicon.filename if favicon&.attached?
+  end
 end

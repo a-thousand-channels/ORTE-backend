@@ -16,11 +16,11 @@ class Public::LayersController < ActionController::Base
   def show
     @layer = Layer.published.find_by_slug(params[:id]) || Layer.published.find_by_id(params[:id])
 
-    if @layer.places_sort_order == 'startdate'
-      @places = @layer.places.published.sorted_by_startdate
-    else
-      @places = @layer.places.published
-    end
+    @places = if @layer.places_sort_order == 'startdate'
+                @layer.places.published.sorted_by_startdate
+              else
+                @layer.places.published
+              end
 
     respond_to do |format|
       if @layer.present?
