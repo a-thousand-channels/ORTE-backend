@@ -88,7 +88,7 @@
                         %circle{cx:"12",cy:"12",r:"12",fill:"#{c}"}
 
         %hr
-        %div.compactX
+        %div.compact
           .grid-x.grid-padding-x
             .large-6.medium-6.small-12.cell
               %p
@@ -102,6 +102,18 @@
               %p.shy
                 Attribution for this basemap
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-12.cell
+              %label Background color
+              = f.input :background_color, as: :color, value: @layer.background_color, label: false
+              %p.hint The background of the map will be filled with this color.
+              %p.hint Most basemap layers (tile layer) will lay over the background, so the color will only be visible while loading and in cases of map loading errors. Exception: The 3plus tiles don't have a background, so the background color defined here will be used.
+            .large-6.medium-6.small-12.cell
+              \&nbsp;
+
+
         %hr
         %div.compact
           .grid-x.grid-padding-x

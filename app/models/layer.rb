@@ -21,7 +21,7 @@ class Layer < ApplicationRecord
   end
 
   def image_filename
-    image.filename  if image&.attached?
+    image.filename if image&.attached?
   end
 
   def backgroundimage_link
