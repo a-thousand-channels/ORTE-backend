@@ -7,6 +7,8 @@ class Map < ApplicationRecord
   has_many :places, through: :layers
 
   has_one_attached :image, dependent: :destroy
+  has_one_attached :backgroundimage, dependent: :destroy
+  has_one_attached :favicon, dependent: :destroy
 
   validates :title, presence: true
 
