@@ -55,13 +55,17 @@ jobs:
         with:
           bundler: default
           bundler-cache: true
-      - name: Start MySQL server
+      - name: Start & setup MySQL server
         run: |
           sudo /etc/init.d/mysql start
+          mysql --version
+          mysql -uroot -h127.0.0.1 -proot -e 'CREATE DATABASE IF NOT EXISTS orte_test;'
+          mysql -uroot -h127.0.0.1 -proot -e "CREATE USER 'orte'@'localhost' IDENTIFIED BY 'orte00';"
+          mysql -uroot -h127.0.0.1 -proot -e "GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';"
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: mysql2://root:root@127.0.0.1:3306/orte_test
+          DATABASE_URL: mysql2://orte:orte00@127.0.0.1:3306/orte_test
           COVERAGE: true
         run: |
           bin/rails db:setup
