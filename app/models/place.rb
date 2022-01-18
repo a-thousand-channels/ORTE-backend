@@ -30,6 +30,8 @@ class Place < ApplicationRecord
   validates :title, presence: true
   validate :check_audio_format
 
+  scope :sorted_by_startdate, -> { order(startdate: :asc) }
+
   scope :published, -> { where(published: true) }
 
   attr_accessor :startdate_date, :startdate_time, :enddate_date, :enddate_time
