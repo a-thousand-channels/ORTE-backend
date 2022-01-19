@@ -1,0 +1,15 @@
+defaults: &defaults
+  version: 1.0.1
+  commands:
+    - "pwd"
+    - "git clone git@github.com:a-thousand-channels/a1000c-map-client.git tmp/client"
+    - "cd tmp/client && yarn install"
+    - "cd tmp/client && yarn generate"
+development:
+  <<: *defaults
+test:
+  <<: *defaults
+staging:
+  <<: *defaults
+production:
+  <<: *defaults
