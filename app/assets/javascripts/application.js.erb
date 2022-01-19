@@ -81,20 +81,32 @@
     });
     */
 
-    // add nav_bar for export function(s)
-    /*
-    $('#map').before($('<div />').attr('id','export_bar').attr('class','nav_bar'));
-    $('#export_bar').append($('<div />').attr('id','export_bar_json').attr('title','Export map data as JSON').text('JSON'));
-    $('#export_bar').find('div').addClass('nav_bar_item');
-
-    if ( $('#selection').data('map-id') ) {
-      $('#export_bar_json').html('<a href="/public/maps/'+$('#selection').data('map-id')+'.json" download="map'+$('#selection').data('map-id')+'.json">JSON</a>');
-
-    } else {
-      $('#export_bar_json').html('');
+    if ( localStorage.getItem('actionbar') === 'visible' ) {
+        $('.action-bar').removeClass("hide")
     }
-    */
 
+    $('#settings_caller').click(function(e) {
+      e.preventDefault();
+      if ( $('.action-bar').is(":hidden") ) {
+        $('.action-bar').removeClass("hide")
+        localStorage.setItem('actionbar','visible');
+      } else {
+        $('.action-bar').addClass("hide")
+        localStorage.setItem('actionbar','hidden');
+      }
+    })
+
+    $('#maptogo_button').addClass('hide');
+    if ( ( $('body').attr('id') === 'layers' ) && ( $('body').hasClass('show') ) ) {
+      setTimeout(function (){
+        $('#maptogo_button').removeClass('hide');
+      }, 500);
+    }
+    $('#maptogo_button').click(function(e) {
+      e.preventDefault;
+      var url = window.location.href + '/pack';
+      window.location.href = url;
+    })
 
     // navigate by dropdown
     $('.nav-selector').change(function(e){
