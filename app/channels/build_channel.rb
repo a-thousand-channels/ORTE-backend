@@ -5,7 +5,7 @@ class BuildChannel < ApplicationCable::Channel
   # become a subscriber to this channel.
   def subscribed
     # stream_from "some_channel"
-    stream_from 'build'
+    stream_for current_user
   end
 
   def unsubscribed
