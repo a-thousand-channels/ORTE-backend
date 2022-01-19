@@ -21,6 +21,7 @@
           "created_at",
           "updated_at",
           "published",
+          "tooltip_display_mode",
           "places"
         ],
         "properties": {
@@ -43,6 +44,16 @@
             ],
             "pattern": "^(.*)$"
           },
+          "teaser": {
+            "$id": "#/properties/map/properties/layer/items/properties/teaser",
+            "type": "string",
+            "title": "The Teaser Schema",
+            "default": "",
+            "examples": [
+              ""
+            ],
+            "pattern": "^(.*)$"
+          },
           "text": {
             "$id": "#/properties/map/properties/layer/items/properties/text",
             "type": "string",
@@ -50,6 +61,26 @@
             "default": "",
             "examples": [
               ""
+            ],
+            "pattern": "^(.*)$"
+          },
+          "credits": {
+            "$id": "#/properties/map/properties/layer/items/properties/credits",
+            "type": "string",
+            "title": "The Credits Schema",
+            "default": "",
+            "examples": [
+              ""
+            ],
+            "pattern": "^(.*)$"
+          },
+          "style": {
+            "$id": "#/properties/map/properties/layer/items/properties/style",
+            "type": "string",
+            "title": "The Style Schema",
+            "default": "",
+            "examples": [
+              ".p { class: 'abstract' }"
             ],
             "pattern": "^(.*)$"
           },
@@ -131,6 +162,16 @@
             "examples": [
               true
             ]
+          },
+          "tooltip_display_mode": {
+            "$id": "#/properties/map/properties/layer/items/properties/tooltip_display_mode",
+            "type": "string",
+            "title": "The tooltip_display_mode Schema",
+            "default": "",
+            "examples": [
+              "shy"
+            ],
+            "pattern": "^(.*)$"
           },
           "places": {
             "$id": "#/properties/map/properties/layer/items/properties/places",
