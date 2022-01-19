@@ -521,6 +521,7 @@ DEPENDENCIES
   rubocop-rspec
   ruby_audit
   rubycritic
+  rubyzip
   sassc (~> 2.4)
   sassc-rails
   secure_headers
