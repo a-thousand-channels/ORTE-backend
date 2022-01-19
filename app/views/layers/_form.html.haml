@@ -90,30 +90,38 @@
         %hr
         %div.compact
           .grid-x.grid-padding-x
-            .large-6.medium-6.small-12.cell
-              %p
-                = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}
+            .large-12.medium-12.small-12.cell
+              %label Predefined Basemaps
+              %select#basemaps
+                %option{value: '', "data-url": '', "data-backgroundcolor": '', "data-attribution": '' }
+                - basemaps.each_value do |b|
+                  %option{value: b['id'], "data-url": b['url'], "data-backgroundcolor": b['backgroundcolor'], "data-attribution": b['attribution'] }
+                    = b['title']
               %p.shy
-                URL for an alternative basemap
-                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
-            .large-6.medium-6.small-12.cell
+                Please select one the prefinied basemaps
+
+          %hr
+          .grid-x.grid-padding-x
+            .large-8.medium-8.small-12.cell
               %p
-                = f.input :basemap_attribution, :input_html => {:placeholder => ''}
+                %label Basemap URL
+                = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false
+              %p.shy
+                URL for a basemap (used as tile layer in the background)
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
+              %p
+                %label Basemap Attribution
+                = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false
               %p.shy
                 Attribution for this basemap
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
-        %hr
-        %div.compact
-          .grid-x.grid-padding-x
-            .large-6.medium-6.small-12.cell
-              %label Background color
-              = f.input :background_color, as: :color, value: @layer.background_color, label: false
-              %p.hint The background of the map will be filled with this color.
-              %p.hint Most basemap layers (tile layer) will lay over the background, so the color will only be visible while loading and in cases of map loading errors. Exception: The 3plus tiles don't have a background, so the background color defined here will be used.
-            .large-6.medium-6.small-12.cell
-              \&nbsp;
-
-
+            .large-4.medium-4.small-12.cell
+              %p
+                %label Background color
+                = f.input :background_color, as: :color, value: @layer.background_color, label: false
+              %p.hint
+                The background of the map will be filled with this color.
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this backgroudn color will only be visible while loading and in cases of map loading errors. Exception: The 3plus tiles don't have a background, so the background color defined here will be used."}
         %hr
         %div.compact
           .grid-x.grid-padding-x
