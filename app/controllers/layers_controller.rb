@@ -28,18 +28,14 @@ class LayersController < ApplicationController
   end
 
   def pack
-    ActionCable.server.broadcast 'build', content: 'Lala says: BONG'
+    BuildChannel.broadcast_to current_user, content: 'Lala says: BONG'
   end
 
   def build
     if params['layer']['build']
-      1.upto(5) do |n|
-        ActionCable.server.broadcast 'build', content: "Building STEP #{n}"
-        head :ok
-        sleep 1 # second
-      end
+      Build::Maptogo.new(current_user).build
     else
-      ActionCable.server.broadcast 'build', content: 'Nothing to do...'
+      BuildChannel.broadcast_to current_user, content: 'Nothing to do...'
     end
   end
 
