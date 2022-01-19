@@ -303,6 +303,12 @@ input[type="time"] {
 input[type="date"] {
     width: 137px;
 }
+input[type="color"] {
+    min-height: 100px;
+}
+textarea {
+  min-height: 57px
+}
 
 .form-actions {
   margin-top: 15px;
@@ -331,7 +337,12 @@ p.hint.text-left {
 }
 p.hint.hint-margin {
   margin-bottom:  20px;
-
+}
+p.hint.hint2 {
+   color: #aaa;
+}
+p.hint.hint2:hover {
+  color: grey;
 }
 
 div.switch {
