@@ -12,6 +12,7 @@ FactoryBot.define do
     basemap_url { 'MyBasemapUrl' }
     basemap_attribution { 'Basemap made by' }
     color { '#0000cc' }
+    background_color { '#151515' }
     mapcenter_lat { '0.1' }
     mapcenter_lon { '10' }
     zoom { 12 }

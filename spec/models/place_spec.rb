@@ -74,6 +74,47 @@ RSpec.describe Place, type: :model do
     expect(p.imagelink2).to eq(p.imagelink)
   end
 
+  describe 'Scope, (implicit) sorted by id ' do
+    it 'is valid  ' do
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      event_1_in_the_middle = FactoryBot.create(:place, layer: l, startdate: '2016-01-01 00:00:00')
+      event_2_earlier = FactoryBot.create(:place, layer: l, startdate: '2011-01-01 00:00:00')
+      event_3_latest = FactoryBot.create(:place, layer: l, startdate: '2021-01-01 00:00:00')
+
+      places = l.places
+      expect(places).to eq([event_1_in_the_middle, event_2_earlier, event_3_latest])
+    end
+  end
+
+  describe 'Scope, sorted by startdate ' do
+    it 'is valid  ' do
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      event_1_in_the_middle = FactoryBot.create(:place, layer: l, startdate: '2016-01-01 00:00:00')
+      event_2_earlier = FactoryBot.create(:place, layer: l, startdate: '2011-01-01 00:00:00')
+      event_3_latest = FactoryBot.create(:place, layer: l, startdate: '2021-01-01 00:00:00')
+
+      places = l.places.sorted_by_startdate
+      expect(places).not_to eq([event_1_in_the_middle, event_2_earlier, event_3_latest])
+      expect(places).to eq([event_2_earlier, event_1_in_the_middle, event_3_latest])
+    end
+  end
+
+  describe 'Scope, all published ' do
+    it 'is valid  ' do
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      event_1_published = FactoryBot.create(:place, layer: l, published: true)
+      event_2_published = FactoryBot.create(:place, layer: l, published: true)
+      event_3_unpublished = FactoryBot.create(:place, layer: l, published: false)
+
+      places = l.places.published
+      expect(places).not_to eq([event_1_published, event_2_published, event_3_unpublished])
+      expect(places).to eq([event_1_published, event_2_published])
+    end
+  end
+
   describe 'Address' do
     it 'full_address w/location but no address' do
       m = FactoryBot.create(:map)
