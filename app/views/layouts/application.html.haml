@@ -28,8 +28,6 @@
     %meta{name: 'msapplication-config', content: '/assets/favicon/browserconfig.xml'}
     %meta{name: 'theme-color', content: '#ffffff' }
 
-
-
   - klass = "lang-" + I18n.locale.to_s
   - if current_user
     - klass = klass + " logged_in"
@@ -38,6 +36,8 @@
   - id = ''
   - if controller_name
     - id = "#{controller_name.parameterize}"
+  - if params[:action]
+    - klass = klass + " #{params[:action]}"
 
   %body{:id=>"#{id}", :class=>"#{klass}"}
     %header
