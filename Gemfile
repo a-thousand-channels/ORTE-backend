@@ -64,6 +64,8 @@ gem 'rubocop'
 gem 'rubocop-rspec'
 gem 'ruby_audit', require: false
 
+gem 'rubyzip'
+
 group :staging, :production do
   # gem 'pg'
   gem 'passenger'
