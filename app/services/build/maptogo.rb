@@ -43,9 +43,20 @@ class Build::Maptogo
       )
 
       build_config['commands'].each_with_index do |command, index|
+        BuildChannel.broadcast_to(
+          @current_user,
+          {
+            index: index,
+            status: 'pre-command',
+            duration: time_ago_in_words(build_start, include_seconds: true),
+            content: (command['label']).to_s,
+            step_count: step_count
+          }
+        )
         cmd = command['cmd'].gsub('CLIENT_PATH', client_directory)
         cmd = cmd.gsub('JSON_FILE', tmp_file)
         Open3.popen3(*cmd) do |stdin, stdout, stderr, wait_thr|
+          sleep 1
           BuildChannel.broadcast_to(
             @current_user,
             {
@@ -56,7 +67,8 @@ class Build::Maptogo
               step_count: step_count,
               command: cmd,
               detail: stdout.read,
-              error: stderr.read
+              error: stderr.read,
+              cmd_status: wait_thr.value.to_s
             }
           )
         end
@@ -70,7 +82,7 @@ class Build::Maptogo
         {
           index: 99,
           status: 'finished',
-          duration: time_ago_in_words(build_start, include_seconds: true),
+          duration: "#{((Time.current - build_start) / 1.second).round} seconds",
           content: "/#{client_directory}.zip",
           step_count: step_count,
           filesize: filesize
