@@ -19,6 +19,17 @@ set :bundle_without, [:development]
 set :bundle_binstubs, nil
 set :notify_emails, ['']
 
+set :passenger_in_gemfile, true
+
+set :passenger_roles, :app
+set :passenger_restart_runner, :sequence
+set :passenger_restart_wait, 5
+set :passenger_restart_limit, 2
+set :passenger_restart_with_sudo, true
+set :passenger_environment_variables, {}
+set :passenger_restart_command, 'passenger-config restart-app'
+set :passenger_restart_options, -> { "#{deploy_to} --ignore-app-not-running" }
+
 # append :linked_files, "config/secrets.yml"
 set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key')
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "storage"
@@ -48,7 +59,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      execute :touch, release_path.join('tmp/restart.txt')
+      # execute :touch, release_path.join('tmp/restart.txt')
     end
   end
   after :publishing,  'deploy:restart'
@@ -107,6 +118,7 @@ namespace :deploy do
 
   before :migrate,    'deploy:db_backup'
   after :updating,    'deploy:tagit'
+  after :updating,    'passenger:restart'
   # after :publishing,  'deploy:send_notification'
 
 end
