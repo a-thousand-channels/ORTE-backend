@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require 'open3'
+require 'fileutils'
 include ActionView::Helpers::DateHelper
+include ActionView::Helpers::NumberHelper
 class Build::Maptogo
   def initialize(current_user, map, layer)
     @current_user = current_user
@@ -17,23 +19,32 @@ class Build::Maptogo
 
     places = @layer.places.published
 
-    client_directory = 'client_xxx'
-    render_str = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
+    rand_id = SecureRandom.uuid
+
+    client_directory = "client_#{rand_id}"
+    tmp_file = "tmp/client_#{rand_id}.json"
+    directory_client = "tmp/#{client_directory}"
+    directory_to_zip = "tmp/#{client_directory}/dist/"
+    output_file = "public/#{client_directory}.zip"
+
+    json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
+    File.open(tmp_file, 'w') { |file| file.write(json_data) }
 
     if build_config['commands'].length.positive?
-
+      step_count = build_config['commands'].count
       BuildChannel.broadcast_to(
         @current_user,
         {
-          content: 'Build process started',
+          content: "Build process started (#{build_config['commands'].count} Steps)",
           status: 'start',
+          step_count: step_count,
           duration: time_ago_in_words(build_start, include_seconds: true)
         }
       )
-      build_config['commands'].each_with_index do |cmd, index|
-        # cmd.gsub('DATA_URL', 'https://orte.link/public/maps/queer-poems-on-places-and-lovers/layers/queer-poems-on-places-and-lovers.json')
-        cmd = cmd.gsub('CLIENT_PATH', client_directory)
-        cmd = cmd.gsub('JSON_DATA', render_str)
+
+      build_config['commands'].each_with_index do |command, index|
+        cmd = command['cmd'].gsub('CLIENT_PATH', client_directory)
+        cmd = cmd.gsub('JSON_FILE', tmp_file)
         Open3.popen3(*cmd) do |stdin, stdout, stderr, wait_thr|
           BuildChannel.broadcast_to(
             @current_user,
@@ -41,28 +52,30 @@ class Build::Maptogo
               index: index,
               status: 'command',
               duration: time_ago_in_words(build_start, include_seconds: true),
-              content: "CMD: #{cmd}",
+              content: (command['label']).to_s,
+              step_count: step_count,
+              command: cmd,
               detail: stdout.read,
               error: stderr.read
             }
           )
         end
       end
-      directory_to_zip = "tmp/#{client_directory}/dist/"
-      output_file = "public/#{client_directory}.zip"
       zf = ZipFileGenerator.new(directory_to_zip, output_file)
       zf.write
+      filesize = number_to_human_size(File.size(Pathname.new(output_file)))
+      FileUtils.rm_rf(directory_client)
       BuildChannel.broadcast_to(
         @current_user,
         {
           index: 99,
           status: 'finished',
           duration: time_ago_in_words(build_start, include_seconds: true),
-          content: "/#{client_directory}.zip"
+          content: "/#{client_directory}.zip",
+          step_count: step_count,
+          filesize: filesize
         }
       )
-      # ApplicationController.new.send_data generate_tgz("tmp/" + client_directory + ".zip"), :filename => "tmp/" + client_directory + '.zip'
-
     end
     result = { meta: meta, data: data }
   end
