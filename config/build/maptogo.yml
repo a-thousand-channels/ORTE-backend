@@ -1,11 +1,16 @@
 defaults: &defaults
   version: 1.0.1
   commands:
-    - "pwd"
-    - "git clone git@github.com:a-thousand-channels/a1000c-map-client.git tmp/CLIENT_PATH"
-    - "cd tmp/CLIENT_PATH && yarn install"
-    - "echo 'JSON_DATA' >> tmp/CLIENT_PATH/content/data.json"
-    - "cd tmp/CLIENT_PATH && yarn generate"
+    - cmd: "pwd"
+      label: "Print working directory"
+    - cmd: "git clone git@github.com:a-thousand-channels/a1000c-map-client.git tmp/CLIENT_PATH"
+      label: "Cloning the web client (from Repository)"
+    - cmd: "cd tmp/CLIENT_PATH && yarn install"
+      label: "Installing sources"
+    - cmd: "mv JSON_FILE tmp/CLIENT_PATH/content/data.json"
+      label: "Adding map/layer data (via JSON)"
+    - cmd: "cd tmp/CLIENT_PATH && yarn generate"
+      label: "Generating web client"
 development:
   <<: *defaults
 test:
