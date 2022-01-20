@@ -2,9 +2,10 @@ defaults: &defaults
   version: 1.0.1
   commands:
     - "pwd"
-    - "git clone git@github.com:a-thousand-channels/a1000c-map-client.git tmp/client"
-    - "cd tmp/client && yarn install"
-    - "cd tmp/client && yarn generate"
+    - "git clone git@github.com:a-thousand-channels/a1000c-map-client.git tmp/CLIENT_PATH"
+    - "cd tmp/CLIENT_PATH && yarn install"
+    - "echo 'JSON_DATA' >> tmp/CLIENT_PATH/content/data.json"
+    - "cd tmp/CLIENT_PATH && yarn generate"
 development:
   <<: *defaults
 test:
