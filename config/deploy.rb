@@ -25,10 +25,11 @@ set :passenger_roles, :app
 set :passenger_restart_runner, :sequence
 set :passenger_restart_wait, 5
 set :passenger_restart_limit, 2
-set :passenger_restart_with_sudo, true
+set :passenger_restart_with_sudo, false
 set :passenger_environment_variables, {}
 set :passenger_restart_command, 'passenger-config restart-app'
 set :passenger_restart_options, -> { "#{deploy_to} --ignore-app-not-running" }
+set :passenger_rvm_ruby_version, 'ruby 2.7.2'
 
 # append :linked_files, "config/secrets.yml"
 set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key')
@@ -118,7 +119,7 @@ namespace :deploy do
 
   before :migrate,    'deploy:db_backup'
   after :updating,    'deploy:tagit'
-  after :updating,    'passenger:restart'
+  # after :updating,    'passenger:restart'
   # after :publishing,  'deploy:send_notification'
 
 end
