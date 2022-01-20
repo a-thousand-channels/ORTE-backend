@@ -27,6 +27,17 @@
 //= require select2-full
 //= require_tree .
 
+  var mapsPlaceholder = [];
+  function map_resize() {
+    var map = mapsPlaceholder[0];
+    //console.log('map_resize', map);
+    if(map && typeof map.invalidateSize === 'function') {
+      var height = $('main').height() + $('main').offset().top + 100;
+      //console.log('new-min-heigth', height);
+      $("#map").css('min-height', height).width($(window).width());
+      map.invalidateSize();
+    }
+  }
 
 // $(document).on('turbolinks:load', function() {
   $(function() {
@@ -38,6 +49,9 @@
     $(document).on('slidechange.zf.orbit', '[data-orbit]', function () {
       $(window).trigger('resize');
     });
+    $(window).on("resize", function() {
+      map_resize();
+    }).trigger("resize");
 
     setTimeout(function(){
       $('#flash').slideUp(2000);
@@ -213,6 +227,11 @@
       MAP_LAT = $('#form-wrapper').data('lat');
       MAP_LON = $('#form-wrapper').data('lon');
     }
+
+    L.Map.addInitHook(function () {
+      //console.log('map added', this);
+      mapsPlaceholder.push(this); 
+    });
 
     var map = L.map('map', {
         zoomControl: false,
