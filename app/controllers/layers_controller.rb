@@ -34,6 +34,7 @@ class LayersController < ApplicationController
   def build
     if params['layer']['build']
       Build::Maptogo.new(current_user, @map, @layer).build
+      head :ok
     else
       BuildChannel.broadcast_to current_user, content: 'Nothing to do...'
     end
