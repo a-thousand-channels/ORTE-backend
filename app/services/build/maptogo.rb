@@ -24,7 +24,7 @@ class Build::Maptogo
     client_directory = "client_#{rand_id}"
     tmp_file = "tmp/client_#{rand_id}.json"
     directory_client = "tmp/#{client_directory}"
-    directory_to_zip = "tmp/#{client_directory}/dist/"
+    directory_to_zip = "tmp/#{client_directory}/"
     output_file = "public/#{client_directory}.zip"
 
     json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
