@@ -19,7 +19,7 @@ gem 'friendly_id', '~> 5.4.0'
 gem 'coffee-rails'
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
+gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 gem 'deep_cloneable', '~> 3'
