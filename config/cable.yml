@@ -9,7 +9,7 @@ staging_async:
 
 staging:
   adapter: redis
-  url: redis://localhost:6379/1
+  url: redis://localhost:6379/
   channel_prefix: OrteBackend_staging
 
 production:
