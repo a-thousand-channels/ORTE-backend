@@ -4,8 +4,13 @@ development:
 test:
   adapter: async
 
-staging:
+staging_async:
   adapter: async
+
+staging:
+  adapter: redis
+  url: redis://localhost:6379/1
+  channel_prefix: OrteBackend_staging
 
 production:
   adapter: redis
