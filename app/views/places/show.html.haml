@@ -32,11 +32,11 @@
                     - if img.preview.present?
                       %li.orbit-slide{"data-open": "reveal#{img.id}"}
                         %figure.orbit-figure
-                          = image_tag(img.file.variant(resize: "300x300").processed, :class => "orbit-image")
+                          = image_tag(img.file.variant(resize: "1200x1200").processed, :class => "orbit-image")
                     - else
                       %li.orbit-slide{"data-open": "reveal#{img.id}"}
                         %figure.orbit-figure
-                          = image_tag(img.file.variant(resize: "300x300").processed, :class => "orbit-image")
+                          = image_tag(img.file.variant(resize: "1200x1200").processed, :class => "orbit-image")
                   - else
                     %p
                       No image uploaded, please do so
@@ -46,7 +46,7 @@
               - if img.file.attached?
                 - filename = ActiveStorage::Blob.service.path_for(img.key)
                 - if File.exist?(filename)
-                  = image_tag img.file.variant(resize: "800x800").processed
+                  = image_tag img.file.variant(resize: "1200x1200").processed
                   %button.close-button{"data-close": true, "aria-label": "Close", type: "button"}
                     %i.fi.fi-x{"aria-hidden": true}
               - else
