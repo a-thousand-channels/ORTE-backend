@@ -28,6 +28,15 @@
         edit the settings
         %i.fi.fi-pencil.fi-20
       for this layer to make it public accessible
+  - if @layer.places.published.count <= 0
+    .alert-box
+      Your layer has no places
+      %br
+      Please
+      = link_to map_layer_path(@map,@layer) do
+        add some places
+        %i.fi.fi-pencil.fi-20
+      for this layer to make it public accessible      
   %hr
   %p
     Please check the metadata of your layer:
@@ -54,7 +63,7 @@
         =@layer.places.count
 
   %p
-    - if @layer.published
+    - if @layer.published && @layer.places.published.count >= 1
       = form_for [@map, @layer], :url => url_for(:controller => 'layers', :action => 'build'), remote: true, authenticity_token: true do |f|
         = f.hidden_field :build, value: true
         = f.button :submit, id: "btn_start_build", class: "button btn-primary", data: {send: "message"} , disabled: 'true' do 
@@ -80,7 +89,7 @@
   %div.download_area.hidden
     %hr
     %p
-      %a{href: "#", atrget: "_blank", class: "button"}
+      %a{href: "#", target: "_blank", class: "button"}
         %i.fi.fi-archive
         Download your map to go
         (2,5 MB)
