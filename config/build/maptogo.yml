@@ -9,6 +9,8 @@ defaults: &defaults
       label: "Installing sources"
     - cmd: "mv JSON_FILE tmp/CLIENT_PATH/content/data.json"
       label: "Adding map/layer data (via JSON)"
+    - cmd: "mv IMAGE_FILE_DIRECTORY tmp/CLIENT_PATH/static/images"
+      label: "Adding images (via static)"
     - cmd: "cd tmp/CLIENT_PATH && yarn generate"
       label: "Generating web client"
 development:
