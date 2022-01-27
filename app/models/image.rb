@@ -30,6 +30,10 @@ class Image < ApplicationRecord
     ApplicationController.helpers.image_linktag(file, title)
   end
 
+  def image_on_disk
+    ActiveStorage::Blob.service.path_for(file.key)
+  end
+
   private
 
   def check_file_presence

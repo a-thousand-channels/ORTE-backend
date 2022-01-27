@@ -30,6 +30,16 @@ class Build::Maptogo
     json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
     File.open(tmp_file, 'w') { |file| file.write(json_data) }
 
+    layer = JSON.parse(json_data, { symbolize_names: true })
+    places = layer[:layer][:places]
+    images_on_disc = []
+    places.each do |place|
+      images = place[:images]
+      images.each do |image|
+        images_on_disc << { 'filename' => image[:image_filename], 'disk' => image[:image_on_disk] }
+      end
+    end
+
     if build_config['commands'].length.positive?
       step_count = build_config['commands'].count
       BuildChannel.broadcast_to(
@@ -73,6 +83,15 @@ class Build::Maptogo
           )
         end
       end
+
+      images_dest_folder = "#{directory_client}/static/images"
+      FileUtils.mkdir_p images_dest_folder
+
+      images_on_disc.each do |file_hash|
+        dest_folder = "#{images_dest_folder}/#{file_hash['filename']}"
+        FileUtils.cp(file_hash['disk'], dest_folder)
+      end
+
       zf = ZipFileGenerator.new(directory_to_zip, output_file)
       zf.write
       filesize = number_to_human_size(File.size(Pathname.new(output_file)))
