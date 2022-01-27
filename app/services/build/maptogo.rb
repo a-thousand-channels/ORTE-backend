@@ -28,7 +28,6 @@ class Build::Maptogo
     output_file = "public/#{client_directory}.zip"
 
     json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
-    File.open(tmp_file, 'w') { |file| file.write(json_data) }
 
     layer = JSON.parse(json_data, { symbolize_names: true })
     places = layer[:layer][:places]
@@ -36,8 +35,18 @@ class Build::Maptogo
     places.each do |place|
       images = place[:images]
       images.each do |image|
+        image[:image_url] = "/images/#{image[:image_filename]}"
         images_on_disc << { 'filename' => image[:image_filename], 'disk' => image[:image_on_disk] }
       end
+    end
+    File.open(tmp_file, 'w') { |file| file.write(JSON.generate(layer)) }
+
+    images_tmp_folder = "tmp/#{directory_client}/images"
+    FileUtils.mkdir_p images_tmp_folder
+
+    images_on_disc.each do |file_hash|
+      dest_folder = "#{images_tmp_folder}/#{file_hash['filename']}"
+      FileUtils.cp(file_hash['disk'], dest_folder)
     end
 
     if build_config['commands'].length.positive?
@@ -65,6 +74,7 @@ class Build::Maptogo
         )
         cmd = command['cmd'].gsub('CLIENT_PATH', client_directory)
         cmd = cmd.gsub('JSON_FILE', tmp_file)
+        cmd = cmd.gsub('IMAGE_FILE_DIRECTORY', images_tmp_folder)
         Open3.popen3(*cmd) do |stdin, stdout, stderr, wait_thr|
           sleep 2
           BuildChannel.broadcast_to(
@@ -84,18 +94,11 @@ class Build::Maptogo
         end
       end
 
-      images_dest_folder = "#{directory_client}/static/images"
-      FileUtils.mkdir_p images_dest_folder
-
-      images_on_disc.each do |file_hash|
-        dest_folder = "#{images_dest_folder}/#{file_hash['filename']}"
-        FileUtils.cp(file_hash['disk'], dest_folder)
-      end
-
       zf = ZipFileGenerator.new(directory_to_zip, output_file)
       zf.write
       filesize = number_to_human_size(File.size(Pathname.new(output_file)))
-      FileUtils.rm_rf(directory_client)
+      # FileUtils.rm_rf(directory_client)
+      # FileUtils.rm_rf(images_tmp_folder)
       BuildChannel.broadcast_to(
         @current_user,
         {
