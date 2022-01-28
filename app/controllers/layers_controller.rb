@@ -28,7 +28,8 @@ class LayersController < ApplicationController
   end
 
   def pack
-    BuildChannel.broadcast_to current_user, content: 'Lala says: BONG'
+    @build_logs = BuildLog.where(map_id: @map.id, layer_id: @layer.id).order(created_at: :desc)
+    BuildChannel.broadcast_to current_user, content: 'LayersController::pack'
   end
 
   def build

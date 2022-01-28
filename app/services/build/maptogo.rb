@@ -17,6 +17,9 @@ class Build::Maptogo
     data = {}
     build_start = Time.now
 
+    build_log = BuildLog.new(map_id: @map.id, layer_id: @layer.id)
+    # build_log.status = 'STARTED'
+
     places = @layer.places.published
 
     rand_id = SecureRandom.uuid
@@ -76,7 +79,7 @@ class Build::Maptogo
         cmd = cmd.gsub('JSON_FILE', tmp_file)
         cmd = cmd.gsub('IMAGE_FILE_DIRECTORY', images_tmp_folder)
         Open3.popen3(*cmd) do |stdin, stdout, stderr, wait_thr|
-          sleep 2
+          sleep 4
           BuildChannel.broadcast_to(
             @current_user,
             {
@@ -110,6 +113,12 @@ class Build::Maptogo
           filesize: filesize
         }
       )
+      build_log.output = "/#{client_directory}.zip"
+      build_log.size = filesize
+      build_log.version = 'x.x.x'
+      # build_log.status = 'FINISHED'
+
+      build_log.save
     end
     result = { meta: meta, data: data }
   end

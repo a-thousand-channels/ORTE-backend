@@ -74,7 +74,7 @@
         %i.fi.fi-shopping-bag.fi-20
         Create your map to go
 
-  %hr
+  
   %div.build_log
     
   %div.pack_log
@@ -85,13 +85,32 @@
       %div.lds-ripple
         %div
         %div
-      
-  %div.download_area.hidden
-    %hr
-    %p
+  %hr
+  - if @build_logs.length > 0
+    %div.download_area
+      %p
+        Versions
+      %table
+        - @build_logs.each do |build_log|
+          %tr
+            %td
+              = build_log.created_at.strftime("%d.%m.%Y, %H:%M")
+            %td
+              = build_log.version
+            %td  
+              = link_to build_log.output, {target: "_blank", class: "button"} do
+                %i.fi.fi-archive
+                Download
+                = "(#{build_log.size})"
+
+      %hr
+      %p
+        = link_to @build_logs.first.output, {target: "_blank", class: "button"} do
+          %i.fi.fi-archive
+          Download your map to go
+          = "(#{@build_logs.first.size})"
+  - else
+    %div.download_area.hidden
+      %table
       %a{href: "#", target: "_blank", class: "button"}
-        %i.fi.fi-archive
-        Download your map to go
-        (2,5 MB)
-
-
+      

@@ -1,0 +1,29 @@
+
+#table-wrapper
+
+  %h1 Listing Builds
+
+  %table
+    %thead
+      %tr
+        %th Map
+        %th Layer
+        %th Output
+        %th Size
+        %th Version
+        %th
+        %th
+        %th
+
+    %tbody
+      - @build_logs.each do |build_log|
+        %tr
+          %td= build_log.map.title
+          %td= build_log.layer.title
+          %td= build_log.output
+          %td= build_log.size
+          %td= build_log.version
+          %td= link_to 'Show', build_log
+          %td= link_to 'Edit', edit_build_log_path(build_log)
+          %td= link_to 'Destroy', build_log, method: :delete, data: { confirm: 'Are you sure?' }
+
