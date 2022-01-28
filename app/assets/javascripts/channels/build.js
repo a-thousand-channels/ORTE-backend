@@ -27,6 +27,7 @@ $(document).ready(function(){
 
         switch(data.status) {
           case 'start':
+            $('.build_log').html('');
             $('.build_log').append('<p>' + index_str + data.content + '</p>');
             break;
           case 'pre-command':
@@ -59,6 +60,7 @@ $(document).ready(function(){
             break;
           case 'finished':
             $('.build_log').append('<p>Finished: '  + data.content + ' - ' + data.duration+ ' <span class="confirmation"><i class="fi fi-check" /><small> DONE </small></p>');
+            $('.download_area table').prepend('<tr><td>'+new Date().toLocaleString()+'</td><td>yy</td><td><a href="'+data.content+'" class="button"><i class="fi fi-archive" /> Download (' + data.filesize + ')</button></td></tr>');
             $('.download_area .button').prop('href', data.content);
             $('.download_area .button').html('<i class="fi fi-archive" /> Download your map to go (' + data.filesize + ')');
             $('.download_area').show();
