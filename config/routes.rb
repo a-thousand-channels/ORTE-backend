@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :build_logs
   resources :people
   resources :annotations
   resources :submission_configs
