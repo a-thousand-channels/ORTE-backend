@@ -30,6 +30,11 @@ class Image < ApplicationRecord
     ApplicationController.helpers.image_linktag(file, title)
   end
 
+  def image_on_disk
+    full_path = ActiveStorage::Blob.service.path_for(file.key)
+    full_path.gsub(Rails.root.to_s, '')
+  end
+
   private
 
   def check_file_presence
