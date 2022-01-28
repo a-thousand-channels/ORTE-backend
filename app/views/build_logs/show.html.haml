@@ -1,0 +1,28 @@
+#table-wrapper
+  %p#notice= notice
+
+  %p
+    %b Map:
+    = @build_log.map.title
+  %p
+    %b Layer:
+    = @build_log.layer.title
+  %p
+    %b Output:
+    = @build_log.output
+  %p
+    %b Size:
+    = @build_log.size
+  %p
+    %b Version:
+    = @build_log.version
+  %p
+    %b Erstellt:
+    = @build_log.created_at
+  %p
+    %b Aktualisiert:
+    = @build_log.updated_at
+
+  = link_to 'Edit', edit_build_log_path(@build_log)
+  \|
+  = link_to 'Back', build_logs_path

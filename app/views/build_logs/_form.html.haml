@@ -1,0 +1,18 @@
+= simple_form_for(@build_log) do |f|
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x
+    .large-3.cell
+      &nbsp;
+    .large-12.medium-12.cell
+      .form-inputs
+        = f.association :map
+        = f.association :layer
+        = f.input :output
+        = f.input :size
+        = f.input :version
+      .form-actions
+        = f.button :submit, :class => "button"
+    .large-3.cell
+      &nbsp;
