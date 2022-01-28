@@ -31,7 +31,8 @@ class Image < ApplicationRecord
   end
 
   def image_on_disk
-    ActiveStorage::Blob.service.path_for(file.key)
+    full_path = ActiveStorage::Blob.service.path_for(file.key)
+    full_path.gsub(Rails.root.to_s, '')
   end
 
   private
