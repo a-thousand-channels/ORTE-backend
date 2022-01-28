@@ -39,7 +39,7 @@ class Build::Maptogo
       images = place[:images]
       images.each do |image|
         image[:image_url] = "/images/#{image[:image_filename]}"
-        images_on_disc << { 'filename' => image[:image_filename], 'disk' => image[:image_on_disk] }
+        images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + (image[:image_on_disk]) }
       end
     end
     File.open(tmp_file, 'w') { |file| file.write(JSON.generate(layer)) }
