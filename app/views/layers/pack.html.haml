@@ -89,6 +89,12 @@
   - if @build_logs.length > 0
     %div.download_area
       %p
+        = link_to @build_logs.first.output, {target: "_blank", class: "button"} do
+          %i.fi.fi-archive
+          Download your map to go
+          = "(#{@build_logs.first.size})"
+      %hr
+      %p
         Versions
       %table
         - @build_logs.each do |build_log|
@@ -103,14 +109,9 @@
                 Download
                 = "(#{build_log.size})"
 
-      %hr
-      %p
-        = link_to @build_logs.first.output, {target: "_blank", class: "button"} do
-          %i.fi.fi-archive
-          Download your map to go
-          = "(#{@build_logs.first.size})"
+  
   - else
     %div.download_area.hidden
-      %table
       %a{href: "#", target: "_blank", class: "button"}
+      %table
       
