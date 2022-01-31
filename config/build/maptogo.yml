@@ -1,17 +1,20 @@
 defaults: &defaults
   version: 1.0.1
+  env:
   commands:
     - cmd: "pwd"
       label: "Print working directory"
-    - cmd: "git clone git@github.com:a-thousand-channels/a1000c-map-client.git tmp/CLIENT_PATH"
+    - cmd: "git clone git@github.com:a-thousand-channels/a1000c-map-client.git public/CLIENT_PATH"
       label: "Cloning the web client (from Repository)"
-    - cmd: "cd tmp/CLIENT_PATH && yarn install"
+    - cmd: "cd public/CLIENT_PATH && git checkout fuchs/nuxt-pwa-publish  && git pull"
+      label: "checkout source branch"
+    - cmd: "cd public/CLIENT_PATH && yarn install"
       label: "Installing sources"
-    - cmd: "mv JSON_FILE tmp/CLIENT_PATH/content/data.json"
+    - cmd: "mv JSON_FILE public/CLIENT_PATH/content/data.json"
       label: "Adding map/layer data (via JSON)"
-    - cmd: "mv IMAGE_FILE_DIRECTORY tmp/CLIENT_PATH/static/images"
+    - cmd: "mv IMAGE_FILE_DIRECTORY public/CLIENT_PATH/static/images"
       label: "Adding images (via static)"
-    - cmd: "cd tmp/CLIENT_PATH && yarn generate"
+    - cmd: "cd public/CLIENT_PATH && yarn generate"
       label: "Generating web client"
 development:
   <<: *defaults

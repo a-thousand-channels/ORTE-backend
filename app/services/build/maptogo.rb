@@ -24,11 +24,16 @@ class Build::Maptogo
 
     rand_id = SecureRandom.uuid
 
+    build_typ = 'pwa'
+
     client_directory = "client_#{rand_id}"
-    tmp_file = "tmp/client_#{rand_id}.json"
-    directory_client = "tmp/#{client_directory}"
-    directory_to_zip = "tmp/#{client_directory}/dist/"
+    tmp_file = "public/client_#{rand_id}.json"
+    directory_client = "public/#{client_directory}"
+    directory_to_zip = "public/#{client_directory}/dist/"
     output_file = "public/#{client_directory}.zip"
+    pwa_output_directory = '/'
+
+    pwa_output_directory = "/#{client_directory}/dist/" if build_typ == 'pwa'
 
     json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
 
@@ -38,7 +43,7 @@ class Build::Maptogo
     places.each do |place|
       images = place[:images]
       images.each do |image|
-        image[:image_url] = "/images/#{image[:image_filename]}"
+        image[:image_url] = pwa_output_directory + "images/#{image[:image_filename]}"
         images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + (image[:image_on_disk]) }
       end
     end
@@ -53,6 +58,10 @@ class Build::Maptogo
     end
 
     if build_config['commands'].length.positive?
+      # env = build_config['env']
+      env = {
+        'PUBLIC_PATH' => pwa_output_directory
+      }
       step_count = build_config['commands'].count
       BuildChannel.broadcast_to(
         @current_user,
@@ -78,7 +87,7 @@ class Build::Maptogo
         cmd = command['cmd'].gsub('CLIENT_PATH', client_directory)
         cmd = cmd.gsub('JSON_FILE', tmp_file)
         cmd = cmd.gsub('IMAGE_FILE_DIRECTORY', images_tmp_folder)
-        Open3.popen3(*cmd) do |stdin, stdout, stderr, wait_thr|
+        Open3.popen3(env, cmd) do |stdin, stdout, stderr, wait_thr|
           sleep 4
           BuildChannel.broadcast_to(
             @current_user,
@@ -100,20 +109,26 @@ class Build::Maptogo
       zf = ZipFileGenerator.new(directory_to_zip, output_file)
       zf.write
       filesize = number_to_human_size(File.size(Pathname.new(output_file)))
-      FileUtils.rm_rf(directory_client)
+      # FileUtils.rm_rf(directory_client)
       FileUtils.rm_rf(images_tmp_folder)
+
+      output = "/#{client_directory}.zip"
+
+      output = pwa_output_directory if build_typ == 'pwa'
+
       BuildChannel.broadcast_to(
         @current_user,
         {
           index: 99,
           status: 'finished',
           duration: "#{((Time.current - build_start) / 1.second).round} seconds",
-          content: "/#{client_directory}.zip",
+          content: output,
+          build_typ: build_typ,
           step_count: step_count,
           filesize: filesize
         }
       )
-      build_log.output = "/#{client_directory}.zip"
+      build_log.output = output
       build_log.size = filesize
       build_log.version = 'x.x.x'
       # build_log.status = 'FINISHED'
