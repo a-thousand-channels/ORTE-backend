@@ -18,16 +18,18 @@
           = f.input :subtitle
           = tinymce
           = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
+          = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
           = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
         .grid-x
           .small-5.cell
+
             %p
               = f.input :published, :label => 'Publish'
-              %span.hint.text-left Set this layers as published
+              %p.hint.text-left Set this layers as published
             %p
               = f.input :public_submission, :label => 'Submissions'
-              %span.hint.text-left Enable public submissions
+              %p.hint.text-left Enable public submissions
             - if @layer.public_submission
               - if @layer.submission_config
                 = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button small" do
@@ -47,11 +49,23 @@
                       - else
                         = title
               - else
-                = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button" do
+                = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button small" do
                   %i.fi-pencil.fi-24
                   Create submission configuration
           .small-7.cell
             = f.input :image, as: :file, label: 'Image', required: false
+            - if @layer.image && @layer.image.attached?
+              = image_tag @layer.image.variant(resize: "200x200").processed, class: "thumbnail"
+            %hr
+            = f.input :backgroundimage, as: :file, label: 'Background Image', required: false
+            - if @layer.backgroundimage && @layer.backgroundimage.attached?
+              = image_tag @layer.backgroundimage.variant(resize: "200x200").processed, class: "thumbnail"
+            %hr
+            = f.input :favicon, as: :file, label: 'Favicon Image', required: false
+            - if @layer.favicon && @layer.favicon.attached?
+              = image_tag @layer.favicon.variant(resize: "200x200").processed, class: "thumbnail"
+            %p.hint
+              These images will be available at your client
         %hr
         %p.compact
           = f.label :color, "Marker color"
@@ -75,15 +89,66 @@
 
         %hr
         %div.compact
-          %label Mapcenter
-          %span.hint.text-left Set these values if you want a different map focus then the automatic calculation of all places would give
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell
+              %label Predefined Basemaps
+              %select#basemaps
+                %option{value: '', "data-url": '', "data-backgroundcolor": '', "data-attribution": '' }
+                - basemaps.each_value do |b|
+                  %option{value: b['id'], "data-url": b['url'], "data-backgroundcolor": b['backgroundcolor'], "data-attribution": b['attribution'] }
+                    = b['title']
+              %p.shy
+                Please select one of the predefined basemaps
+
+          %hr
+          .grid-x.grid-padding-x
+            .large-8.medium-8.small-12.cell
+              %p
+                %label Basemap URL
+                = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false
+              %p.shy
+                URL for a basemap (used as tile layer in the background)
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
+              %p
+                %label Basemap Attribution
+                = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false
+              %p.shy
+                Attribution for this basemap
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
+            .large-4.medium-4.small-12.cell
+              %p
+                %label Background color
+                = f.input :background_color, as: :color, value: @layer.background_color, label: false
+              %p.hint
+                The background of the map will be filled with this color.
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-12.cell
+              %label Tooltip
+              = f.input :tooltip_display_mode, :collection => tooltip_display_mode_for_select, include_blank: 'Select:', label: false, :selected => @layer.tooltip_display_mode
+              %p.hint.text-left
+                Tooltips can show the title of a place on the map. Here you can decide if tooltips should be shown, either permanently or per mouse-over
+            .large-6.medium-6.small-12.cell
+              %label Sorting
+              = f.input :places_sort_order, :collection => places_sort_order_for_select, label: false, :selected => @layer.places_sort_order
+              %p.hint.text-left
+                As a list, how the places should be sorted: By ID oder by Startdate?
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .medium-12.cell
+              %label Mapcenter
+              %p.hint.text-left Set these values if you want a to override the automatic map center (by the extent of all places)
           .grid-x.grid-padding-x
             .medium-5.cell
               = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}
             .medium-5.cell
               = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}
             .medium-2.cell
-              = f.input :zoom, label: "Zoom (1-18)", input_html: { placeholder: '12'}
+              = f.input :zoom, label: "Zoom", input_html: { placeholder: '12'}
+              %p.hint 1-18
 
 
         %hr

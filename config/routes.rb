@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :build_logs
   resources :people
   resources :annotations
   resources :submission_configs
@@ -20,6 +21,9 @@ Rails.application.routes.draw do
   get   'edit_profile',    to: 'start#edit_profile'
   patch 'update_profile',  to: 'start#update_profile'
 
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
+
   resources :iconsets do
     resources :icons, only: [:edit, :destroy, :update]
   end
@@ -31,6 +35,8 @@ Rails.application.routes.draw do
         post :search
       end
       member do
+        get :pack
+        patch :build
         get :annotations
         get :relations
         get :images, only: [:index]

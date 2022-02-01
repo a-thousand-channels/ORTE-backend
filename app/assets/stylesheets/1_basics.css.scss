@@ -71,6 +71,10 @@ small.error {
     border: 2px solid red;
     padding: 10px;
 }
+span.confirmation {
+  color: #1bb71b;
+}
+
 span.name, label {
     color: #888;
     font-size: 90%;
@@ -82,6 +86,7 @@ span.name.middle {
   padding-top: 7px;
   display: inline-block;
 }
+
 
 hr {border-bottom: 1px solid #aaa;}
 hr.small { margin: 0.25rem auto 0.65rem; }
@@ -129,6 +134,13 @@ a.small.button.rounded {
     border-radius: 20px;
     padding: 5px 6px;
     background-color: white;
+    color: darken(#c6c600,5%) !important;
+    font-size: 0.9rem;
+}
+a.small.button.rounded.rounded-grey {
+    border-radius: 20px;
+    padding: 5px 6px;
+    background-color: #efefef;
     color: darken(#c6c600,5%) !important;
     font-size: 0.9rem;
 }
@@ -254,6 +266,54 @@ select {
 
 
 /* -------------------- */
+.action-bar {
+  background-color: rgba(255,255,255,0.7);
+  background-image: none !important;
+  padding: 7px 15px 7px 15px;
+  a {
+    color: #333;
+  }
+
+  .action-bar-left {
+    flex-grow: 1;
+    width: 33%;
+    text-align: left;
+  }
+  .action-bar-center {
+    flex-grow: 1;
+    width: 32%;
+    text-align: center;
+
+    a.button.small {
+      padding: 0.6em 0.6em !important;
+      color: #333 !important;
+      display: inline;
+      font-weight:  bold;
+      font-size:  14px;
+      opacity:  1;
+      transition: 3s all;
+      svg {
+        height: 18px;
+        vertical-align: -3px;
+        path {
+          color:  #333;
+        }
+      }
+    }
+    a.hide {
+      display: none;
+      opacity:  0;
+      background-color: transparent;
+      color: transparent !important;
+      transition: all 2s;
+    }
+  }
+  .action-bar-right {
+    flex-grow: 1;
+    width: 33%;
+    text-align: right;
+  }
+}
 
 /* -------------------- */
 footer {
@@ -291,6 +351,12 @@ input[type="time"] {
 input[type="date"] {
     width: 137px;
 }
+input[type="color"] {
+    min-height: 100px;
+}
+textarea {
+  min-height: 57px
+}
 
 .form-actions {
   margin-top: 15px;
@@ -316,6 +382,15 @@ p.hint {
 }
 p.hint.text-left {
   text-align: left;
+}
+p.hint.hint-margin {
+  margin-bottom:  20px;
+}
+p.hint.hint2 {
+   color: #aaa;
+}
+p.hint.hint2:hover {
+  color: grey;
 }
 
 div.switch {

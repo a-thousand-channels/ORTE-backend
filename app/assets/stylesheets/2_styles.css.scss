@@ -11,7 +11,7 @@ main {
   z-index: 999;
   position: absolute;
   top: 0;
-  margin: 65px 0 0 20px;
+  margin: 100px 0 0 20px;
   background-color: transparent;
   min-height: auto;
   padding: 0;
@@ -57,6 +57,14 @@ body#start main {
       min-width: 300px;
     }
 }
+#layers #table-wrapper {
+    min-width: 500px;
+    width: 85vw;
+    max-width:  1000px;
+    @media screen and (max-width: 39.9375em) {
+      min-width: 300px;
+    }
+}
 #layers .grid-x.grid-images {
 
 
@@ -88,14 +96,19 @@ input#addresslookup_address.hide {
 }
 
 /* -------------------- */
+
+/* --
 #layers main,
 #layers main .grid-x,
 #layers main .cell,
-#layers main #selection {
-  /* avoid 100% width for a nav elements  */
+#layers main #selection
+{
   width: max-content;
   min-width: 250px;
 }
+-- */
+
+
 
 #selection {
 }

@@ -1,0 +1,30 @@
+satellite:
+  id: satellite
+  title: Satellite (Default)
+  url: https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
+  attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+  backgroundcolor: '#454545'
+osm:
+  id: osm
+  title: OpenStreetMap
+  url: https://{s}.tile.osm.org/{z}/{x}/{y}.png
+  attribution: OpenStreetMap + its contributors, CC-BY-SA
+  backgroundcolor: '#dddddd'
+white:
+  id: white
+  title: White Background
+  url:
+  attribution:
+  backgroundcolor: '#dddddd'
+dark:
+  id: dark
+  title: Dark Background
+  url:
+  attribution:
+  backgroundcolor: '#454545'
+lightpink:
+  id: lightpink
+  title: Lightpink Map (3px)
+  url: https://tiles.3plusx.io/world_populated_places/lightpink/{z}/{x}/{y}.png
+  attribution: Map data OpenStreetMap + its contributors, CC-BY-SA, Map by ut/3plusx
+  backgroundcolor: 'linear-gradient(90deg, rgba(255,0,249,0.15) 0%, rgba(255,117,0,0.15) 50%, rgba(255,0,35,0.15) 100%)'
