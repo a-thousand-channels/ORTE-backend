@@ -3,13 +3,13 @@
     {
       "warning_type": "Command Injection",
       "warning_code": 14,
-      "fingerprint": "d527a147101fdaee0840f052ca6a0ed697f94e9abdaea89667413a21abe72bb0",
+      "fingerprint": "ab83025ddbde02f790279e6a024dc0f4509c4cd907f68cab522687d014ebccd5",
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "app/services/build/maptogo.rb",
-      "line": 82,
+      "line": 81,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "Open3.popen3(command[\"cmd\"].gsub(\"CLIENT_PATH\", Shellwords.escape(\"client_#{SecureRandom.uuid}\")).gsub(\"JSON_FILE\", Shellwords.escape(\"tmp/client_#{SecureRandom.uuid}.json\")).gsub(\"IMAGE_FILE_DIRECTORY\", Shellwords.escape(\"tmp/#{\"tmp/#{\"client_#{SecureRandom.uuid}\"}\"}/images\")))",
+      "code": "Open3.popen3(*command[\"cmd\"].gsub(\"CLIENT_PATH\", \"client_#{SecureRandom.uuid}\").gsub(\"JSON_FILE\", \"tmp/client_#{SecureRandom.uuid}.json\").gsub(\"IMAGE_FILE_DIRECTORY\", \"tmp/#{\"tmp/#{\"client_#{SecureRandom.uuid}\"}\"}/images\"))",
       "render_path": null,
       "location": {
         "type": "method",
@@ -19,8 +19,39 @@
       "user_input": "SecureRandom.uuid",
       "confidence": "Medium",
       "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 4,
+      "fingerprint": "dba9c19ade68db88f74cf09703aecaedfcf11c39e90faf50564e28d21656fe96",
+      "check_name": "LinkToHref",
+      "message": "Potentially unsafe model attribute in `link_to` href",
+      "file": "app/views/places/show.html.haml",
+      "line": 91,
+      "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
+      "code": "link_to(Place.new(place_params).link)",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "PlacesController",
+          "method": "create",
+          "line": 97,
+          "file": "app/controllers/places_controller.rb",
+          "rendered": {
+            "name": "places/show",
+            "file": "app/views/places/show.html.haml"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "places/show"
+      },
+      "user_input": "Place.new(place_params).link",
+      "confidence": "Weak",
+      "note": ""
     }
   ],
-  "updated": "2022-02-01 11:36:44 +0100",
+  "updated": "2022-02-01 11:44:29 +0100",
   "brakeman_version": "5.2.0"
 }
