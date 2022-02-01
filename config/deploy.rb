@@ -19,7 +19,9 @@ set :bundle_without, [:development]
 set :bundle_binstubs, nil
 set :notify_emails, ['']
 
+# Standalone Passenger
 set :passenger_in_gemfile, true
+set :passenger_restart_with_touch, true
 
 set :passenger_roles, :app
 set :passenger_restart_runner, :sequence
@@ -120,7 +122,7 @@ namespace :deploy do
 
   before :migrate,    'deploy:db_backup'
   after :updating,    'deploy:tagit'
-  # after :updating,    'passenger:restart'
-  # after :publishing,  'deploy:send_notification'
+  after :updating,    'passenger:restart'
+  after :publishing,  'deploy:send_notification'
 
 end
