@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "d527a147101fdaee0840f052ca6a0ed697f94e9abdaea89667413a21abe72bb0",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/services/build/maptogo.rb",
+      "line": 82,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "Open3.popen3(command[\"cmd\"].gsub(\"CLIENT_PATH\", Shellwords.escape(\"client_#{SecureRandom.uuid}\")).gsub(\"JSON_FILE\", Shellwords.escape(\"tmp/client_#{SecureRandom.uuid}.json\")).gsub(\"IMAGE_FILE_DIRECTORY\", Shellwords.escape(\"tmp/#{\"tmp/#{\"client_#{SecureRandom.uuid}\"}\"}/images\")))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "Build::Maptogo",
+        "method": "build"
+      },
+      "user_input": "SecureRandom.uuid",
+      "confidence": "Medium",
+      "note": ""
+    }
+  ],
+  "updated": "2022-02-01 11:36:44 +0100",
+  "brakeman_version": "5.2.0"
+}
