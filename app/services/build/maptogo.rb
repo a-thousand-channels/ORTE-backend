@@ -29,6 +29,7 @@ class Build::Maptogo
     directory_client = "tmp/#{client_directory}"
     directory_to_zip = "tmp/#{client_directory}/dist/"
     output_file = "public/#{client_directory}.zip"
+    images_tmp_folder = "tmp/#{client_directory}_images"
 
     json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
 
@@ -44,7 +45,6 @@ class Build::Maptogo
     end
     File.open(tmp_file, 'w') { |file| file.write(JSON.generate(layer)) }
 
-    images_tmp_folder = "tmp/#{directory_client}/images"
     FileUtils.mkdir_p images_tmp_folder
 
     images_on_disc.each do |file_hash|
@@ -98,13 +98,14 @@ class Build::Maptogo
       end
 
       filesize = 0
+      FileUtils.rm_rf(images_tmp_folder)
       if Dir.exist?(directory_to_zip)
         zf = ZipFileGenerator.new(directory_to_zip, output_file)
         zf.write
         filesize = number_to_human_size(File.size(Pathname.new(output_file)))
       end
       FileUtils.rm_rf(directory_client)
-      FileUtils.rm_rf(images_tmp_folder)
+
       BuildChannel.broadcast_to(
         @current_user,
         {
