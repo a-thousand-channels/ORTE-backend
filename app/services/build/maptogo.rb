@@ -97,11 +97,12 @@ class Build::Maptogo
         end
       end
 
+      filesize = 0
       if Dir.exist?(directory_to_zip)
         zf = ZipFileGenerator.new(directory_to_zip, output_file)
         zf.write
+        filesize = number_to_human_size(File.size(Pathname.new(output_file)))
       end
-      filesize = number_to_human_size(File.size(Pathname.new(output_file)))
       FileUtils.rm_rf(directory_client)
       FileUtils.rm_rf(images_tmp_folder)
       BuildChannel.broadcast_to(
