@@ -1,5 +1,5 @@
 
-set :branch, 'ut/prepare-for-production-deploy'
+set :branch, 'main'
 set :rails_env, 'staging'
 set :stage, 'staging'
 
