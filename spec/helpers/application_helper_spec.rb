@@ -11,6 +11,13 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe 'basemaps' do
+    it 'returns strcutured basemap infos' do
+      expect(helper.basemaps).not_to eq(nil)
+      expect(helper.basemaps['osm']['id']).to eq('osm')
+    end
+  end
+
   describe 'smart data displays' do
     it 'returns nothing' do
       startdate = nil

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images show edit update destroy annotations relations]
+  before_action :set_layer, only: %i[images show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -25,6 +25,20 @@ class LayersController < ApplicationController
     @layers = @map.layers
     @query = params[:q][:query]
     @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@query}%")
+  end
+
+  def pack
+    @build_logs = BuildLog.where(map_id: @map.id, layer_id: @layer.id).order(created_at: :desc)
+    BuildChannel.broadcast_to current_user, content: 'LayersController::pack'
+  end
+
+  def build
+    if params['layer']['build']
+      Build::Maptogo.new(current_user, @map, @layer).build
+      head :ok
+    else
+      BuildChannel.broadcast_to current_user, content: 'Nothing to do...'
+    end
   end
 
   def relations; end
@@ -123,6 +137,10 @@ class LayersController < ApplicationController
 
   private
 
+  def build_params
+    params.require(:layer).permit(:content, :build)
+  end
+
   def redirect_to_friendly_id
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
@@ -138,6 +156,6 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :text, :credits, :published, :public_submission, :map_id, :color, :mapcenter_lat, :mapcenter_lon, :zoom, :image)
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :image, :backgroundimage, :favicon)
   end
 end

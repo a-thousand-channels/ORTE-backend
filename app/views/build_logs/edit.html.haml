@@ -1,0 +1,13 @@
+
+#form-wrapper
+  %p.text-right.close_link_wrapper
+    = link_to build_logs_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+
+  %h1 Editing build_log
+
+  = render 'form'
+
+  = link_to 'Show', @build_log
+  \|
+  = link_to 'Back', build_logs_path

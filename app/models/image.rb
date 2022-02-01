@@ -14,12 +14,25 @@ class Image < ApplicationRecord
   scope :sorted_by_place, ->(place_id) { where('place_id': place_id).order(sorting: :asc) }
   scope :preview, ->(place_id) { where('place_id': place_id, 'preview': true) }
 
+  def image_filename
+    file.filename if file&.attached?
+  end
+
   def image_url
     ApplicationController.helpers.image_url(file)
   end
 
+  def image_path
+    ApplicationController.helpers.image_path(file)
+  end
+
   def image_linktag
     ApplicationController.helpers.image_linktag(file, title)
+  end
+
+  def image_on_disk
+    full_path = ActiveStorage::Blob.service.path_for(file.key)
+    full_path.gsub(Rails.root.to_s, '')
   end
 
   private
