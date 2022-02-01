@@ -116,6 +116,11 @@ class PlacesController < ApplicationController
                                  else
                                    false
                                  end
+    params[:place][:featured] = if params[:place][:featured] == 'on' || params[:place][:featured] == 'true'
+                                  true
+                                else
+                                  false
+                                end
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })
