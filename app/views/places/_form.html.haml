@@ -59,8 +59,6 @@
               %span.switch-inactive{:aria-hidden=>"true"} Publish
         .large-8.medium-12.small-6.cell
           #feature.switch.inline
-            - checked = false
-            - checked = true if @place.featured == true
             %input{:name=>"place[featured]", :class => "switch-input", :id => "place_featured", :type => "checkbox", :checked => checked }
             %label.switch-paddle{:for=>"place_featured"}
               %span.show-for-sr
