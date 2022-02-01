@@ -21,8 +21,8 @@
           = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
           = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
-        .grid-x
-          .small-5.cell
+        .grid-x.grid-padding-x
+          .small-3.cell
 
             %p
               = f.input :published, :label => 'Publish'
@@ -52,7 +52,7 @@
                 = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button small" do
                   %i.fi-pencil.fi-24
                   Create submission configuration
-          .small-7.cell
+          .small-5.cell
             = f.input :image, as: :file, label: 'Image', required: false
             - if @layer.image && @layer.image.attached?
               = image_tag @layer.image.variant(resize: "200x200").processed, class: "thumbnail"
@@ -66,6 +66,27 @@
               = image_tag @layer.favicon.variant(resize: "200x200").processed, class: "thumbnail"
             %p.hint
               These images will be available at your client
+          .small-4.cell
+            %p
+              %label Background color
+            .grid-x.grid-padding-x
+              .medium-3.cell
+                %p.shy Pick a color:
+                %input{type: "color", id: "background_color_preselector", value: @layer.background_color}
+              .medium-9.cell
+                %p.shy Or paste a color definition:
+                = f.input :background_color, value: @layer.background_color, label: false
+                %p.shy
+                  Color in HEX or RGB or a gradient definition
+                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"Here you can define a fullcolor in HEX or RGB format, or a gradient definition, all according to the CSS definitions of 'background-color'"}
+            %p
+              %label Preview
+              %div#background_color_preview
+                &nbsp;
+            %p.hint
+              The background of the map will be filled with this color.
+              %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
+
         %hr
         %p.compact
           = f.label :color, "Marker color"
@@ -116,12 +137,7 @@
                 Attribution for this basemap
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
             .large-4.medium-4.small-12.cell
-              %p
-                %label Background color
-                = f.input :background_color, as: :color, value: @layer.background_color, label: false
-              %p.hint
-                The background of the map will be filled with this color.
-                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
+              &nbsp;
         %hr
         %div.compact
           .grid-x.grid-padding-x
