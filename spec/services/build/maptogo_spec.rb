@@ -17,12 +17,8 @@ RSpec.describe Build::Maptogo do
         result = Build::Maptogo.new(@user, @map, @layer).build
 
         expect(result[:meta][:created_at]).to eq DateTime.current.to_s
+        expect(result[:meta][:version]).to eq @build_config['version'].to_s
       end
-    end
-    it 'returns version' do
-      result = Build::Maptogo.new(@user, @map, @layer).build
-
-      expect(result[:meta][:version]).to eq @build_config['version'].to_s
     end
   end
 end
