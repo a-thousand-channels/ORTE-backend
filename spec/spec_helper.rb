@@ -4,6 +4,7 @@ require 'capybara'
 require 'capybara/rspec'
 require 'webdrivers/chromedriver'
 require 'webmock/rspec'
+require 'active_support/testing/time_helpers'
 
 WebMock.disable_net_connect!(allow: [
                                'localhost',
@@ -44,6 +45,8 @@ Capybara::Chromedriver::Logger::TestHooks.for_rspec!
 
 RSpec.configure do |config|
   config.color = true
+  config.warnings = false
+  config.include ActiveSupport::Testing::TimeHelpers
 
   config.include Capybara::DSL
   Capybara.server = :puma, { Silent: true }

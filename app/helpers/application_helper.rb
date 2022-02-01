@@ -9,6 +9,11 @@ module ApplicationHelper
     current_user&.admin?
   end
 
+  def basemaps
+    require 'yaml'
+    YAML.load_file('config/basemaps.yaml')
+  end
+
   def smart_date_display(startdate, enddate)
     return unless startdate
 
