@@ -3,13 +3,13 @@
     {
       "warning_type": "Command Injection",
       "warning_code": 14,
-      "fingerprint": "ab83025ddbde02f790279e6a024dc0f4509c4cd907f68cab522687d014ebccd5",
+      "fingerprint": "5bfc9f394b37d47c425ee5371f8452599c8bc1498341cf47ea912c47a8b50a1c",
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "app/services/build/maptogo.rb",
       "line": 81,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "Open3.popen3(*command[\"cmd\"].gsub(\"CLIENT_PATH\", \"client_#{SecureRandom.uuid}\").gsub(\"JSON_FILE\", \"tmp/client_#{SecureRandom.uuid}.json\").gsub(\"IMAGE_FILE_DIRECTORY\", \"tmp/#{\"tmp/#{\"client_#{SecureRandom.uuid}\"}\"}/images\"))",
+      "code": "Open3.popen3(*command[\"cmd\"].gsub(\"CLIENT_PATH\", \"client_#{SecureRandom.uuid}\").gsub(\"JSON_FILE\", \"tmp/client_#{SecureRandom.uuid}.json\").gsub(\"IMAGE_FILE_DIRECTORY\", \"tmp/#{\"client_#{SecureRandom.uuid}\"}_images\"))",
       "render_path": null,
       "location": {
         "type": "method",
@@ -52,6 +52,6 @@
       "note": ""
     }
   ],
-  "updated": "2022-02-01 11:44:29 +0100",
+  "updated": "2022-02-01 18:03:04 +0100",
   "brakeman_version": "5.2.0"
 }
