@@ -35,7 +35,8 @@ set :rvm_ruby_version, 'ruby-2.7.2'
 set :passenger_rvm_ruby_version, fetch(:rvm_ruby_version)
 
 # append :linked_files, "config/secrets.yml"
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key', 'Passengerfile.json')
+
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "storage"
 
 
