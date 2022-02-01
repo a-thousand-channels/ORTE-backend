@@ -1,0 +1,116 @@
+- content_for(:title) { "Map To Go: #{@layer.title}" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %p
+    = link_to map_path(@map) do
+      = @map.title
+    —
+    = link_to map_layer_path(@layer.map,@layer) do
+      = @layer.title
+  %h1
+    Map To Go:
+    = link_to map_layer_path(@map,@layer) do
+      = @layer.title
+  %h4
+
+  %p.hint.hint-margin.text-left
+    Here you can have your map "to go". Clicking the button, all places and all content (text, metadata and media assets) will be packed and combined with a standalone map. This package you can download and then publish your map on a webserver of your choice
+
+  - if !@layer.published
+    .alert-box
+      Your layer is not published!
+      %br
+      Please
+      = link_to edit_map_layer_path(@map,@layer) do
+        edit the settings
+        %i.fi.fi-pencil.fi-20
+      for this layer to make it public accessible
+  - if @layer.places.published.count <= 0
+    .alert-box
+      Your layer has no places
+      %br
+      Please
+      = link_to map_layer_path(@map,@layer) do
+        add some places
+        %i.fi.fi-pencil.fi-20
+      for this layer to make it public accessible      
+  %hr
+  %p
+    Please check the metadata of your layer:
+  %table
+    %tr
+      %td
+        Title
+      %td
+        = link_to map_layer_path(@map,@layer) do
+          = @layer.title
+        = link_to edit_map_layer_path(@map,@layer), class: 'button small rounded rounded-grey ' do
+          %i.fi.fi-pencil.fi-20
+    %tr
+      %td
+        Subtitle
+      %td
+        = @layer.subtitle
+    %tr
+      %td
+        Places (published)
+      %td
+        =@layer.places.published.count
+        of
+        =@layer.places.count
+
+  %p
+    - if @layer.published && @layer.places.published.count >= 1
+      = form_for [@map, @layer], :url => url_for(:controller => 'layers', :action => 'build'), remote: true, authenticity_token: true do |f|
+        = f.hidden_field :build, value: true
+        = f.button :submit, id: "btn_start_build", class: "button btn-primary", data: {send: "message"} , disabled: 'true' do 
+          %i.fi.fi-shopping-bag.fi-20
+          Create your map to go
+    - else
+      %button{class: "button", disabled: 'true'}
+        %i.fi.fi-shopping-bag.fi-20
+        Create your map to go
+
+  
+  %div.build_log
+    
+  %div.pack_log
+    %p
+      Waiting for build server...
+  %div.loading.hidden
+    %p
+      %div.lds-ripple
+        %div
+        %div
+  %hr
+  - if @build_logs.length > 0
+    %div.download_area
+      %p
+        Versions
+      %table
+        - @build_logs.each do |build_log|
+          %tr
+            %td
+              = build_log.created_at.strftime("%d.%m.%Y, %H:%M")
+            %td
+              = build_log.version
+            %td  
+              = link_to build_log.output, {target: "_blank", class: "button"} do
+                %i.fi.fi-archive
+                Download
+                = "(#{build_log.size})"
+
+      %hr
+      %p
+        = link_to @build_logs.first.output, {target: "_blank", class: "button"} do
+          %i.fi.fi-archive
+          Download your map to go
+          = "(#{@build_logs.first.size})"
+  - else
+    %div.download_area.hidden
+      %table
+      %a{href: "#", target: "_blank", class: "button"}
+      

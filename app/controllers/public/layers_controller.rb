@@ -15,7 +15,12 @@ class Public::LayersController < ActionController::Base
   # GET /maps/1/layers/1.json
   def show
     @layer = Layer.published.find_by_slug(params[:id]) || Layer.published.find_by_id(params[:id])
-    # @layer = Layer.published.friendly.find_by_friendly_id(params[:id])
+
+    @places = if @layer.places_sort_order == 'startdate'
+                @layer.places.published.sorted_by_startdate
+              else
+                @layer.places.published
+              end
 
     respond_to do |format|
       if @layer.present?
