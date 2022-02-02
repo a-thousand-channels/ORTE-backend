@@ -4,6 +4,8 @@
     - if @image.file.attached?
       = link_to url_for(@image.file) do
         = image_tag url_for(@image.file)
+      = image_tag @image.file.variant(resize: "800x800\>", "ordered-dither": "h8x8a").processed
+
     - else
       No Image
   %p
