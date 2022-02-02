@@ -36,6 +36,10 @@ class Place < ApplicationRecord
 
   attr_accessor :startdate_date, :startdate_time, :enddate_date, :enddate_time
 
+  after_initialize :sensitive_location
+  attribute :public_lat
+  attribute :public_lon
+
   before_save do
     if startdate_date.present? && startdate_time.present?
       self.startdate = "#{startdate_date} #{startdate_time}"
@@ -55,6 +59,27 @@ class Place < ApplicationRecord
     else
       title
     end
+  end
+
+  def sensitive_location
+    if sensitive
+      locs = random_loc(long: read_attribute(:lon), lat: read_attribute(:lat), radius_meters: read_attribute(:sensitive_radius))
+      self.public_lon = locs[0].to_s
+      self.public_lat = locs[1].to_s
+    else
+      self.public_lat = read_attribute(:lat)
+      self.public_lon = read_attribute(:lon)
+    end
+  end
+
+  def random_loc(long:, lat:, radius_meters:)
+    u = SecureRandom.random_number(1.0)
+    v = SecureRandom.random_number(1.0)
+    w = radius_meters / 111_300.0 * Math.sqrt(u)
+    t = 2 * Math::PI * v
+    x = w * Math.cos(t)
+    y = w * Math.sin(t)
+    [x + long.to_f, y + lat.to_f]
   end
 
   def date
