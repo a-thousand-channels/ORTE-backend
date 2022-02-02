@@ -163,12 +163,12 @@ class Place < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w[id title teaser_as_text text_as_text annotations_as_text startdate enddate lat lon location address zip city country]
+    attributes = %w[id title teaser_as_text text_as_text annotations_as_text startdate enddate public_lat public_lon location address zip city country]
     headers = %w[id title teaser text annotations startdate enddate lat lon location address zip city country]
     CSV.generate(headers: false, force_quotes: false, strip: true) do |csv|
       csv << headers
-      all.each do |user|
-        csv << attributes.map { |attr| user.send(attr) }
+      all.each do |place|
+        csv << attributes.map { |attr| place.send(attr) }
       end
     end
   end
