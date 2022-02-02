@@ -64,6 +64,7 @@ gem 'rubocop'
 gem 'rubocop-rspec'
 gem 'ruby_audit', require: false
 
+gem 'mini_magick'
 gem 'rubyzip'
 
 group :staging, :production do
