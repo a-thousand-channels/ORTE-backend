@@ -67,6 +67,5 @@ class Layer < ApplicationRecord
     exif_data.strip # Strip Exif
     exif_data.write attachment_path
     image.attach(io: File.open(attachment_path), filename: filename)
-    exif_data.exif
   end
 end
