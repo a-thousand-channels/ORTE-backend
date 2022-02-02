@@ -3,9 +3,10 @@
   %p
     - if @image.file.attached?
       = link_to url_for(@image.file) do
-        = image_tag url_for(@image.file)
-      = image_tag @image.file.variant(resize: "800x800\>", "ordered-dither": "h8x8a").processed
-
+        - if @image.place.layer.rasterize_images && @image.itype == 'image'
+          = image_tag @image.file.variant(resize: "800x800\>", "ordered-dither": "h8x8a").processed
+        - else
+          = image_tag @image.file.variant(resize: "800x800\>").processed
     - else
       No Image
   %p

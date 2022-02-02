@@ -14,12 +14,14 @@
             %i.fi-pencil
 
         - if img.file.attached?
+          - klass = 'thumbnail'
           - if img.preview.present?
-            = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
-              = image_tag url_for(img.file)
-          - else
-            = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
-              = image_tag url_for(img.file)
+            - klass = 'thumbnail thumbnail-preview'
+          = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "#{klass}" do
+            - if img.place.layer.rasterize_images  && img.itype == 'image'
+              = image_tag img.variant(resize: "150x150", "ordered-dither": "h4x4a").processed
+            - else
+              = image_tag img.variant(resize: "150x150").processed
         - else
           = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
             %p
