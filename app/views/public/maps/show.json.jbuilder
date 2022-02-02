@@ -15,7 +15,9 @@ json.map do
         json.array! layer.places.published do |place|
           next unless place.published
 
-          json.call(place, :id, :title, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :lat, :lon, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
+          json.call(place, :id, :title, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
+          json.lat place.public_lat
+          json.lon place.public_lon
           json.annotations place.annotations do |annotation|
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
@@ -33,10 +35,14 @@ json.map do
           json.relations place.relations_froms do |relation|
             json.id relation.id
             json.from do
-              json.extract! relation.relation_from, :id, :lat, :lon
+              json.extract! relation.relation_from, :id
+              json.lat relation.relation_from.public_lat
+              json.lon relation.relation_from.public_lon
             end
             json.to do
-              json.extract! relation.relation_to, :id, :lat, :lon
+              json.extract! relation.relation_to, :id
+              json.lat relation.relation_to.public_lat
+              json.lon relation.relation_to.public_lon
             end
           end
         end

@@ -214,6 +214,8 @@ ActiveRecord::Schema.define(version: 2022_02_02_141710) do
     t.boolean "featured"
     t.string "ptype", default: "info"
     t.boolean "shy", default: false
+    t.boolean "sensitive", default: false
+    t.integer "sensitive_radius", default: 100
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
