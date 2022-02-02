@@ -142,6 +142,16 @@
         = f.input :location, :label => 'Name of Location', :input_html => {:placeholder => 'Name' }
         %p.hint Needed only, if the name is different to the title
         %hr
+        #switch.switch.inline
+          %input{:name=>"place[sensitive]", :class => "switch-input", :id => "place_sensitive", :type => "checkbox", :checked => @place.sensitive }
+          %label.switch-paddle{:for=>"place_sensitive"}
+            %span.show-for-sr
+              Sensitive place
+            %span.switch-active{:aria-hidden=>"true"} Sensitive
+            %span.switch-inactive{:aria-hidden=>"true"} Sensitive
+        %div.inline{:id=>'radius_select', style: 'width: 220px; display: inline-block; padding-left: 20px;'}
+          = f.input :sensitive_radius, collection: [100, 1000, 10000]    
+      
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
