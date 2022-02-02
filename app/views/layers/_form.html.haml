@@ -22,7 +22,7 @@
           = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
         .grid-x.grid-padding-x
-          .small-3.cell
+          .small-4.cell
 
             %p
               = f.input :published, :label => 'Publish'
@@ -64,8 +64,7 @@
                     %span.switch-inactive{:aria-hidden=>"true"} Keep
                   %p.hint
                     All EXIF data will be earesed from uploaded images
-          .small-1.cell  
-          .small-6.cell
+          .small-8.cell
             = f.input :image, as: :file, label: 'Image', required: false
             - if @layer.image && @layer.image.attached?
               = image_tag @layer.image.variant(resize: "200x200").processed, class: "thumbnail"
