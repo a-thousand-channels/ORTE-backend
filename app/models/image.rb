@@ -62,7 +62,6 @@ class Image < ApplicationRecord
     exif_data.strip # Strip Exif
     exif_data.write attachment_path
     file.attach(io: File.open(attachment_path), filename: filename)
-    exif_data.exif
   end
 
   def check_file_presence
