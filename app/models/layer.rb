@@ -11,6 +11,8 @@ class Layer < ApplicationRecord
 
   validates :title, presence: true
 
+  before_save :extract_exif_data
+
   extend FriendlyId
   friendly_id :title, use: :slugged
 
@@ -38,5 +40,33 @@ class Layer < ApplicationRecord
 
   def favicon_filename
     favicon.filename if favicon&.attached?
+  end
+
+  def get_exif_data
+    return unless image.attached?
+
+    full_path = ActiveStorage::Blob.service.path_for(image.key)
+    exif_data = MiniMagick::Image.open(full_path.to_s)
+    exif_data.exif
+  end
+
+  private
+
+  def extract_exif_data
+    return unless image.attached?
+    return unless exif_remove
+
+    filename = image.filename.to_s
+    attachment_path = "#{Dir.tmpdir}/#{image.filename}"
+    File.open(attachment_path, 'wb') do |tmp_file|
+      tmp_file.write(image.download)
+      tmp_file.close
+    end
+    exif_data = MiniMagick::Image.open(attachment_path)
+    exif_data.auto_orient # Before stripping
+    exif_data.strip # Strip Exif
+    exif_data.write attachment_path
+    image.attach(io: File.open(attachment_path), filename: filename)
+    exif_data.exif
   end
 end
