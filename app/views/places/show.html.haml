@@ -32,11 +32,19 @@
                     - if img.preview.present?
                       %li.orbit-slide{"data-open": "reveal#{img.id}"}
                         %figure.orbit-figure
-                          = image_tag(img.file.variant(resize: "1200x1200").processed, :class => "orbit-image")
+                          - if img.place.layer.rasterize_images && img.itype == 'image'
+                            = image_tag(img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, :class => "orbit-image")
+                          - else
+                            = image_tag(img.file.variant(resize: "1200x1200").processed, :class => "orbit-image")
+
                     - else
                       %li.orbit-slide{"data-open": "reveal#{img.id}"}
                         %figure.orbit-figure
-                          = image_tag(img.file.variant(resize: "1200x1200").processed, :class => "orbit-image")
+                          - if img.place.layer.rasterize_images && img.itype == 'image'
+                            = image_tag(img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, :class => "orbit-image")
+                          - else
+                            = image_tag(img.file.variant(resize: "1200x1200").processed, :class => "orbit-image")
+
                   - else
                     %p
                       No image uploaded, please do so

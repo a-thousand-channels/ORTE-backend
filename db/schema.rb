@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_01_160945) do
+ActiveRecord::Schema.define(version: 2022_02_02_141710) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(version: 2022_02_01_160945) do
     t.boolean "preview"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "itype", default: "image"
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
@@ -122,6 +123,7 @@ ActiveRecord::Schema.define(version: 2022_02_01_160945) do
     t.string "places_sort_order"
     t.string "background_color", default: "#454545"
     t.boolean "exif_remove", default: true
+    t.boolean "rasterize_images", default: false
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end

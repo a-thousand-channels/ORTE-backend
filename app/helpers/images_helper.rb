@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module ImagesHelper
+  def itype_for_select
+    [['Image (default)', 'image'], %w[Graphics graphics]]
+  end
+
   def image_url(file)
     return unless file.attached?
 
