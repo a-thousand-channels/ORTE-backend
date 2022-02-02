@@ -82,6 +82,10 @@ span.name, label {
     font-weight: bold;
     padding-right: 10px;
 }
+.input.boolean labelX {
+  line-height: 0;
+  margin-bottom: 10px;
+}
 span.name.middle {
   padding-top: 7px;
   display: inline-block;
