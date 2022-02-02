@@ -52,7 +52,20 @@
                 = link_to new_submission_config_path(layer_id: @layer.id), :class=>"button small" do
                   %i.fi-pencil.fi-24
                   Create submission configuration
-          .small-7.cell
+              %p
+                %hr
+                = f.label :exif_remove, "Remove EXIF data"
+                #switch.switch.inline
+                  %input{:name=>"layer[exif_remove]", :class => "switch-input", :id => "layer_exif_remove", :type => "checkbox", :checked => @layer.exif_remove }
+                  %label.switch-paddle{:for=>"layer_exif_remove"}
+                    %span.show-for-sr
+                      Remove EXIF data for all images
+                    %span.switch-active{:aria-hidden=>"true"} Remove
+                    %span.switch-inactive{:aria-hidden=>"true"} Keep
+                  %p.hint
+                    All EXIF data will be earesed from uploaded images
+          .small-1.cell  
+          .small-6.cell
             = f.input :image, as: :file, label: 'Image', required: false
             - if @layer.image && @layer.image.attached?
               = image_tag @layer.image.variant(resize: "200x200").processed, class: "thumbnail"
