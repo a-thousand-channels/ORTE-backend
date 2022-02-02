@@ -1,5 +1,5 @@
 
-set :branch, 'feature-maptogo'
+set :branch, 'main'
 set :rails_env, 'staging'
 set :stage, 'staging'
 
