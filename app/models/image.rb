@@ -31,7 +31,11 @@ class Image < ApplicationRecord
   end
 
   def image_on_disk
+    return unless file.attached?
+
     full_path = ActiveStorage::Blob.service.path_for(file.key)
+    return unless File.exist?(full_path)
+
     full_path.gsub(Rails.root.to_s, '')
   end
 
