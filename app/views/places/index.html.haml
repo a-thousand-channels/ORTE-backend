@@ -14,17 +14,48 @@
       = @layer.title
     (#{@places.count})
 
-  %p.text-right.hint
-    See also:
-    %br
-    = link_to annotations_map_layer_path(@map,@layer) do
-      Annotations (about Places)
-  %p.text-right.hint
-    = link_to relations_map_layer_path(@map,@layer) do
-      Relations (between places)
-  %p.text-right.hint
-    = link_to images_map_layer_path(@map,@layer) do
-      Images
+  .grid-x.grid-padding-x
+    .medium-8.cell
+      %p.hint.text-left
+        - if @layer.published
+          %i.fi-eye.fi-21
+          This content of this layer is visible to the public
+        - else
+          %i.fi-lock.fi-21
+          The content is not public
+      %p.text-left.hint
+        Privacy settings for this layer:
+      %ul.hint
+        %li
+          - if @layer.exif_remove
+            %i.fi-check.fi-18
+            All EXIF data will be removed from uploaded images
+          - else
+            %i.fi-alert.fi-18
+            EXIF data of uploaded images will not be removed
+        %li
+          - if @layer.rasterize_images
+            %i.fi-check.fi-18
+            Images will be displayed with a halftone raster
+          - else
+            %i.fi-alert.fi-18
+            All images will be displayed unchanged
+      %p.hint.text-left
+        You can change these settings
+        = link_to edit_map_layer_path(@map,@layer) do
+          in the edit mode
+    .medium-4.cell
+      %p.text-right.hint
+        See also:
+        %br
+        = link_to annotations_map_layer_path(@map,@layer) do
+          Annotations (about Places)
+      %p.text-right.hint
+        = link_to relations_map_layer_path(@map,@layer) do
+          Relations (between places)
+      %p.text-right.hint
+        = link_to images_map_layer_path(@map,@layer) do
+          Images
   %p
     &nbsp;
   %table
@@ -47,7 +78,10 @@
                 - begin
                   - if img.attached?
                     %p
-                      = image_tag img.variant(resize: "120x120").processed, class: "thumbnail", title: img.title
+                    - if img.place.layer.rasterize_images  && img.itype == 'image'
+                      = image_tag img.variant(resize: "250x250", "ordered-dither": "h4x4a").processed, title: img.title, alt: img.alt
+                    - else
+                      = image_tag img.variant(resize: "250x250").processed, title: img.title, alt: img.alt
                       %br
                       %small.nowrap
                         #{img.title}

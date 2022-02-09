@@ -14,11 +14,11 @@
         .grid-x.grid-padding-x
           .large-6.medium-6.cell
             = f.input :file, as: :file, input_html: { accept: ('image'), multiple: false }, label: "Image (JPG, GIF or PNG)"
-            - if @image.place.layer.exif_remove
+            - if @layer.exif_remove
               %p.shy
                 %i.fi.fi-check
                 All EXIF metadata will be removed
-            - if @image.place.layer.rasterize_images
+            - if @layer.rasterize_images
               %p.shy
                 %i.fi.fi-check
                 Image will be published in a rasterized version
