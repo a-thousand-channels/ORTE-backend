@@ -31,18 +31,7 @@ class Build::Maptogo
     output_file = "public/#{client_directory}.zip"
     images_tmp_folder = "tmp/#{client_directory}_images"
 
-    json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => @map, :@layer => @layer, :@places => places })
-
-    layer = JSON.parse(json_data, { symbolize_names: true })
-    places = layer[:layer][:places]
-    images_on_disc = []
-    places.each do |place|
-      images = place[:images]
-      images.each do |image|
-        image[:image_url] = "/images/#{image[:image_filename]}"
-        images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + (image[:image_on_disk]) }
-      end
-    end
+    layer, images_on_disc = generate_layer_json(@layer)
     File.open(tmp_file, 'w') { |file| file.write(JSON.generate(layer)) }
 
     FileUtils.mkdir_p images_tmp_folder
@@ -125,6 +114,22 @@ class Build::Maptogo
       build_log.save
     end
     result = { meta: meta, data: data }
+  end
+
+  def generate_layer_json(layer, image_path = '/images/')
+    json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => layer.map, :@layer => layer, :@places => layer.places.published })
+
+    layer = JSON.parse(json_data, { symbolize_names: true })
+    places = layer[:layer][:places]
+    images_on_disc = []
+    places.each do |place|
+      images = place[:images]
+      images.each do |image|
+        image[:image_url] = image_path + (image[:image_filename]).to_s
+        images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + (image[:image_on_disk]) }
+      end
+    end
+    [layer, images_on_disc]
   end
 
   private
