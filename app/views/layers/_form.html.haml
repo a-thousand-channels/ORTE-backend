@@ -33,8 +33,8 @@
             - if @layer.public_submission
               - if @layer.submission_config
                 = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button small" do
-                  %i.fi-pencil.fi-24
-                  Edit configuration
+                  %i.fi-pencil.fi-18
+                  Edit submissions configuration
                 - if @layer.submission_config.locales.count > 0
                   %br
                   Submission forms:

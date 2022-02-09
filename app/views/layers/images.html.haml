@@ -24,13 +24,13 @@
                   - if img.preview.present?
                     %p{"data-open": "reveal#{img.id}"}
                       = link_to map_layer_place_image_path(place.layer.map,place.layer,place,img), class: "thumbnail thumbnail-preview" do
-                        = image_tag img.file.variant(resize: "200x200").processed
-                        = image_tag img.file.variant(resize: "200x200", "ordered-dither": "h4x4a").processed
+                        = image_tag img.file.variant(resize: "400x400").processed
+                        = image_tag img.file.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
                   - else
                     %p{"data-open": "reveal#{img.id}"}
                       = link_to map_layer_place_image_path(place.layer.map,place.layer,place,img), class: "thumbnail" do
-                        = image_tag img.file.variant(resize: "200x200").processed
-                        = image_tag img.file.variant(resize: "200x200", "ordered-dither": "h4x4a").processed
+                        = image_tag img.file.variant(resize: "400x400").processed
+                        = image_tag img.file.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
             - else
               %p.small.shy No images (yet)
 
