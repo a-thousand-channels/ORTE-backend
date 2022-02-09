@@ -47,7 +47,10 @@
                 - begin
                   - if img.attached?
                     %p
-                      = image_tag img.variant(resize: "120x120").processed, class: "thumbnail", title: img.title
+                    - if img.place.layer.rasterize_images  && img.itype == 'image'
+                      = image_tag img.variant(resize: "250x250", "ordered-dither": "h4x4a").processed, title: img.title, alt: img.alt
+                    - else
+                      = image_tag img.variant(resize: "250x250").processed, title: img.title, alt: img.alt
                       %br
                       %small.nowrap
                         #{img.title}
