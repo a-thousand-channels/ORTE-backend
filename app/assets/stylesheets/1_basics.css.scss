@@ -378,7 +378,9 @@ p.date {
   margin-bottom: 0;
 }
 span.hint,
-p.hint {
+p.hint,
+ul.hint li
+ {
   font-size: 0.8em;
   color: grey;
   margin-bottom: 0;
@@ -386,6 +388,15 @@ p.hint {
 }
 p.hint.text-left {
   text-align: left;
+}
+ul.hint {
+  list-style: none;
+  margin-left:  0;
+  margin-bottom: 0.25rem;
+}
+ul.hint li {
+  text-align: left;
+
 }
 p.hint.hint-margin {
   margin-bottom:  20px;
