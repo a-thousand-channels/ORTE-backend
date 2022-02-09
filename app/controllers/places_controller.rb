@@ -108,24 +108,10 @@ class PlacesController < ApplicationController
     @layer = @place.layer
     @map = @place.layer.map
 
-    # quirks, because foundation switch generates 'on'/'off' values,
-    # rails expect true/false
     # TODO: render this at generating the form
-    params[:place][:published] = if params[:place][:published] == 'on' || params[:place][:published] == 'true'
-                                   true
-                                 else
-                                   false
-                                 end
-    params[:place][:featured] = if params[:place][:featured] == 'on' || params[:place][:featured] == 'true'
-                                  true
-                                else
-                                  false
-                                end
-    params[:place][:sensitive] = if params[:place][:sensitive] == 'on' || params[:place][:sensitive] == 'true'
-                                   true
-                                 else
-                                   false
-                                 end
+    params[:place][:published] = default_checkbox(params[:place][:published])
+    params[:place][:featured] = default_checkbox(params[:place][:featured])
+    params[:place][:sensitive] = default_checkbox(params[:place][:sensitive])
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })
