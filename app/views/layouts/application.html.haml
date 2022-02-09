@@ -69,8 +69,8 @@
             = link_to public_map_layer_path(@map,@layer,:format => :geojson ), :title => "Export this layer as GeoJSON", class: 'small' do
               GeoJSON
             \::
-            = link_to public_map_layer_path(@map,@layer,:format => :zip), :title => "Export this layer as ZIP (include images)", class: 'small' do
-              ZIP
+            = link_to public_map_layer_path(@map,@layer,:format => :zip), :title => "Export this layer as ZIP archive (JSON & images)", class: 'small' do
+              JSON & Images
             \::
              
           - if controller_name == 'maps' && params[:action] == 'show' && @map
