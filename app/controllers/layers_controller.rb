@@ -114,16 +114,9 @@ class LayersController < ApplicationController
   # PATCH/PUT /layers/1.json
   def update
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
-    params[:layer][:exif_remove] = if params[:layer][:exif_remove] == 'on' || params[:layer][:exif_remove] == 'true'
-                                     true
-                                   else
-                                     false
-                                   end
-    params[:layer][:rasterize_images] = if params[:layer][:rasterize_images] == 'on' || params[:layer][:rasterize_images] == 'true'
-                                          true
-                                        else
-                                          false
-                                        end
+    params[:layer][:exif_remove] = default_checkbox(params[:layer][:exif_remove])
+    params[:layer][:rasterize_images] = default_checkbox(params[:layer][:rasterize_images])
+
     respond_to do |format|
       if @layer.update(layer_params)
         format.html { redirect_to map_path(@map), notice: 'Layer was successfully updated.' }
