@@ -126,7 +126,7 @@ class Build::Maptogo
       images = place[:images]
       images.each do |image|
         image[:image_url] = image_path + (image[:image_filename]).to_s
-        images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + (image[:image_on_disk]) }
+        images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + (image[:image_on_disk]) } unless image[:image_on_disk].nil?
       end
     end
     [layer, images_on_disc]
