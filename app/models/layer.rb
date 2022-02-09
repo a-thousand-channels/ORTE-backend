@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+include ActionView::Helpers::NumberHelper
 class Layer < ApplicationRecord
   belongs_to :map
   has_many :places
@@ -40,6 +41,29 @@ class Layer < ApplicationRecord
 
   def favicon_filename
     favicon.filename if favicon&.attached?
+  end
+
+  def to_zip(output_filename)
+    rand_id = SecureRandom.uuid
+    images_tmp_folder = "tmp/layer_#{rand_id}_images"
+    tmp_file = "#{images_tmp_folder}/layer.json"
+    output_file = "public/#{output_filename}"
+
+    layer, images_on_disc = Build::Maptogo.new(nil, nil, self).generate_layer_json(self, '')
+
+    FileUtils.mkdir_p images_tmp_folder
+    File.open(tmp_file, 'w') { |file| file.write(JSON.generate(layer)) }
+    images_on_disc.each do |file_hash|
+      dest_folder = "#{images_tmp_folder}/#{file_hash['filename']}"
+      FileUtils.cp(file_hash['disk'], dest_folder)
+    end
+
+    if Dir.exist?(images_tmp_folder)
+      zf = ZipFileGenerator.new(images_tmp_folder, output_file)
+      zf.write
+    end
+    FileUtils.rm_rf(images_tmp_folder)
+    output_file
   end
 
   def get_exif_data
