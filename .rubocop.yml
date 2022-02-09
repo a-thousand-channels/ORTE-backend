@@ -29,6 +29,7 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - app/helpers/application_helper.rb
     - app/controllers/places_controller.rb
+    - app/controllers/layers_controller.rb
 
 Metrics/MethodLength:
   Enabled: false
