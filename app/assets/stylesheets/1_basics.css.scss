@@ -311,6 +311,10 @@ select {
       color: transparent !important;
       transition: all 2s;
     }
+    a.button.disabled {
+      background-color: silver;
+      color: gray !important;
+    }
   }
   .action-bar-right {
     flex-grow: 1;
