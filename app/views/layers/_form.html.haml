@@ -22,7 +22,7 @@
           = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
         .grid-x.grid-padding-x
-          .small-4.cell
+          .small-5.cell
 
             %p
               = f.input :published, :label => 'Publish'
@@ -53,32 +53,39 @@
                   %i.fi-pencil.fi-24
                   Create submission configuration
             %hr
-            %p
-              = f.label :exif_remove, "Remove EXIF data"
-              #switch.switch.inline
-                %input{:name=>"layer[exif_remove]", :class => "switch-input", :id => "layer_exif_remove", :type => "checkbox", :checked => @layer.exif_remove }
-                %label.switch-paddle{:for=>"layer_exif_remove"}
-                  %span.show-for-sr
-                    Remove EXIF data for all images
-                  %span.switch-active{:aria-hidden=>"true"} Remove
-                  %span.switch-inactive{:aria-hidden=>"true"} Keep
-                %p.hint
-                  Metadata will be erased from uploaded images
-                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"After selecting this option a function will remove all embedded metadata (EXIF) from images. This will have no impact on images that have been already uploaded!" }
-            %hr
-            %p
-              = f.label :rasterize_images, "Rasterize images"
-              #switch_rasterize_images.switch.inline
-                %input{:name=>"layer[rasterize_images]", :class => "switch-input", :id => "layer_rasterize_images", :type => "checkbox", :checked => @layer.rasterize_images }
-                %label.switch-paddle{:for=>"layer_rasterize_images"}
-                  %span.show-for-sr
-                    Raster all images, that are no graphics
-                  %span.switch-active{:aria-hidden=>"true"} Raster
-                  %span.switch-inactive{:aria-hidden=>"true"} No
-                %p.hint
-                  Display all images, that are no graphics, with a halftone raster
-                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"With this option all images of this layer, that are no graphics, will be published as rastered, and so mildly disguised images. This option will not alter the images already uploaded in this system." }
-          .small-8.cell
+            - if @map.enable_privacy_features
+              %p
+                %label Privacy features
+              %p.shy
+                These features are experimental and need some real life testing. Do not use them without beeing aware of this status. If you use them we'd be very happy if you could share your exprience with us :)
+              .grid-x.grid-padding-x
+                .large-6.medium-6.small-12.cell
+                  %p
+                    = f.label :exif_remove, "Remove EXIF data"
+                    #switch.switch.inline
+                      %input{:name=>"layer[exif_remove]", :class => "switch-input", :id => "layer_exif_remove", :type => "checkbox", :checked => @layer.exif_remove }
+                      %label.switch-paddle{:for=>"layer_exif_remove"}
+                        %span.show-for-sr
+                          Remove EXIF data for all images
+                        %span.switch-active{:aria-hidden=>"true"} Remove
+                        %span.switch-inactive{:aria-hidden=>"true"} Keep
+                      %p.hint
+                        Metadata will be erased from uploaded images
+                        %i.fi.fi-info{"data-tooltip"=>true, :title=>"After selecting this option a function will remove all embedded metadata (EXIF) from images. This will have no impact on images that have been already uploaded!" }
+                .large-6.medium-6.small-12.cell
+                  %p
+                    = f.label :rasterize_images, "Rasterize images"
+                    #switch_rasterize_images.switch.inline
+                      %input{:name=>"layer[rasterize_images]", :class => "switch-input", :id => "layer_rasterize_images", :type => "checkbox", :checked => @layer.rasterize_images }
+                      %label.switch-paddle{:for=>"layer_rasterize_images"}
+                        %span.show-for-sr
+                          Raster all images, that are no graphics
+                        %span.switch-active{:aria-hidden=>"true"} Raster
+                        %span.switch-inactive{:aria-hidden=>"true"} No
+                      %p.hint
+                        Display all images, that are no graphics, with a halftone raster
+                        %i.fi.fi-info{"data-tooltip"=>true, :title=>"With this option all images of this layer, that are no graphics, will be published as rastered, and so mildly disguised images. This option will not alter the images already uploaded in this system." }
+          .small-7.cell
             = f.input :image, as: :file, label: 'Image', required: false
             - if @layer.image && @layer.image.attached?
               = image_tag @layer.image.variant(resize: "200x200").processed, class: "thumbnail"

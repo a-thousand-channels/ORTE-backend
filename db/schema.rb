@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_09_142051) do
+ActiveRecord::Schema.define(version: 2022_02_15_140312) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -166,6 +166,9 @@ ActiveRecord::Schema.define(version: 2022_02_09_142051) do
     t.string "tooltip_display_mode", default: "none"
     t.string "places_sort_order"
     t.string "background_color", default: "#454545"
+    t.string "preview_url"
+    t.boolean "enable_map_to_go", default: false
+    t.boolean "enable_privacy_features", default: true
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
