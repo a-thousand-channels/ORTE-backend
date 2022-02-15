@@ -51,7 +51,7 @@
       &nbsp;
     .action-bar-center
       - if @map && @layer
-        - layer_url = url_for map_layer_url(@map,@layer, format: 'json')
+        - layer_url = url_for public_map_layer_url(@map,@layer, format: 'json')
 
         - preview_url = '#'
         - if @map.preview_url.present?
