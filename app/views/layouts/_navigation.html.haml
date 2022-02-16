@@ -56,7 +56,7 @@
         - preview_url = '#'
         - if @map.preview_url.present?
           - preview_url = @map.preview_url + '?layer=' + layer_url
-          %a{href: preview_url, class: 'button small hide action-button', id: 'livepreview_button'}
+          %a{href: preview_url, target: '_blank', class: 'button small hide action-button', id: 'livepreview_button'}
             %i.fi-eye.fi-21
             Preview
         - else
