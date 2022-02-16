@@ -1,5 +1,5 @@
 
-set :branch, 'feature-privacy'
+set :branch, 'main'
 set :rails_env, 'staging'
 set :stage, 'staging'
 
