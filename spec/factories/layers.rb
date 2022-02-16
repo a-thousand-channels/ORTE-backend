@@ -18,6 +18,7 @@ FactoryBot.define do
     zoom { 12 }
     tooltip_display_mode { 'false' }
     places_sort_order { 'startdate' }
+    rasterize_images { false }
     submission_config { false }
     map
 

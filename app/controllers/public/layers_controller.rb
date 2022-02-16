@@ -26,6 +26,11 @@ class Public::LayersController < ActionController::Base
       if @layer.present?
         format.json { render :show }
         format.geojson { render :show, mime_type: Mime::Type.lookup('application/geo+json') }
+        format.zip do
+          zip_file = "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.zip"
+          @layer.to_zip(zip_file)
+          send_file "#{Rails.root}/public/#{zip_file}"
+        end
       else
         # format.json { head :no_content }
         format.json { render json: { error: 'Layer not accessible' }, status: :forbidden }

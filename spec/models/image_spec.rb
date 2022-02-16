@@ -9,6 +9,14 @@ RSpec.describe Image, type: :model do
     expect(build(:image)).to be_valid
   end
 
+  it 'has an image type' do
+    m = FactoryBot.create(:map)
+    l = FactoryBot.create(:layer, map: m)
+    p = FactoryBot.create(:place, layer: l)
+    i = create(:image, place: p)
+    expect(i.itype).to eq('image')
+  end
+
   describe 'Attachment' do
     it 'is valid  ' do
       subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')

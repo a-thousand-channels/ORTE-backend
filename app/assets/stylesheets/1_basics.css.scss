@@ -82,6 +82,10 @@ span.name, label {
     font-weight: bold;
     padding-right: 10px;
 }
+.input.boolean labelX {
+  line-height: 0;
+  margin-bottom: 10px;
+}
 span.name.middle {
   padding-top: 7px;
   display: inline-block;
@@ -276,7 +280,7 @@ select {
 
   .action-bar-left {
     flex-grow: 1;
-    width: 33%;
+    width: 25%;
     text-align: left;
   }
   .action-bar-center {
@@ -307,10 +311,14 @@ select {
       color: transparent !important;
       transition: all 2s;
     }
+    a.button.disabled {
+      background-color: silver;
+      color: gray !important;
+    }
   }
   .action-bar-right {
     flex-grow: 1;
-    width: 33%;
+    width: 25%;
     text-align: right;
   }
 }
@@ -374,7 +382,9 @@ p.date {
   margin-bottom: 0;
 }
 span.hint,
-p.hint {
+p.hint,
+ul.hint li
+ {
   font-size: 0.8em;
   color: grey;
   margin-bottom: 0;
@@ -382,6 +392,15 @@ p.hint {
 }
 p.hint.text-left {
   text-align: left;
+}
+ul.hint {
+  list-style: none;
+  margin-left:  0;
+  margin-bottom: 0.25rem;
+}
+ul.hint li {
+  text-align: left;
+
 }
 p.hint.hint-margin {
   margin-bottom:  20px;

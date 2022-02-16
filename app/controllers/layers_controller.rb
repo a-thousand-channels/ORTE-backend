@@ -114,6 +114,9 @@ class LayersController < ApplicationController
   # PATCH/PUT /layers/1.json
   def update
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
+    params[:layer][:exif_remove] = default_checkbox(params[:layer][:exif_remove])
+    params[:layer][:rasterize_images] = default_checkbox(params[:layer][:rasterize_images])
+
     respond_to do |format|
       if @layer.update(layer_params)
         format.html { redirect_to map_path(@map), notice: 'Layer was successfully updated.' }
@@ -156,6 +159,6 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :image, :backgroundimage, :favicon)
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :image, :backgroundimage, :favicon, :exif_remove, :rasterize_images)
   end
 end

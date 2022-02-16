@@ -14,10 +14,22 @@
         .grid-x.grid-padding-x
           .large-6.medium-6.cell
             = f.input :file, as: :file, input_html: { accept: ('image'), multiple: false }, label: "Image (JPG, GIF or PNG)"
+            - if @layer.exif_remove
+              %p.shy
+                %i.fi.fi-check
+                All EXIF metadata will be removed
+            - if @layer.rasterize_images
+              %p.shy
+                %i.fi.fi-check
+                Image will be published in a rasterized version
             - if params[:action] == 'edit' && @image.file.attached?
-              - # = image_tag @image.variant(resize_to_limit: [100, 100]).processed
               = link_to url_for(@image.file) do
-                = image_tag url_for(@image.file)
+                - if @image.place.layer.rasterize_images && @image.itype == 'image'
+                  %p.show_for_itype_image= image_tag @image.variant(resize: "500x500", "ordered-dither": "h8x8a").processed
+                  %p.show_for_itype_graphics.hide= image_tag @image.variant(resize: "500x500").processed
+                - else
+                  %p.show_for_itype_graphics= image_tag @image.variant(resize: "500x500").processed
+                  %p.show_for_itype_image.hide= image_tag @image.variant(resize: "500x500", "ordered-dither": "h8x8a").processed
             %p.shy
               Please check that your Image is not larger than 2000px
           .large-6.medium-6.cell
@@ -35,6 +47,13 @@
               .large-5.medium-5.cell
                 = f.input :sorting, size: 4
                 %p.shy Sorting order (1-99)
+            .grid-x.grid-padding-x
+              .medium-12
+                %hr
+                  %label Type
+                  = f.input :itype, :collection => itype_for_select, include_blank: false, label: false, :selected => @image.itype
+                  %p.shy Please select if this image is a graphics (like a logo or a faksimile)
+
 
 
         %hr

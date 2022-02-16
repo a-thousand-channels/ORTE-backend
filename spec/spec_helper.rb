@@ -13,6 +13,18 @@ WebMock.disable_net_connect!(allow: [
                                'chromedriver.storage.googleapis.com'
                              ])
 
+# special setup to make feature tests run on ubuntu 20.4 LTS
+if ENV['UBUNTU']
+  puts 'Running Rspecs on Ubuntu'
+  # Webdrivers.logger.level = :debug
+  # On Ubuntu >= 20 Chrome is installed via snap, so provide the path here
+  ::Selenium::WebDriver::Chrome.path = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
+  # For the moment, at my machine, Chromedriver v98 fails with Chromium v98 (sic!)
+  Webdrivers::Chromedriver.required_version = '97.0.4692.71'
+else
+  puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true"'
+end
+
 Capybara.register_driver :chrome do |app|
   Capybara::Selenium::Driver.new(app, browser: :chrome)
 end
@@ -30,7 +42,7 @@ Capybara.register_driver :headless_chrome do |app|
                                  capabilities: options
 end
 
-Selenium::WebDriver.logger.ignore(:driver_path)
+# Selenium::WebDriver.logger.ignore(:driver_path)
 
 # switch to :chrome for watching the tests in browser
 Capybara.default_driver = :headless_chrome
