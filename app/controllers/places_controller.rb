@@ -108,19 +108,10 @@ class PlacesController < ApplicationController
     @layer = @place.layer
     @map = @place.layer.map
 
-    # quirks, because foundation switch generates 'on'/'off' values,
-    # rails expect true/false
     # TODO: render this at generating the form
-    params[:place][:published] = if params[:place][:published] == 'on' || params[:place][:published] == 'true'
-                                   true
-                                 else
-                                   false
-                                 end
-    params[:place][:featured] = if params[:place][:featured] == 'on' || params[:place][:featured] == 'true'
-                                  true
-                                else
-                                  false
-                                end
+    params[:place][:published] = default_checkbox(params[:place][:published])
+    params[:place][:featured] = default_checkbox(params[:place][:featured])
+    params[:place][:sensitive] = default_checkbox(params[:place][:sensitive])
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })
@@ -176,6 +167,6 @@ class PlacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :teaser, :text, :link, :startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :lat, :lon, :location, :address, :zip, :city, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
   end
 end

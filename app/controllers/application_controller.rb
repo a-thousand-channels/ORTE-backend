@@ -8,4 +8,12 @@ class ApplicationController < ActionController::Base
   def report_csp
     # do nothing right now...
   end
+
+  def default_checkbox(param)
+    if %w[on true].include?(param)
+      true
+    else
+      false
+    end
+  end
 end

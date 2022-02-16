@@ -8,9 +8,13 @@ env:
 name: Rails - Install dependencies, run linters & rspec
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - feature*
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - feature*
 jobs:
   run-lint:
     name: Rubocop & Brakeman

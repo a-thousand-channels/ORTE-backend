@@ -11,7 +11,7 @@ main {
   z-index: 999;
   position: absolute;
   top: 0;
-  margin: 100px 0 0 20px;
+  margin: 50px 0 0 20px;
   background-color: transparent;
   min-height: auto;
   padding: 0;
@@ -19,8 +19,8 @@ main {
   a {
     color: darken(#c6c600,10%);
   }
-
 }
+main.action-bar-padding { margin-top: 100px }
 @media screen and (max-width: 63.9375em) {
   main {
   }
