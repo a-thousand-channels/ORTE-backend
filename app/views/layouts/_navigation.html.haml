@@ -50,7 +50,7 @@
     .action-bar-left
       &nbsp;
     .action-bar-center
-      - if @map && @layer
+      - if @map && @layer && params[:action] == 'show'
         - layer_url = url_for public_map_layer_url(@map,@layer, format: 'json')
 
         - preview_url = '#'
