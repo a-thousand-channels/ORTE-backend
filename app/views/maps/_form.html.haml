@@ -25,28 +25,46 @@
           .large-12.medium-12.small-12.cell
             = tinymce
             = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
-        .grid-x.grid-padding-x
-          .large-6.medium-6.small-6.cell
-            %p
-              - if admin?
+        - if admin?
+          %hr
+          .grid-x.grid-padding-x
+            .large-12.cell
+              %label Settings for Admin only
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-6.cell
+              %p
                 = f.association :group, collection: Group.by_user(current_user), include_blank: false
-              - else
-                = f.association :group, as: :hidden, :input_html => {:value => current_user.group.id}
-                %i.fi-torsos-all.fi-21
-                = current_user.group.title
-            %p.shy User group, that has access to this map
-          .large-6.medium-6.small-6.cell
+              %p.shy User group, that has access to this map
+              %p
+                = f.input :preview_url, input_html: { placeholder: 'https://' }
+              %p.shy URL to a frontend that can read a JSON URL which will be provided as a POST param (?layer=)
+            .large-6.medium-6.small-12.cell
+              %p
+                = f.input :enable_privacy_features, :input_html => { :class => '' }, label: 'Enable privacy features'
+              %p.shy This option allows the privacy features to be activated (but this does not activate them)
+              %p
+                = f.input :enable_map_to_go, :input_html => { :class => '' }, label: 'Enable the Map to go feature'
+              %p.shy This option enables that a user can use the Map to go function and the live preview
+
+        - else
+          %i.fi-torsos-all.fi-21
+            = current_user.group.title
+          = f.association :group, as: :hidden, :input_html => {:value => current_user.group.id}
+        %hr
+        .grid-x.grid-padding-x
+          .large-4.medium-4.small-6.cell
+            %p
+              = f.input :popup_display_mode, :collection => popup_display_mode_for_select, :input_html => { :class => '' }, label: 'Popup display mode'
+            %p.shy
+              Choose, which event triggers the display of the popup of a place
+
+          .large-4.medium-4.small-6.cell
             %p
               = f.association :iconset
             %p.shy
-              Set of icons for this map
+              Select a predefined set of icons for this map
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"You can select one of these iconsets, which will be used to display your places on the map. If none is selected, coloured circles are used as the default icons."}
-        %hr
-        .grid-x.grid-padding-x
-          .large-6.medium-6.small-6.cell
-            %p
-              = f.input :popup_display_mode, :collection => popup_display_mode_for_select, :input_html => { :class => '' }, label: 'Popup display mode'
-          .large-6.medium-6.small-6.cell
+          .large-4.medium-4.small-12.cell
             %p
               = f.input :show_annotations_on_map, :input_html => { :class => '' }, label: 'Show annotations on the map'
 

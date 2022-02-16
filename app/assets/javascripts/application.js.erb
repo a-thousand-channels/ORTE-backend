@@ -97,23 +97,32 @@
 
     if ( localStorage.getItem('actionbar') === 'visible' ) {
         $('.action-bar').removeClass("hide")
+        $('main').addClass("action-bar-padding")
     }
 
+
     $('#settings_caller').click(function(e) {
-      e.preventDefault();
-      if ( $('.action-bar').is(":hidden") ) {
-        $('.action-bar').removeClass("hide")
-        localStorage.setItem('actionbar','visible');
-      } else {
-        $('.action-bar').addClass("hide")
-        localStorage.setItem('actionbar','hidden');
+      console.log($(this).data('maptogo'));
+      // if maptogo feature is enabled
+      if ( $(this).data('maptogo') ) {
+        e.preventDefault();
+        if ( $('.action-bar').is(":hidden") ) {
+          $('.action-bar').removeClass("hide")
+          $('main').addClass("action-bar-padding")
+          localStorage.setItem('actionbar','visible');
+        } else {
+          $('.action-bar').addClass("hide")
+          $('main').removeClass("action-bar-padding")
+          localStorage.setItem('actionbar','hidden');
+        }
       }
     })
 
-    $('#maptogo_button').addClass('hide');
+    $('.action-button').addClass('hide');
+
     if ( ( $('body').attr('id') === 'layers' ) && ( $('body').hasClass('show') ) ) {
       setTimeout(function (){
-        $('#maptogo_button').removeClass('hide');
+        $('.action-button').removeClass('hide');
       }, 500);
     }
     $('#maptogo_button').click(function(e) {

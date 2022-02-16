@@ -1,4 +1,12 @@
 $(function() {
-
-
+  if($('.simple_form.edit_place').length) {
+    if($('#place_sensitive')[0] && $('#place_sensitive')[0].checked) {
+      $('#radius_select').show();
+    } else {
+      $('#radius_select').hide();
+    }
+    $('#place_sensitive').click(function() {
+      $('#radius_select').toggle();
+    });
+  }
 })
