@@ -11,6 +11,7 @@ FactoryBot.define do
     caption { 'Caption' }
     sorting { 2 }
     preview { false }
+    itype { 'image' }
     trait :with_file do
       file { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
     end
