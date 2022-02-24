@@ -3,14 +3,20 @@
 require 'action_mailer'
 
 ActionMailer::Base.delivery_method = :smtp
+
 ActionMailer::Base.smtp_settings = {
-  address: 'smtp.domain.com',
-  domain:  'domain.com',
-  port:    25
+      enable_starttls_auto: true,
+      address: Rails.application.credentials.dig(:mail, :address),
+      domain: Rails.application.credentials.dig(:mail, :domain),
+      port: '465',
+      ssl: true,
+      authentication: :login,
+      user_name: Rails.application.credentials.dig(:mail, :user_name),
+      password:  Rails.application.credentials.dig(:mail, :password)
 }
 
 class Notifier < ActionMailer::Base
-  default from: 'email@email.com'
+  default from: Rails.application.credentials.dig(:mail, :sender)
 
   def deploy_notification(notify_emails, stage, git_log)
     now = Time.now
