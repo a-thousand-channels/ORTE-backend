@@ -9,7 +9,6 @@ end
 
 gem 'puma', '~> 5'
 gem 'rails', '~> 5.2'
-# seg fault with sassc 2.3.0
 gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
