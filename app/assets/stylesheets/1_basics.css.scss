@@ -216,7 +216,9 @@ select {
 .top-bar ul li.name {
     font-family: 'worksans-semibold', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
     margin-top: 2px;
+    min-width: 440px;
 }
+
 
 @media screen and (max-width: 63.9375em) {
 
@@ -270,7 +272,7 @@ select {
 
 
 /* -------------------- */
-.action-bar {
+body .top-bar.action-bar {
   background-color: rgba(255,255,255,0.7);
   background-image: none !important;
   padding: 7px 15px 7px 15px;
