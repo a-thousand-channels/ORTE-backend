@@ -113,9 +113,8 @@ namespace :deploy do
       dump_dir = "#{shared_path}/dumps"
       file = "#{dump_dir}/#{filename}"
       execute "mkdir -p #{dump_dir}"
-      db = YAML.safe_load(ERB.new(IO.read(File.join(File.dirname(__FILE__), 'database.yml'))).result, [], [], true)[fetch(:rails_env).to_s]
 
-      execute "mysqldump -u #{db['username']} --password=#{db['password']} #{db['database']} > #{file}"
+      execute "mysqldump -u #{fetch(:db_username)} --password=#{fetch(:db_password)} #{fetch(:db_name)} > #{file}"
     end
   end
 
