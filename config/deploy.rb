@@ -114,7 +114,7 @@ namespace :deploy do
       file = "#{dump_dir}/#{filename}"
       execute "mkdir -p #{dump_dir}"
 
-      execute "mysqldump -u #{fetch(:db_username)} --password=#{fetch(:db_password)} #{fetch(:db_name)} > #{file}"
+      execute "mysqldump -u #{fetch(:db_user)} --password=#{fetch(:db_password)} #{fetch(:db_name)} > #{file}"
     end
   end
 
