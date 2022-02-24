@@ -35,13 +35,62 @@
 @import 'orte';
 
 /* --------------------------- */
-
-body.development .top-bar, body.development  .top-bar ul,
-body.staging .top-bar, body.staging  .top-bar ul
-{
-  background-image: linear-gradient(130deg, #47473c 25%, #333333 25%, #333333 50%, #47473c 50%, #47473c 75%, #333333 75%, #333333 100%);
-  background-size: 52.22px 62.23px;
+body.development  .top-bar ul,
+body.staging  .top-bar ul {
+  background: none;
 }
+
+body.development .top-bar,
+body.staging .top-bar
+{
+ background-image: linear-gradient(130deg, #47473c 25%, #333333 25%, #333333 50%, #47473c 50%, #47473c 75%, #333333 75%, #333333 100%);
+ background-size: 52.22px 62.23px;
+}
+body.development .top-bar-left * {
+  color:  #939300;
+}
+body.development .top-bar-right * {
+  color:  #939300;
+}
+/* --------------------------- */
+body[data-app-shortname='A1000C-ORTE'] {
+  .top-bar {
+    background-size:  cover;
+    background: linear-gradient(-90deg, rgba(255,198,198,1) 0%, rgba(51,51,51,1) 100%);
+    background:  linear-gradient(-90deg,rgba(255,0,249,.85),rgba(255,117,0,.85) 50%,rgba(255,0,35,.85));
+    background:  linear-gradient(90deg,rgba(255,117,0,.85), rgba(50,50,50,1) 75%, rgba(50,50,50,1));
+    background:  linear-gradient(90deg,rgba(255, 191, 200,.85), rgba(50,50,50,1) 85%, rgba(50,50,50,1));
+    background: none;
+    background-color: #333333;
+    color:  black;
+  }
+    .top-bar-left * {
+    color:  #333;
+    color:  #939300;
+  }
+    .top-bar-right * {
+    color:  #939300;
+  }
+
+  .top-bar img.app_icon {
+      background-color: rgba(255, 255, 255,0);
+      border-radius: 50px;
+      padding: 0;
+      margin: 0;
+      height: 65px;
+      margin-top:  -10px;
+      position: absolute;
+  }
+  .top-bar .menu li.name a {
+    padding: 0.2rem 1rem 0 3.6rem;
+  }
+  svg.icons path {
+    fill: #333;
+    fill: #939300;
+
+  }
+}
+
 /* --------------------------- */
 main {
   min-height: 450px;

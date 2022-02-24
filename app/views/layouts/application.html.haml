@@ -39,7 +39,7 @@
   - if params[:action]
     - klass = klass + " #{params[:action]}"
 
-  %body{:id=>"#{id}", :class=>"#{klass}", "data-host"=>"#{request.host}"}
+  %body{:id=>"#{id}", :class=>"#{klass}", "data-app-shortname"=>"#{Settings.app_shortname}"}
     %header
       = render 'layouts/navigation'
 
