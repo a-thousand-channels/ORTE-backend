@@ -1,6 +1,6 @@
 
 set :branch, 'main'
-set :rails_env, 'staging'v
+set :rails_env, 'staging'
 set :stage, 'staging'
 
 set :db_name, Rails.application.credentials.dig(:mysql, :a1000c_staging, :database )
