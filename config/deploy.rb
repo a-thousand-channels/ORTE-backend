@@ -17,7 +17,7 @@ set :bundle_without, [:development]
 # set :bundle_dir,      ''
 # set :bundle_path, nil
 set :bundle_binstubs, nil
-set :notify_emails, ['']
+set :notify_emails, Rails.application.credentials.dig(:notifications, :receiver)
 
 # Standalone Passenger
 set :passenger_in_gemfile, true
