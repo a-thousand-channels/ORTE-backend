@@ -27,12 +27,12 @@ staging:
   database: orte_staging
   host: localhost
   username: orte
-  password: <%= Rails.application.credentials.dig(:mysql, :password, :staging) %>
+  password: <%= Rails.application.credentials.dig(:mysql, :staging, :password ) %>
   encoding: utf8
 production:
   adapter: mysql2
   database: orte
   host: localhost
   username: orte
-  password: <%= Rails.application.credentials.dig(:mysql, :password, :production) %>
+  password: <%= Rails.application.credentials.dig(:mysql, :production, :password ) %>
   encoding: utf8
