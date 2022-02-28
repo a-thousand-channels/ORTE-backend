@@ -35,7 +35,11 @@ class Image < ApplicationRecord
   def image_on_disk
     return unless file.attached?
 
-    full_path = ActiveStorage::Blob.service.path_for(file.key)
+    # original size
+    # full_path = ActiveStorage::Blob.service.path_for(file.key)
+    # variant
+    variant = file.variant(resize: '1200x1200').processed
+    full_path = ActiveStorage::Blob.service.path_for(variant.key)
     return unless File.exist?(full_path)
 
     full_path.gsub(Rails.root.to_s, '')
