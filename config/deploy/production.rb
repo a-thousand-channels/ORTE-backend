@@ -3,6 +3,12 @@ set :branch, 'production'
 set :rails_env, 'production'
 set :stage, 'production'
 
+set :db_name, Rails.application.credentials.dig(:mysql, :production, :database )
+set :db_user, Rails.application.credentials.dig(:mysql, :production, :user )
+set :db_password, Rails.application.credentials.dig(:mysql, :production, :password)
+
+set :application, Rails.application.credentials.dig(:deploy, :orte, :application)
+
 server Rails.application.credentials.dig(:deploy, :production, :server), roles: %w(app web db), user: 'orte-deploy', port: 4242
 
 
