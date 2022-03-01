@@ -45,7 +45,7 @@ gem 'simple_form'
 gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 
-gem 'image_processing', '~> 1.2'
+gem 'image_processing', '~> 1.12'
 gem 'mini_racer', platforms: :ruby
 
 gem 'color-generator'
