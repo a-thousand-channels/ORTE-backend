@@ -60,3 +60,81 @@ en:
       blank: can't be blank
       present: can't be filled
       inclusion: must be accepted
+  telegram_webhooks:
+    action_missing:
+      command: Can not perform %{command}
+    help:
+      content: |
+        Available cmds:
+        /start - Greeting.
+        /choose_map - Select a map.
+        /choose_layer - Select a layer.
+        /choose_place - Select a place.
+        /settings - Settings
+        /show - show place.
+        /list - list places annotations.
+    settings:
+      content: |
+        Your selections:
+        Map: %{map_id}
+        Layer: %{layer_id}
+        Place: %{place_id}
+    choose_map:
+      select: "Select a map:"
+    choose_layer:
+      select: "Select a layer:"
+    choose_place:
+      select: "Select a place:"
+    list:
+      annotation: |
+        annotation:
+        %{date}
+        %{title}
+        %{text}
+    add:
+      prompt: What do you want to annotated?
+      saved: saved
+      not_saved: could not save
+    callback_query:
+      map_selected: "Map selected: #%{map_id}"
+      layer_selected: "Layer selected: #%{layer_id}"
+      place_selected: |
+        Place selected: #%{place_id}
+
+        %{title}
+
+        %{description}
+
+        Longitute:
+        %{lon}
+        Latitue:
+        %{lat}
+
+      nothing_found: "Nothing selected"
+    inline_keyboard:
+      alert: Answer with alert
+      no_alert: Without alert
+      prompt: "Check my inline keyboard:"
+      repo: Open gem repo
+    inline_query:
+      content: Content
+      description: Description
+    keyboard:
+      buttons:
+        - Lorem
+        - Ipsum
+        - /cancel
+      prompt: "Select something with keyboard:"
+      selected: "You've selected: %{value}"
+    last_chosen_inline_result:
+      prompt: Mention me to initiate inline query
+      selected: "You've chosen result #%{result_id}"
+    memo:
+      notice: Remembered!
+      prompt: What should I remember?
+    message:
+      content: "You wrote: %{text}"
+    remind_me:
+      nothing: Nothing to remind
+    start:
+      content: Hi there!

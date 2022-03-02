@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  telegram_webhook TelegramWebhooksController
+
   resources :build_logs
   resources :people
   resources :annotations

@@ -66,6 +66,8 @@ gem 'ruby_audit', require: false
 gem 'mini_magick'
 gem 'rubyzip'
 
+gem 'telegram-bot'
+
 group :staging, :production do
   # gem 'pg'
   gem 'passenger'

@@ -65,4 +65,7 @@ Rails.application.configure do
   # config.action_controller.default_url_options = {host: 'localhost', port: 3000 }
 
   config.i18n.fallbacks = [:en, :de]
+
+  # Use memory store for bot sessions.
+  config.telegram_updates_controller.session_store = :memory_store
 end
