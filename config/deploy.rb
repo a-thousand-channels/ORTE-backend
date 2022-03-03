@@ -34,7 +34,7 @@ set :passenger_restart_options, -> { "#{deploy_to} --ignore-app-not-running" }
 set :rvm_ruby_version, 'ruby-2.7.2'
 set :passenger_rvm_ruby_version, fetch(:rvm_ruby_version)
 
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key', 'config/settings.yml', 'config/cable.yml', 'Passengerfile.json')
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key', 'config/settings.yml', 'config/cable.yml', 'Passengerfile.json', 'config/initializers/secure_headers.rb')
 set :linked_dirs, fetch(:linked_dirs, []).push("log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "storage")
 
 
