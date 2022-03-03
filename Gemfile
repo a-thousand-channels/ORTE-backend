@@ -87,6 +87,7 @@ group :development, :test, :localtest do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'simplecov'
+  gem 'simplecov-small-badge', :require => false
   gem 'webdrivers', '~> 5'
   gem 'webmock'
 end

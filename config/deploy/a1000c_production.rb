@@ -1,15 +1,15 @@
 
-set :branch, 'main'
-set :rails_env, 'staging'
-set :stage, 'a1000c_staging'
+set :branch, 'production'
+set :rails_env, 'production'
+set :stage, 'a1000c_production'
 
-set :db_name, Rails.application.credentials.dig(:mysql, :a1000c_staging, :database )
-set :db_user, Rails.application.credentials.dig(:mysql, :a1000c_staging, :user )
-set :db_password, Rails.application.credentials.dig(:mysql, :a1000c_staging, :password)
+set :db_name, Rails.application.credentials.dig(:mysql, :a1000c_production, :database )
+set :db_user, Rails.application.credentials.dig(:mysql, :a1000c_production, :user )
+set :db_password, Rails.application.credentials.dig(:mysql, :a1000c_production, :password)
 
 set :application, Rails.application.credentials.dig(:deploy, :a1000c, :application)
 
-server Rails.application.credentials.dig(:deploy, :a1000c_staging, :server), roles: %w(app web db), user: 'orte-deploy', port: 4242
+server Rails.application.credentials.dig(:deploy, :a1000c_production, :server), roles: %w(app web db), user: 'orte-deploy', port: 4242
 
 
 
