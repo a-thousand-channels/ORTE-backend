@@ -35,11 +35,11 @@ Rails.application.configure do
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
-  config.action_controller.default_url_options = { host: Rails.application.credentials.dig(:deploy, :staging, :server), :protocol => Settings.app_host_protocol }
+  config.action_controller.default_url_options = { host: Settings.app_host, :protocol => Settings.app_host_protocol }
 
-  # config.action_controller.asset_host = Rails.application.credentials.dig(:deploy, :staging, :server)
+  # config.action_controller.asset_host = Settings.app_host
 
-  config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:deploy, :staging, :server), :protocol => Settings.app_host_protocol }
+  config.action_mailer.default_url_options = { host: Settings.app_host, :protocol => Settings.app_host_protocol }
 
 
   # Prevent host header injection
