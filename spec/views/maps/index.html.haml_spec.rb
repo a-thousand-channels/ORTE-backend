@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe 'maps/index', type: :view do
   before(:each) do
     group = FactoryBot.create(:group)
+    user = FactoryBot.create(:user, group: group)
+    sign_in user
 
     assign(:maps, [
              Map.create!(

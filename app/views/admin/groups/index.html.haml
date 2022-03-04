@@ -22,7 +22,11 @@
     %tbody
       - @admin_groups.each do |group|
         %tr
-          %td= group.title
+          %td
+            - if group.active
+              = group.title
+            - else
+              #{group.title}&nbsp;<i class="fi-prohibited fi-21"></i>
           %td
             - if group.users.count > 0
               %ul
@@ -47,9 +51,10 @@
               %i.fi.fi-pencil
               Edit
           %td
-            = link_to admin_group_path(group), :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
-              %i.fi.fi-x
-              Destroy
+            - if group.maps.count == 0 && !group.active
+              = link_to admin_group_path(group), :method => :delete, :data => { :confirm => 'Are you sure?' }, :class => 'button warning' do
+                %i.fi.fi-x
+                Destroy
 
   %br
 

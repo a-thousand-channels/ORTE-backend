@@ -3,7 +3,7 @@
 include ActionView::Helpers::NumberHelper
 class Layer < ApplicationRecord
   belongs_to :map
-  has_many :places
+  has_many :places, dependent: :destroy
   has_one :submission_config
 
   has_one_attached :image, dependent: :destroy
