@@ -17,8 +17,13 @@ class Map < ApplicationRecord
 
   # call me: Map.by_user(current_user).find(params[:id])
   scope :by_user, lambda { |user|
-    where(group_id: user.group.id) unless user.group.title == 'Admins'
+    if user.group.active
+      where(group_id: user.group.id) unless user.group.title == 'Admins'
+    else
+      where(group_id: -1) unless user.group.title == 'Admins'
+    end
   }
+
   scope :sorted, -> { order(title: :asc) }
 
   scope :published, -> { where(published: true) }
