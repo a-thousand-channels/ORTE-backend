@@ -20,7 +20,7 @@ if ENV['UBUNTU']
   # On Ubuntu >= 20 Chrome is installed via snap, so provide the path here
   ::Selenium::WebDriver::Chrome.path = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
   # For the moment, at my machine, Chromedriver v98 fails with Chromium v98 (sic!)
-  Webdrivers::Chromedriver.required_version = '97.0.4692.71'
+  # Webdrivers::Chromedriver.required_version = '97.0.4692.71'
 else
   puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true"'
 end

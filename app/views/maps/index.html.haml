@@ -17,3 +17,23 @@
         = link_to new_map_path, :class => 'button action', :id => 'new_map_button', :title => 'Create a new map' do
           %i.fi-plus.fi-24
           Add a map
+
+
+
+- if !current_user.group.active
+  %script
+    $(document).ready(function(){
+    $('#group-message-modal').foundation('open');
+    })
+  .reveal#group-message-modal{"data-reveal"=>true}
+    %h3
+      %i.fi-prohibited.fi-24
+      Oups
+    %p We are terribly sorry. The user group <em>#{current_user.group.title}</em> is not active (anymore).
+    %hr
+    - if current_user.group.message
+      =h current_user.group.message.html_safe
+    - else
+      Please contact the administrators of this installation.
+    %button.close-button{"data-close"=>true, "aria-label": "Close modal", type: "button"}
+      <span aria-hidden="true">&times;</span>
