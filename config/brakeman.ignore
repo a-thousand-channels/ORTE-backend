@@ -7,7 +7,7 @@
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "app/services/build/maptogo.rb",
-      "line": 81,
+      "line": 70,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "Open3.popen3(*command[\"cmd\"].gsub(\"CLIENT_PATH\", \"client_#{SecureRandom.uuid}\").gsub(\"JSON_FILE\", \"tmp/client_#{SecureRandom.uuid}.json\").gsub(\"IMAGE_FILE_DIRECTORY\", \"tmp/#{\"client_#{SecureRandom.uuid}\"}_images\"))",
       "render_path": null,
@@ -21,13 +21,29 @@
       "note": ""
     },
     {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 122,
+      "fingerprint": "98b26f60d776fd41ee6f088c833725145be9aac2d7c5b33780241c273622db42",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 5.2.7.1 ends on 2022-06-01",
+      "file": "Gemfile.lock",
+      "line": 272,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "dba9c19ade68db88f74cf09703aecaedfcf11c39e90faf50564e28d21656fe96",
       "check_name": "LinkToHref",
       "message": "Potentially unsafe model attribute in `link_to` href",
       "file": "app/views/places/show.html.haml",
-      "line": 91,
+      "line": 103,
       "link": "https://brakemanscanner.org/docs/warning_types/link_to_href",
       "code": "link_to(Place.new(place_params).link)",
       "render_path": [
@@ -52,6 +68,6 @@
       "note": ""
     }
   ],
-  "updated": "2022-02-01 18:03:04 +0100",
-  "brakeman_version": "5.2.0"
+  "updated": "2022-05-02 22:03:10 +0200",
+  "brakeman_version": "5.2.3"
 }
