@@ -16,8 +16,11 @@ class Public::LayersController < ActionController::Base
   def show
     @layer = Layer.published.find_by_slug(params[:id]) || Layer.published.find_by_id(params[:id])
 
-    @places = if @layer.places_sort_order == 'startdate'
+    @places = case @layer.places_sort_order
+              when 'startdate'
                 @layer.places.published.sorted_by_startdate
+              when 'title'
+                @layer.places.published.sorted_by_title
               else
                 @layer.places.published
               end
