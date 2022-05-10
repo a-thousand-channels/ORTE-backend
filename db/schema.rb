@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_09_164425) do
+ActiveRecord::Schema.define(version: 2022_05_10_140152) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 2022_05_09_164425) do
     t.boolean "exif_remove", default: true
     t.boolean "rasterize_images", default: false
     t.integer "relations_bending", default: 1
-    t.text "relations_coloring", default: "'colored'"
+    t.string "relations_coloring", default: "colored"
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
