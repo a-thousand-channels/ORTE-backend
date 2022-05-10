@@ -31,6 +31,7 @@ class Place < ApplicationRecord
   validate :check_audio_format
 
   scope :sorted_by_startdate, -> { order(startdate: :asc) }
+  scope :sorted_by_title, -> { order(title: :asc) }
 
   scope :published, -> { where(published: true) }
 
