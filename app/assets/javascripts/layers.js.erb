@@ -105,7 +105,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           DrawMarkers(map,data.id,level,String(false),text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         }
-        DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,places_with_relations);
+        DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,places_with_relations,data.relations_bending,data.relations_coloring);
         marker_meta_layers.addLayer(marker_layers);
 
 
@@ -146,7 +146,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           }
           */
           console.log("places_with_relations: "+data.places_with_relations.length)
-          DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations);
+          DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations, data.relations_bending,data.relations_coloring);
           marker_meta_layers.addLayer(marker_layers);
         });
 
@@ -265,9 +265,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   }
 }
 
-function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,places_with_relations) {
+function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,places_with_relations,bending,coloring) {
 
-  var boost = 2.9;
+  var boost = ( 2.9 * bending ) + 0.1;
+  console.log("Boost: "+boost);
 
   $.each(places_with_relations, function(key,place) {
 
@@ -291,6 +292,12 @@ function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,p
       var color = '#'+Math.floor(Math.random()*16777215).toString(16);
       var color = "hsl(" + Math.random() * 360 + ", 100%, 85%)";
       // var color = clustercolor;
+      if ( coloring == 'black') {
+        color = '#000000'
+      } else if ( coloring == 'monochrome') {
+        color = clustercolor
+      }
+
 
       var pathOptions = {
         color: color,
