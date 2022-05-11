@@ -186,6 +186,21 @@
         %hr
         %div.compact
           .grid-x.grid-padding-x
+            .large-2.medium-2.small-6.cell
+              %label Relations bending
+              = f.input :relations_bending, label: false, input_html: { type: 'number', min: 0, max: 1, step: 1 }
+              %p.hint.text-left
+                Should relation vectors be bended? (0/1)
+            .large-4.medium-4.small-6.cell
+              %label Relations coloring
+              = f.input :relations_coloring, :collection =>  relations_coloring_for_select, label: false, :selected => @layer.relations_coloring
+              %p.hint.text-left
+                Should the realtions be colored in random colors, or rendered black or in the color of the markers (monochrome)?
+            .large-6.medium-6.small-12.cell
+              &nbsp;
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
             .medium-12.cell
               %label Mapcenter
               %p.hint.text-left Set these values if you want a to override the automatic map center (by the extent of all places)
