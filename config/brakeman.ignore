@@ -37,6 +37,22 @@
       "note": ""
     },
     {
+      "warning_type": "Unmaintained Dependency",
+      "warning_code": 120,
+      "fingerprint": "d84924377155b41e094acae7404ec2e521629d86f97b0ff628e3d1b263f8101c",
+      "check_name": "EOLRails",
+      "message": "Support for Rails 5.2.7.1 ended on 2022-06-01",
+      "file": "Gemfile.lock",
+      "line": 272,
+      "link": "https://brakemanscanner.org/docs/warning_types/unmaintained_dependency/",
+      "code": null,
+      "render_path": null,
+      "location": null,
+      "user_input": null,
+      "confidence": "High",
+      "note": ""
+    },
+    {
       "warning_type": "Cross-Site Scripting",
       "warning_code": 4,
       "fingerprint": "dba9c19ade68db88f74cf09703aecaedfcf11c39e90faf50564e28d21656fe96",
@@ -68,6 +84,6 @@
       "note": ""
     }
   ],
-  "updated": "2022-05-02 22:03:10 +0200",
+  "updated": "2022-06-03 17:44:50 +0200",
   "brakeman_version": "5.2.3"
 }
