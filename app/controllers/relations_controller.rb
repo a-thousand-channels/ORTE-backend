@@ -8,6 +8,7 @@ class RelationsController < ApplicationController
     @relations = Relation.all
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     redirect_to maps_path, notice: 'Sorry, this map could not be found.' and return unless @map
+
     @layers = @map.layers
   end
 
