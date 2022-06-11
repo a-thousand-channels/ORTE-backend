@@ -4,6 +4,51 @@ All notable changes to this project (since Version 0.3) will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7] - 2022-03-03
+
+With this release a map-to-go feature is introduced. With this, a user can preview and auto-generate a Nuxt/Vue-based Client from a map layer they created in the Orte Backend. The client can then be downloaded as a ZIP archive and published on a webspace.
+
+### Added
+
+- Map To Go: UI/Design #165
+- Map To Go: Frontend interface #173
+- Map To Go: Build library #170
+- Map To Go: Metadata for client rendering #153
+- Map To Go: Rake task #171
+- Adding Preview link #203
+- Allow basemap selection per dropdown #167
+
+Plus some minor fixes and improvements
+
+## [0.6] - 2022-01-18
+
+### Added
+
+- Friendly ID for maps and layers #44
+- Photo gallery view #123
+- A place should be annotated by quotes or comments #124
+- Places: Make lat/lon coordinates editable #145
+- Make popups visible on mouseover #133
+- Cluster group: Design for a mix of places and annotations #134
+- Creating new place: Show selected location in the background #139
+- Cluster group at map level: Merge all entries of one place and cluster them #141
+- Connect places of a layer #135 + Adding/editing relations (between places) (#144)
+- Relations: Implement cubic beziers curves to layer maps, via Leaflet.curve (#144)
+-  Adding relations + metdata to public json for layers and maps
+- Make a place cloneable (with all associations) #146
+- Set a map center and zoom level per layer (#159)
+- Add carousel/orbit to place show view (#123)
+
+### Fixes
+
+- On some occasions the wrong map extent is shown #131
+- Fix sorting of images (#87)
+
+Etc
+
+- Improved code coverage
+- Github Actions with linting by Rubocop, checks by Brakemen and testing with Rspec
+
 ## [0.51] - 2021-05-08
 
 Rails 5.2.6 + Ruby 2.7
