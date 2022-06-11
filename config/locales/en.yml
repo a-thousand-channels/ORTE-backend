@@ -21,6 +21,9 @@ en:
     pl: "polski"
     ru: "русский"
 
+  maps:
+    index:
+      sign_out: "Logout"
   search:
     lookup:
       intro:
