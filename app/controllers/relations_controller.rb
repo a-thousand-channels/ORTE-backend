@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RelationsController < ApplicationController
-  before_action :set_relation, only: %i[edit update destroy]
+  before_action :set_relation, only: %i[edit update destroy index]
 
   # GET /relations or /relations.json
   def index
@@ -77,13 +77,17 @@ class RelationsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_relation
-    @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layers_from = @map.layers
-    @layers_to = @map.layers
-    @layers = @map.layers
-    layers_ids = @layers.pluck(:id)
-    @all_places = Place.where(layer: layers_ids)
-    @relation = Relation.find(params[:id])
+    @map = Map.by_user(current_user).friendly.find_by(id: params[:map_id])
+    if @map
+      @layers_from = @map.layers
+      @layers_to = @map.layers
+      @layers = @map.layers
+      layers_ids = @layers.pluck(:id)
+      @all_places = Place.where(layer: layers_ids)
+      @relation = Relation.find(params[:id])
+    else
+      redirect_to notfound_url
+    end
   end
 
   # Only allow a list of trusted parameters through.

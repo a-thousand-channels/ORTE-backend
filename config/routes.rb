@@ -8,7 +8,9 @@ Rails.application.routes.draw do
 
   root 'start#index'
 
-  get 'info', to: 'start#info'
+  get 'info',      to: 'start#info'
+  get 'notfound',  to: 'start#notfound'
+
 
   match 'preferences' => 'preferences#edit', :as => :preferences, via: [:get, :patch]
 
@@ -16,7 +18,8 @@ Rails.application.routes.draw do
   post 'report_csp', to: 'application#report_csp'
 
   # settings
-  get   'settings',    to: 'start#settings'
+  get   'settings',  to: 'start#settings'
+
   # profile
   get   'edit_profile',    to: 'start#edit_profile'
   patch 'update_profile',  to: 'start#update_profile'
