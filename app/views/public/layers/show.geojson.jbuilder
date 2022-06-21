@@ -12,7 +12,7 @@ if @layer&.published
     json.type 'Feature'
     json.geometry do
       json.type 'Point'
-      json.coordinates [place.public_lon, place.public_lat]
+      json.coordinates [place.public_lon.to_i, place.public_lat.to_i]
     end
     json.properties do
       json.id place.id
