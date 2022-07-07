@@ -22,7 +22,7 @@ if ENV['UBUNTU']
   # For the moment, at my machine, Chromedriver v98 fails with Chromium v98 (sic!)
   # Webdrivers::Chromedriver.required_version = '97.0.4692.71'
 else
-  puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true"'
+  puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true")'
 end
 
 Capybara.register_driver :chrome do |app|
@@ -42,8 +42,6 @@ Capybara.register_driver :headless_chrome do |app|
                                  capabilities: options
 end
 
-# Selenium::WebDriver.logger.ignore(:driver_path)
-
 # switch to :chrome for watching the tests in browser
 Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
@@ -53,7 +51,8 @@ Capybara.configure do |config|
   config.default_driver        = :headless_chrome
 end
 
-Capybara::Chromedriver::Logger::TestHooks.for_rspec!
+# deprecated!
+# Capybara::Chromedriver::Logger::TestHooks.for_rspec!
 
 RSpec.configure do |config|
   config.color = true

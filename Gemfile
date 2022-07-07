@@ -89,6 +89,7 @@ group :development, :test, :localtest do
   gem 'simplecov'
   gem 'simplecov-small-badge', require: false
   gem 'webdrivers', '~> 5'
+
   gem 'webmock'
 end
 
