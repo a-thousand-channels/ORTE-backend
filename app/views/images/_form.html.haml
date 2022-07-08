@@ -22,7 +22,7 @@
               %p.shy
                 %i.fi.fi-check
                 Image will be published in a rasterized version
-            - if params[:action] == 'edit' && @image.file.attached?
+            - if params[:action] == 'edit' && @image.file.attached? && ActiveStorage::Blob.service.exist?(@image.file.blob.key)
               = link_to url_for(@image.file) do
                 - if @image.place.layer.rasterize_images && @image.itype == 'image'
                   %p.show_for_itype_image= image_tag @image.variant(resize: "500x500", "ordered-dither": "h8x8a").processed
