@@ -88,11 +88,15 @@ form .image {
 
   .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
 }
-  a.thumbnail {
-    border: solid 4px transparent;
-    margin: 0 10px 2px 0;
-    padding: 3px;
+a.thumbnail {
+  border: solid 4px transparent;
+  margin: 0 10px 2px 0;
+  padding: 3px;
+
+  p {
+    margin-top: 35px;
   }
+}
 
 
 
