@@ -143,14 +143,15 @@
             = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-plus.fi-21
               Image
-            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
+            %br
+            = link_to new_map_layer_place_video_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-plus.fi-21
               Video
             - if admin? && current_user.group.title == 'Admins'
               %br
-              = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small', :title=>'Seite kopieren' do
+              = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small secondary', :title=>'Make a copy of this place and change it' do
                 %i.fi-page-copy.fi-21
-                Clone
+                Copy
             %br
             - if place.images.count > 0 || place.videos.count > 0
               - warning = 'Are you sure to delete this place and all attached images and/or videos?'
