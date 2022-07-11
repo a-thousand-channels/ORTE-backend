@@ -217,14 +217,12 @@
     var marker_meta_layers = L.featureGroup();
     var curve_layers = L.featureGroup();
 
-
-     var overlays = {
+    var overlays = {
         'Places': marker_meta_layers,
         'Relations': curve_layers,
         'Labels': text_layers,
         'Images': image_layers
     };
-
     // ---------------
     // baselayer map
 
@@ -273,15 +271,31 @@
         attribution: custom_basemap_attribution,
         minZoom: 0,
         maxZoom: 21
-      }).addTo(map);
+      });
       var basemaps = {
           "Custom": custom_base_layer,
           "Satellite": Esri_WorldImagery_layer,
           "Openstreetmap": Openstreetmap_layer
       };
+
+
+      // TODO: reset baselayer if custom was set or changed server-side
+
+      if ( localStorage.baselayer == 'Openstreetmap') {
+        Openstreetmap_layer.addTo(map);
+      } else if ( localStorage.baselayer == 'Satellite') {
+        Esri_WorldImagery_layer.addTo(map);
+      } else {
+        custom_base_layer.addTo(map)
+      }
+
     } else {
 
-      Esri_WorldImagery_layer.addTo(map);
+      if ( localStorage.baselayer == 'Openstreetmap') {
+        Openstreetmap_layer.addTo(map);
+      } else {
+        Esri_WorldImagery_layer.addTo(map);
+      }
       <% if ( Rails.env != "test" ) %>
          L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
                   attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
@@ -294,6 +308,23 @@
           "Openstreetmap": Openstreetmap_layer,
       };
     }
+
+    map.on('baselayerchange', function(e){
+      console.log("Baselayer change");
+      console.log(e.name);
+      // TODO: store value via LS
+      localStorage.baselayer = e.name;
+    })
+    map.on('overlayadd', function(e){
+      console.log("Overlay added");
+      console.log(e.name);
+      // TODO: store value via LS
+    })
+    map.on('overlayremove ', function(e){
+      console.log("Overlay removed");
+      console.log(e.name);
+      // TODO: store value via LS
+    })
     L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
 
     if ( $('#selection').data('layer-id') ) {
@@ -374,8 +405,10 @@
       }
     });
 
-
+    // TODO: if active/nonactive via LS
     map.addLayer(marker_meta_layers);
+
+    // TODO: if active/nonactive via LS
     map.addLayer(curve_layers);
 
     $('.leaflet-marker-icon').on('mouseover', function(e) {
