@@ -331,6 +331,14 @@
       console.log('localStorage.overlayRelations == true')
       map.addLayer(curve_layers);
     }
+    if ( localStorage.overlayLabels == 'true' ) {
+      console.log('localStorage.overlayLabels == true')
+      map.addLayer(text_layers);
+    }
+    if ( localStorage.overlayImages == 'true' ) {
+      console.log('localStorage.overlayImages == true')
+      map.addLayer(image_layers);
+    }
     map.on('baselayerchange', function(e){
       console.log("Baselayer change");
       console.log(e.name);
@@ -412,8 +420,6 @@
     L.control.zoom({
          position:'topright'
     }).addTo(map);
-
-
 
     // layers: show all places
     if ( $('body').attr('id') === 'layers' )  {
