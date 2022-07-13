@@ -504,7 +504,7 @@ function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
       if ( ( level != 'maps' ) || ( place.shy == false )) {
         marker_layers.addLayer(marker);
         text_layers.addLayer(textmarker);
-        text_layers.addLayer(marker);
+        // text_layers.addLayer(marker);
       }
 
       var content = PopupFullContent(place);
