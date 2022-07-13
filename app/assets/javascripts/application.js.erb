@@ -223,6 +223,20 @@
         'Labels': text_layers,
         'Images': image_layers
     };
+
+    if ( !localStorage.overlayPlaces ) {
+      localStorage.overlayPlaces = true;
+    }
+    if ( !localStorage.overlayRelations ) {
+      localStorage.overlayRelations = true;
+    }
+    if ( !localStorage.overlayLabels ) {
+      localStorage.overlayLabels = false;
+    }
+    if ( !localStorage.overlayImages ) {
+      localStorage.overlayImages = false;
+    }
+
     // ---------------
     // baselayer map
 
@@ -241,7 +255,6 @@
 
     var map = L.map('map', {
         zoomControl: false,
-        layers: [marker_meta_layers],
         minZoom: 1,
         maxZoom: 20
     }).setView([MAP_LAT, MAP_LON], 12);
@@ -309,6 +322,15 @@
       };
     }
 
+    console.log("Check Overlays")
+    if ( localStorage.overlayPlaces == 'true' ) {
+      console.log('localStorage.overlayPlaces == true')
+      map.addLayer(marker_meta_layers);
+    }
+    if ( localStorage.overlayRelations == 'true' ) {
+      console.log('localStorage.overlayRelations == true')
+      map.addLayer(curve_layers);
+    }
     map.on('baselayerchange', function(e){
       console.log("Baselayer change");
       console.log(e.name);
@@ -319,11 +341,30 @@
       console.log("Overlay added");
       console.log(e.name);
       // TODO: store value via LS
+      if ( e.name == 'Places' ) {
+        localStorage.overlayPlaces = true;
+      } else if ( e.name == 'Relations' ) {
+        localStorage.overlayRelations = true;
+      } else if ( e.name == 'Labels' ) {
+        localStorage.overlayLabels = true;
+      } else if ( e.name == 'Images' ) {
+        localStorage.overlayImages = true;
+      }
     })
     map.on('overlayremove ', function(e){
       console.log("Overlay removed");
       console.log(e.name);
       // TODO: store value via LS
+      if ( e.name == 'Places' ) {
+        localStorage.overlayPlaces = false;
+      } else if ( e.name == 'Relations' ) {
+        localStorage.overlayRelations = false;
+      } else if ( e.name == 'Labels' ) {
+        localStorage.overlayLabels = false;
+      } else if ( e.name == 'Images' ) {
+        localStorage.overlayImages = false;
+      }
+
     })
     L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
 
@@ -405,11 +446,6 @@
       }
     });
 
-    // TODO: if active/nonactive via LS
-    map.addLayer(marker_meta_layers);
-
-    // TODO: if active/nonactive via LS
-    map.addLayer(curve_layers);
 
     $('.leaflet-marker-icon').on('mouseover', function(e) {
         // get index
