@@ -5,5 +5,5 @@
   %p.text-right.close_link_wrapper
     =link_to maps_path, :class=>'close_link' do
       %i.fi.fi-x
-  %h1 Editing map
+  %h1=@map.title
   = render 'form'
