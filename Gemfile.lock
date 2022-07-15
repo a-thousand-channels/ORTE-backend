@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    action-cable-testing (0.6.1)
+      actioncable (>= 5.0)
     actioncable (5.2.8.1)
       actionpack (= 5.2.8.1)
       nio4r (~> 2.0)
@@ -483,6 +485,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  action-cable-testing
   acts-as-taggable-on (~> 7)
   bcrypt
   brakeman

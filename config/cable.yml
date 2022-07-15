@@ -16,3 +16,6 @@ production:
   adapter: redis
   url: redis://localhost:6379/
   channel_prefix: OrteBackend_production
+
+test:
+  adapter: test

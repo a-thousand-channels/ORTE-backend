@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-git_source(:github) do |repo_name|
+git_source(:github) do |o_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
@@ -85,6 +85,7 @@ group :development, :test, :localtest do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
+  gem 'action-cable-testing'
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'simplecov-small-badge', require: false

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-module ApplicationCable
-  class Connection < ActionCable::Connection::Base
+class ApplicationCable::Connection < ActionCable::Connection::Base
     identified_by :current_user
     # rescue_from StandardError, with: :report_error
 
@@ -24,5 +23,4 @@ module ApplicationCable
       puts error.inspect
       # TODO: SERVICE.notify(e)
     end
-  end
 end
