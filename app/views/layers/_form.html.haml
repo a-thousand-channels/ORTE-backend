@@ -210,9 +210,12 @@
         %hr
         %div.compact
           .grid-x.grid-padding-x
-            .medium-12.cell
-              %label Mapcenter
-              %p.hint.text-left Set these values if you want a to override the automatic map center (by the extent of all places)
+            .large-6.medium-10.cell
+              %h5 Mapcenter
+              %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this layer)
+            .large-6.medium-2.cell
+              - if @map && @map.mapcenter_lat && @map.mapcenter_lon
+                %button Copy Coordinates from map
           .grid-x.grid-padding-x
             .medium-5.cell
               = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}

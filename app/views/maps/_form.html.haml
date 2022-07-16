@@ -77,22 +77,36 @@
 
             %p
               = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}
-            %p.shy
-              URL for an alternative basemap
+            %p.hint
+              URL for a custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
           .large-6.medium-6.small-12.cell
             %p
               = f.input :basemap_attribution, :input_html => {:placeholder => ''}
-            %p.shy
-              Attribution for this basemap
+            %p.hint
+              Attribution for the custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
 
+        %hr
+        .grid-x.grid-padding-x
+          .large-6.medium-10.cell
+            %h5 Default map center
+            %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this layer)
+          .large-6.medium-2.cell
+            \&nbsp;
+        .grid-x.grid-padding-x
+          .medium-5.cell
+            = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}
+          .medium-5.cell
+            = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}
+          .medium-2.cell
+            = f.input :zoom, label: "Zoom", input_html: { placeholder: '12'}
+            %p.hint 1-18
         - if admin? && params[:action] == 'edit'
           %hr
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
-
-              %p
+              %h5
                 Map extend
               .grid-x.grid-padding-x
                 .large-6.medium-6.small-6.cell

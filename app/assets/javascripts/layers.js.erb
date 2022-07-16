@@ -188,6 +188,20 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         var bounds = marker_meta_layers.getBounds().pad(0.35);
         var northeast = bounds.getNorthEast();
         var southwest = bounds.getSouthWest();
+
+        if ( $('#selection').data('map-center-lat') ) {
+          console.log("Fit to custom map center and zoom")
+          var mapcenter_lat = $('#selection').data('map-center-lat');
+          var mapcenter_lon = $('#selection').data('map-center-lon');
+          var latLngs = [ mapcenter_lat, mapcenter_lon ];
+          var mbounds = L.latLngBounds(latLngs);
+          map.fitBounds(mbounds);
+          var zoom  = $('#selection').data('map-zoom');
+          if ( zoom ) {
+            console.log("set zoom level to " + zoom);
+              map.setZoom(zoom);
+          }
+        }
         if ( $('#selection').data('map-extent-northeast') ) {
           console.log("Fit to custom map extent");
           /*
