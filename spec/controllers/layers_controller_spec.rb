@@ -134,7 +134,7 @@ RSpec.describe LayersController, type: :controller do
         it 'redirects to the map' do
           post :create, params: { map_id: @map.friendly_id, layer: valid_attributes }, session: valid_session
           layer = Layer.last
-          expect(response).to redirect_to(map_layer_path(@map.friendly_id,layer))
+          expect(response).to redirect_to(map_layer_path(@map.friendly_id, layer))
         end
       end
 
@@ -162,7 +162,7 @@ RSpec.describe LayersController, type: :controller do
         it 'redirects to the layer' do
           layer = Layer.create! valid_attributes
           put :update, params: { map_id: @map.id, id: layer.id, layer: valid_attributes }, session: valid_session
-          expect(response).to redirect_to(map_layer_path(@map.friendly_id,layer))
+          expect(response).to redirect_to(map_layer_path(@map.friendly_id, layer))
         end
       end
 
