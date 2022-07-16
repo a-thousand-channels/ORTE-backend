@@ -101,7 +101,7 @@ class LayersController < ApplicationController
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     respond_to do |format|
       if @layer.save
-        format.html { redirect_to map_layer_path(@map,@layer), notice: 'Layer was created.' }
+        format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was created.' }
         format.json { render :show, status: :created, location: @layer }
       else
         format.html { render :new }
@@ -119,7 +119,7 @@ class LayersController < ApplicationController
 
     respond_to do |format|
       if @layer.update(layer_params)
-        format.html { redirect_to map_layer_path(@map,@layer), notice: 'Layer was successfully updated.' }
+        format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was successfully updated.' }
         format.json { render :show, status: :ok, location: @layer }
       else
         format.html { render :edit }
