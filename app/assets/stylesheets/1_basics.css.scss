@@ -20,16 +20,18 @@ h1,h2 {
 h3,h4,h5,h6 {
   font-family: "worksans-semibold","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 }
+h3 {
+  font-size: 1.5375rem;
+}
 h4 {
   svg {
     vertical-align: -6px;
     margin-right: 10px;
   }
 }
-h3 {
-  font-size: 1.5375rem;
+h5, .h5 {
+  font-size: 1.1rem;
 }
-
 p {
   font-size: 16px;
   line-height: 1.33;
@@ -391,8 +393,21 @@ ul.hint li
   color: grey;
   margin-bottom: 0;
   text-align: right;
+  max-width: 400px;
+  margin: 10px 0;
+
+
+  text-align:  left;
+  border-left: 3px solid #aaa;
+  padding-left: 10px;
+
+}
+p.hint {
+
 }
 p.hint.text-left {
+  border-left: 3px solid #aaa;
+  padding-left: 10px;
   text-align: left;
 }
 ul.hint {

@@ -1,5 +1,10 @@
 
+
 /* -------------------- */
+.form-inputs {
+  max-width: 700px;
+}
+
 .form-actions {
     /* margin-top: 0; */
 
@@ -11,6 +16,12 @@
 /* inline */
 .input-group-button input.button.small {
     height: 39px;
+}
+
+form .form-inputs h4,
+form .form-inputs h5 {
+  color: #888;
+  font-weight: normal;
 }
 
 /* -------------------- */
@@ -39,12 +50,12 @@ div.place_layer {
 }
 
 #layer_selector {
-
   .input.select {
     display: inline;
   }
 }
 
+/* --- dates --- */
 
 select.datetime {
   width: 100px;
@@ -68,7 +79,9 @@ select#place_enddate_5i  {
   width: 46px;
 }
 
+/* --- images --- */
 
+/* --- images --- */
 form .image {
   width: 45%;
   padding-right: 10px;
