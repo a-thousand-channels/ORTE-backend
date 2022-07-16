@@ -12,10 +12,23 @@ end
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../config/environment', __dir__)
+
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'spec_helper'
+require "action_cable/testing"
+require "rspec/rails/feature_check"
+
+RSpec::Rails::FeatureCheck.module_eval do
+  module_function
+
+  def has_action_cable_testing?
+    true
+  end
+end
 require 'rspec/rails'
+#require "action_cable/testing"
+#require 'rspec/rails/matchers/action_cable'
 
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'devise'
@@ -58,6 +71,7 @@ RSpec.configure do |config|
 
   config.include RequestSpecHelper, type: :request
   config.include ActionCable::TestHelper
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   # config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

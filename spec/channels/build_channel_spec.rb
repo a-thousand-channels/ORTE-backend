@@ -1,9 +1,14 @@
 require "rails_helper"
 
-include ActionCable::TestHelper
-RSpec.describe BuildChannel, :type => :channel do
+RSpec.describe BuildChannel, type: :channel do
+  it "rejects when no current_user" do
+    subscribe
+    expect(subscription).to be_rejected
+  end
+
   it "successfully subscribes" do
-    subscribe room_id: 42
+    subscribed(room_id: 42)
     expect(subscription).to be_confirmed
+    expect(streams).to include("42")
   end
 end
