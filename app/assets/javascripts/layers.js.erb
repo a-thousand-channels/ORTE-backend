@@ -184,8 +184,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         </style>\
         ");
 
-        console.log("fit to bounds");
+        console.log("Fit to bounds routins");
         var bounds = marker_meta_layers.getBounds().pad(0.35);
+        var zoom = 12;
         var northeast = bounds.getNorthEast();
         var southwest = bounds.getSouthWest();
 
@@ -193,16 +194,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           console.log("Fit to custom map center and zoom")
           var mapcenter_lat = $('#selection').data('map-center-lat');
           var mapcenter_lon = $('#selection').data('map-center-lon');
-          var latLngs = [ mapcenter_lat, mapcenter_lon ];
-          var mbounds = L.latLngBounds(latLngs);
-          map.fitBounds(mbounds);
-          var zoom  = $('#selection').data('map-zoom');
-          if ( zoom ) {
-            console.log("set zoom level to " + zoom);
-              map.setZoom(zoom);
-          }
+          var mapcenter = L.latLng(mapcenter_lat, mapcenter_lon);
+          console.log(mapcenter);
+          bounds = L.latLngBounds([mapcenter]);
+          zoom = $('#selection').data('map-zoom');
         }
-        if ( $('#selection').data('map-extent-northeast') ) {
+        else if ( $('#selection').data('map-extent-northeast') ) {
           console.log("Fit to custom map extent");
           /*
           var northeast_array = $('#selection').data('map-extent-northeast').split(",").map(Number);
@@ -230,9 +227,11 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           console.log("Fit map bounds to user values " + bounds);
           map.fitBounds(boundsX, {maxZoom: 16, minZoom: 2});
         } else {
-          map.fitBounds(bounds, {maxZoom: 16, minZoom: 2});
           console.log("Fit map bounds to custom map values");
-          console.log(bounds);
+          map.fitBounds(bounds, {maxZoom: 16, minZoom: 2});
+          console.log("Set custom zoom level to " + zoom);
+          map.setZoom(zoom);
+
         }
 
         // set map zoom level after last user action
