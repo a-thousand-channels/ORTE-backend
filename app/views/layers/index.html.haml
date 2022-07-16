@@ -8,6 +8,8 @@
     Map:
     = link_to map_path(@map) do
       = @map.title
+    = link_to edit_map_path(@map) do
+      %i.fi-pencil.fi-24
 
   - if @map.places.all_tags
     %div.tags
@@ -59,9 +61,6 @@
                 %i.fi-x.fi-24{title: 'Layer is hidden'}
               - if layer.public_submission
                 %i.fi-web.fi-24{title: 'Submissions form enabled'}
-              - else
-                %span{title: 'Submissions form disabled'}
-                  \-
             - if layer.subtitle.present?
               %p= layer.subtitle
             %p.show-for-small-only
