@@ -17,7 +17,11 @@
 .input-group-button input.button.small {
     height: 39px;
 }
-
+input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
+  background-color: #e6e6e6;
+  cursor: not-allowed;
+  color: #aaa;
+}
 form .form-inputs h4,
 form .form-inputs h5 {
   color: #888;

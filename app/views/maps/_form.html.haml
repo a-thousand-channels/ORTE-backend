@@ -11,14 +11,6 @@
             = f.input :title
             = f.input :subtitle
           .large-4.medium-6.small-6.cell
-            %h6 Status
-            - if @map && @map.created_at
-              %p
-                Created:
-                = l(@map.created_at)
-                %br
-                Layers:
-                = @map.layers.count
             %p
               = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
         .grid-x.grid-padding-x

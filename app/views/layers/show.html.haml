@@ -7,7 +7,7 @@
     });
 
 
-#selection{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}.json", 'map_id' => "#{@map.id}", 'layer_id' => "#{@layer.id}", 'map-basemap-url' => "#{@layer.basemap_url}", 'map-basemap-attribution' => "#{@layer.basemap_attribution}", 'map-popup_display_mode' => "#{@map.popup_display_mode}"  }}
+#selection{:data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}.json", 'map_id' => "#{@map.id}", 'layer_id' => "#{@layer.id}", 'map-center-lat' => "#{@map.mapcenter_lat}", 'map-center-lon' => "#{@map.mapcenter_lon}", 'map-zoom' => "#{@map.zoom}", 'map-extent-northeast' => "#{@map.northeast_corner}", 'map-extent-southwest' => "#{@map.southwest_corner}", 'map-basemap-url' => "#{@layer.basemap_url}", 'map-basemap-attribution' => "#{@layer.basemap_attribution}", 'map-popup_display_mode' => "#{@map.popup_display_mode}"  }}
   .grid-x
     .cell.medium-12
       =simple_form_for :navselector, url: '/maps/', html: { method: :get }  do |f|

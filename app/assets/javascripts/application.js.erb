@@ -169,6 +169,28 @@
       LookupNominatim(val,$('input#addresslookup_address').data('url'));
     });
 
+    // layers > form
+    $('div.layer_use_mapcenter_from_parent_map').click(function(e){
+      console.log("layer_use_mapcenter_from_parent_map clicked")
+      if ( $('#layer_use_mapcenter_from_parent_map').is(':checked') ){
+        console.log("... checked")
+        $('input#layer_mapcenter_lat').prop( "disabled", true );
+        $('input#layer_mapcenter_lon').prop( "disabled", true );
+        $('input#layer_zoom').prop( "disabled", true );
+        $('input#layer_mapcenter_lat').val($('#mapcenter').data('map-mapcenter-lat'))
+        $('input#layer_mapcenter_lon').val($('#mapcenter').data('map-mapcenter-lon'))
+        $('input#layer_zoom').val($('#mapcenter').data('map-zoom'))
+      } else {
+        console.log("...unchecked")
+        $('input#layer_mapcenter_lat').prop( "disabled", false );
+        $('input#layer_mapcenter_lon').prop( "disabled", false );
+        $('input#layer_zoom').prop( "disabled", false );
+        $('input#layer_mapcenter_lat').val($('#mapcenter').data('layer-mapcenter-lat'))
+        $('input#layer_mapcenter_lon').val($('#mapcenter').data('layer-mapcenter-lon'))
+        $('input#layer_zoom').val($('#mapcenter').data('layer-zoom'))
+      }
+    })
+
 
     // places > form: toggle layer dropdown
     $('#move_to_layer').click(function(e){

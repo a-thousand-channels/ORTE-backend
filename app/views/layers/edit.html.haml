@@ -8,9 +8,19 @@
     Map:
     = link_to map_layers_path(@map) do
       = @map.title
-
-  %h1
-    =@layer.title
-    (#{@layer.places.count})
+    > Layer:
+    = @layer.title
+  .grid-x.grid-padding-x
+    .large-6.medium-6.small-6.cell
+      %h1
+        =@layer.title
+    .large-6.medium-6.small-6.cell
+      - if @layer && @layer.created_at
+        %p.shy
+          Created:
+          = l(@layer.created_at)
+          %br
+          Places:
+          = @layer.places.count
   = render 'form'
   = link_to 'View Layer', [@map, @layer], :class => 'button secondary'

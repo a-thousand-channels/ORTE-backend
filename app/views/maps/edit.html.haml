@@ -5,5 +5,21 @@
   %p.text-right.close_link_wrapper
     =link_to maps_path, :class=>'close_link' do
       %i.fi.fi-x
-  %h1=@map.title
+  %p
+    Map:
+    = link_to map_layers_path(@map) do
+      = @map.title
+  .grid-x.grid-padding-x
+    .large-6.medium-6.small-6.cell
+      %h1
+        =@map.title
+    .large-6.medium-6.small-6.cell
+      - if @map && @map.created_at
+        %p.shy
+          Created:
+          = l(@map.created_at)
+          %br
+          Layers:
+          = @map.layers.count
+
   = render 'form'
