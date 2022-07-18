@@ -169,6 +169,28 @@
       LookupNominatim(val,$('input#addresslookup_address').data('url'));
     });
 
+    // layers > form
+    $('div.layer_use_mapcenter_from_parent_map').click(function(e){
+      console.log("layer_use_mapcenter_from_parent_map clicked")
+      if ( $('#layer_use_mapcenter_from_parent_map').is(':checked') ){
+        console.log("... checked")
+        $('input#layer_mapcenter_lat').prop( "disabled", true );
+        $('input#layer_mapcenter_lon').prop( "disabled", true );
+        $('input#layer_zoom').prop( "disabled", true );
+        $('input#layer_mapcenter_lat').val($('#mapcenter').data('map-mapcenter-lat'))
+        $('input#layer_mapcenter_lon').val($('#mapcenter').data('map-mapcenter-lon'))
+        $('input#layer_zoom').val($('#mapcenter').data('map-zoom'))
+      } else {
+        console.log("...unchecked")
+        $('input#layer_mapcenter_lat').prop( "disabled", false );
+        $('input#layer_mapcenter_lon').prop( "disabled", false );
+        $('input#layer_zoom').prop( "disabled", false );
+        $('input#layer_mapcenter_lat').val($('#mapcenter').data('layer-mapcenter-lat'))
+        $('input#layer_mapcenter_lon').val($('#mapcenter').data('layer-mapcenter-lon'))
+        $('input#layer_zoom').val($('#mapcenter').data('layer-zoom'))
+      }
+    })
+
 
     // places > form: toggle layer dropdown
     $('#move_to_layer').click(function(e){
@@ -217,20 +239,31 @@
     var marker_meta_layers = L.featureGroup();
     var curve_layers = L.featureGroup();
 
-
-     var overlays = {
-        'Text': text_layers,
-        'Image': image_layers,
-        'Place': marker_meta_layers,
-        'Curves': curve_layers
+    var overlays = {
+        'Places': marker_meta_layers,
+        'Relations': curve_layers,
+        'Labels': text_layers,
+        'Images': image_layers
     };
+
+    if ( !localStorage.overlayPlaces ) {
+      localStorage.overlayPlaces = true;
+    }
+    if ( !localStorage.overlayRelations ) {
+      localStorage.overlayRelations = true;
+    }
+    if ( !localStorage.overlayLabels ) {
+      localStorage.overlayLabels = false;
+    }
+    if ( !localStorage.overlayImages ) {
+      localStorage.overlayImages = false;
+    }
 
     // ---------------
     // baselayer map
 
     var MAP_LAT = 53.55;
     var MAP_LON = 9.99;
-
 
     if ( $('#form-wrapper').data('lat') ) {
       MAP_LAT = $('#form-wrapper').data('lat');
@@ -244,46 +277,126 @@
 
     var map = L.map('map', {
         zoomControl: false,
-        layers: [marker_meta_layers],
         minZoom: 1,
         maxZoom: 20
     }).setView([MAP_LAT, MAP_LON], 12);
 
-
-    L.control.layers(overlays).addTo(map);
-
     UserZoomLevel(map);
     UserMapBounds(map);
 
+    var custom_base_layer;
+    var custom_basemap_url;
+    var custom_basemap_attribution;
+    var Esri_WorldImagery_layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
+            minZoom: 0,
+            maxZoom: 18
 
-    var custom_base_layer = '';
-    var custom_basemap_url = '';
-    var custom_basemap_attribution = '';
+    });
+    var Openstreetmap_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: 'OpenStreetMap + its contributors, CC-BY-SA'
+    });
     if ( $('#selection').data('map-basemap-url') ) {
       custom_basemap_url = $('#selection').data('map-basemap-url');
       if ( $('#selection').data('map-basemap-attribution') ) {
         custom_basemap_attribution = $('#selection').data('map-basemap-attribution');
       }
       custom_base_layer = L.tileLayer(custom_basemap_url, {
-        attribution: custom_basemap_attribution
-      }).addTo(map);
+        attribution: custom_basemap_attribution,
+        minZoom: 0,
+        maxZoom: 21
+      });
+      var basemaps = {
+          "Custom": custom_base_layer,
+          "Satellite": Esri_WorldImagery_layer,
+          "Openstreetmap": Openstreetmap_layer
+      };
+
+
+      // TODO: reset baselayer if custom was set or changed server-side
+
+      if ( localStorage.baselayer == 'Openstreetmap') {
+        Openstreetmap_layer.addTo(map);
+      } else if ( localStorage.baselayer == 'Satellite') {
+        Esri_WorldImagery_layer.addTo(map);
+      } else {
+        custom_base_layer.addTo(map)
+      }
+
     } else {
-      var Esri_WorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
-          minZoom: 0,
-          maxZoom: 18
 
-    }).addTo(map);
-
-    <% if ( Rails.env != "test" ) %>
-       L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
-                attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
-                minZoom: 19,
-                maxZoom: 21
-      }).addTo(map);
-    <% end %>
-
+      if ( localStorage.baselayer == 'Openstreetmap') {
+        Openstreetmap_layer.addTo(map);
+      } else {
+        Esri_WorldImagery_layer.addTo(map);
+      }
+      <% if ( Rails.env != "test" ) %>
+         L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
+                  attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
+                  minZoom: 19,
+                  maxZoom: 21
+        }).addTo(map);
+      <% end %>
+      var basemaps = {
+          "Satellite": Esri_WorldImagery_layer,
+          "Openstreetmap": Openstreetmap_layer,
+      };
     }
+
+    console.log("Check Overlays")
+    if ( localStorage.overlayPlaces == 'true' ) {
+      console.log('localStorage.overlayPlaces == true')
+      map.addLayer(marker_meta_layers);
+    }
+    if ( localStorage.overlayRelations == 'true' ) {
+      console.log('localStorage.overlayRelations == true')
+      map.addLayer(curve_layers);
+    }
+    if ( localStorage.overlayLabels == 'true' ) {
+      console.log('localStorage.overlayLabels == true')
+      map.addLayer(text_layers);
+    }
+    if ( localStorage.overlayImages == 'true' ) {
+      console.log('localStorage.overlayImages == true')
+      map.addLayer(image_layers);
+    }
+    map.on('baselayerchange', function(e){
+      console.log("Baselayer change");
+      console.log(e.name);
+      // TODO: store value via LS
+      localStorage.baselayer = e.name;
+    })
+    map.on('overlayadd', function(e){
+      console.log("Overlay added");
+      console.log(e.name);
+      // TODO: store value via LS
+      if ( e.name == 'Places' ) {
+        localStorage.overlayPlaces = true;
+      } else if ( e.name == 'Relations' ) {
+        localStorage.overlayRelations = true;
+      } else if ( e.name == 'Labels' ) {
+        localStorage.overlayLabels = true;
+      } else if ( e.name == 'Images' ) {
+        localStorage.overlayImages = true;
+      }
+    })
+    map.on('overlayremove ', function(e){
+      console.log("Overlay removed");
+      console.log(e.name);
+      // TODO: store value via LS
+      if ( e.name == 'Places' ) {
+        localStorage.overlayPlaces = false;
+      } else if ( e.name == 'Relations' ) {
+        localStorage.overlayRelations = false;
+      } else if ( e.name == 'Labels' ) {
+        localStorage.overlayLabels = false;
+      } else if ( e.name == 'Images' ) {
+        localStorage.overlayImages = false;
+      }
+
+    })
+    L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
 
     if ( $('#selection').data('layer-id') ) {
       // localStorage.setItem('Layer',$('#selection').data('layer-id'));
@@ -330,8 +443,6 @@
          position:'topright'
     }).addTo(map);
 
-
-
     // layers: show all places
     if ( $('body').attr('id') === 'layers' )  {
       ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
@@ -363,9 +474,6 @@
       }
     });
 
-
-    map.addLayer(marker_meta_layers);
-    map.addLayer(curve_layers);
 
     $('.leaflet-marker-icon').on('mouseover', function(e) {
         // get index

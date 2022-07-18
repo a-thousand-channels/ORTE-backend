@@ -12,8 +12,7 @@
             %i.fi-eye
           = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-edit tiny", title: 'Edit/change image'  do
             %i.fi-pencil
-
-        - if img.file.attached?
+        - if img.file.attached? && ActiveStorage::Blob.service.exist?(img.file.blob.key)
           - klass = 'thumbnail'
           - if img.preview.present?
             - klass = 'thumbnail thumbnail-preview'
@@ -25,8 +24,8 @@
         - else
           = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
             %p
-              Oups, image file is missing.
+              Oups, image file is missing!
               %br
-              Please click here and upload an image file.
+              Please click here to upload a new file.
         %small
           = img.title      

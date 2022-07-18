@@ -2,8 +2,25 @@
 
 #form-wrapper
   %p.text-right.close_link_wrapper
-    =link_to map_layers_path(@map), :class=>'close_link' do
+    = link_to map_layers_path(@map), :class=>'close_link' do
       %i.fi.fi-x
-  %h1 Editing layer
+  %p
+    Map:
+    = link_to map_layers_path(@map) do
+      = @map.title
+    > Layer:
+    = @layer.title
+  .grid-x.grid-padding-x
+    .large-6.medium-6.small-6.cell
+      %h1
+        =@layer.title
+    .large-6.medium-6.small-6.cell
+      - if @layer && @layer.created_at
+        %p.shy
+          Created:
+          = l(@layer.created_at)
+          %br
+          Places:
+          = @layer.places.count
   = render 'form'
   = link_to 'View Layer', [@map, @layer], :class => 'button secondary'

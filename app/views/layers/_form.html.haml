@@ -5,28 +5,30 @@
   .grid-x
     .large-12.medium-12.cell
       .form-inputs
-        %p
-          - if admin? && params[:action] == 'edit'
-            = f.association :map, collection: Map.by_user(current_user), include_blank: false
-          - else
-            Map:
-            =link_to map_path(@map) do
-              #{@map.title}
-            = f.association :map, as: :hidden, :input_html => { :value => @map.id }
-        %p
-          = f.input :title
-          = f.input :subtitle
-          = tinymce
-          = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
-          = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
-          = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
+        .grid-x.grid-padding-x
+          .large-8.medium-6.small-6.cell
+            = f.input :title
+            = f.input :subtitle
+          .large-4.medium-6.small-6.cell
+            %p
+              = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
+            %p
+              - if admin? && params[:action] == 'edit'
+                = f.association :map, collection: Map.by_user(current_user), include_blank: false, :label => 'Map'
+              - else
+                Map:
+                =link_to map_path(@map) do
+                  #{@map.title}
+                = f.association :map, as: :hidden, :input_html => { :value => @map.id }
+        .grid-x.grid-padding-x
+          .large-12.medium-12.small-12.cell
+            = tinymce
+            = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
+            = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
+            = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
         .grid-x.grid-padding-x
           .small-5.cell
-
-            %p
-              = f.input :published, :label => 'Publish'
-              %p.hint.text-left Set this layers as published
             %p
               = f.input :public_submission, :label => 'Submissions'
               %p.hint.text-left Enable public submissions
@@ -120,6 +122,37 @@
                       %svg{height:24,width:24,version:"1.1",xmlns:"http://www.w3.org/2000/svg"}
                         %circle{cx:"12",cy:"12",r:"12",fill:"#{c}"}
 
+
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-12.cell
+              %label Tooltip
+              = f.input :tooltip_display_mode, :collection => tooltip_display_mode_for_select, include_blank: true, label: false, :selected => @layer.tooltip_display_mode
+              %p.hint.text-left
+                Tooltips show the title of a place on the map. Here you can decide how the tooltips should be visible, either permanently or per mouse-over
+            .large-6.medium-6.small-12.cell
+              %label Sorting
+              = f.input :places_sort_order, :collection => places_sort_order_for_select, label: false, :selected => @layer.places_sort_order
+              %p.hint.text-left
+                As a list, how the places should be sorted: By their ID oder by startdate (if defined)?
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .large-4.medium-4.small-6.cell
+              %label Relations bending
+              .grid-x
+                .large-3.medium-3.small-6.cell
+                  = f.input :relations_bending, label: false, input_html: { type: 'number', min: 0, max: 1, step: 1 }
+              %p.hint.text-left
+                Should relation vectors be bended? (0/1)
+            .large-4.medium-4.small-6.cell
+              %label Relations coloring
+              = f.input :relations_coloring, :collection =>  relations_coloring_for_select, label: false, :selected => @layer.relations_coloring
+              %p.hint.text-left
+                Should the realtions be colored in random colors, or rendered black or in the color of the markers (monochrome)?
+            .large-4.medium-4.small-12.cell
+              &nbsp;
         %hr
         %div.compact
           .grid-x.grid-padding-x
@@ -171,46 +204,22 @@
                   %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
 
         %hr
-        %div.compact
+        %div.compact#mapcenter{"data-map-mapcenter-lat": @map.mapcenter_lat, "data-map-mapcenter-lon": @map.mapcenter_lon, "data-map-zoom": @map.zoom, "data-layer-mapcenter-lat": @layer.mapcenter_lat, "data-layer-mapcenter-lon": @layer.mapcenter_lon, "data-layer-zoom": @layer.zoom, }
           .grid-x.grid-padding-x
-            .large-6.medium-6.small-12.cell
-              %label Tooltip
-              = f.input :tooltip_display_mode, :collection => tooltip_display_mode_for_select, include_blank: 'Select:', label: false, :selected => @layer.tooltip_display_mode
-              %p.hint.text-left
-                Tooltips can show the title of a place on the map. Here you can decide if tooltips should be shown, either permanently or per mouse-over
-            .large-6.medium-6.small-12.cell
-              %label Sorting
-              = f.input :places_sort_order, :collection => places_sort_order_for_select, label: false, :selected => @layer.places_sort_order
-              %p.hint.text-left
-                As a list, how the places should be sorted: By ID oder by Startdate?
-        %hr
-        %div.compact
-          .grid-x.grid-padding-x
-            .large-2.medium-2.small-6.cell
-              %label Relations bending
-              = f.input :relations_bending, label: false, input_html: { type: 'number', min: 0, max: 1, step: 1 }
-              %p.hint.text-left
-                Should relation vectors be bended? (0/1)
-            .large-4.medium-4.small-6.cell
-              %label Relations coloring
-              = f.input :relations_coloring, :collection =>  relations_coloring_for_select, label: false, :selected => @layer.relations_coloring
-              %p.hint.text-left
-                Should the realtions be colored in random colors, or rendered black or in the color of the markers (monochrome)?
-            .large-6.medium-6.small-12.cell
-              &nbsp;
-        %hr
-        %div.compact
-          .grid-x.grid-padding-x
-            .medium-12.cell
-              %label Mapcenter
-              %p.hint.text-left Set these values if you want a to override the automatic map center (by the extent of all places)
+            .large-4.medium-6.cell
+              %h5 Mapcenter
+              %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this layer)
+            .large-8.medium-6.cell
+              - if @map && @map.mapcenter_lat && @map.mapcenter_lon
+                = f.input :use_mapcenter_from_parent_map, label: "Use coordinates from parent map"
+                %p.hint Using the coordinate settings from the parent map. Disable this option, if you want to set custom coordinates for this layer.
           .grid-x.grid-padding-x
             .medium-5.cell
-              = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}
+              = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}, disabled: (@layer.use_mapcenter_from_parent_map ? true : false)
             .medium-5.cell
-              = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}
+              = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}, disabled: (@layer.use_mapcenter_from_parent_map ? true : false)
             .medium-2.cell
-              = f.input :zoom, label: "Zoom", input_html: { placeholder: '12'}
+              = f.input :zoom, label: "Zoom", input_html: { placeholder: '12'}, disabled: (@layer.use_mapcenter_from_parent_map ? true : false)
               %p.hint 1-18
 
 

@@ -1,5 +1,10 @@
 
+
 /* -------------------- */
+.form-inputs {
+  max-width: 700px;
+}
+
 .form-actions {
     /* margin-top: 0; */
 
@@ -11,6 +16,16 @@
 /* inline */
 .input-group-button input.button.small {
     height: 39px;
+}
+input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
+  background-color: #e6e6e6;
+  cursor: not-allowed;
+  color: #aaa;
+}
+form .form-inputs h4,
+form .form-inputs h5 {
+  color: #888;
+  font-weight: normal;
 }
 
 /* -------------------- */
@@ -39,12 +54,12 @@ div.place_layer {
 }
 
 #layer_selector {
-
   .input.select {
     display: inline;
   }
 }
 
+/* --- dates --- */
 
 select.datetime {
   width: 100px;
@@ -68,7 +83,9 @@ select#place_enddate_5i  {
   width: 46px;
 }
 
+/* --- images --- */
 
+/* --- images --- */
 form .image {
   width: 45%;
   padding-right: 10px;
@@ -88,11 +105,15 @@ form .image {
 
   .ui-state-highlight { height: 1.5em; line-height: 1.2em; }
 }
-  a.thumbnail {
-    border: solid 4px transparent;
-    margin: 0 10px 2px 0;
-    padding: 3px;
+a.thumbnail {
+  border: solid 4px transparent;
+  margin: 0 10px 2px 0;
+  padding: 3px;
+
+  p {
+    margin-top: 35px;
   }
+}
 
 
 
