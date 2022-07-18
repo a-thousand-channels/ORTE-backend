@@ -97,7 +97,7 @@
               = image_tag @layer.backgroundimage.variant(resize: "200x200").processed, class: "thumbnail"
             %hr
             = f.input :favicon, as: :file, label: 'Favicon Image', required: false
-            - if @layer.favicon && @layer.favicon.attached?
+            - if @layer.favicon && @layer.favicon.attached? && ActiveStorage::Blob.service.exist?(@layer.favicon.blob.key)
               = image_tag @layer.favicon.variant(resize: "200x200").processed, class: "thumbnail"
             %p.hint
               These images will be available at your client
