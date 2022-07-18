@@ -11,16 +11,8 @@
             = f.input :title
             = f.input :subtitle
           .large-4.medium-6.small-6.cell
-            %h6 Status
-            - if @map && @map.created_at
-              %p
-                Created:
-                = l(@map.created_at)
-                %br
-                Layers:
-                = @map.layers.count
             %p
-              = f.input :published, :label => 'Publish'
+              = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
         .grid-x.grid-padding-x
           .large-12.medium-12.small-12.cell
             = tinymce
@@ -34,17 +26,18 @@
             .large-6.medium-6.small-6.cell
               %p
                 = f.association :group, collection: Group.by_user(current_user), include_blank: false
-              %p.shy User group, that has access to this map
+              %p.hint User group, that has access to edit this map and its layers
               %p
                 = f.input :preview_url, input_html: { placeholder: 'https://' }
-              %p.shy URL to a frontend that can read a JSON URL which will be provided as a POST param (?layer=)
+              %p.hint URL to a frontend app for live preview.
+              %p.hint The app should understand the JSON from this backend. Its URL will be provided as a POST param (?layer=)
             .large-6.medium-6.small-12.cell
               %p
                 = f.input :enable_privacy_features, :input_html => { :class => '' }, label: 'Enable privacy features'
-              %p.shy This option allows the privacy features to be activated (but this does not activate them)
+              %p.hint This option allows the privacy features to be activated (but this does not activate them)
               %p
                 = f.input :enable_map_to_go, :input_html => { :class => '' }, label: 'Enable the Map to go feature'
-              %p.shy This option enables that a user can use the Map to go function and the live preview
+              %p.hint This option enables that a user can use the Map to go function and the live preview
 
         - else
           %i.fi-torsos-all.fi-21
@@ -55,18 +48,20 @@
           .large-4.medium-4.small-6.cell
             %p
               = f.input :popup_display_mode, :collection => popup_display_mode_for_select, :input_html => { :class => '' }, label: 'Popup display mode'
-            %p.shy
+            %p.hint
               Choose, which event triggers the display of the popup of a place
 
           .large-4.medium-4.small-6.cell
             %p
               = f.association :iconset
-            %p.shy
+            %p.hint
               Select a predefined set of icons for this map
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"You can select one of these iconsets, which will be used to display your places on the map. If none is selected, coloured circles are used as the default icons."}
           .large-4.medium-4.small-12.cell
             %p
-              = f.input :show_annotations_on_map, :input_html => { :class => '' }, label: 'Show annotations on the map'
+              = f.input :show_annotations_on_map, :input_html => { :class => '' }, label: 'Show annotations'
+            %p.hint
+              Annotations are additional texts added to a place, like a quote, describing the place.
 
         %hr
         .grid-x.grid-padding-x
@@ -74,22 +69,36 @@
 
             %p
               = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}
-            %p.shy
-              URL for an alternative basemap
+            %p.hint
+              URL for a custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
           .large-6.medium-6.small-12.cell
             %p
               = f.input :basemap_attribution, :input_html => {:placeholder => ''}
-            %p.shy
-              Attribution for this basemap
+            %p.hint
+              Attribution for the custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
 
+        %hr
+        .grid-x.grid-padding-x
+          .large-6.medium-10.cell
+            %h5 Default map center
+            %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this layer)
+          .large-6.medium-2.cell
+            \&nbsp;
+        .grid-x.grid-padding-x
+          .medium-5.cell
+            = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}
+          .medium-5.cell
+            = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}
+          .medium-2.cell
+            = f.input :zoom, label: "Zoom", input_html: { placeholder: '12'}
+            %p.hint 1-18
         - if admin? && params[:action] == 'edit'
           %hr
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
-
-              %p
+              %h5
                 Map extend
               .grid-x.grid-padding-x
                 .large-6.medium-6.small-6.cell

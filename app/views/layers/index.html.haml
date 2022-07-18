@@ -8,6 +8,8 @@
     Map:
     = link_to map_path(@map) do
       = @map.title
+    = link_to edit_map_path(@map) do
+      %i.fi-pencil.fi-24
 
   - if @map.places.all_tags
     %div.tags
@@ -39,10 +41,6 @@
         %th Layer
         %th.show-for-medium
           \&nbsp;
-        %th.show-for-medium
-          %i.fi-eye.fi-24
-        %th.show-for-medium
-          %i.fi-web.fi-24
         %th
 
     %tbody
@@ -57,6 +55,12 @@
               = link_to map_layer_url(layer.map,layer) do
                 = layer.title
                 (#{layer.places.count})
+              - if layer.published
+                %i.fi-eye.fi-24{title: 'Layer is published'}
+              - else
+                %i.fi-x.fi-24{title: 'Layer is hidden'}
+              - if layer.public_submission
+                %i.fi-web.fi-24{title: 'Submissions form enabled'}
             - if layer.subtitle.present?
               %p= layer.subtitle
             %p.show-for-small-only
@@ -68,16 +72,6 @@
             - if layer.image && layer.image.attached?
               = link_to url_for(layer.image) do
                 = image_tag layer.image.variant(resize: "120x120").processed, class: "thumbnail", title: layer.title
-          %td.show-for-medium
-            - if layer.published
-              %i.fi-check.fi-24
-            - else
-              %i.fi-x.fi-24
-          %td.show-for-medium
-            - if layer.public_submission
-              %i.fi-check.fi-24{title: 'Submissions enabled'}
-            - else
-              \-
           %td
             = link_to edit_map_layer_path(@map, layer), :class=>"button" do
               %i.fi-pencil.fi-24
