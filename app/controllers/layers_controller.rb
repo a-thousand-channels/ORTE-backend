@@ -100,7 +100,6 @@ class LayersController < ApplicationController
 
     return unless @layer.use_mapcenter_from_parent_map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom
 
-
     @layer.mapcenter_lat = @layer.map.mapcenter_lat
     @layer.mapcenter_lon = @layer.map.mapcenter_lon
     @layer.zoom = @layer.map.zoom
