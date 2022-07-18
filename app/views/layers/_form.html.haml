@@ -146,12 +146,12 @@
                   = f.input :relations_bending, label: false, input_html: { type: 'number', min: 0, max: 1, step: 1 }
               %p.hint.text-left
                 Should relation vectors be bended? (0/1)
-            .large-4.medium-4.small-6.cell
+            .large-6.medium-4.small-6.cell
               %label Relations coloring
               = f.input :relations_coloring, :collection =>  relations_coloring_for_select, label: false, :selected => @layer.relations_coloring
               %p.hint.text-left
                 Should the realtions be colored in random colors, or rendered black or in the color of the markers (monochrome)?
-            .large-4.medium-4.small-12.cell
+            .large-2.medium-4.small-12.cell
               &nbsp;
         %hr
         %div.compact
@@ -168,49 +168,55 @@
 
           %hr
           .grid-x.grid-padding-x
-            .large-8.medium-8.small-12.cell
+            .large-12.medium-12.small-12.cell
               %p
                 %label Basemap URL
                 = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false
               %p.shy
                 URL for a basemap (used as tile layer in the background)
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
+
               %p
                 %label Basemap Attribution
                 = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false
               %p.shy
                 Attribution for this basemap
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
-            .large-4.medium-4.small-12.cell
+          %hr
+          .grid-x.grid-padding-x
+            .medium-12.small-12.cell
               %p
                 %label Background color
               .grid-x.grid-padding-x
-                .medium-3.cell
+                .medium-2.cell
                   %p.shy Pick a color:
-                  %input{type: "color", id: "background_color_preselector", value: @layer.background_color}
-                .medium-9.cell
+                  .grid-x
+                    .medium-5.cell
+                      %input{type: "color", id: "background_color_preselector", value: @layer.background_color}
+                .medium-5.cell
                   %p.shy Or paste a color definition:
                   = f.input :background_color, value: @layer.background_color, label: false
                   %p.shy
                     Color in HEX, RGB or a gradient definition :)
                     %i.fi.fi-info{"data-tooltip"=>true, :title=>"Here you can define a fullcolor in HEX or RGB format, or a gradient definition, all according to the CSS definitions of 'background-color'"}
-              %p
-                %label Preview
-                %div#background_color_preview{style: "background: #{@layer.background_color}" }
-                  &nbsp;
+                .medium-5.cell
+                  %p
+                    %label Preview
+                    %div#background_color_preview{style: "background: #{@layer.background_color}" }
+                      &nbsp;
 
-                %p.hint
-                  The background of the map will be filled with this color.
-                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
+                  %p.hint
+                    The background of the map will be filled with this color.
+                    %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
 
         %hr
         %div.compact#mapcenter{"data-map-mapcenter-lat": @map.mapcenter_lat, "data-map-mapcenter-lon": @map.mapcenter_lon, "data-map-zoom": @map.zoom, "data-layer-mapcenter-lat": @layer.mapcenter_lat, "data-layer-mapcenter-lon": @layer.mapcenter_lon, "data-layer-zoom": @layer.zoom, }
           .grid-x.grid-padding-x
-            .large-4.medium-6.cell
+            .large-5.medium-6.cell
               %h5 Mapcenter
-              %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this layer)
-            .large-8.medium-6.cell
-              - if @map && @map.mapcenter_lat && @map.mapcenter_lon
+              %p.hint.text-left Set these geocoordinates if you want to manually set a map center (not that center calculated by the extent of all places of this layer)
+            .large-7.medium-6.cell
+              - if @map && @map.mapcenter_lat.present? && @map.mapcenter_lon.present?
                 = f.input :use_mapcenter_from_parent_map, label: "Use coordinates from parent map"
                 %p.hint Using the coordinate settings from the parent map. Disable this option, if you want to set custom coordinates for this layer.
           .grid-x.grid-padding-x
