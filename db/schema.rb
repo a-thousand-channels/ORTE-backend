@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_10_140152) do
+ActiveRecord::Schema.define(version: 2022_07_18_151007) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(version: 2022_05_10_140152) do
     t.boolean "rasterize_images", default: false
     t.integer "relations_bending", default: 1
     t.string "relations_coloring", default: "colored"
+    t.boolean "use_mapcenter_from_parent_map", default: true
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end

@@ -91,6 +91,12 @@ class LayersController < ApplicationController
     6.times do
       @colors_selectable << "##{generator.create_hex}"
     end
+
+    if @layer.use_mapcenter_from_parent_map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon
+      @layer.mapcenter_lat = @layer.map.mapcenter_lat
+      @layer.mapcenter_lon = @layer.map.mapcenter_lon
+    end
+    @layer.zoom = @layer.map.zoom if @layer.use_mapcenter_from_parent_map && @layer.map.zoom
   end
 
   # POST /layers
@@ -159,6 +165,6 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :image, :backgroundimage, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring)
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring)
   end
 end
