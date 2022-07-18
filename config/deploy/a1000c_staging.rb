@@ -1,5 +1,5 @@
 
-set :branch, 'ut/240-improved-map-settings-and-multiple-baselayer'
+set :branch, 'main'
 set :rails_env, 'staging'
 set :stage, 'a1000c_staging'
 
