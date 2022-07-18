@@ -76,7 +76,7 @@ class LayersController < ApplicationController
     6.times do
       @colors_selectable << "##{generator.create_hex}"
     end
-    return unless @layer.use_mapcenter_from_parent_map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom
+    return unless @layer.use_mapcenter_from_parent_map && @layer.map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom
 
     @layer.mapcenter_lat = @layer.map.mapcenter_lat
     @layer.mapcenter_lon = @layer.map.mapcenter_lon
