@@ -76,6 +76,11 @@ class LayersController < ApplicationController
     6.times do
       @colors_selectable << "##{generator.create_hex}"
     end
+    return unless @layer.use_mapcenter_from_parent_map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom
+
+    @layer.mapcenter_lat = @layer.map.mapcenter_lat
+    @layer.mapcenter_lon = @layer.map.mapcenter_lon
+    @layer.zoom = @layer.map.zoom
   end
 
   # GET /layers/1/edit
@@ -86,17 +91,15 @@ class LayersController < ApplicationController
     elsif @layer.color && !@layer.color.include?('#')
       @layer.color = "##{@layer.color}"
     end
-
     @colors_selectable = []
     6.times do
       @colors_selectable << "##{generator.create_hex}"
     end
+    return unless @layer.use_mapcenter_from_parent_map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom
 
-    if @layer.use_mapcenter_from_parent_map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon
-      @layer.mapcenter_lat = @layer.map.mapcenter_lat
-      @layer.mapcenter_lon = @layer.map.mapcenter_lon
-    end
-    @layer.zoom = @layer.map.zoom if @layer.use_mapcenter_from_parent_map && @layer.map.zoom
+    @layer.mapcenter_lat = @layer.map.mapcenter_lat
+    @layer.mapcenter_lon = @layer.map.mapcenter_lon
+    @layer.zoom = @layer.map.zoom
   end
 
   # POST /layers
