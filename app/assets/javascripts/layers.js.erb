@@ -190,14 +190,14 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         var northeast = bounds.getNorthEast();
         var southwest = bounds.getSouthWest();
 
-        if ( $('#selection').data('map-center-lat') ) {
+        if ( $('#selection').data('layer-mapcenter-lat') ) {
           console.log("Fit to custom map center and zoom")
-          var mapcenter_lat = $('#selection').data('map-center-lat');
-          var mapcenter_lon = $('#selection').data('map-center-lon');
+          var mapcenter_lat = $('#selection').data('layer-mapcenter-lat');
+          var mapcenter_lon = $('#selection').data('layer-mapcenter-lon');
           var mapcenter = L.latLng(mapcenter_lat, mapcenter_lon);
           console.log(mapcenter);
           bounds = L.latLngBounds([mapcenter]);
-          zoom = $('#selection').data('map-zoom');
+          zoom = $('#selection').data('layer-map-zoom');
         }
         else if ( $('#selection').data('map-extent-northeast') ) {
           console.log("Fit to custom map extent");
