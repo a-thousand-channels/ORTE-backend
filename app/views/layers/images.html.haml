@@ -20,7 +20,7 @@
 
             - if place.images.count > 0
               - place.images.each do |img|
-                - if img.attached?
+                - if img.attached? &&  && ActiveStorage::Blob.service.exist?(img.blob.key)
                   - if img.preview.present?
                     %p{"data-open": "reveal#{img.id}"}
                       = link_to map_layer_place_image_path(place.layer.map,place.layer,place,img), class: "thumbnail thumbnail-preview" do
