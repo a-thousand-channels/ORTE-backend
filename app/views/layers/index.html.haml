@@ -69,7 +69,7 @@
                   %circle{cx:"15",cy:"15",r:"15",fill:"#{layer.color}"}
               %span.icons{:style=>"height: 40px; vertical-align: middle;"}
           %td.show-for-medium
-            - if layer.image && layer.image.attached?
+            - if layer.image && layer.image.attached? && ActiveStorage::Blob.service.exist?(layer.image.blob.key)
               = link_to url_for(layer.image) do
                 = image_tag layer.image.variant(resize: "120x120").processed, class: "thumbnail", title: layer.title
           %td
