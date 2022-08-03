@@ -12,18 +12,20 @@
     —
     = link_to map_layer_path(@layer.map,@layer) do
       = @layer.title
-    (#{@places.count})
+    %span.shy (with #{@places.count} Places)
 
   .grid-x.grid-padding-x
-    .medium-8.cell
-      %p.hint.text-left
+    .medium-12.cell
+      %p.text-left.hint-simple
         - if @layer.published
-          %i.fi-eye.fi-21
+          %i.fi-eye.fi-18
           This content of this layer is visible to the public
         - else
-          %i.fi-lock.fi-21
-          The content is not public
-      %p.text-left.hint
+          %i.fi-lock.fi-18
+          The content of this layer is not public
+  .grid-x.grid-padding-x
+    .medium-7.cell
+      %p.text-left.hint-simple
         Privacy settings for this layer:
       %ul.hint
         %li
@@ -40,22 +42,23 @@
           - else
             %i.fi-alert.fi-18
             All images will be displayed unchanged
-      %p.hint.text-left
+      %p.text-left.hint-simple
         You can change these settings
         = link_to edit_map_layer_path(@map,@layer) do
           in the edit mode
-    .medium-4.cell
-      %p.text-right.hint
+    .medium-5.cell
+      %p.text-right.hint-simple
         See also:
-        %br
-        = link_to annotations_map_layer_path(@map,@layer) do
-          Annotations (about Places)
-      %p.text-right.hint
-        = link_to relations_map_layer_path(@map,@layer) do
-          Relations (between places)
-      %p.text-right.hint
-        = link_to images_map_layer_path(@map,@layer) do
-          Images
+      %ul.hint
+        %li
+          = link_to annotations_map_layer_path(@map,@layer) do
+            Annotations (about Places)
+        %li
+          = link_to relations_map_layer_path(@map,@layer) do
+            Relations (between places)
+        %li
+          = link_to images_map_layer_path(@map,@layer) do
+            All Images of this layer
   %p
     &nbsp;
   %table

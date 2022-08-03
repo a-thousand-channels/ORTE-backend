@@ -125,7 +125,7 @@ a.button {
   color: white !important;
 }
 a.button.small {
-  margin: 0;
+  margin: 0 0.25rem 0.25rem;
 }
 .close-button.small {
     right: 0.66rem;
@@ -385,6 +385,21 @@ p.date {
   margin-top: 1em;
   margin-bottom: 0;
 }
+
+p.hint-simple
+ {
+  font-size: 0.8em;
+  color: grey;
+  margin-bottom: 0;
+  text-align: right;
+  max-width: 400px;
+  margin: 10px 0;
+  text-align:  left;
+  border-left: 0px solid #aaa;
+  padding-left: 0;
+
+}
+
 span.hint,
 p.hint,
 ul.hint li
@@ -395,7 +410,6 @@ ul.hint li
   text-align: right;
   max-width: 400px;
   margin: 10px 0;
-
 
   text-align:  left;
   border-left: 3px solid #aaa;
@@ -429,6 +443,7 @@ p.hint.hint2:hover {
   color: grey;
 }
 
+/* ------------------------ */
 div.switch {
     height: initial;
     position: static;
