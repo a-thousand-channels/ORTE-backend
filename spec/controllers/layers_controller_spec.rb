@@ -157,6 +157,7 @@ RSpec.describe LayersController, type: :controller do
           put :update, params: { map_id: @map.id, id: layer.id, layer: new_attributes }, session: valid_session
           layer.reload
           expect(layer.title).to eq('OtherTitle')
+          expect(layer.image_alt).to eq('An alternative text')
         end
 
         it 'redirects to the layer' do

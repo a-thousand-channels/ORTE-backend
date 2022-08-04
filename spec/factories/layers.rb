@@ -20,7 +20,25 @@ FactoryBot.define do
     places_sort_order { 'startdate' }
     rasterize_images { false }
     submission_config { false }
+    image_alt { 'An alternative text'}
+    image_licence { 'An image licence' }
+    image_source { 'The image source' }
+    image_creator { 'The creator of the image' }
+    image_caption { 'A caption for this image' }
     map
+
+    trait :with_image do
+      image { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+    end
+    trait :without_image do
+      image { [] }
+    end
+    trait :with_backgroundimage do
+      backgroundimage { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+    end
+    trait :with_favicon do
+      favicon { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+    end
 
     trait :invalid do
       title { nil }
