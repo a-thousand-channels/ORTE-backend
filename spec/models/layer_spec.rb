@@ -18,9 +18,7 @@ RSpec.describe Layer, type: :model do
     end
   end
 
-
   describe 'Layer image' do
-
     describe 'Attachment' do
       it 'is valid  ' do
         subject.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
@@ -39,7 +37,6 @@ RSpec.describe Layer, type: :model do
   end
 
   describe 'Layer background image' do
-
     describe 'Attachment' do
       it 'is valid' do
         subject.backgroundimage.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
@@ -58,7 +55,6 @@ RSpec.describe Layer, type: :model do
   end
 
   describe 'Layer favicon image' do
-
     describe 'Attachment' do
       it 'is valid' do
         subject.favicon.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
@@ -77,11 +73,9 @@ RSpec.describe Layer, type: :model do
   end
 
   describe 'EXIF' do
-
     it 'should read EXIF data' do
       subject.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       expect(subject.get_exif_data).to eq({})
     end
-
   end
 end
