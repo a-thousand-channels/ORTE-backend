@@ -18,7 +18,7 @@ RSpec.describe Image, type: :model do
   end
 
   describe 'Attachment' do
-    it 'is valid  ' do
+    it 'is valid' do
       subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       expect(subject.file).to be_attached
     end
