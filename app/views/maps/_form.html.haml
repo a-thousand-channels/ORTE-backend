@@ -5,12 +5,11 @@
   .grid-x
     .large-12.cell
       .form-inputs
-
         .grid-x.grid-padding-x
-          .large-8.medium-6.small-6.cell
+          .large-8.medium-7.small-6.cell
             = f.input :title
             = f.input :subtitle
-          .large-4.medium-6.small-6.cell
+          .large-4.medium-5.small-6.cell
             %p
               = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
         .grid-x.grid-padding-x
@@ -21,7 +20,7 @@
           %hr
           .grid-x.grid-padding-x
             .large-12.cell
-              %label Settings for Admin only
+              %label Settings for Admins only
           .grid-x.grid-padding-x
             .large-6.medium-6.small-6.cell
               %p
@@ -81,9 +80,9 @@
 
         %hr
         .grid-x.grid-padding-x
-          .large-6.medium-10.cell
+          .large-6.medium-10.cell#mapcenter
             %h5 Default map center
-            %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this layer)
+            %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this map and its layers)
           .large-6.medium-2.cell
             \&nbsp;
         .grid-x.grid-padding-x

@@ -6,10 +6,10 @@
     .large-12.medium-12.cell
       .form-inputs
         .grid-x.grid-padding-x
-          .large-8.medium-6.small-6.cell
+          .large-8.medium-7.small-6.cell
             = f.input :title
             = f.input :subtitle
-          .large-4.medium-6.small-6.cell
+          .large-4.medium-5.small-6.cell
             %p
               = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
             %p
@@ -169,15 +169,14 @@
           %hr
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
-              %p
-                %label Basemap URL
+              %div
+                %label{for: 'layer_basemap_url'} Basemap URL
                 = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false
               %p.shy
                 URL for a basemap (used as tile layer in the background)
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
-
-              %p
-                %label Basemap Attribution
+              %div
+                %label{for: 'layer_basemap_attribution'} Basemap Attribution
                 = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false
               %p.shy
                 Attribution for this basemap
@@ -212,13 +211,21 @@
         %hr
         %div.compact#mapcenter{"data-map-mapcenter-lat": @map.mapcenter_lat, "data-map-mapcenter-lon": @map.mapcenter_lon, "data-map-zoom": @map.zoom, "data-layer-mapcenter-lat": @layer.mapcenter_lat, "data-layer-mapcenter-lon": @layer.mapcenter_lon, "data-layer-zoom": @layer.zoom, }
           .grid-x.grid-padding-x
-            .large-5.medium-6.cell
+            .large-12.medium-12.cell#mapcenter
               %h5 Mapcenter
-              %p.hint.text-left Set these geocoordinates if you want to manually set a map center (not that center calculated by the extent of all places of this layer)
+          .grid-x.grid-padding-x
+            .large-5.medium-6.cell
+              %p.hint.text-left Set these geocoordinates if you want to manually define a map center (not that center automatically calculated by the extent of all places)
             .large-7.medium-6.cell
               - if @map && @map.mapcenter_lat.present? && @map.mapcenter_lon.present?
                 = f.input :use_mapcenter_from_parent_map, label: "Use coordinates from parent map"
                 %p.hint Using the coordinate settings from the parent map. Disable this option, if you want to set custom coordinates for this layer.
+              - else
+                %p.hint.text-left
+                  You could also
+                  = link_to edit_map_url(@map, :anchor => "mapcenter") do
+                    set the mapcenter per map,
+                  so it would apply to layers of this map.
           .grid-x.grid-padding-x
             .medium-5.cell
               = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}, disabled: (@layer.use_mapcenter_from_parent_map ? true : false)
