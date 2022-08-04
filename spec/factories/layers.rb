@@ -20,7 +20,7 @@ FactoryBot.define do
     places_sort_order { 'startdate' }
     rasterize_images { false }
     submission_config { false }
-    image_alt { 'An alternative text'}
+    image_alt { 'An alternative text' }
     image_licence { 'An image licence' }
     image_source { 'The image source' }
     image_creator { 'The creator of the image' }
