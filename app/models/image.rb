@@ -73,10 +73,10 @@ class Image < ApplicationRecord
   end
 
   def check_file_presence
-    errors.add(:file, 'no file present') unless file
+    errors.add(:file, 'No file present') unless file
   end
 
   def check_file_format
-    errors.add(:file, 'format must be JPG/PNG or GIF') if file.attached? && !file.content_type.in?(%w[image/png image/jpeg image/gif])
+    errors.add(:file, 'File format must be JPG/PNG or GIF') if file.attached? && !file.content_type.in?(%w[image/png image/jpeg image/gif])
   end
 end

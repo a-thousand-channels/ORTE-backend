@@ -20,6 +20,7 @@ FactoryBot.define do
     places_sort_order { 'startdate' }
     rasterize_images { false }
     submission_config { false }
+    exif_remove { true }
     image_alt { 'An alternative text' }
     image_licence { 'An image licence' }
     image_source { 'The image source' }

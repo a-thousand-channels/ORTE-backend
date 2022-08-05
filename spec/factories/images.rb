@@ -21,9 +21,13 @@ FactoryBot.define do
     trait :with_wrong_fileformat do
       file { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.txt'), '')] }
     end
-    trait :invalid do
+    trait :notitle do
       title { nil }
-      place { nil }
+    end
+    trait :nofile do
+      title { nil }
+    end
+    trait :invalid do
       file { [] }
     end
     trait :changed do
