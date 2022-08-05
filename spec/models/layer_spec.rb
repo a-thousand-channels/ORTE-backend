@@ -96,7 +96,7 @@ RSpec.describe Layer, type: :model do
       l.reload
       puts l.places.count
       zip_file = "orte-map-#{l.map.title.parameterize}-layer-#{l.title.parameterize}-#{I18n.l Date.today}.zip"
-      expect(l.to_zip(zip_file)).to eq("bla")
+      expect(l.to_zip(zip_file)).to eq('bla')
     end
   end
 end
