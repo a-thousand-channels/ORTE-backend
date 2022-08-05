@@ -25,9 +25,11 @@ FactoryBot.define do
       title { nil }
     end
     trait :nofile do
-      title { nil }
+      file { [] }
     end
     trait :invalid do
+      title { nil }
+      place { nil }
       file { [] }
     end
     trait :changed do

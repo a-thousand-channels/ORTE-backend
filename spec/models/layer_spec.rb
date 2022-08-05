@@ -77,5 +77,26 @@ RSpec.describe Layer, type: :model do
       subject.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       expect(subject.get_exif_data).to eq({})
     end
+
+    it 'should remove EXIF data' do
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      l.exif_remove = true
+      l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      l.save!
+    end
+  end
+
+  describe 'ZIP' do
+    xit 'should create a ZIP archive' do
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      p1 = FactoryBot.create(:place, layer: l)
+      p2 = FactoryBot.create(:place, layer: l)
+      l.reload
+      puts l.places.count
+      zip_file = "orte-map-#{l.map.title.parameterize}-layer-#{l.title.parameterize}-#{I18n.l Date.today}.zip"
+      expect(l.to_zip(zip_file)).to eq("bla")
+    end
   end
 end
