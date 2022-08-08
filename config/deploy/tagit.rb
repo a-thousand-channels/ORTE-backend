@@ -10,11 +10,11 @@ namespace :deploy do
     tagname = "v1-#{stage}-#{date.strftime('%Y-%m-%d-%H%M')}"
 
     # Delete all tags for respective stage.
-    #oldtags = `git tag -l '#{stage}-*'`.split("\n")
-    #oldtags.each { |tag| `git tag -d #{tag}` }
+    oldtags = `git tag -l 'v1-#{stage}-*'`.split("\n")
+    oldtags.each { |tag| `git tag -d #{tag}` }
 
     # Push all the changes.
-    #{}`git push --tags #{remote} :#{oldtags.join(' :')}`
+    `git push --tags #{remote} :#{oldtags.join(' :')}`
 
     # Tag HEAD of respective branch.
     `git tag -a #{tagname} -m "Deployment of #{stage} at #{date.to_s}" #{branch}`
