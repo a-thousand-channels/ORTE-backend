@@ -59,7 +59,6 @@ class LayersController < ApplicationController
       @layer.background_color = @layer.map.background_color
     end
 
-
     if @layer
       @places = @layer.places
       @place = Place.find(params[:place_id]) if params[:remap]
