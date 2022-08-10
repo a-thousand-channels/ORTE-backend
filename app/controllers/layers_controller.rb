@@ -53,6 +53,13 @@ class LayersController < ApplicationController
 
     @map_layers = @map.layers
 
+    if @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
+      @layer.basemap_url = @layer.map.basemap_url
+      @layer.basemap_attribution = @layer.map.basemap_attribution
+      @layer.background_color = @layer.map.background_color
+    end
+
+
     if @layer
       @places = @layer.places
       @place = Place.find(params[:place_id]) if params[:remap]
@@ -76,6 +83,13 @@ class LayersController < ApplicationController
     6.times do
       @colors_selectable << "##{generator.create_hex}"
     end
+
+    if @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
+      @layer.basemap_url = @layer.map.basemap_url
+      @layer.basemap_attribution = @layer.map.basemap_attribution
+      @layer.background_color = @layer.map.background_color
+    end
+
     return unless @layer.use_mapcenter_from_parent_map && @layer.map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom
 
     @layer.mapcenter_lat = @layer.map.mapcenter_lat
