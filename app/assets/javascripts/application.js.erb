@@ -190,6 +190,30 @@
         $('input#layer_zoom').val($('#mapcenter').data('layer-zoom'))
       }
     })
+    $('div.layer_use_background_from_parent_map').click(function(e){
+      console.log("layer_use_background_from_parent_map clicked")
+      if ( $('#layer_use_background_from_parent_map').is(':checked') ){
+        console.log("... checked")
+        $('select#basemaps').prop( "disabled", true );
+        $('select#basemaps').val(0);
+        $('textarea#layer_basemap_url').prop( "disabled", true );
+        $('textarea#layer_basemap_attribution').prop( "disabled", true );
+        $('input#layer_background_color').prop( "disabled", true );
+        $('textarea#layer_basemap_url').val($('#basemaps').data('map-basemap-url'))
+        $('textarea#layer_basemap_attribution').val($('#basemaps').data('map-basemap-attribution'))
+        $('input#layer_background_color').val($('#basemaps').data('map-background-color'))
+      } else {
+        console.log("...unchecked")
+        $('select#basemaps').prop( "disabled", false );
+        $('select#basemaps').val(0);
+        $('textarea#layer_basemap_url').prop( "disabled", false );
+        $('textarea#layer_basemap_attribution').prop( "disabled", false );
+        $('input#layer_background_color').prop( "disabled", false );
+        $('textarea#layer_basemap_url').val($('#basemaps').data('map-basemap-url'))
+        $('textarea#layer_basemap_attribution').val($('#basemaps').data('map-basemap-attribution'))
+        $('input#layer_background_color').val($('#basemaps').data('layer-background-color'))
+      }
+    })
 
 
     // places > form: toggle layer dropdown

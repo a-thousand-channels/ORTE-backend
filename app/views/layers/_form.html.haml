@@ -164,9 +164,9 @@
         %hr
         %div.compact
           .grid-x.grid-padding-x
-            .large-12.medium-12.small-12.cell
+            .large-6.medium-6.small-12.cell
               %label Predefined Basemaps
-              %select#basemaps
+              %select#basemaps{"data-map-basemap-url": @map.basemap_url, "data-map-basemap-attribution": @map.basemap_attribution, "data-map-background-color": @map.background_color, "data-layer-basemap-url": @layer.basemap_url, "data-layer-basemap-attribution": @layer.basemap_attribution, "data-layer-background-color": @layer.background_color, disabled: (@layer.use_background_from_parent_map ? true : false)}
                 %option{value: '', "data-url": '', "data-backgroundcolor": '', "data-attribution": '' }
                 - basemaps.each_value do |b|
                   %option{value: b['id'], "data-url": b['url'], "data-backgroundcolor": b['backgroundcolor'], "data-attribution": b['attribution'] }
@@ -174,18 +174,30 @@
               %p.shy
                 Please select one of the predefined basemaps
 
+            .large-6.medium-6.cell
+              - if @map && @map.basemap_url.present?
+                = f.input :use_background_from_parent_map, label: "Use background from parent map"
+                %p.hint Using the background settings from the parent map. Disable this option, if you want to set custom background just for this layer.
+              - else
+                %p.hint.text-left
+                  You could also
+                  = link_to edit_map_url(@map, :anchor => "basemap") do
+                    set the background settings per map,
+                  so it would apply to layers of this map.
+
+
           %hr
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
               %div
                 %label{for: 'layer_basemap_url'} Basemap URL
-                = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false
+                = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false, disabled: (@layer.use_background_from_parent_map ? true : false)
               %p.shy
                 URL for a basemap (used as tile layer in the background)
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
               %div
                 %label{for: 'layer_basemap_attribution'} Basemap Attribution
-                = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false
+                = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false, disabled: (@layer.use_background_from_parent_map ? true : false)
               %p.shy
                 Attribution for this basemap
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
@@ -199,10 +211,10 @@
                   %p.shy Pick a color:
                   .grid-x
                     .medium-5.cell
-                      %input{type: "color", id: "background_color_preselector", value: @layer.background_color}
+                      %input{type: "color", id: "background_color_preselector", value: @layer.background_color, disabled: (@layer.use_background_from_parent_map ? true : false)}
                 .medium-5.cell
                   %p.shy Or paste a color definition:
-                  = f.input :background_color, value: @layer.background_color, label: false
+                  = f.input :background_color, value: @layer.background_color, label: false, disabled: (@layer.use_background_from_parent_map ? true : false)
                   %p.shy
                     Color in HEX, RGB or a gradient definition :)
                     %i.fi.fi-info{"data-tooltip"=>true, :title=>"Here you can define a fullcolor in HEX or RGB format, or a gradient definition, all according to the CSS definitions of 'background-color'"}
@@ -217,7 +229,7 @@
                     %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
 
         %hr
-        %div.compact#mapcenter{"data-map-mapcenter-lat": @map.mapcenter_lat, "data-map-mapcenter-lon": @map.mapcenter_lon, "data-map-zoom": @map.zoom, "data-layer-mapcenter-lat": @layer.mapcenter_lat, "data-layer-mapcenter-lon": @layer.mapcenter_lon, "data-layer-zoom": @layer.zoom, }
+        %div.compact#mapcenter{"data-map-mapcenter-lat": @map.mapcenter_lat, "data-map-mapcenter-lon": @map.mapcenter_lon, "data-map-zoom": @map.zoom, "data-layer-mapcenter-lat": @layer.mapcenter_lat, "data-layer-mapcenter-lon": @layer.mapcenter_lon, "data-layer-zoom": @layer.zoom }
           .grid-x.grid-padding-x
             .large-12.medium-12.cell#mapcenter
               %h5 Mapcenter
