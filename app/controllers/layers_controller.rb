@@ -53,13 +53,12 @@ class LayersController < ApplicationController
 
     @map_layers = @map.layers
 
-    if @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
-      @layer.basemap_url = @layer.map.basemap_url
-      @layer.basemap_attribution = @layer.map.basemap_attribution
-      @layer.background_color = @layer.map.background_color
-    end
-
     if @layer
+      if @layer.map && @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
+        @layer.basemap_url = @layer.map.basemap_url
+        @layer.basemap_attribution = @layer.map.basemap_attribution
+        @layer.background_color = @layer.map.background_color
+      end
       @places = @layer.places
       @place = Place.find(params[:place_id]) if params[:remap]
       respond_to do |format|
@@ -83,7 +82,7 @@ class LayersController < ApplicationController
       @colors_selectable << "##{generator.create_hex}"
     end
 
-    if @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
+    if @layer.map && @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
       @layer.basemap_url = @layer.map.basemap_url
       @layer.basemap_attribution = @layer.map.basemap_attribution
       @layer.background_color = @layer.map.background_color
@@ -111,7 +110,7 @@ class LayersController < ApplicationController
 
     @layer.use_background_from_parent_map = false unless @layer.map.basemap_url && @layer.map.basemap_attribution && @layer.map.background_color
 
-    if @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
+    if @layer.map && @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
       @layer.basemap_url = @layer.map.basemap_url
       @layer.basemap_attribution = @layer.map.basemap_attribution
       @layer.background_color = @layer.map.background_color
