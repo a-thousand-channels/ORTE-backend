@@ -96,6 +96,14 @@ class LayersController < ApplicationController
       @colors_selectable << "##{generator.create_hex}"
     end
 
+    @layer.use_background_from_parent_map = false unless @layer.map.basemap_url && @layer.map.basemap_attribution && @layer.map.background_color
+
+    if @layer.use_background_from_parent_map && @layer.map.basemap_url && @layer.map.background_color
+      @layer.basemap_url = @layer.map.basemap_url
+      @layer.basemap_attribution = @layer.map.basemap_attribution
+      @layer.background_color = @layer.map.background_color
+    end
+
     @layer.use_mapcenter_from_parent_map = false unless @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom
 
     return unless @layer.use_mapcenter_from_parent_map && @layer.map.mapcenter_lat && @layer.map.mapcenter_lon && @layer.map.zoom

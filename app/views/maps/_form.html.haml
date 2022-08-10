@@ -63,20 +63,56 @@
               Annotations are additional texts added to a place, like a quote, describing the place.
 
         %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell
+              %label Predefined Basemaps
+              %p.shy
+                Please select one of the predefined basemaps
+              %select#basemaps
+                %option{value: '', "data-url": '', "data-backgroundcolor": '', "data-attribution": '' }
+                - basemaps.each_value do |b|
+                  %option{value: b['id'], "data-url": b['url'], "data-backgroundcolor": b['backgroundcolor'], "data-attribution": b['attribution'] }
+                    = b['title']
+        %hr
         .grid-x.grid-padding-x
-          .large-6.medium-6.small-12.cell
-
+          .large-12.medium-12.small-12.cell
             %p
               = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}
             %p.hint
               URL for a custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
-          .large-6.medium-6.small-12.cell
             %p
               = f.input :basemap_attribution, :input_html => {:placeholder => ''}
             %p.hint
               Attribution for the custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
+        %hr
+        .grid-x.grid-padding-x
+          .medium-12.small-12.cell
+            %p
+              %label Background color
+            .grid-x.grid-padding-x
+              .medium-2.cell
+                %p.shy Pick a color:
+                .grid-x
+                  .medium-5.cell
+                    %input{type: "color", id: "background_color_preselector", value: @map.background_color}
+              .medium-5.cell
+                %p.shy Or paste a color definition:
+                = f.input :background_color, value: @map.background_color, label: false
+                %p.hint
+                  Color in HEX, RGB or a gradient definition :)
+                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"Here you can define a fullcolor in HEX or RGB format, or a gradient definition, all according to the CSS definitions of 'background-color'"}
+              .medium-5.cell
+                %p
+                  %label Preview
+                  %div#background_color_preview{style: "background: #{@map.background_color}" }
+                    &nbsp;
+
+                %p.hint
+                  The background of the map will be filled with this color.
+                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
 
         %hr
         .grid-x.grid-padding-x

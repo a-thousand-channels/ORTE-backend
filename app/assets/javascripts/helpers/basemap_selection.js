@@ -7,9 +7,16 @@ $(function() {
       console.log( $(this).find('option:selected').data('attribution') );
       console.log( $(this).find('option:selected').data('backgroundcolor') );
 
-      $('#layer_basemap_url').val($(this).find('option:selected').data('url'))
-      $('#layer_basemap_attribution').val($(this).find('option:selected').data('attribution'))
-      $('#layer_background_color').val($(this).find('option:selected').data('backgroundcolor'))
+      if ( $('body#maps').length > 0 ) {
+        $('#map_basemap_url').val($(this).find('option:selected').data('url'))
+        $('#map_basemap_attribution').val($(this).find('option:selected').data('attribution'))
+        $('#map_background_color').val($(this).find('option:selected').data('backgroundcolor'))
+      } else if   ( $('body#layers').length > 0 ) {
+        $('#layer_basemap_url').val($(this).find('option:selected').data('url'))
+        $('#layer_basemap_attribution').val($(this).find('option:selected').data('attribution'))
+        $('#layer_background_color').val($(this).find('option:selected').data('backgroundcolor'))
+      }
+
       $('#background_color_preselector').val( $(this).find('option:selected').data('backgroundcolor'));
       $('#background_color_preview').css( 'background', $(this).find('option:selected').data('backgroundcolor'));
   });
