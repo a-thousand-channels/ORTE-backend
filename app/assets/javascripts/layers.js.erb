@@ -642,12 +642,11 @@ function PopupFullContent(place) {
           teaser = place.teaser.trim()    // remove leading and trailing spaces
                   .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
         }
-        content += "<p>"+teaser;
+        content += "<p>"+teaser+"</p>";
       }
       if ( place.edit_link ) {
-        content += place.edit_link;
+        content += "<p class='text-right'>"+place.edit_link+"</p>";
       }
-      content += "</p>";
       content += '</div>';
       return content;
 }
