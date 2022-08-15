@@ -24,9 +24,6 @@ development:
 test:
   <<: *defaults
 
-localtest:
-  <<: *defaults
-
 staging:
   <<: *defaults
   app_host:          'staging.orte.link'

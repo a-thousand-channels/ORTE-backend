@@ -521,7 +521,7 @@
 
     // ---------------
 
-    <% if (( Rails.env == "test" ) || ( Rails.env == "localtest" )) %>
+    <% if ( Rails.env == "test" ) %>
       // this should be at the very end of this script :) and for test env only!
       $('footer').append("Javascript enabled");
     <% end %>
