@@ -15,16 +15,21 @@ This application is work in progress. Contributions are welcome (see below).
 
 This application uses [Nominatim](https://nominatim.openstreetmap.org/), a search engine for OpenStreetMap data to look up address and geolocation data. By implementing this application you should respect the [Nominatim Usage Policy](https://operations.osmfoundation.org/policies/nominatim/)!
 
+## Map to go feature
+
+ORTE BAckend ist basically a backend which provides JSON and GeoJSON export of its layers and map. Since version 0.7 there is a map to go feature, where user can generate a static, Nuxt.js based website from their single layer (and its places) and place this site on their webspace. 
+
 ## Installation
 
 Basic steps for a local installation on your machine:
 
 ### Requirements
 
-* Webserver (Apache, NGINX)
-* Ruby 2.6+, RVM, Rubygems
+* Webserver (e.g. Apache or NGINX)
+* Ruby 2.7+, RVM, Rubygems
 * MySQL/Maria DB
 * ffmpeg (for the video feature), ImageMagick (for the image feature)
+* Redis
 
 ### Get repository
 
@@ -68,8 +73,8 @@ $ bundle exec rails s
 
 
 ```bash
-$ RAILS_ENV=localtest bundle exec rails db:migrate
-$ RAILS_ENV=localtest COVERAGE=true bundle exec rspec spec
+$ RAILS_ENV=test bundle exec rails db:migrate
+$ RAILS_ENV=test COVERAGE=true bundle exec rspec spec
 ```
 
 ## Credits
