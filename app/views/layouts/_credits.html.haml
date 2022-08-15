@@ -1,3 +1,5 @@
 = Settings.app_credits
-- if Rails.env == 'staging' || Rails.env == 'development'
+- if Rails.env == 'development'
+  (#{Rails.env[0..2]})
+- elsif Rails.env == 'staging'
   (#{Rails.env})
