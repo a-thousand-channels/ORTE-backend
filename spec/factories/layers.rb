@@ -9,15 +9,16 @@ FactoryBot.define do
     credits { 'MyString' }
     style { 'MyCSS' }
     published { false }
-    basemap_url { 'MyBasemapUrl' }
-    basemap_attribution { 'Basemap made by' }
     color { '#cc0000' }
+    use_background_from_parent_map { false }
+    basemap_url { 'MyLayerBasemapUrl' }
+    basemap_attribution { 'Basemap made by' }
     background_color { '#454545' }
     mapcenter_lat { '0.1' }
     mapcenter_lon { '10' }
     zoom { 12 }
     tooltip_display_mode { 'false' }
-    places_sort_order { 'startdate' }
+    places_sort_order { false }
     rasterize_images { false }
     submission_config { false }
     exif_remove { true }
@@ -27,6 +28,26 @@ FactoryBot.define do
     image_creator { 'The creator of the image' }
     image_caption { 'A caption for this image' }
     map
+
+    trait :use_background_from_parent_map do
+      use_background_from_parent_map { true }
+    end
+
+    trait :with_no_color do
+      color { false }
+    end
+
+    trait :with_wrong_color_format do
+      color { 'cc0000' }
+    end
+
+    trait :sorted_by_title do
+      places_sort_order { 'title' }
+    end
+
+    trait :sorted_by_startdate do
+      places_sort_order { 'startdate' }
+    end
 
     trait :with_image do
       image { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }

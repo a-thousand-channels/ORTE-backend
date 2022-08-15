@@ -39,6 +39,30 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
+    describe 'GET #images' do
+      it 'returns a success response' do
+        layer = Layer.create! valid_attributes
+        get :images, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    describe 'GET #pack' do
+      it 'returns a success response' do
+        layer = Layer.create! valid_attributes
+        get :pack, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+    end
+
+    describe 'GET #build' do
+      xit 'returns a success response' do
+        layer = Layer.create! valid_attributes
+        patch :build, params: { map_id: @map.id, id: layer.id }, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+    end
+
     describe 'GET #search' do
       it 'returns a success response' do
         layer = Layer.create! valid_attributes
@@ -72,6 +96,14 @@ RSpec.describe LayersController, type: :controller do
         get :show, params: { map_id: map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(302)
         expect(flash[:notice]).to match 'Sorry, this map could not be found.'
+      end
+
+      it 'returns a sucess with use_background_from_parent_map=true' do
+        layer = FactoryBot.create(:layer, :use_background_from_parent_map, map: @map)
+        get :show, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:layer)['use_background_from_parent_map']).to be_truthy
+        expect(assigns(:layer)['basemap_url']).to eq('MyMapBasemapUrl')
       end
     end
 
@@ -108,6 +140,7 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
+
     describe 'GET #new' do
       it 'returns a success response' do
         get :new, params: { map_id: @map.id }, session: valid_session
@@ -115,11 +148,33 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
+
     describe 'GET #edit' do
       it 'returns a success response' do
         layer = Layer.create! valid_attributes
         get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
+      end
+
+      it 'returns a success response with no color set' do
+        layer = FactoryBot.create(:layer, :with_no_color, map: @map)
+        get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+
+      it 'returns a success response with_wrong_color_format set' do
+        layer = FactoryBot.create(:layer, :with_wrong_color_format, map: @map)
+        get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:layer)['color']).to eq('#cc0000')
+      end
+
+      it 'returns a sucess with use_background_from_parent_map=true' do
+        layer = FactoryBot.create(:layer, :use_background_from_parent_map, map: @map)
+        get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:layer)['use_background_from_parent_map']).to be_truthy
+        expect(assigns(:layer)['basemap_url']).to eq('MyMapBasemapUrl')
       end
     end
 

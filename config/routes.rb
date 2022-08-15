@@ -42,7 +42,7 @@ Rails.application.routes.draw do
         patch :build
         get :annotations
         get :relations
-        get :images, only: [:index]
+        get :images
       end
       resources :places do
         resources :images

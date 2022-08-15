@@ -9,7 +9,7 @@ FactoryBot.define do
     credits { 'MyString' }
     style { 'MyCSS' }
     published { false }
-    basemap_url { 'MyBasemapUrl' }
+    basemap_url { 'MyMapBasemapUrl' }
     basemap_attribution { 'Basemap made by' }
     color { '#0000cc' }
     background_color { '#151515' }
