@@ -7,5 +7,8 @@ FactoryBot.define do
     output { 'MyString' }
     size { 'MyString' }
     version { 'MyString' }
+    trait :changed do
+      output { 'OtherString' }
+    end
   end
 end
