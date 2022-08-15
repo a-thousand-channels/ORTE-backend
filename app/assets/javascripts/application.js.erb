@@ -305,6 +305,7 @@
         maxZoom: 20
     }).setView([MAP_LAT, MAP_LON], 12);
 
+    $('#show_zoomlevel').html(map.getZoom());
     UserZoomLevel(map);
     UserMapBounds(map);
 
@@ -420,6 +421,13 @@
       }
 
     })
+    map.on('zoomend',function(e){
+      if (map.getZoom() < 14 ){
+        map.removeLayer(text_layers);
+      } else {
+        map.addLayer(text_layers);
+      }
+    });
     L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
 
     if ( $('#selection').data('layer-id') ) {
