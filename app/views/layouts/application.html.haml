@@ -71,14 +71,13 @@
             \::
             = link_to public_map_layer_path(@map,@layer,:format => :zip), :title => "Export this layer as ZIP archive (JSON & images)", class: 'small' do
               JSON & Images
-            \::
-             
           - if controller_name == 'maps' && params[:action] == 'show' && @map
+            \::
             = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON", class: 'small' do
               Public JSON
-          &nbsp;|&nbsp;
           - if user_signed_in?
             %span.show-for-small-only
+              &nbsp;|&nbsp;
               %a{:href => settings_path, :title => 'Your Settings'}
                 %i.fi-widget.fi-21
 

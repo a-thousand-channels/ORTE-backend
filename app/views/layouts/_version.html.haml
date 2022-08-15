@@ -6,4 +6,5 @@
     v#{Settings.app_version}
 %span.show-for-large.small
   = Settings.app_tagline
-  = "#{DEPLOY_REVISION}@#{Rails.env[0..2]} (#{I18n.l DEPLOY_DATE})"
+  \&mdash;
+  = "#{DEPLOY_REVISION} #{I18n.l DEPLOY_DATE}"
