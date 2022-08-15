@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Public::LayersController, type: :controller do
   render_views
 
-  describe "functionalities for everybody" do
+  describe 'functionalities for everybody' do
     before do
       @group = FactoryBot.create(:group)
       user = FactoryBot.create(:admin_user, group_id: @group.id)
@@ -43,7 +43,7 @@ RSpec.describe Public::LayersController, type: :controller do
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
 
         expect(assigns(:layer)).to eq(layer)
-        expect(assigns(:places)).to eq([place1,place2,place3])
+        expect(assigns(:places)).to eq([place1, place2, place3])
       end
 
       it 'returns sorted results a published layer, sorted by title' do
@@ -56,20 +56,20 @@ RSpec.describe Public::LayersController, type: :controller do
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
 
         expect(assigns(:layer)).to eq(layer)
-        expect(assigns(:places)).to eq([place2,place3,place1])
+        expect(assigns(:places)).to eq([place2, place3, place1])
       end
 
       it 'returns sorted results a published layer, sorted by startdate' do
         layer = FactoryBot.create(:layer, :sorted_by_startdate, map_id: @map.id, published: true)
-        place1 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now-2.day)
-        place2 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now-4.day)
-        place3 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now-3.day)
+        place1 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now - 2.day)
+        place2 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now - 4.day)
+        place3 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now - 3.day)
         place4_notpublished = FactoryBot.create(:place, layer: layer, published: false)
 
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
 
         expect(assigns(:layer)).to eq(layer)
-        expect(assigns(:places)).to eq([place2,place3,place1])
+        expect(assigns(:places)).to eq([place2, place3, place1])
       end
 
       it 'returns json for a published layer' do
