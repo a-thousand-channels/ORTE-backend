@@ -140,14 +140,12 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
-
     describe 'GET #new' do
       it 'returns a success response' do
         get :new, params: { map_id: @map.id }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
-
 
     describe 'GET #edit' do
       it 'returns a success response' do
