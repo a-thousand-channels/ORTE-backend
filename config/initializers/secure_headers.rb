@@ -43,7 +43,7 @@ SecureHeaders::Configuration.default do |config|
     report_uri: %w()
   }
 
-  if Rails.env.development? || Rails.env.test? || Rails.env.localtest? || Rails.env.staging?  || Rails.env.production?
+  if Rails.env.development? || Rails.env.test? || Rails.env.staging?  || Rails.env.production?
     config.csp = default_csp_config.merge({
         default_src: %w('self' https://staging.orte.link https://orte.link),
         font_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
