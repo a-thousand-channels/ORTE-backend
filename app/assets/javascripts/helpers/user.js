@@ -2,6 +2,7 @@ function UserZoomLevel(map) {
   map.on('zoomend',function(e){
     var zl  = map.getZoom();
     localStorage.setItem('UserZoomLevel',zl);
+    $('#show_zoomlevel').html(zl);
   });
 }
 function UserMapBounds(map) {
