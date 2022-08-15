@@ -3,7 +3,7 @@
 
 # ORTE-backend
 
-Simple, straightforward backend for creating and managing places/POIs (or in german "Orte") and additional informations of a web-based map. Output is a public available API w/JSON and exportable as CSV/JSON/GeoJSON.
+Backend application for creating and managing places/POIs (or in german "Orte") and additional informations on a web-based map. Output is a public available API w/JSON or exportable as CSV/JSON/GeoJSON data.
 
 Based on Ruby on Rails 5, MySQL/MariaDB, jQuery, Leaflet and Foundation 6.
 
@@ -17,7 +17,7 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 
 ## Map to go feature
 
-ORTE BAckend ist basically a backend which provides JSON and GeoJSON export of its layers and map. Since version 0.7 there is a map to go feature, where user can generate a static, Nuxt.js based website from their single layer (and its places) and place this site on their webspace. 
+ORTE Backend ist basically a backend which provides JSON and GeoJSON export of its layers and map. Since version 0.7 offers a "map to go" feature, where user can generate a static, Nuxt.js based website from their single layer (and its places) and place this site on their webspace.
 
 ## Installation
 
