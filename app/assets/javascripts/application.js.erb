@@ -305,7 +305,7 @@
         maxZoom: 20
     }).setView([MAP_LAT, MAP_LON], 12);
 
-    $('#show_zoomlevel').html(map.getZoom());
+    $('#show_zoomlevel').html("Level: "+map.getZoom());
     UserZoomLevel(map);
     UserMapBounds(map);
 
