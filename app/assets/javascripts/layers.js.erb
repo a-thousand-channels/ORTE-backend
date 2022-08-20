@@ -186,7 +186,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
         console.log("Fit to bounds routine");
         var bounds = marker_meta_layers.getBounds().pad(0.35);
-        var zoom = 12;
+        console.log("Set zoom to 12 (may be we overide custom zoomlevels with that?");
+        var zoom = 0;
         var northeast = bounds.getNorthEast();
         var southwest = bounds.getSouthWest();
 
@@ -229,8 +230,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         } else {
           console.log("Fit map bounds now");
           map.fitBounds(bounds, {maxZoom: 16, minZoom: 2});
-          console.log("Set custom zoom level to " + zoom);
-          map.setZoom(zoom);
+          console.log("Override bounds if custom zoom. Set custom zoom level to " + zoom);
+          if ( zoom > 0 ) {
+            map.setZoom(zoom);
+          }
 
         }
 
