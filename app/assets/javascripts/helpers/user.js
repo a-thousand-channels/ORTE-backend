@@ -1,5 +1,4 @@
 /*jshint unparam: true, node: true */
-/*global jQuery */
 /*global window */
 
 function UserZoomLevel(map) {
