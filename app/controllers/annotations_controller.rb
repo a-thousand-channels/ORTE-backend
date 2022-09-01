@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AnnotationsController < ApplicationController
-  before_action :set_annotation, only: %i[show edit update destroy]
+  before_action :set_annotation, only: %i[edit update destroy]
 
   # GET /annotation or /annotation.json
   def index

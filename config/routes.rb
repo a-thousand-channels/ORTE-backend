@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
 
   resources :build_logs
-  resources :people
   resources :annotations
   resources :submission_configs
   devise_for :users
@@ -33,6 +32,7 @@ Rails.application.routes.draw do
   resources :maps do
     resources :tags, only: [:index, :show]
     resources :relations
+    resources :people
     resources :layers do
       collection do
         post :search

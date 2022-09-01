@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class PeopleController < ApplicationController
-  before_action :set_person, only: %i[show edit update destroy]
+  before_action :set_person, only: %i[edit update destroy]
 
   # GET /people or /people.json
   def index
-    @people = Person.all
+    @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
+    @people = @map.people
   end
 
   def new
+    @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
     @person = Person.new
   end
 
@@ -57,10 +59,11 @@ class PeopleController < ApplicationController
   private
 
   def set_person
+    @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
     @person = Person.find(params[:id])
   end
 
   def person_params
-    params.require(:person).permit(:name, :info)
+    params.require(:person).permit(:name, :info, :map_id)
   end
 end
