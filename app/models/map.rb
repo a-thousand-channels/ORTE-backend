@@ -4,6 +4,7 @@ class Map < ApplicationRecord
   belongs_to :group
   belongs_to :iconset, optional: true
   has_many :layers, dependent: :destroy
+  has_many :people, dependent: :destroy
   has_many :places, through: :layers
 
   has_one_attached :image, dependent: :destroy
