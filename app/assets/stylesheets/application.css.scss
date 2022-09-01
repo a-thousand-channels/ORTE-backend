@@ -13,11 +13,11 @@
 
  *= require_self
  *= require foundation_and_overrides
- *= require leaflet/dist/leaflet
- *= require leaflet.markercluster/dist/MarkerCluster
- *= require leaflet.markercluster/dist/MarkerCluster.Default
- *= require leaflet-draw/dist/leaflet.draw.css
- *= require leaflet.locatecontrol/dist/L.Control.Locate.css
+ *= require leaflet/leaflet
+ *= require leaflet/MarkerCluster
+ *= require leaflet/MarkerCluster.Default
+ *= require leaflet/leaflet.draw.css
+ *= require leaflet/L.Control.Locate.css
  *= require select2
  *= require 1_basics
  *= require 2_styles
