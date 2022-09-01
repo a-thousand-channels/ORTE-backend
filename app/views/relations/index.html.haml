@@ -1,11 +1,17 @@
+- content_for(:title) { "Relations" }
+
 #table-wrapper
-
-
-  %h1 Relations
+  %h1
+    Map:
+    = link_to map_path(@map) do
+      = @map.title
+    = link_to edit_map_path(@map) do
+      %i.fi-pencil.fi-24
+  %h2 Relations
   %p.text-right
-    = link_to new_map_relation_path(@map), class: "button small"  do
+    = link_to new_map_relation_path(@map), class: "button tiny"  do
       %i.fi-plus.fi-18
-      New Relation
+      Add Relation
   %table
     %thead
       %tr
@@ -26,8 +32,6 @@
         = render 'list_as_table'
 
   %p.text-right
-
-
-    = link_to new_map_relation_path(@map), class: "button small" do
+    = link_to new_map_relation_path(@map), class: "button tiny" do
       %i.fi-plus.fi-18
       New Relation

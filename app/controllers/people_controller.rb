@@ -17,11 +17,12 @@ class PeopleController < ApplicationController
   def edit; end
 
   def create
+    @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
     @person = Person.new(person_params)
 
     respond_to do |format|
       if @person.save
-        format.html { redirect_to people_url, notice: 'Person was successfully created.' }
+        format.html { redirect_to map_people_url(@map), notice: 'Person was successfully created.' }
         format.json { render :index, status: :created, location: @person }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -34,7 +35,7 @@ class PeopleController < ApplicationController
   def update
     respond_to do |format|
       if @person.update(person_params)
-        format.html { redirect_to people_url, notice: 'Person was successfully updated.' }
+        format.html { redirect_to map_people_url(@map), notice: 'Person was successfully updated.' }
         format.json { render :index, status: :ok, location: @person }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -46,12 +47,12 @@ class PeopleController < ApplicationController
   def destroy
     if @person.destroy
       respond_to do |format|
-        format.html { redirect_to people_url, notice: 'Person was successfully destroyed.' }
+        format.html { redirect_to map_people_url(@map), notice: 'Person was successfully destroyed.' }
         format.json { head :no_content }
       end
     else
       respond_to do |format|
-        format.html { redirect_to people_url, notice: 'Person could not be destroyed, since its connected to 1 or more annotations.' }
+        format.html { redirect_to map_people_url(@map), notice: 'Person could not be destroyed, since its connected to 1 or more annotations.' }
       end
     end
   end

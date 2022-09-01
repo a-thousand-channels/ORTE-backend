@@ -32,8 +32,11 @@
       = render 'searchform', object: @map
     .cell.medium-3
       %p.text-right.hint
+        = link_to map_people_path(@map) do
+          Persons of this map
+      %p.text-right.hint
         = link_to map_relations_path(@map) do
-          All Relations in this map
+          Relations in this map
 
   %table
     %thead
@@ -79,6 +82,6 @@
 
   %p
 
-    = link_to new_map_layer_path(@map), :class=>'button' do
-      %i.fi-plus.fi-24
+    = link_to new_map_layer_path(@map), :class=>'button small' do
+      %i.fi-plus.fi-18
       New Layer
