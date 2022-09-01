@@ -1,14 +1,14 @@
 
 #form-wrapper.large-wrapper
   %p.text-right.close_link_wrapper
-    =link_to admin_groups_path, :class=>'close_link' do
+    =link_to map_path(@map), :class=>'close_link' do
       %i.fi.fi-x
   %p.small
-    %a{:href => settings_path, :title => 'Settings'}
-      %i.fi-widget.fi-21
-      Settings
+    %a{:href => map_path(@map), :title => 'Settings'}
+      %i.fi-map.fi-21
+      Map
     \&mdash;
-    %a{:href => people_path, :title => 'Iconsets'}
+    %a{:href => map_people_path(@map), :title => 'Iconsets'}
       %i.fi-marker.fi-21
       People
 
@@ -18,5 +18,5 @@
 
 
   %hr
-  = link_to 'All people', people_path, :class => 'button'
+  = link_to 'All people', map_people_path(@map), :class => 'button'
 

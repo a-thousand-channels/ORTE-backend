@@ -1,14 +1,17 @@
 - content_for(:title) { "People" }
 
 #table-wrapper
-
-  %h1 Listing people
-
-  %p
-    = link_to new_person_path, :class=>'button small' do
-      %i.fi-plus.fi-24
+  %h1
+    Map:
+    = link_to map_path(@map) do
+      = @map.title
+    = link_to edit_map_path(@map) do
+      %i.fi-pencil.fi-24
+  %h2 People
+  %p.text-right
+    = link_to new_map_person_path(@map), :class=>'button tiny' do
+      %i.fi-plus.fi-18
       Add Person
-
   %table
     %thead
       %tr
@@ -29,13 +32,13 @@
               - person.annotations.each do |annotate|
                 = link_to map_layer_place_path(annotate.place.layer.map,annotate.place.layer,annotate.place) do
                   = annotate.id
-          %td= link_to 'Edit', edit_person_path(person)
+          %td= link_to 'Edit', edit_map_person_path(@map,person)
           %td
             - if admin?
-              = link_to 'Destroy', person, method: :delete, data: { confirm: 'Are you sure?' }
+              = link_to 'Destroy', map_person_path(@map,person), method: :delete, data: { confirm: 'Are you sure?' }
 
-  %p
-    = link_to new_person_path, :class=>'button small' do
-      %i.fi-plus.fi-24
+  %p.text-right
+    = link_to new_map_person_path(@map), :class=>'button tiny' do
+      %i.fi-plus.fi-18
       Add Person
 

@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :person do
     name { 'MyString' }
     info { 'MyText' }
+    map
     trait :invalid do
       name { nil }
     end
