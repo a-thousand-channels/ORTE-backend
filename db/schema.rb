@@ -180,9 +180,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_164755) do
     t.string "preview_url"
     t.boolean "enable_map_to_go", default: false
     t.boolean "enable_privacy_features", default: true
-    t.bigint "person_id"
     t.index ["group_id"], name: "index_maps_on_group_id"
-    t.index ["person_id"], name: "index_maps_on_person_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
 
@@ -216,7 +214,8 @@ ActiveRecord::Schema.define(version: 2022_09_01_164755) do
     t.text "info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "map_id"
+    t.bigint "map_id"
+    t.index ["map_id"], name: "index_people_on_map_id"
   end
 
   create_table "places", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3", force: :cascade do |t|
@@ -350,7 +349,7 @@ ActiveRecord::Schema.define(version: 2022_09_01_164755) do
   add_foreign_key "annotations", "places"
   add_foreign_key "build_logs", "layers"
   add_foreign_key "build_logs", "maps"
-  add_foreign_key "maps", "people"
+  add_foreign_key "people", "maps"
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"
