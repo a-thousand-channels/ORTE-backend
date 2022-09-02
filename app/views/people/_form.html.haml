@@ -8,7 +8,7 @@
     .large-6.medium-12.cell
       .form-inputs
         = f.input :name
-        = f.association :map, collection:  Map.by_user(current_user).all, include_blank: true
+        = f.association :map, as: :hidden, :input_html => { :value => @map.id }
         = f.input :info
       .form-actions
         = f.button :submit, :class => "button"
