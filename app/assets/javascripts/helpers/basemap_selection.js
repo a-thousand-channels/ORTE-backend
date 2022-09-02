@@ -26,6 +26,7 @@ jQuery(function ($) {
     $('#background_color_preselector').on('change', function () {
         console.log(this.value);
         $('#layer_background_color').val(this.value);
+        $('#map_background_color').val(this.value);
         $('#background_color_preview').css('background', this.value);
     });
 
@@ -37,6 +38,7 @@ jQuery(function ($) {
         // in case someone take the css signifier
         value = value.replace(/background:\ /, '');
         $('#layer_background_color').val(value);
+        $('#map_background_color').val(this.value);
         $('#background_color_preselector').val(value);
         $('#background_color_preview').css('background', value);
     });
