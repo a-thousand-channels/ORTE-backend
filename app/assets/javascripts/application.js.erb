@@ -312,6 +312,7 @@
     var custom_base_layer;
     var custom_basemap_url;
     var custom_basemap_attribution;
+    var custom_background_color;
     var Esri_WorldImagery_layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
             minZoom: 0,
@@ -322,8 +323,14 @@
         maxZoom: 19,
         attribution: 'OpenStreetMap + its contributors, CC-BY-SA'
     });
+
+    if ( $('#selection').data('map-background-color') ) {
+        custom_background_color = $('#selection').data('map-background-color');
+        $('#map').css('background', custom_background_color);
+    }
     if ( $('#selection').data('map-basemap-url') ) {
       custom_basemap_url = $('#selection').data('map-basemap-url');
+
       if ( $('#selection').data('map-basemap-attribution') ) {
         custom_basemap_attribution = $('#selection').data('map-basemap-attribution');
       }
