@@ -98,7 +98,7 @@ group :development do
   gem 'listen', '~> 3'
   gem 'web-console', '~> 3'
 
-  gem 'capistrano', '~> 3.15', require: false
+  gem 'capistrano', '~> 3', require: false
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
   gem 'capistrano-rails', '~> 1.3', require: false
@@ -108,7 +108,6 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
 
   gem 'brakeman', require: false
   gem 'rubycritic', require: false
