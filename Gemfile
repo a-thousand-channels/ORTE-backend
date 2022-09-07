@@ -52,7 +52,7 @@ gem 'color-generator'
 
 gem 'tinymce-rails'
 
-gem 'acts-as-taggable-on', '~> 7'
+gem 'acts-as-taggable-on', '~> 8'
 
 gem 'turnout'
 
