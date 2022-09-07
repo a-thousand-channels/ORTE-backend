@@ -138,6 +138,14 @@ RSpec.describe Place, type: :model do
     end
   end
 
+  describe 'Tags' do
+    it 'returns list of tags' do
+      tag_list = ['aaa','bbb','ccc']
+      p = FactoryBot.create(:place, tag_list: tag_list)
+      expect(p.tag_list).to eq(tag_list)
+    end
+  end
+
   describe 'Relations' do
     describe 'Relation associations' do
       subject { build(:place) }
