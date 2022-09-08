@@ -56,7 +56,7 @@ gem 'acts-as-taggable-on', '~> 8'
 
 gem 'turnout'
 
-gem 'mobility', '~> 1.1.2'
+gem 'mobility', '~> 1.2'
 
 gem 'bundler-audit', require: false
 gem 'rubocop'
