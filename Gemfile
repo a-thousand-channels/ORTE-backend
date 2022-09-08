@@ -50,7 +50,7 @@ gem 'mini_racer', platforms: :ruby
 
 gem 'color-generator'
 
-gem 'tinymce-rails'
+gem 'tinymce-rails', '~> 5.10'
 
 gem 'acts-as-taggable-on', '~> 8'
 
