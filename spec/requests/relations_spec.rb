@@ -36,7 +36,7 @@ RSpec.describe '/relations', type: :request do
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    FactoryBot.attributes_for(:relation, :invalid)
   end
 
   describe 'GET /index' do
@@ -83,7 +83,7 @@ RSpec.describe '/relations', type: :request do
         end.to change(Relation, :count).by(0)
       end
 
-      it "renders a successful response (i.e. to display the 'new' template)" do
+      xit "renders a successful response (i.e. to display the 'new' template)" do
         post map_relations_url(@map), params: { relation: invalid_attributes }
         expect(response).to be_successful
       end
@@ -93,21 +93,21 @@ RSpec.describe '/relations', type: :request do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        FactoryBot.attributes_for(:relation, :changed, relation_from_id: @p1.id, relation_to_id: @p2.id)
       end
 
       it 'updates the requested relation' do
         relation = Relation.create! valid_attributes
         patch map_relation_url(@map, relation), params: { relation: new_attributes }
         relation.reload
-        skip('Add assertions for updated state')
+        expect(relation.rtype).to eq('sequence')
       end
 
       it 'redirects to the relation' do
         relation = Relation.create! valid_attributes
         patch map_relation_url(@map, relation), params: { relation: new_attributes }
         relation.reload
-        expect(response).to redirect_to(map_relation_url(@map, relation))
+        expect(response).to redirect_to(map_relations_url(@map))
       end
     end
 
@@ -115,7 +115,7 @@ RSpec.describe '/relations', type: :request do
       it "renders a successful response (i.e. to display the 'edit' template)" do
         relation = Relation.create! valid_attributes
         patch map_relation_url(@map, relation), params: { relation: invalid_attributes }
-        expect(response).to be_successful
+        expect(response).not_to be_successful
       end
     end
   end
