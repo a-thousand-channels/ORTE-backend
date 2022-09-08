@@ -140,7 +140,7 @@ RSpec.describe Place, type: :model do
 
   describe 'Tags' do
     it 'returns list of tags' do
-      tag_list = ['aaa','bbb','ccc']
+      tag_list = %w[aaa bbb ccc]
       p = FactoryBot.create(:place, tag_list: tag_list)
       expect(p.tag_list).to eq(tag_list)
     end
