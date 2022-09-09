@@ -38,8 +38,8 @@ RSpec.feature 'User creates and updates a place ' do
     expect(page).to have_css('div.tox-tinymce')
     expect(page).to have_css('iframe#place_teaser_ifr')
     page.execute_script('tinymce.get("place_teaser").setContent("updated content");')
-    within_frame("place_teaser_ifr") do
-      expect(page).to have_css('body#tinymce p',  text: 'updated content');
+    within_frame('place_teaser_ifr') do
+      expect(page).to have_css('body#tinymce p', text: 'updated content')
     end
   end
 end
