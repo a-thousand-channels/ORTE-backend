@@ -500,8 +500,8 @@ $(function() {
     console.log(e.latlng.lat);
     // minimize address lookup form
     if ( $('#addresslookup_address').length > 0 ) {
-      ClearLookUpField();
-      ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
+      clearLookUpField();
+      reverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
     } else {
       console.log("No mapping possible. Please select a map and a layer first");
       $('#selection-hint').html("<p>Please select a map and a layer first.</p>");
