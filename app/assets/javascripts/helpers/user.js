@@ -1,12 +1,13 @@
 /*jshint unparam: true, node: true */
 /*global window */
+/*global $ */
 
 function UserZoomLevel(map) {
     'use strict';
     map.on('zoomend', function () {
         var zl = map.getZoom();
         localStorage.setItem('UserZoomLevel', zl);
-        jQuery('#show_zoomlevel').html("Custom level: " + zl);
+        $('#show_zoomlevel').html("Custom level: " + zl);
     });
 }
 function UserMapBounds(map) {
