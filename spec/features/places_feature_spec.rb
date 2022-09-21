@@ -13,6 +13,26 @@ RSpec.feature 'User creates and updates a place ' do
     click_button 'Log in'
   end
 
+  scenario 'provides lookup interface and proposes possible locations', js: true, focus: true do
+    @map = FactoryBot.create(:map, group_id: @group.id)
+    @layer = FactoryBot.create(:layer, map_id: @map.id, title: 'my layer')
+
+    visit map_layer_path(@map, @layer)
+    expect(page).to have_current_path "/maps/#{@map.slug}/layers/#{@layer.slug}"
+    fill_in 'addresslookup_address', with: 'Hamburg'
+    within '#selection-hint' do
+      expect(page).to have_content 'How to map:'
+    end
+    click_button 'addresslookup_button'
+    within '#selection-hint' do
+      expect(page).to have_content 'Searching...'
+    end
+    within '#selection-hint' do
+      save_and_open_page
+      expect(page).to have_content 'Please select one result below (or type in another address).'
+    end
+  end
+
   scenario 'shows edit form (and provide only allowed layers to select)', js: true do
     @map = FactoryBot.create(:map, group_id: @group.id)
     @layer = FactoryBot.create(:layer, map_id: @map.id, title: 'my layer')

@@ -51,7 +51,7 @@ function LookupNominatim(address, url) {
             */
             var nominatium_url = 'https://nominatim.openstreetmap.org/search';
             var nominatium_url_params = '&format=json&addressdetails=1';
-            var request = $.getJSON(nominatium_url + "?q=" + address +nominatium_url_params, function (data) {
+            $.getJSON(nominatium_url + "?q=" + address +nominatium_url_params, function (data) {
 
                 console.log(data);
                 // if no result
@@ -65,7 +65,11 @@ function LookupNominatim(address, url) {
                 console.log("items: " + items.length);
                 console.log("response: " + $('#response').length);
                 $.each( data, function (key, val) {
-                    console.log('Lookup:: Data value class ' + val.class);
+                    if (!val || (typeof val === 'undefined')) {
+                        return;
+                    }
+                    console.log('Lookup:: "value.class" ' + val.class);
+
                     var regexp = /amenity|building|highway|boundary/gi;
                     var label = '';
                     if (val.class === 'building') {
@@ -86,8 +90,8 @@ function LookupNominatim(address, url) {
                     country_code  de
                     */
 
-                    if (val.address !== 'undefined') {
-                        var location = ''; address = ''; var road = ''; var house_number = ''; var postcode = '';
+                    if (typeof val.address !== 'undefined') {
+                        var location, road, house_number, postcode;
                         location = val.address[Object.keys(val.address)[0]];
                         console.log("Lookup:: Location YEAH " + location);
                         if (typeof val.address.road !== "undefined") {
@@ -111,51 +115,62 @@ function LookupNominatim(address, url) {
                         /* TODO: verify all values */
                         /* FIXME: hamburg as state */
                         href = url + '?' + location + address + postcode + "&city=" + city + '&lat=' + val.lat + '&lon=' + val.lon;
-                  }
-                  if (val.class.match(regexp)) {
-                      console.log('Lookup:: Using entry');
-                      items.push("<li id='" + key + "'><a href='" + href + "'>" + label + " " + val.display_name + "</a></li>");
-                  }
-              });
+                        if (val.class.match(regexp)) {
+                            console.log('Lookup:: Using entry');
+                            items.push("<li id='" + key + "'><a href='" + href + "'>" + label + " " + val.display_name + "</a></li>");
+                        } else {
+                            $('#selection-hint').html("<p>Sorry, could not find something useful.</p>");
+                            $('#selection-hint').addClass('active');
+                        }
+                    } else {
+                        console.log('Lookup:: Empty address value');
+                        $('#selection-hint').html("<p>Sorry, something went wrong.</p>");
+                        $('#selection-hint').addClass('active');
+                    }
+                });
 
-              $("<ul/>", {
-                  id: "response",
-                  html: items.join('')
-              }).appendTo( "#selection" );
-              console.log("Success");
-              $('#selection-hint').html("<p>Please select one result below (or type in another address).</p>");
-              $('#selection-hint').addClass('active');
-          }).done(function () {
-
-          }).fail(function () {
-              console.log("error");
-              $('#selection-hint').html("</p> :( Nothing found. Please try another input.</p>");
-              $('#selection-hint').addClass('active');
-          }).always(function () {
-              console.log("Complete");
-          });
-      }
+                $("<ul/>", {
+                    id: "response",
+                    html: items.join('')
+                }).appendTo("#selection");
+                console.log("Success");
+                $('#selection-hint').html("<p>Please select one result below (or type in another address).</p>");
+                $('#selection-hint').addClass('active');
+            }).done(function () {
+                console.log('done');
+                if (items.length === 0) {
+                    $('#selection-hint').html("<p>Sorry, something went wrong.</p>");
+                    $('#selection-hint').addClass('active');
+                }
+            }).fail(function () {
+                console.log("error");
+                $('#selection-hint').html("</p> :( Nothing found. Please try another input.</p>");
+                $('#selection-hint').addClass('active');
+            }).always(function () {
+                console.log("Complete");
+            });
+        }
     }
 }
 
-function ReverseLookupNominatim(map, latlng, lat, lon, url) {
+function reverseLookupNominatim(map, latlng, lat, lon, url) {
     'use strict';
     console.log('Reverse Lookup:: Lat ' + lat + '/Lon ' + lon);
     var url = prepareBeforeLookup(url);
 
-  if (lat === '') {
-      $('#selection-hint').html("<p><strong>No input!</strong> Please try again.</p>");
-      $('#selection-hint').addClass('active');
-  } else {
-      console.log('Reverse Lookup:: ' + lat + "/" + lon);
-      //example
-      // https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=-34.44076&lon=-58.70521
-      var nominatium_reverse_url = 'https://nominatim.openstreetmap.org/reverse';
-      var nominatium_url_params = '&format=jsonv2';
+    if (lat === '') {
+        $('#selection-hint').html("<p><strong>No input!</strong> Please try again.</p>");
+        $('#selection-hint').addClass('active');
+    } else {
+        console.log('Reverse Lookup:: ' + lat + "/" + lon);
+        //example
+        // https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=-34.44076&lon=-58.70521
+        var nominatium_reverse_url = 'https://nominatim.openstreetmap.org/reverse';
+        var nominatium_url_params = '&format=jsonv2';
 
-      var request = $.getJSON(nominatium_reverse_url + "?lat=" + lat + "&lon=" + lon + nominatium_url_params, function (data) {
+        $.getJSON(nominatium_reverse_url + "?lat=" + lat + "&lon=" + lon + nominatium_url_params, function (data) {
 
-          // if no result
+            // if no result
             if (!data) {
                 console.log('Lookup:: No result');
                 $('#selection-hint').html("<p>Nothing found. Please try another place on the map</p>");
@@ -169,7 +184,7 @@ function ReverseLookupNominatim(map, latlng, lat, lon, url) {
             console.log(data);
             console.log('Reverse Lookup:: Data val');
             console.log(data.display_name);
-            var location = ' '
+            var location = ' ';
             if (data.name && data.name.length > 0) {
                 location = data.name;
             }
@@ -180,9 +195,9 @@ function ReverseLookupNominatim(map, latlng, lat, lon, url) {
             // call "places/new"
             var house_number = '';
             if (data.address.house_number) {
-                house_number = ' ' + data.address.house_number ;
+                house_number = ' ' + data.address.house_number;
             }
-            var full_address = location + " " + data.address.road + house_number + ", " + data.address.postcode + ' ' + city + ' (' + data.address.suburb + ")"
+            var full_address = location + " " + data.address.road + house_number + ", " + data.address.postcode + ' ' + city + ' (' + data.address.suburb + ")";
             var href = url + '?location=' + location + '&address=' + data.address.road + house_number + '&zip=' + data.address.postcode + '&city=' + city + ' (' + data.address.suburb + ')&lat=' + lat + '&lon=' + lon;
             // that would be a direct call
             // window.location = href;
@@ -194,7 +209,7 @@ function ReverseLookupNominatim(map, latlng, lat, lon, url) {
                 html: items.join( "" ),
               }).appendTo( "#selection" );
             */
-            var params = getParams(); var hint = '';
+            var params = getParams(), hint;
             if (params.remap) {
                 hint = 'Re-map to this place';
             } else {
