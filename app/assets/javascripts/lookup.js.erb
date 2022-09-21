@@ -1,8 +1,9 @@
 function PrepareBeforeLookup(url) {
-  $.ajaxSetup({
+  'use strict';
+  jquery.ajaxSetup({
     headers : {
       'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)',
-      'crossDomain' : true
+      crossDomain : true
     }
   });
   // https://nominatim.openstreetmap.org/
@@ -23,10 +24,9 @@ function PrepareBeforeLookup(url) {
 }
 
 function LookupNominatim(address,url) {
-
+  'use strict';
   if ( $('#addresslookup_address').hasClass('hide') ) {
-    ShowLookUpField();
-
+    new ShowLookUpField();
   } else {
 
   $('#response').remove();
@@ -35,7 +35,7 @@ function LookupNominatim(address,url) {
   console.log("---------------------");
   console.log("LookupNominatim");
   console.log("Checking for params...");
-  var url = PrepareBeforeLookup(url);
+  url = new PrepareBeforeLookup(url);
   if ( address === '' ) {
     $('#selection-hint').html("<p><strong>No input!</strong> Please type in a complete address ('Street Number, City')</p>");
     $('#selection-hint').addClass('active');
@@ -50,8 +50,7 @@ function LookupNominatim(address,url) {
     //example
     // https://nominatim.openstreetmap.org/search?q=135+pilkington+avenue,+birmingham&format=xml&polygon=1&addressdetails=1
     var nominatium_url = 'https://nominatim.openstreetmap.org/search';
-    var nominatium_url_params = '&format=json&addressdetails=1'
-
+    var nominatium_url_params = '&format=json&addressdetails=1';
     var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
 
         console.log(data);
@@ -68,7 +67,7 @@ function LookupNominatim(address,url) {
         $.each( data, function( key, val ) {
           console.log('Lookup:: Data value class ' + val.class);
           var regexp = /amenity|building|highway|boundary/gi;
-          var label = ''
+          var label = '';
           if ( val.class === 'building') {
             label = 'Adresse:';
           }
@@ -88,8 +87,7 @@ function LookupNominatim(address,url) {
           */
 
           if ( val.address !== 'undefined') {
-
-            var location = ''; var address= ''; var road = ''; var house_number = ''; var postcode = '';
+            var location = ''; address= ''; var road = ''; var house_number = ''; var postcode = '';
             location = val.address[Object.keys(val.address)[0]];
             console.log("Lookup:: Location YEAH "+location);
             if ( typeof val.address.road !== 'undefined') {
@@ -104,17 +102,16 @@ function LookupNominatim(address,url) {
             if ( typeof val.address.postcode !== 'undefined') {
               postcode = "&postcode="+val.address.postcode;
             }
-            var city = ''
+            var city = '';
             if ( val.address && val.address.city && (val.address.city !== 'undefined')) {
               city = val.address.city;
             } else {
-              city = val.address.state
+              city = val.address.state;
             }
-            // TODO verify all values
-            // FIXME hamburg as state
+            /* TODO: verify all values */
+            /* FIXME: hamburg as state */
             href = url+'?'+location+address+postcode+"&city="+city+'&lat='+val.lat+'&lon='+val.lon;
           }
-
 
           if ( val.class.match(regexp) ) {
             console.log('Lookup:: Using entry');
@@ -123,8 +120,8 @@ function LookupNominatim(address,url) {
     });
 
     $( "<ul/>", {
-        "id": "response",
-        html: items.join( "" ),
+        id: "response",
+        html: items.join('')
       }).appendTo( "#selection" );
     console.log( "Success" );
     $('#selection-hint').html("<p>Please select one result below (or type in another address).</p>");

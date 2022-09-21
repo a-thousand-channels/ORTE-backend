@@ -13,12 +13,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   // data.id
 
   var data_id = 1;
-
   var markerclusterSettings = {
           maxClusterRadius: 30,
           showCoverageOnHover: false,
           animate: true,
-
           iconCreateFunction: function(cluster) {
               return L.divIcon({
                 html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data_id+'"><div>' + cluster.getChildCount() + '</div></div>',
@@ -608,59 +606,12 @@ function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
 
 }
 
-function PopupFullContent(place) {
-
-      var content = '';
-      if ( place.images && place.images[0] ) {
-        $.each(place.images, function(kkey, image) {
-          content += "<div class='leaflet-popup-content-image'><img src='"+image.image_url+"' /></div>";
-        });
-      }
-      if ( place.imagelink2 ) {
-        content += "<div class='leaflet-popup-content-image'><img src='"+place.imagelink2+"' /></div>";
-      } else if ( place.imagelink ) {
-        content += "<img src='"+place.imagelink+"' />";
-      }
-      content += '<div class="leaflet-popup-content-text">';
-      if ( place.date ) {
-        content += "<p>"+place.date;
-        if ( place.address ) {
-          content += " // "+place.address;
-        }
-        content += "</p>";
-      }
-      // console.log(content);
-      content += "<h4>";
-      if ( place.show_link ) {
-        content += place.show_link;
-        if ( place.published !== true ) {
-          content += " <i class='fi-lock fi-18'></i>";
-        }
-      }
-      content += "</h4>";
-      if ( place.teaser ) {
-        var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
-        teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
-        if ( teaser.length > 400 ) {
-          teaser = place.teaser.trim()    // remove leading and trailing spaces
-                  .substring(0, 400).split(" ").slice(0, -1).join(" ") + "...";
-        }
-        content += "<p>"+teaser+"</p>";
-      }
-      if ( place.edit_link ) {
-        content += "<p class='text-right'>"+place.edit_link+"</p>";
-      }
-      content += '</div>';
-      return content;
-}
-
 function getParams() {
   var url = window.location.href
   var vars = {};
   var hashes = url.split("?")[1];
   if ( hashes ) {
     var hash = hashes.split('&');
-
     for (var i = 0; i < hash.length; i++) {
       params=hash[i].split("=");
       vars[params[0]] = params[1];
@@ -673,4 +624,3 @@ function getParams() {
 function adjustColor(color, amount) {
     return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
 }
-
