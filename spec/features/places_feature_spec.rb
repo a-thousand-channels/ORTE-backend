@@ -13,7 +13,7 @@ RSpec.feature 'User creates and updates a place ' do
     click_button 'Log in'
   end
 
-  scenario 'provides lookup interface and proposes possible locations', js: true, focus: true do
+  scenario 'provides lookup interface and proposes possible locations', js: true do
     @map = FactoryBot.create(:map, group_id: @group.id)
     @layer = FactoryBot.create(:layer, map_id: @map.id, title: 'my layer')
 
@@ -28,7 +28,6 @@ RSpec.feature 'User creates and updates a place ' do
       expect(page).to have_content 'Searching...'
     end
     within '#selection-hint' do
-      save_and_open_page
       expect(page).to have_content 'Please select one result below (or type in another address).'
     end
   end
