@@ -377,26 +377,25 @@ jQuery(function ($) {
     };
   }
 
-  console.log("Check Overlays")
+  console.log("Check Overlay settings")
   if ( localStorage.overlayPlaces == 'true' ) {
-    console.log('localStorage.overlayPlaces == true')
+    console.log('Setting overlayPlaces: true')
     map.addLayer(marker_meta_layers);
   }
   if ( localStorage.overlayRelations == 'true' ) {
-    console.log('localStorage.overlayRelations == true')
+    console.log('Setting overlayRelations: true')
     map.addLayer(curve_layers);
   }
   if ( localStorage.overlayLabels == 'true' ) {
-    console.log('localStorage.overlayLabels == true')
+    console.log('Setting overlayLabels: true')
     map.addLayer(text_layers);
   }
   if ( localStorage.overlayImages == 'true' ) {
-    console.log('localStorage.overlayImages == true')
+    console.log('Setting overlayImages: true')
     map.addLayer(image_layers);
   }
   map.on('baselayerchange', function(e){
-    console.log("Baselayer change");
-    console.log(e.name);
+    console.log("Baselayer change to " + e.name);
     localStorage.baselayer = e.name;
   })
   map.on('overlayadd', function(e){
