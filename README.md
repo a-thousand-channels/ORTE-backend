@@ -3,11 +3,11 @@
 
 # ORTE-backend
 
-Backend application for creating and managing places/POIs (or in german "Orte") and additional informations on a web-based map. Output is a public available API w/JSON or exportable as CSV/JSON/GeoJSON data.
+Backend application for creating and managing places/POIs (or in german "Orte") and additional informations like text, images, audio and video on a web-based map. Output is a public available API w/JSON or exportable as CSV/JSON/GeoJSON data. It has also some extra features like visualising relations between places and a map to go feature (see below).
 
 Based on Ruby on Rails 5, MySQL/MariaDB, jQuery, Leaflet and Foundation 6.
 
-This application is work in progress. Contributions are welcome (see below).
+Contributions to this application are appreciated (see below).
 
 <img src="https://raw.githubusercontent.com/ut/ORTE-backend/main/app/assets/images/ORTE-sample-map2-overview.jpg" style="max-width: 640px" width="640" />
 
@@ -17,7 +17,7 @@ This application uses [Nominatim](https://nominatim.openstreetmap.org/), a searc
 
 ## Map to go feature
 
-ORTE Backend ist basically a backend which provides JSON and GeoJSON export of its layers and map. Since version 0.7 offers a "map to go" feature, where user can generate a static, Nuxt.js based website from their single layer (and its places) and place this site on their webspace.
+ORTE Backend ist basically a backend which provides JSON and GeoJSON export of its layers and map. Since version 0.7 offers a "map to go" feature, where user can generate a static, Nuxt.js based website from their single layer (and its places) and place this site on their webspace. So you can get your frontend website and all defined data directly out of the application.
 
 ## Installation
 
@@ -55,21 +55,26 @@ $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
 ```
 
-### Credentials + deployment
+### Credentials
 
-If you need custom credentials, e.g for a server installation, you can secre them with rails credentials and a master.key. Edit the credentials with
+If you need custom credentials, e.g for your database setup or mailer settings necessary for a server installation, you can secure them with rails credentials and a master.key. Edit the credentials with
 
 ```bash
 $ EDITOR=vim bundle exec rails credentials:edit
 ```
 
-### Run locally
+### Optional: Mapbox Token for satellite imagery
+
+You can define your mapbox token in the credentials (token[:mapbox])
+
+
+### Run application locally
 
 ```bash
 $ bundle exec rails s
 ```
 
-### Test locally
+### Test applocation locally
 
 
 ```bash
