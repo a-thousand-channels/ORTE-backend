@@ -2,7 +2,7 @@
 /*global window */
 /*global $ */
 
-function UserZoomLevel(map) {
+function userZoomLevel(map) {
     'use strict';
     map.on('zoomend', function () {
         var zl = map.getZoom();
@@ -10,7 +10,7 @@ function UserZoomLevel(map) {
         $('#show_zoomlevel').html("Custom level: " + zl);
     });
 }
-function UserMapBounds(map) {
+function userMapBounds(map) {
     'use strict';
     map.on('dragend', function () {
         var bounds = map.getBounds();

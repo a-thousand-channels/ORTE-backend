@@ -9,8 +9,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
     layer_json_url = $('#form-wrapper').data('url');
   }
 
-  // TODO: how to set data.id dynamically?
-  // data.id
+  // how to set data.id dynamically?
 
   var data_id = 1;
   var markerclusterSettings = {
@@ -152,13 +151,13 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
       var layer_style = '';
       $.each(data.layers, function(key,data) {
-        layer_style += "#map .marker-cluster-layer-"+data.id+" {\
-            border: 0px solid "+data.color+";\
-          }\
-          #map .marker-cluster-layer-"+data.id+" div {\
-            background-color: "+data.color+";\
-          }\
-        ";
+          layer_style += "#map .marker-cluster-layer-" + data.id;
+          layer_style += "{" +
+              "border: 0px solid " + data.color + ";"+
+            "}"+
+            "#map .marker-cluster-layer-" + data.id + " div {"+
+              "background-color: " + data.color + ";"+
+            "}";
       });
       $("head").append("\
         <style>\
@@ -355,15 +354,9 @@ function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,p
           var content = PopupFullContent(relation.to);
           endpoint2_marker.bindPopup(content);
         }
-
-
       }
     });
-
   });
-
-
-
 }
 
 
@@ -393,7 +386,6 @@ function calcControlPoint(point1,point2,distance_in_kms,boost) {
   } else if ( distance_in_kms < 0.1 ) {
     // none;
   }
-
 
   var offsetX = point2[1] - point1[1],
   offsetY = point2[0] - point1[0];

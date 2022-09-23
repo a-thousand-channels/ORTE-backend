@@ -1,15 +1,14 @@
-/*global jQuery */
-/*global window */
-/*global L */
+/* global jQuery */
+/* global L */
 
 jQuery(function () {
     'use strict';
-    let drawnItems = new L.FeatureGroup();
+    const drawnItems = new L.FeatureGroup();
     // map.addLayer(drawnItems);
     let drawControl = new L.Control.Draw({
         edit: {
-            featureGroup: drawnItems
-        }
+            featureGroup: drawnItems,
+        },
     });
     // map.addControl(drawControl);
 });
