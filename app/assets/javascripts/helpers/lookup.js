@@ -24,7 +24,7 @@ function prepareBeforeLookup(url) {
     return url;
 }
 
-function LookupNominatim(address, url) {
+function lookupNominatim(address, url) {
     'use strict';
     if ($('#addresslookup_address').hasClass('hide')) {
         showLookUpField();
