@@ -142,7 +142,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             // DrawMarkers(map,data.id,level,false,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
           }
           */
-          console.log("places_with_relations: "+data.places_with_relations.length)
+          console.log("Places_with_relations: "+data.places_with_relations.length)
           DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations, data.relations_bending,data.relations_coloring);
           marker_meta_layers.addLayer(marker_layers);
         });
@@ -270,10 +270,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
             console.log(setbound_url);
             $("#setbound").attr('href', setbound_url);
-
           });
         }
-
     });
   }
 }
@@ -282,49 +280,36 @@ function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,p
 
   var boost = ( 2.9 * bending ) + 0.1;
   console.log("Boost: "+boost);
+  console.log("Iterate places_with_relations");
 
   $.each(places_with_relations, function(key,place) {
+    $.each(place.relations, function(kkey,relation) {
 
-    console.log("places_with_relations");
-    console.log(key);
-    console.log(place.relations);
-    console.log(place.relations.length);
-    console.log(place.relations);
-
-    $.each(place.relations, function(key,relation) {
-
-      console.log(relation.from.lat);
-      console.log(relation.from.lon);
-      console.log("Relation_from ID:  "+relation.from.id);
       var point1 = [Number(relation.from.lat), Number(relation.from.lon)];
       var point2 = [Number(relation.to.lat), Number(relation.to.lon)];
-      console.log(point1);
-      console.log(point2);
 
       var color = 'rgba(225,25,25,0.75)';
       var color = '#'+Math.floor(Math.random()*16777215).toString(16);
       var color = "hsl(" + Math.random() * 360 + ", 100%, 85%)";
       // var color = clustercolor;
       if ( coloring == 'black') {
-        color = '#000000'
+          color = '#000000'
       } else if ( coloring == 'monochrome') {
-        color = clustercolor
+          color = clustercolor
       }
 
-
       var pathOptions = {
-        color: color,
-        weight: 4,
-        opacity: 0.5,
-        className: 'curve_normal curve_'+relation.from.id,
-        animate: false
+          color: color,
+          weight: 4,
+          opacity: 0.5,
+          className: 'curve_normal curve_'+relation.from.id,
+          animate: false
       }
       var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
       let distance_in_kms = ((distance) / 1000).toFixed(2);
-      console.log("distance: "+distance_in_kms)
+      console.log("Place " + key + " with distance: " + distance_in_kms)
       if ( distance_in_kms > 0.1 ) {
         var controlpoint = calcControlPoint(point2,point1,distance_in_kms,boost);
-        console.log("controlpoint: "+controlpoint);
         var curvedPath = L.curve(
           [
             'M', point1,
@@ -349,10 +334,10 @@ function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,p
           popupAnchor : [0, -28]
         });
         if ( relation.from.layer_id != relation.to.layer_id) {
-          var endpoint2_marker = L.marker(point2, {icon: divIcon}); // .addTo(curve_layers);
-          marker_layers.addLayer(endpoint2_marker);
-          var content = PopupFullContent(relation.to);
-          endpoint2_marker.bindPopup(content);
+            var endpoint2_marker = L.marker(point2, {icon: divIcon}); // .addTo(curve_layers);
+            marker_layers.addLayer(endpoint2_marker);
+            var content = PopupFullContent(relation.to);
+            endpoint2_marker.bindPopup(content);
         }
       }
     });
@@ -366,23 +351,23 @@ function calcControlPoint(point1,point2,distance_in_kms,boost) {
   var d = 2;
   // if transcontinental
   if ( distance_in_kms > 5000 ) {
-    d = 7
+      d = 7
   // if continental
   } else if ( distance_in_kms > 1000 ) {
-    d = 7
+      d = 7
   // if regional
   } else if ( distance_in_kms > 100 ) {
-    d = 7
+      d = 7
   // if local
   } else if ( distance_in_kms > 10 ) {
-    d = 10
+      d = 10
   // if close
   } else if ( distance_in_kms > 5 ) {
-    d = 40
+      d = 40
   } else if ( distance_in_kms > 1 ) {
-    d = 120
+      d = 120
   } else if ( distance_in_kms <= 1 ) {
-    d = 1600 // sic!
+      d = 1600 // sic!
   } else if ( distance_in_kms < 0.1 ) {
     // none;
   }
@@ -402,40 +387,38 @@ function calcControlPoint(point1,point2,distance_in_kms,boost) {
 
 function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
     var c = 0;
-    console.log("places: "+places.length);
-    console.log("show_annotations_on_map: "+show_annotations_on_map);
+    console.log("Setting show_annotations_on_map set to "+show_annotations_on_map);
     var CustomLargeIcon = L.Icon.extend({
-      options: {
-        iconSize:     [30, 30],
-        iconAnchor:   [15, 15],
-        popupAnchor:  [-2, -15]
-      }
+        options: {
+            iconSize:     [30, 30],
+            iconAnchor:   [15, 15],
+            popupAnchor:  [-2, -15]
+        }
     });
     var CustomSmallIcon = L.Icon.extend({
-      options: {
-        iconSize:     [20, 20],
-        iconAnchor:   [10, 10],
-        popupAnchor:  [-1, -8]
-      }
+        options: {
+            iconSize:     [20, 20],
+            iconAnchor:   [10, 10],
+            popupAnchor:  [-1, -8]
+        }
     });
 
     var iconSettings = {
-      mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
-      color: '#cc756b',
-      opacity: 1,
-      radius: 30
+        mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
+        color: '#cc756b',
+        opacity: 1,
+        radius: 30
     };
     var divIcon = L.divIcon({
-      className: "leaflet-data-marker",
-      html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
-      iconAnchor  : [15, 15],
-      iconSize    : [30, 30],
-      popupAnchor : [0, -28]
+        className: "leaflet-data-marker",
+        html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
+        iconAnchor  : [15, 15],
+        iconSize    : [30, 30],
+        popupAnchor : [0, -28]
     });
 
     $.each(places, function(key,place) {
-      console.log("Place ID "+place.id+"//"+layer_id+"//////");
-      console.log(place.title+" @ "+place.lat+"/"+place.lon);
+      console.log("Place ID " + place.id + " at Layer " + layer_id + " // Title: " + place.title);
       if ( color ) {
         if ( place.published === true ) {
           var opacity="0.7"
@@ -453,7 +436,7 @@ function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
           var icon = redIcon;
           console.log("PLACE FOR RE_MAP FOUND");
         } else if ( place.published === true ) {
-          var icon = blueIcon;
+           var icon = blueIcon;
         } else {
           var icon = greyIcon;
         }
