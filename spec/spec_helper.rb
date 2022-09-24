@@ -63,6 +63,7 @@ RSpec.configure do |config|
   Capybara.server = :puma, { Silent: true }
   Capybara.javascript_driver = :headless_chrome
   Capybara.server_host = '0.0.0.0' # universal IP
+  # Capybara.asset_host = '0.0.0.0:3000' # will not work in github actions
 
   config.before(:each) do
     stub_request(:get, /server.arcgisonline.com/)
