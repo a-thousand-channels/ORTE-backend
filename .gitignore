@@ -8,6 +8,8 @@ capybara-*.html
 /public/system
 /public/*.zip
 /public/client*
+/public/assets
+/public/assets_test
 /coverage/
 /spec/tmp
 /spec/examples.txt
