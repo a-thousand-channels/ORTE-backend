@@ -1,5 +1,5 @@
 function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,level) {
-
+  'use strict';
   var layer_json_url = $('#selection').data('url');
     // '/maps/1/layers/1.json';
   if ( !layer_json_url ) {
@@ -10,7 +10,6 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   }
 
   // how to set data.id dynamically?
-
   var data_id = 1;
   var markerclusterSettings = {
           maxClusterRadius: 30,
@@ -18,7 +17,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           animate: true,
           iconCreateFunction: function(cluster) {
               return L.divIcon({
-                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-'+data_id+'"><div>' + cluster.getChildCount() + '</div></div>',
+                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '"><div>' + cluster.getChildCount() + '</div></div>',
                 className: "leaflet-data-markercluster",
                 iconAnchor  : [15, 15],
                 iconSize    : [30, 30],
@@ -62,8 +61,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
                 return res;
             }
-  }
-
+  };
 
   if(typeof layer_json_url !== 'undefined') {
 
@@ -84,8 +82,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         console.log(data);
         var marker_layers = L.markerClusterGroup(markerclusterSettings);
         clustercolor = data.color;
-        var places = new Array();
-        if ( level === 'places') {
+        var places = [];
+        if (level === 'places') {
           places = data.places;
         } else {
           places = data.places;
@@ -94,21 +92,18 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         if ( data.iconset ) {
           console.log("DRAW ICONSET");
           $('body').addClass('iconset');
-          var marker_layers = L.featureGroup();
-          DrawIconset(map,data.id,marker_layers,params,data.iconset,places);
+          marker_layers = L.featureGroup();
+          drawIconset(map,data.id,marker_layers,params,data.iconset,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         } else {
           console.log("DRAW MARKER");
-          DrawMarkers(map,data.id,level,String(false),text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
+          drawMarkers(map,data.id,level,String(false),text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         }
-        DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,places_with_relations,data.relations_bending,data.relations_coloring);
+        drawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,places_with_relations,data.relations_bending,data.relations_coloring);
         marker_meta_layers.addLayer(marker_layers);
 
-
       } else  {
-
-
         // layers combined
         var all_places = []
         var layers_count = data.layers.length;
@@ -121,7 +116,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         var marker_layers = L.markerClusterGroup(markerclusterSettings);
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
-          DrawMarkers(map,data.id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
+          drawMarkers(map,data.id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
         });
         marker_meta_layers.addLayer(marker_layers);
 
@@ -134,16 +129,16 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             console.log("DRAW ICONSET");
             $('body').addClass('iconset');
             var marker_layers = L.featureGroup();
-            DrawIconset(map,data.id,marker_layers,params,data.iconset,data.places);
+            drawIconset(map,data.id,marker_layers,params,data.iconset,data.places);
             $('.marker-cluster-small').addClass('marker-layer-'+data.id);
           } else {
             var marker_layers = L.markerClusterGroup(markerclusterSettings);
             clustercolor = data.color;
-            // DrawMarkers(map,data.id,level,false,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
+            // drawMarkers(map,data.id,level,false,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
           }
           */
           console.log("Places_with_relations: "+data.places_with_relations.length)
-          DrawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations, data.relations_bending,data.relations_coloring);
+          drawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations, data.relations_bending,data.relations_coloring);
           marker_meta_layers.addLayer(marker_layers);
         });
 
@@ -153,33 +148,32 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       $.each(data.layers, function(key,data) {
           layer_style += "#map .marker-cluster-layer-" + data.id;
           layer_style += "{" +
-              "border: 0px solid " + data.color + ";"+
+              "border: 0px solid " + data.color + ";" +
             "}"+
-            "#map .marker-cluster-layer-" + data.id + " div {"+
-              "background-color: " + data.color + ";"+
+            "#map .marker-cluster-layer-" + data.id + " div {" +
+              "background-color: " + data.color + ";" +
             "}";
       });
-      $("head").append("\
-        <style>\
-          #map .marker-cluster-medium, \
-          #map .marker-cluster-small {\
-              background-color: transparent;\
-              border: 0px solid "+clustercolor+";\
-              opacity: 0.9;\
-              width: 40px;\
-              height: 40px;\
-          }\
-          #map .marker-cluster-medium div,\
-          #map .marker-cluster-small div {\
-              background-color: "+clustercolor+";\
-              transform: translate3d(-3px, -3px, 0px);\
-              font: 12px \"worksans-bold\",\"Helvetica Neue\", Arial, Helvetica, sans-serif;\
-              color: transparent;\
-              padding: 8px;\
-          }\
-          "+layer_style+"\
-        </style>\
-        ");
+      $("head").append("<style>" +
+          "#map .marker-cluster-medium," +
+          "#map .marker-cluster-small {" +
+          "    background-color: transparent;" +
+          "    border: 0px solid " + clustercolor + ";" +
+          "    opacity: 0.9;" +
+          "    width: 40px;" +
+          "   height: 40px;" +
+          "}" +
+          "#map .marker-cluster-medium div," +
+          "#map .marker-cluster-small div {" +
+          "    background-color: " + clustercolor + ";" +
+          "    transform: translate3d(-3px, -3px, 0px);" +
+          "    font: 12px \"worksans-bold\",\"Helvetica Neue\", Arial, Helvetica, sans-serif;" +
+          "    color: transparent;" +
+          "    padding: 8px;" +
+          "}" +
+          layer_style +
+      "</style>"
+  );
 
         console.log("Fit to bounds routine");
         var bounds = marker_meta_layers.getBounds().pad(0.35);
@@ -189,7 +183,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         var southwest = bounds.getSouthWest();
 
         if ( $('#selection').data('layer-mapcenter-lat') ) {
-          console.log("Fit to custom map center and zoom")
+          console.log("Fit to custom map center and zoom");
           var mapcenter_lat = $('#selection').data('layer-mapcenter-lat');
           var mapcenter_lon = $('#selection').data('layer-mapcenter-lon');
           var mapcenter = L.latLng(mapcenter_lat, mapcenter_lon);
@@ -231,9 +225,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           if ( zoom > 0 ) {
             map.setZoom(zoom);
           }
-
         }
-
         // set map zoom level after last user action
         /* not needed for now
         var zl_after_fitbounds = map.getZoom();
@@ -276,318 +268,14 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   }
 }
 
-function DrawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,places_with_relations,bending,coloring) {
-
-  var boost = ( 2.9 * bending ) + 0.1;
-  console.log("Boost: "+boost);
-  console.log("Iterate places_with_relations");
-
-  $.each(places_with_relations, function(key,place) {
-    $.each(place.relations, function(kkey,relation) {
-
-      var point1 = [Number(relation.from.lat), Number(relation.from.lon)];
-      var point2 = [Number(relation.to.lat), Number(relation.to.lon)];
-
-      var color = 'rgba(225,25,25,0.75)';
-      var color = '#'+Math.floor(Math.random()*16777215).toString(16);
-      var color = "hsl(" + Math.random() * 360 + ", 100%, 85%)";
-      // var color = clustercolor;
-      if ( coloring == 'black') {
-          color = '#000000'
-      } else if ( coloring == 'monochrome') {
-          color = clustercolor
-      }
-
-      var pathOptions = {
-          color: color,
-          weight: 4,
-          opacity: 0.5,
-          className: 'curve_normal curve_'+relation.from.id,
-          animate: false
-      }
-      var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
-      let distance_in_kms = ((distance) / 1000).toFixed(2);
-      console.log("Place " + key + " with distance: " + distance_in_kms)
-      if ( distance_in_kms > 0.1 ) {
-        var controlpoint = calcControlPoint(point2,point1,distance_in_kms,boost);
-        var curvedPath = L.curve(
-          [
-            'M', point1,
-            'Q', controlpoint,
-               point2
-          ], pathOptions);
-        // curvedPath.addTo(marker_layers);
-        curve_layers.addLayer(curvedPath);
-
-        // draw endpoint, if it resides on an different layer
-        var iconSettings = {
-            mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
-            color: color,
-            opacity: 1,
-            radius: 30
-        };
-        var divIcon = L.divIcon({
-          className: "leaflet-data-outside-marker",
-          html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
-          iconAnchor  : [15, 15],
-          iconSize    : [30, 30],
-          popupAnchor : [0, -28]
-        });
-        if ( relation.from.layer_id != relation.to.layer_id) {
-            var endpoint2_marker = L.marker(point2, {icon: divIcon}); // .addTo(curve_layers);
-            marker_layers.addLayer(endpoint2_marker);
-            var content = PopupFullContent(relation.to);
-            endpoint2_marker.bindPopup(content);
-        }
-      }
-    });
-  });
-}
-
-
-// kudos to Ryan Catalani for this approach, CC_BY
-function calcControlPoint(point1,point2,distance_in_kms,boost) {
-
-  var d = 2;
-  // if transcontinental
-  if ( distance_in_kms > 5000 ) {
-      d = 7
-  // if continental
-  } else if ( distance_in_kms > 1000 ) {
-      d = 7
-  // if regional
-  } else if ( distance_in_kms > 100 ) {
-      d = 7
-  // if local
-  } else if ( distance_in_kms > 10 ) {
-      d = 10
-  // if close
-  } else if ( distance_in_kms > 5 ) {
-      d = 40
-  } else if ( distance_in_kms > 1 ) {
-      d = 120
-  } else if ( distance_in_kms <= 1 ) {
-      d = 1600 // sic!
-  } else if ( distance_in_kms < 0.1 ) {
-    // none;
-  }
-
-  var offsetX = point2[1] - point1[1],
-  offsetY = point2[0] - point1[0];
-  var r = Math.sqrt( Math.pow(offsetX, 0) + Math.pow(offsetY, 2) ),
-            theta = Math.atan2(offsetY, offsetX);
-  var thetaOffset = (3.14/boost);
-  var r2 = (r/d)/(Math.cos(thetaOffset)),
-            theta2 = theta + thetaOffset;
-  var midpointX = (r2 * Math.cos(theta2)) + point1[1],
-            midpointY = (r2 * Math.sin(theta2)) + point1[0];
-  return midpointLatLng = [midpointY, midpointX];
-}
-
-
-function DrawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
-    var c = 0;
-    console.log("Setting show_annotations_on_map set to "+show_annotations_on_map);
-    var CustomLargeIcon = L.Icon.extend({
-        options: {
-            iconSize:     [30, 30],
-            iconAnchor:   [15, 15],
-            popupAnchor:  [-2, -15]
-        }
-    });
-    var CustomSmallIcon = L.Icon.extend({
-        options: {
-            iconSize:     [20, 20],
-            iconAnchor:   [10, 10],
-            popupAnchor:  [-1, -8]
-        }
-    });
-
-    var iconSettings = {
-        mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
-        color: '#cc756b',
-        opacity: 1,
-        radius: 30
-    };
-    var divIcon = L.divIcon({
-        className: "leaflet-data-marker",
-        html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
-        iconAnchor  : [15, 15],
-        iconSize    : [30, 30],
-        popupAnchor : [0, -28]
-    });
-
-    $.each(places, function(key,place) {
-      console.log("Place ID " + place.id + " at Layer " + layer_id + " // Title: " + place.title);
-      if ( color ) {
-        if ( place.published === true ) {
-          var opacity="0.7"
-        } else {
-          var opacity="0.5"
-        }
-        if (color.indexOf('#') == -1) {
-          color = '#'+color;
-        }
-        var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+color+"' fill-opacity='"+opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
-        var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
-        var icon = new CustomLargeIcon({iconUrl: url});
-      } else {
-        if ( parseInt(place.id) === parseInt(params.place) ) {
-          var icon = redIcon;
-          console.log("PLACE FOR RE_MAP FOUND");
-        } else if ( place.published === true ) {
-           var icon = blueIcon;
-        } else {
-          var icon = greyIcon;
-        }
-      }
-
-
-      // alternative place display marker as text
-      // TODO: display switch
-      var text_angle = ( Math.random() * 35) - 55;
-      //       text_angle = 0;
-
-      var texticon= L.divIcon({
-          html: '<div class="text_inner" style="transform: rotate('+text_angle+'deg)">'+place.title+'</div>',
-          iconAnchor:[-5,25],
-          iconSize:null,
-          popupAnchor:[0,0] });
-      var textmarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: texticon});
-
-
-      // alternative place display image instead of a marker
-      var small_opacity="0.8";
-      var small_color=adjustColor(color, -60);
-      var small_svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='"+small_color+"' fill-opacity='"+small_opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
-      var small_icon_url = encodeURI("data:image/svg+xml," + small_svg).replace(new RegExp('#', 'g'),'%23');
-      var small_icon =new CustomSmallIcon({iconUrl: small_icon_url})
-      var small_icon_marker = L.marker([place.lat, place.lon], {icon: small_icon}).addTo(image_layers);
-
-      var html = '';
-
-      if ( place.images && place.images[0] ) {
-        html = "<a href='"+place.images[0].image_url+"' target='_blank'><img src='"+place.images[0].image_url+"' /></a>";
-      } else {
-        html = "";
-      }
-      if ( place.imagelink2 ) {
-        html = "<img src='"+place.imagelink2+"' />";
-      }
-      var imageicon= L.divIcon({
-          html: '<div class="image_inner">'+html+'</div>',
-          iconAnchor:[0,0],
-          iconSize:null,
-          popupAnchor:[0,0] });
-      var imagemarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: imageicon}).addTo(image_layers);
-
-
-
-      // TODO: add to layer, not map
-      // var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
-      // layercluster
-      var marker = L.marker([place.lat, place.lon], {icon: icon});
-
-      // TODO: use this ID for triggering relations visibility (show relation on hover)
-      // marker.CustomID = 'marker_to_'+place.id;
-      if ( ( level != 'maps' ) || ( place.shy == false )) {
-        marker_layers.addLayer(marker);
-        text_layers.addLayer(textmarker);
-        // text_layers.addLayer(marker);
-      }
-
-      var content = PopupFullContent(place);
-      marker.bindPopup(content).on('click', function(){
-
-          // map.panTo(marker.getLatLng());
-          // map.panToOffset(marker.getLatLng(),[0,60]);
-
-          if ( $('#addresslookup_address').hasClass('hide') ) {
-            // ShowLookUpField();
-          } else {
-            ClearLookUpField();
-          }
-
-      });
-      marker.on('click', function (e) {
-        console.log('marker');
-        console.log(e);
-      });
-
-      // TODO: change color of marker
-      marker_layers.on('clusterclick', function (a) {
-        // a.layer is actually a cluster
-        // console.log('cluster ' + a.layer.getAllChildMarkers().length);
-        // console.log(a.originalEvent.target);
-        // console.log(a.originalEvent.target.closest(".leaflet-interactive").classList);
-        // $(a.originalEvent.target).closest(".leaflet-interactive").toggleClass("cluster_expanded");
-      });
-      if ( $('#selection').data('map-popup-display-mode') != 'click' ) {
-        marker.on('mouseover', function (e) {
-            map.closePopup();
-            this.openPopup();
-        });
-        marker.on('mouseout', function (e) {
-            // this.closePopup();
-        });
-      }
-      // NEW 2021: Add annotations on the map, if any
-      if ( show_annotations_on_map && place.annotations ) {
-        $.each(place.annotations, function(kkey,annotation) {
-          var a_marker = L.marker([place.lat, place.lon], {icon: small_icon})
-          marker_layers.addLayer(a_marker);
-          var content = '';
-          content += '<div class="leaflet-popup-content-text">';
-          content += "<p>";
-          if ( annotation.person_name ) {
-            content += annotation.person_name;
-          }
-          if ( place.show_link ) {
-            content += ' @ ';
-            content += place.show_link;
-          }
-          content += "</p>";
-          content += "<p>";
-          if ( annotation.title ) {
-            content += "<strong>";
-            content += annotation.title;
-            content += "</strong>";
-          }
-          content += annotation.text.substring(0, 550).split(" ").slice(0, -1).join(" ") + "...";
-          content += "</p>";
-
-          a_marker.bindPopup(content).on('click');
-          a_marker.on('click', function (e) {
-            console.log('marker');
-            console.log(e);
-          });
-          a_marker.on('clusterclick', function (e) {
-            // a.layer is actually a cluster
-            console.log('cluster ' + e);
-          });
-        });
-      };
-      c++;
-    });
-    console.log(c+" Marker added to map!");
-
-    // thanks to https://github.com/louh - Allow for offset on center of map
-    L.Map.prototype.panToOffset = function (latlng, offset, options) {
-        var x = this.latLngToContainerPoint(latlng).x - offset[0]
-        var y = this.latLngToContainerPoint(latlng).y - offset[1]
-        var point = this.containerPointToLatLng([x, y])
-        return this.setView(point, this._zoom, { pan: options })
-    }
-
-}
-
 function getParams() {
-  var url = window.location.href
+  'use strict';
+  var url = window.location.href;
   var vars = {};
   var hashes = url.split("?")[1];
   if ( hashes ) {
     var hash = hashes.split('&');
-    for (var i = 0; i < hash.length; i++) {
+    for (i = 0; i < hash.length; i++) {
       params=hash[i].split("=");
       vars[params[0]] = params[1];
     }
@@ -597,5 +285,6 @@ function getParams() {
 
 /* cudos to https://stackoverflow.com/users/1031454/supersan */
 function adjustColor(color, amount) {
+    'use strict';
     return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
 }
