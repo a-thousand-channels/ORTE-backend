@@ -1,0 +1,108 @@
+
+function drawCurves(map,layer_id,curve_layers,marker_layers,color,clustercolor,places_with_relations,bending,coloring) {
+
+  var boost = ( 2.9 * bending ) + 0.1;
+  console.log("Boost: "+boost);
+  console.log("Iterate places_with_relations");
+
+  $.each(places_with_relations, function(key,place) {
+    $.each(place.relations, function(kkey,relation) {
+
+      var point1 = [Number(relation.from.lat), Number(relation.from.lon)];
+      var point2 = [Number(relation.to.lat), Number(relation.to.lon)];
+
+      var color = 'rgba(225,25,25,0.75)';
+      var color = '#'+Math.floor(Math.random()*16777215).toString(16);
+      var color = "hsl(" + Math.random() * 360 + ", 100%, 85%)";
+      // var color = clustercolor;
+      if ( coloring == 'black') {
+          color = '#000000'
+      } else if ( coloring == 'monochrome') {
+          color = clustercolor
+      }
+
+      var pathOptions = {
+          color: color,
+          weight: 4,
+          opacity: 0.5,
+          className: 'curve_normal curve_'+relation.from.id,
+          animate: false
+      }
+      var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
+      let distance_in_kms = ((distance) / 1000).toFixed(2);
+      console.log("Place " + key + " with distance: " + distance_in_kms)
+      if ( distance_in_kms > 0.1 ) {
+        var controlpoint = calcControlPoint(point2,point1,distance_in_kms,boost);
+        var curvedPath = L.curve(
+          [
+            'M', point1,
+            'Q', controlpoint,
+               point2
+          ], pathOptions);
+        // curvedPath.addTo(marker_layers);
+        curve_layers.addLayer(curvedPath);
+
+        // draw endpoint, if it resides on an different layer
+        var iconSettings = {
+            mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
+            color: color,
+            opacity: 1,
+            radius: 30
+        };
+        var divIcon = L.divIcon({
+          className: "leaflet-data-outside-marker",
+          html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
+          iconAnchor  : [15, 15],
+          iconSize    : [30, 30],
+          popupAnchor : [0, -28]
+        });
+        if ( relation.from.layer_id != relation.to.layer_id) {
+            var endpoint2_marker = L.marker(point2, {icon: divIcon}); // .addTo(curve_layers);
+            marker_layers.addLayer(endpoint2_marker);
+            var content = PopupFullContent(relation.to);
+            endpoint2_marker.bindPopup(content);
+        }
+      }
+    });
+  });
+}
+
+
+// kudos to Ryan Catalani for this approach, CC_BY
+function calcControlPoint(point1,point2,distance_in_kms,boost) {
+
+  var d = 2;
+  // if transcontinental
+  if ( distance_in_kms > 5000 ) {
+      d = 7
+  // if continental
+  } else if ( distance_in_kms > 1000 ) {
+      d = 7
+  // if regional
+  } else if ( distance_in_kms > 100 ) {
+      d = 7
+  // if local
+  } else if ( distance_in_kms > 10 ) {
+      d = 10
+  // if close
+  } else if ( distance_in_kms > 5 ) {
+      d = 40
+  } else if ( distance_in_kms > 1 ) {
+      d = 120
+  } else if ( distance_in_kms <= 1 ) {
+      d = 1600 // sic!
+  } else if ( distance_in_kms < 0.1 ) {
+    // none;
+  }
+
+  var offsetX = point2[1] - point1[1],
+  offsetY = point2[0] - point1[0];
+  var r = Math.sqrt( Math.pow(offsetX, 0) + Math.pow(offsetY, 2) ),
+            theta = Math.atan2(offsetY, offsetX);
+  var thetaOffset = (3.14/boost);
+  var r2 = (r/d)/(Math.cos(thetaOffset)),
+            theta2 = theta + thetaOffset;
+  var midpointX = (r2 * Math.cos(theta2)) + point1[1],
+            midpointY = (r2 * Math.sin(theta2)) + point1[0];
+  return midpointLatLng = [midpointY, midpointX];
+}
