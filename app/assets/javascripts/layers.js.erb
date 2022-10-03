@@ -105,7 +105,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
       } else  {
         // layers combined
-        var all_places = []
+        var all_places = [];
         var layers_count = data.layers.length;
 
         $.each(data.layers, function(key,data) {
@@ -113,7 +113,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         });
         var show_annotations_on_map = data.show_annotations_on_map;
 
-        var marker_layers = L.markerClusterGroup(markerclusterSettings);
+        marker_layers = L.markerClusterGroup(markerclusterSettings);
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
           drawMarkers(map,data.id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
@@ -137,7 +137,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             // drawMarkers(map,data.id,level,false,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
           }
           */
-          console.log("Places_with_relations: "+data.places_with_relations.length)
+          console.log("Places_with_relations: "+data.places_with_relations.length);
           drawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations, data.relations_bending,data.relations_coloring);
           marker_meta_layers.addLayer(marker_layers);
         });
@@ -211,9 +211,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
         // set map center after last user action
         if ( ( localStorage.getItem('SetCustomExtent') === 'true' ) && ( northeast_array ) ) {
-          var northeast_array = localStorage.getItem('UserMapBoundsNE');
+          northeast_array = localStorage.getItem('UserMapBoundsNE');
           console.log("set map bounds to user values NE " + northeast_array);
-          var southwest_array = localStorage.getItem('UserMapBoundsSW');
+          southwest_array = localStorage.getItem('UserMapBoundsSW');
           console.log("set map bounds to user values SW " + southwest_array);
           var boundsX = L.latLngBounds(northeast_array.split(","), southwest_array.split(","));
           console.log("Fit map bounds to user values " + bounds);
@@ -243,8 +243,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           // http://127.0.0.1:3000/maps/8/edit?northeast=1&southwest=2
           var setbound_url = $("#setbound").attr('href');
           console.log(setbound_url);
-          setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
-          setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
+          setbound_url = setbound_url.replace(/\?northeast=(.*?)&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
+          setbound_url = setbound_url.replace(/&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
           console.log(setbound_url);
 
           $("#setbound").attr('href', setbound_url);
@@ -254,12 +254,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           rect.on('edit', function(e) {
             console.log('Map extent was edited!');
             var new_bound = rect.getBounds();
-            var northeast = new_bound.getNorthEast();
-            var southwest = new_bound.getSouthWest();
+            northeast = new_bound.getNorthEast();
+            southwest = new_bound.getSouthWest();
             console.log("get new bounds");
             console.log(northeast);
-            setbound_url = setbound_url.replace(/\?northeast=(.*?)\&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
-            setbound_url = setbound_url.replace(/\&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
+            setbound_url = setbound_url.replace(/\?northeast=(.*?)&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
+            setbound_url = setbound_url.replace(/&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
             console.log(setbound_url);
             $("#setbound").attr('href', setbound_url);
           });
@@ -286,5 +286,5 @@ function getParams() {
 /* cudos to https://stackoverflow.com/users/1031454/supersan */
 function adjustColor(color, amount) {
     'use strict';
-    return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+    return '#' + color.replace(/^#/, '').replace(/../g, (color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16))).substr(-2));
 }
