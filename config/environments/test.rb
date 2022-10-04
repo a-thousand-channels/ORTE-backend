@@ -54,7 +54,7 @@ Rails.application.configure do
   routes.default_url_options[:host] = '127.0.0.1:3000'
 
   # config.assets.compile = true
-  # config.action_controller.asset_host = "127.0.0.1:3000"
+  config.action_controller.asset_host = "127.0.0.1:3000"
   # config.assets.prefix = 'assets_test'
 
 end
