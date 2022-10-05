@@ -2,7 +2,47 @@
 All notable changes to this project (since Version 0.3) will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+and this project adheres (more or less) to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [0.71] - 2022-10-03
+
+This release contains some nice improvements and customization for the display of tile layers, map center and the markers on the map.
+
+It's now possible, to set the background (tile layer) per map and per layer. There a some pre-set tile layers, like OSM, satellite or plain background. It is also possible to define a custom tile layer by providing a valid tile layer URL.
+
+The selection per map will be rendered to the backend and will be part of the JSON export. A user working in the backend has now the option to switch temporarily to one of the default or the custom tile layer (if one is set).
+
+Some minor improvements to the map has been made, like the option to set a custom map center and the user option to select between different marker display options (point, text label, image label and relations between points, if defined)
+
+Each place can have one or more annotations (e.g. quotes), every annotation has a n:1 relation wie a person. With this release, the people model is
+
+
+### Added + Changed
+
+- [UI] Set backend map to mapcenter if defined
+- [UI] Add custom tile layers to layer control
+- [UI] Inherit basemap/background color setting form parent maps
+- [UI] Store and load selected baselayer via localstorage
+- [UI] Improve use of the mapcenter subsiding if no parent mapcenter is defined
+- [UI] Improve text/label display on map: rotation, margin
+- [UI] Improve form UI of maps and layers
+- [UI] Show zoom level in header. Toggle text layers on zoomend event
+- [Model] People: Connect people to maps (refs #209)
+
+### Fixes
+
+- [Fix] Fix to avoid exception if image blob is gone
+- [Fix] Quick fix if layer images are gone
+- [Fix] Fix zoom level default overrides lower map extent zoom levels (refs #245)
+
+### Etc
+
+- Improved code coverage (CC now at 94%)
+- Added some feature tests
+- Fixed some minor bugs
+- JS linting (work in progress, about 70% finished)
+
 
 ## [0.7] - 2022-03-03
 
@@ -44,7 +84,7 @@ Plus some minor fixes and improvements
 - On some occasions the wrong map extent is shown #131
 - Fix sorting of images (#87)
 
-Etc
+### Etc
 
 - Improved code coverage
 - Github Actions with linting by Rubocop, checks by Brakemen and testing with Rspec
