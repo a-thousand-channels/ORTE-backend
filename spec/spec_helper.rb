@@ -47,7 +47,7 @@ Capybara.default_driver = :headless_chrome
 Capybara.javascript_driver = :headless_chrome
 
 Capybara.configure do |config|
-  config.default_max_wait_time = 4 # seconds
+  config.default_max_wait_time = 5 # seconds
   config.default_driver        = :headless_chrome
 end
 
@@ -63,12 +63,16 @@ RSpec.configure do |config|
   Capybara.server = :puma, { Silent: true }
   Capybara.javascript_driver = :headless_chrome
   Capybara.server_host = '0.0.0.0' # universal IP
+  # Capybara.asset_host = '0.0.0.0:3000' # will not work in github actions
 
   config.before(:each) do
     stub_request(:get, /server.arcgisonline.com/)
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
       .to_return(status: 200, body: 'stubbed response', headers: {})
     stub_request(:get, /api.mapbox.com/)
+      .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
+      .to_return(status: 200, body: 'stubbed response', headers: {})
+    stub_request(:get, /nominatim.openstreetmap.org/)
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
       .to_return(status: 200, body: 'stubbed response', headers: {})
   end

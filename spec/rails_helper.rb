@@ -64,6 +64,10 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = false
 
   config.before(:suite) do
+    # only if compiled assets are really needed:
+    # Rails.application.load_tasks
+    # Rake::Task['assets:precompile'].invoke
+
     if config.use_transactional_fixtures?
       raise(<<-MSG)
         Delete line `config.use_transactional_fixtures = true` from rails_helper.rb

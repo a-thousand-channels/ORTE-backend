@@ -27,209 +27,210 @@
 //= require select2-full
 //= require_tree .
 
-  var mapsPlaceholder = [];
-  function map_resize() {
-    var map = mapsPlaceholder[0];
-    //console.log('map_resize', map);
-    if(map && typeof map.invalidateSize === 'function') {
-      var height = $('main').height() + $('main').offset().top + 100;
-      //console.log('new-min-heigth', height);
-      $("#map").css('min-height', height).width($(window).width());
-      map.invalidateSize();
-    }
+var mapsPlaceholder = [];
+function map_resize() {
+  'use strict';
+  var map = mapsPlaceholder[0];
+  //console.log('map_resize', map);
+  if(map && typeof map.invalidateSize === 'function') {
+    var height = $('main').height() + $('main').offset().top + 100;
+    //console.log('new-min-heigth', height);
+    $("#map").css('min-height', height).width($(window).width());
+    map.invalidateSize();
   }
+}
 
-// $(document).on('turbolinks:load', function() {
-  $(function() {
-    $(document).foundation();
+jQuery(function ($) {
+  'use strict';
+  $(document).foundation();
 
-    $(document).on('open.zf.reveal', '[data-reveal]', function () {
+  $(document).on('open.zf.reveal', '[data-reveal]', function () {
       $(window).trigger('resize');
-    });
-    $(document).on('slidechange.zf.orbit', '[data-orbit]', function () {
+  });
+  $(document).on('slidechange.zf.orbit', '[data-orbit]', function () {
       $(window).trigger('resize');
-    });
-    $(window).on("resize", function() {
+  });
+  $(window).on("resize", function() {
       map_resize();
-    }).trigger("resize");
+  }).trigger("resize");
 
-    setTimeout(function(){
+  setTimeout(function(){
       $('#flash').slideUp(2000);
-    }, 3500);
+  }, 3500);
 
-    $('#place_tag_list').select2({
+  $('#place_tag_list').select2({
       tags: true,
       tokenSeparators: [',']
-    });
-    $('#annotation_tag_list').select2({
+  });
+  $('#annotation_tag_list').select2({
       tags: true,
       tokenSeparators: [',']
-    });
-      // tags option enables free text responses
+  });
+  // tags option enables free text responses
 
-    // select another color (for layers)
-    $('.another_color').click(function(e){
+  // select another color (for layers)
+  $('.another_color').click(function(e){
       var another_color = $(this).data('color');
       $('input#layer_color').val(another_color);
       $('svg#layer_color_preview > circle').css({ fill: another_color});
       console.log("changed");
-    });
+  });
 
 
-    // add nav_bar for marker switch
-    /* TODO
-    $('#map').before($('<div />').attr('id','marker_bar').attr('class','nav_bar'));
-    $('#marker_bar').append($('<div />').attr('id','marker_bar_marker').text('M'));
-    $('#marker_bar').append($('<div />').attr('id','marker_bar_text').text('T'));
-    $('#marker_bar').append($('<div />').attr('id','marker_bar_image').text('I'));
-    $('#marker_bar').find('div').addClass('nav_bar_item');
-    $('#marker_bar > div').on('click', function(e){
-      console.log($(this));
-      if ($(this).attr('id') === 'marker_bar_text') {
-        // TODO
-      } else if ($(this).attr('id') === 'marker_bar_image') {
-        // TODO
-      } else {
-        // TODO
-      }
-    });
-    */
-
-    if ( localStorage.getItem('actionbar') === 'visible' ) {
-        $('.action-bar').removeClass("hide")
-        $('main').addClass("action-bar-padding")
+  // add nav_bar for marker switch
+  /* TODO
+  $('#map').before($('<div />').attr('id','marker_bar').attr('class','nav_bar'));
+  $('#marker_bar').append($('<div />').attr('id','marker_bar_marker').text('M'));
+  $('#marker_bar').append($('<div />').attr('id','marker_bar_text').text('T'));
+  $('#marker_bar').append($('<div />').attr('id','marker_bar_image').text('I'));
+  $('#marker_bar').find('div').addClass('nav_bar_item');
+  $('#marker_bar > div').on('click', function(e){
+    console.log($(this));
+    if ($(this).attr('id') === 'marker_bar_text') {
+      // TODO
+    } else if ($(this).attr('id') === 'marker_bar_image') {
+      // TODO
+    } else {
+      // TODO
     }
+  });
+  */
+
+  if ( localStorage.getItem('actionbar') === 'visible' ) {
+      $('.action-bar').removeClass("hide");
+      $('main').addClass("action-bar-padding");
+  }
 
 
-    $('#settings_caller').click(function(e) {
-      console.log($(this).data('maptogo'));
-      // if maptogo feature is enabled
-      if ( $(this).data('maptogo') ) {
-        e.preventDefault();
-        if ( $('.action-bar').is(":hidden") ) {
-          $('.action-bar').removeClass("hide")
-          $('main').addClass("action-bar-padding")
+  $('#settings_caller').click(function(e) {
+    console.log($(this).data('maptogo'));
+    // if maptogo feature is enabled
+    if ( $(this).data('maptogo') ) {
+      e.preventDefault();
+      if ( $('.action-bar').is(":hidden") ) {
+          $('.action-bar').removeClass("hide");
+          $('main').addClass("action-bar-padding");
           localStorage.setItem('actionbar','visible');
-        } else {
-          $('.action-bar').addClass("hide")
-          $('main').removeClass("action-bar-padding")
+      } else {
+          $('.action-bar').addClass("hide");
+          $('main').removeClass("action-bar-padding");
           localStorage.setItem('actionbar','hidden');
-        }
       }
-    })
+    }
+  });
 
-    $('.action-button').addClass('hide');
+  $('.action-button').addClass('hide');
 
-    if ( ( $('body').attr('id') === 'layers' ) && ( $('body').hasClass('show') ) ) {
+  if ( ( $('body').attr('id') === 'layers' ) && ( $('body').hasClass('show') ) ) {
       setTimeout(function (){
         $('.action-button').removeClass('hide');
       }, 500);
-    }
-    $('#maptogo_button').click(function(e) {
+  }
+  $('#maptogo_button').click(function(e) {
       e.preventDefault;
       var url = window.location.href + '/pack';
       window.location.href = url;
-    })
+  });
 
-    // navigate by dropdown
-    $('.nav-selector').change(function(e){
-      e.preventDefault();
-      $(this).parent('form').prop( "disabled", true );
-      var map = $(this).data('map');
-      if ( $(this).val() !== '') {
-        var url = $(this).val()
+  // navigate by dropdown
+  $('.nav-selector').change(function(e){
+    e.preventDefault();
+    $(this).parent('form').prop( "disabled", true );
+    var map = $(this).data('map');
+    if ( $(this).val() !== '') {
+        var url = $(this).val();
         console.log(url);
         window.location = url;
-      } else {
+    } else {
         window.location = "/maps/"+map;
-      }
-    });
+    }
+  });
 
-    // address lookup
-    $('form#addresslookup').submit(function(e) {
+  // address lookup
+  $('form#addresslookup').submit(function(e) {
       e.preventDefault();
-    });
-    $('form#addresslookup input').on('keypress', function(e) {
-        // return e.which !== 13;
-        if ( e.which === 13 ) {
-          console.log("enter");
-          LookupNominatim($('input#addresslookup_address').val(),$('input#addresslookup_address').data('url'));
-        } else {
-          return;
-        }
-    });
+  });
+  $('form#addresslookup input').on('keypress', function(e) {
+      // return e.which !== 13;
+      if ( e.which === 13 ) {
+        console.log("enter");
+        lookupNominatim($('input#addresslookup_address').val(),$('input#addresslookup_address').data('url'));
+      } else {
+        return;
+      }
+  });
 
-    $('input#addresslookup_address').change(function(e) {
-        e.preventDefault();
-        LookupNominatim($(this).val(),$(this).data('url'));
-    });
-    $('button#addresslookup_button').click(function(e) {
+  $('input#addresslookup_address').change(function(e) {
+      e.preventDefault();
+      lookupNominatim($(this).val(),$(this).data('url'));
+  });
+  $('button#addresslookup_button').click(function(e) {
       e.preventDefault();
       var val = $('input#addresslookup_address').val();
-      LookupNominatim(val,$('input#addresslookup_address').data('url'));
-    });
+      lookupNominatim(val,$('input#addresslookup_address').data('url'));
+  });
 
-    // layers > form
-    $('div.layer_use_mapcenter_from_parent_map').click(function(e){
-      console.log("layer_use_mapcenter_from_parent_map clicked")
+  // layers > form
+  $('div.layer_use_mapcenter_from_parent_map').click(function(e){
+      console.log("layer_use_mapcenter_from_parent_map clicked");
       if ( $('#layer_use_mapcenter_from_parent_map').is(':checked') ){
-        console.log("... checked")
-        $('input#layer_mapcenter_lat').prop( "disabled", true );
-        $('input#layer_mapcenter_lon').prop( "disabled", true );
-        $('input#layer_zoom').prop( "disabled", true );
-        $('input#layer_mapcenter_lat').val($('#mapcenter').data('map-mapcenter-lat'))
-        $('input#layer_mapcenter_lon').val($('#mapcenter').data('map-mapcenter-lon'))
-        $('input#layer_zoom').val($('#mapcenter').data('map-zoom'))
+          console.log("... checked");
+          $('input#layer_mapcenter_lat').prop( "disabled", true );
+          $('input#layer_mapcenter_lon').prop( "disabled", true );
+          $('input#layer_zoom').prop( "disabled", true );
+          $('input#layer_mapcenter_lat').val($('#mapcenter').data('map-mapcenter-lat'));
+          $('input#layer_mapcenter_lon').val($('#mapcenter').data('map-mapcenter-lon'));
+          $('input#layer_zoom').val($('#mapcenter').data('map-zoom'));
       } else {
-        console.log("...unchecked")
-        $('input#layer_mapcenter_lat').prop( "disabled", false );
-        $('input#layer_mapcenter_lon').prop( "disabled", false );
-        $('input#layer_zoom').prop( "disabled", false );
-        $('input#layer_mapcenter_lat').val($('#mapcenter').data('layer-mapcenter-lat'))
-        $('input#layer_mapcenter_lon').val($('#mapcenter').data('layer-mapcenter-lon'))
-        $('input#layer_zoom').val($('#mapcenter').data('layer-zoom'))
+          console.log("...unchecked");
+          $('input#layer_mapcenter_lat').prop( "disabled", false );
+          $('input#layer_mapcenter_lon').prop( "disabled", false );
+          $('input#layer_zoom').prop( "disabled", false );
+          $('input#layer_mapcenter_lat').val($('#mapcenter').data('layer-mapcenter-lat'));
+          $('input#layer_mapcenter_lon').val($('#mapcenter').data('layer-mapcenter-lon'));
+          $('input#layer_zoom').val($('#mapcenter').data('layer-zoom'));
       }
-    })
-    $('div.layer_use_background_from_parent_map').click(function(e){
-      console.log("layer_use_background_from_parent_map clicked")
+  });
+  $('div.layer_use_background_from_parent_map').click(function(e){
+      console.log("layer_use_background_from_parent_map clicked");
       if ( $('#layer_use_background_from_parent_map').is(':checked') ){
-        console.log("... checked")
-        $('select#basemaps').prop( "disabled", true );
-        $('select#basemaps').val(0);
-        $('textarea#layer_basemap_url').prop( "disabled", true );
-        $('textarea#layer_basemap_attribution').prop( "disabled", true );
-        $('input#layer_background_color').prop( "disabled", true );
-        $('textarea#layer_basemap_url').val($('#basemaps').data('map-basemap-url'))
-        $('textarea#layer_basemap_attribution').val($('#basemaps').data('map-basemap-attribution'))
-        $('input#layer_background_color').val($('#basemaps').data('map-background-color'))
+          console.log("... checked");
+          $('select#basemaps').prop( "disabled", true );
+          $('select#basemaps').val(0);
+          $('textarea#layer_basemap_url').prop( "disabled", true );
+          $('textarea#layer_basemap_attribution').prop( "disabled", true );
+          $('input#layer_background_color').prop( "disabled", true );
+          $('textarea#layer_basemap_url').val($('#basemaps').data('map-basemap-url'));
+          $('textarea#layer_basemap_attribution').val($('#basemaps').data('map-basemap-attribution'));
+          $('input#layer_background_color').val($('#basemaps').data('map-background-color'));
       } else {
-        console.log("...unchecked")
-        $('select#basemaps').prop( "disabled", false );
-        $('select#basemaps').val(0);
-        $('textarea#layer_basemap_url').prop( "disabled", false );
-        $('textarea#layer_basemap_attribution').prop( "disabled", false );
-        $('input#layer_background_color').prop( "disabled", false );
-        $('textarea#layer_basemap_url').val($('#basemaps').data('map-basemap-url'))
-        $('textarea#layer_basemap_attribution').val($('#basemaps').data('map-basemap-attribution'))
-        $('input#layer_background_color').val($('#basemaps').data('layer-background-color'))
+          console.log("...unchecked");
+          $('select#basemaps').prop( "disabled", false );
+          $('select#basemaps').val(0);
+          $('textarea#layer_basemap_url').prop( "disabled", false );
+          $('textarea#layer_basemap_attribution').prop( "disabled", false );
+          $('input#layer_background_color').prop( "disabled", false );
+          $('textarea#layer_basemap_url').val($('#basemaps').data('map-basemap-url'));
+          $('textarea#layer_basemap_attribution').val($('#basemaps').data('map-basemap-attribution'));
+          $('input#layer_background_color').val($('#basemaps').data('layer-background-color'));
       }
-    })
+  });
 
 
-    // places > form: toggle layer dropdown
-    $('#move_to_layer').click(function(e){
+  // places > form: toggle layer dropdown
+  $('#move_to_layer').click(function(e){
       e.preventDefault();
       $('#layer_selector').removeClass('hide');
       $('#layer_display').hide();
-    });
-    $('#layer_display_cancel').click(function(e){
+  });
+  $('#layer_display_cancel').click(function(e){
       $("#place_layer_id option:selected").removeAttr("selected");
       $('#layer_selector').addClass('hide');
       $('#layer_display').show();
-    });
-    // places > form: toggle coordinates form fields
-    $('#edit_coordinates_cancel').hide();
-    $('#edit_coordinates').click(function(e){
+  });
+  // places > form: toggle coordinates form fields
+  $('#edit_coordinates_cancel').hide();
+  $('#edit_coordinates').click(function(e){
       e.preventDefault();
       $('.place_lat').removeClass('hidden');
       $('.place_lon').removeClass('hidden');
@@ -241,8 +242,8 @@
       $('#place_lon').prop('type','text');
       $('#edit_coordinates').hide();
       $('#edit_coordinates_cancel').show();
-    });
-    $('#edit_coordinates_cancel').click(function(e){
+  });
+  $('#edit_coordinates_cancel').click(function(e){
       e.preventDefault();
       $('.place_lat').addClass('hidden');
       $('.place_lon').addClass('hidden');
@@ -254,317 +255,291 @@
       $('#place_lon').prop('type','hidden');
       $('#edit_coordinates_cancel').hide();
       $('#edit_coordinates').show();
+  });
+
+  // ---------------
+
+  var text_layers = L.featureGroup();
+  var image_layers = L.layerGroup();
+  var marker_meta_layers = L.featureGroup();
+  var curve_layers = L.featureGroup();
+
+  var overlays = {
+      Places: marker_meta_layers,
+      Relations: curve_layers,
+      Labels: text_layers,
+      Images: image_layers
+  };
+
+  if ( !localStorage.overlayPlaces ) {
+     localStorage.overlayPlaces = true;
+  }
+  if ( !localStorage.overlayRelations ) {
+      localStorage.overlayRelations = true;
+  }
+  if ( !localStorage.overlayLabels ) {
+      localStorage.overlayLabels = false;
+  }
+  if ( !localStorage.overlayImages ) {
+      localStorage.overlayImages = false;
+  }
+
+  // ---------------
+  // baselayer map
+
+  var MAP_LAT = 53.55;
+  var MAP_LON = 9.99;
+
+  if ( $('#form-wrapper').data('lat') ) {
+    MAP_LAT = $('#form-wrapper').data('lat');
+    MAP_LON = $('#form-wrapper').data('lon');
+  }
+
+  L.Map.addInitHook(function () {
+    //console.log('map added', this);
+    mapsPlaceholder.push(this);
+  });
+
+  var map = L.map('map', {
+      zoomControl: false,
+      minZoom: 1,
+      maxZoom: 20
+  }).setView([MAP_LAT, MAP_LON], 12);
+
+  $('#show_zoomlevel').html("Level: "+map.getZoom());
+  userZoomLevel(map);
+  userMapBounds(map);
+
+  var custom_base_layer;
+  var custom_basemap_url;
+  var custom_basemap_attribution;
+  var custom_background_color;
+  var Esri_WorldImagery_layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
+          minZoom: 0,
+          maxZoom: 18
+
+  });
+  var Openstreetmap_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: 'OpenStreetMap + its contributors, CC-BY-SA'
+  });
+
+  if ( $('#selection').data('map-background-color') ) {
+      custom_background_color = $('#selection').data('map-background-color');
+      $('#map').css('background', custom_background_color);
+  }
+  if ( $('#selection').data('map-basemap-url') ) {
+    custom_basemap_url = $('#selection').data('map-basemap-url');
+
+    if ( $('#selection').data('map-basemap-attribution') ) {
+      custom_basemap_attribution = $('#selection').data('map-basemap-attribution');
+    }
+    custom_base_layer = L.tileLayer(custom_basemap_url, {
+      attribution: custom_basemap_attribution,
+      minZoom: 0,
+      maxZoom: 21
     });
-
-    // ---------------
-
-    var text_layers = L.featureGroup();
-    var image_layers = L.layerGroup();
-    var marker_meta_layers = L.featureGroup();
-    var curve_layers = L.featureGroup();
-
-    var overlays = {
-        'Places': marker_meta_layers,
-        'Relations': curve_layers,
-        'Labels': text_layers,
-        'Images': image_layers
+    var basemaps = {
+        Custom: custom_base_layer,
+        Satellite: Esri_WorldImagery_layer,
+        Openstreetmap: Openstreetmap_layer
     };
 
-    if ( !localStorage.overlayPlaces ) {
+
+    // TODO: reset baselayer if custom was set or changed server-side
+
+    if ( localStorage.baselayer == 'Openstreetmap') {
+      Openstreetmap_layer.addTo(map);
+    } else if ( localStorage.baselayer == 'Satellite') {
+      Esri_WorldImagery_layer.addTo(map);
+    } else {
+      custom_base_layer.addTo(map);
+    }
+
+  } else {
+
+    if ( localStorage.baselayer == 'Openstreetmap') {
+      Openstreetmap_layer.addTo(map);
+    } else {
+      Esri_WorldImagery_layer.addTo(map);
+    }
+    <% if ( Rails.env != "test" && Rails.application.credentials.token ) %>
+       L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
+                attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
+                minZoom: 19,
+                maxZoom: 21
+      }).addTo(map);
+    <% end %>
+    var basemaps = {
+        "Satellite": Esri_WorldImagery_layer,
+        "Openstreetmap": Openstreetmap_layer,
+    };
+  }
+
+  console.log("Check Overlay settings")
+  if ( localStorage.overlayPlaces == 'true' ) {
+    console.log('Setting overlayPlaces: true')
+    map.addLayer(marker_meta_layers);
+  }
+  if ( localStorage.overlayRelations == 'true' ) {
+    console.log('Setting overlayRelations: true')
+    map.addLayer(curve_layers);
+  }
+  if ( localStorage.overlayLabels == 'true' ) {
+    console.log('Setting overlayLabels: true')
+    map.addLayer(text_layers);
+  }
+  if ( localStorage.overlayImages == 'true' ) {
+    console.log('Setting overlayImages: true')
+    map.addLayer(image_layers);
+  }
+  map.on('baselayerchange', function(e){
+    console.log("Baselayer change to " + e.name);
+    localStorage.baselayer = e.name;
+  })
+  map.on('overlayadd', function(e){
+    console.log("Overlay added");
+    console.log(e.name);
+    if ( e.name == 'Places' ) {
       localStorage.overlayPlaces = true;
-    }
-    if ( !localStorage.overlayRelations ) {
+    } else if ( e.name == 'Relations' ) {
       localStorage.overlayRelations = true;
+    } else if ( e.name == 'Labels' ) {
+      localStorage.overlayLabels = true;
+    } else if ( e.name == 'Images' ) {
+      localStorage.overlayImages = true;
     }
-    if ( !localStorage.overlayLabels ) {
+  })
+  map.on('overlayremove ', function(e){
+    console.log("Overlay removed");
+    console.log(e.name);
+    if ( e.name == 'Places' ) {
+      localStorage.overlayPlaces = false;
+    } else if ( e.name == 'Relations' ) {
+      localStorage.overlayRelations = false;
+    } else if ( e.name == 'Labels' ) {
       localStorage.overlayLabels = false;
-    }
-    if ( !localStorage.overlayImages ) {
+    } else if ( e.name == 'Images' ) {
       localStorage.overlayImages = false;
     }
 
-    // ---------------
-    // baselayer map
-
-    var MAP_LAT = 53.55;
-    var MAP_LON = 9.99;
-
-    if ( $('#form-wrapper').data('lat') ) {
-      MAP_LAT = $('#form-wrapper').data('lat');
-      MAP_LON = $('#form-wrapper').data('lon');
-    }
-
-    L.Map.addInitHook(function () {
-      //console.log('map added', this);
-      mapsPlaceholder.push(this); 
-    });
-
-    var map = L.map('map', {
-        zoomControl: false,
-        minZoom: 1,
-        maxZoom: 20
-    }).setView([MAP_LAT, MAP_LON], 12);
-
-    $('#show_zoomlevel').html("Level: "+map.getZoom());
-    UserZoomLevel(map);
-    UserMapBounds(map);
-
-    var custom_base_layer;
-    var custom_basemap_url;
-    var custom_basemap_attribution;
-    var custom_background_color;
-    var Esri_WorldImagery_layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
-            minZoom: 0,
-            maxZoom: 18
-
-    });
-    var Openstreetmap_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: 'OpenStreetMap + its contributors, CC-BY-SA'
-    });
-
-    if ( $('#selection').data('map-background-color') ) {
-        custom_background_color = $('#selection').data('map-background-color');
-        $('#map').css('background', custom_background_color);
-    }
-    if ( $('#selection').data('map-basemap-url') ) {
-      custom_basemap_url = $('#selection').data('map-basemap-url');
-
-      if ( $('#selection').data('map-basemap-attribution') ) {
-        custom_basemap_attribution = $('#selection').data('map-basemap-attribution');
-      }
-      custom_base_layer = L.tileLayer(custom_basemap_url, {
-        attribution: custom_basemap_attribution,
-        minZoom: 0,
-        maxZoom: 21
-      });
-      var basemaps = {
-          "Custom": custom_base_layer,
-          "Satellite": Esri_WorldImagery_layer,
-          "Openstreetmap": Openstreetmap_layer
-      };
-
-
-      // TODO: reset baselayer if custom was set or changed server-side
-
-      if ( localStorage.baselayer == 'Openstreetmap') {
-        Openstreetmap_layer.addTo(map);
-      } else if ( localStorage.baselayer == 'Satellite') {
-        Esri_WorldImagery_layer.addTo(map);
-      } else {
-        custom_base_layer.addTo(map)
-      }
-
+  })
+  map.on('zoomend',function(e){
+    if (map.getZoom() < 14 ){
+      map.removeLayer(text_layers);
     } else {
-
-      if ( localStorage.baselayer == 'Openstreetmap') {
-        Openstreetmap_layer.addTo(map);
-      } else {
-        Esri_WorldImagery_layer.addTo(map);
-      }
-      <% if ( Rails.env != "test" ) %>
-         L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
-                  attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
-                  minZoom: 19,
-                  maxZoom: 21
-        }).addTo(map);
-      <% end %>
-      var basemaps = {
-          "Satellite": Esri_WorldImagery_layer,
-          "Openstreetmap": Openstreetmap_layer,
-      };
-    }
-
-    console.log("Check Overlays")
-    if ( localStorage.overlayPlaces == 'true' ) {
-      console.log('localStorage.overlayPlaces == true')
-      map.addLayer(marker_meta_layers);
-    }
-    if ( localStorage.overlayRelations == 'true' ) {
-      console.log('localStorage.overlayRelations == true')
-      map.addLayer(curve_layers);
-    }
-    if ( localStorage.overlayLabels == 'true' ) {
-      console.log('localStorage.overlayLabels == true')
       map.addLayer(text_layers);
     }
-    if ( localStorage.overlayImages == 'true' ) {
-      console.log('localStorage.overlayImages == true')
-      map.addLayer(image_layers);
-    }
-    map.on('baselayerchange', function(e){
-      console.log("Baselayer change");
-      console.log(e.name);
-      // TODO: store value via LS
-      localStorage.baselayer = e.name;
-    })
-    map.on('overlayadd', function(e){
-      console.log("Overlay added");
-      console.log(e.name);
-      // TODO: store value via LS
-      if ( e.name == 'Places' ) {
-        localStorage.overlayPlaces = true;
-      } else if ( e.name == 'Relations' ) {
-        localStorage.overlayRelations = true;
-      } else if ( e.name == 'Labels' ) {
-        localStorage.overlayLabels = true;
-      } else if ( e.name == 'Images' ) {
-        localStorage.overlayImages = true;
-      }
-    })
-    map.on('overlayremove ', function(e){
-      console.log("Overlay removed");
-      console.log(e.name);
-      // TODO: store value via LS
-      if ( e.name == 'Places' ) {
-        localStorage.overlayPlaces = false;
-      } else if ( e.name == 'Relations' ) {
-        localStorage.overlayRelations = false;
-      } else if ( e.name == 'Labels' ) {
-        localStorage.overlayLabels = false;
-      } else if ( e.name == 'Images' ) {
-        localStorage.overlayImages = false;
-      }
-
-    })
-    map.on('zoomend',function(e){
-      if (map.getZoom() < 14 ){
-        map.removeLayer(text_layers);
-      } else {
-        map.addLayer(text_layers);
-      }
-    });
-    L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
-
-    if ( $('#selection').data('layer-id') ) {
-      // localStorage.setItem('Layer',$('#selection').data('layer-id'));
-    }
-    if ( $('#selection').data('map-id') ) {
-      var last_map_id = localStorage.getItem('Map');
-      var new_map_id = $('#selection').data('map-id');
-      var last_layer_id = '';
-      var new_layer_id = '';
-      if ( $('#selection').data('layer-id') ) {
-        last_layer_id = localStorage.getItem('Layer');
-        new_layer_id = $('#selection').data('layer-id');
-      }
-      console.log("Check SetCustomExtent");
-      if ( ( last_map_id == null ) && ( last_layer_id == null ) ) {
-        console.log ("No last ids stored");
-        localStorage.setItem('SetCustomExtent',false);
-      } else if ( parseInt(last_map_id) !== parseInt(new_map_id) ) {
-        console.log (last_map_id +" !== "+ new_map_id );
-        localStorage.setItem('Map',new_map_id);
-        localStorage.setItem('SetCustomExtent',false);
-      } else if ( (new_layer_id ) && ( parseInt(last_layer_id) !== parseInt(new_layer_id) )) {
-        console.log (last_layer_id +"!=="+ new_layer_id );
-        localStorage.setItem('Layer',new_layer_id);
-        localStorage.setItem('SetCustomExtent',false);
-      } else {
-        console.log("Allow SetCustomExtent");
-        localStorage.setItem('SetCustomExtent','true');
-      }
-    }
-
-
-    L.control.locate({
-      position: 'bottomright',
-      strings: {
-          title: "Show my location on the map"
-      },
-      icon: 'fi-marker',
-      iconLoading: 'fi-clock'
-    }).addTo(map);
-
-    //add zoom control with your options
-    L.control.zoom({
-         position:'topright'
-    }).addTo(map);
-
-    // layers: show all places
-    if ( $('body').attr('id') === 'layers' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
-    }
-    if ( $('body').attr('id') === 'places' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'places');
-    }
-    if ( $('body').attr('id') === 'maps' )  {
-      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'maps');
-    }
-
-
-    // addresslookup_address
-    // click on map to get latlon and adress
-    map.on('dblclick', function(e){
-      console.log(e.latlng);
-      console.log(e.latlng.lat);
-      // minimize address lookup form
-      if ( $('#addresslookup_address').length > 0 ) {
-        ClearLookUpField();
-        ReverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
-      } else {
-        console.log("No mapping possible. Please select a map and a layer first");
-        $('#selection-hint').html("<p>Please select a map and a layer first.</p>");
-        $('#selection-hint').addClass('active');
-        setTimeout(function(){
-          $('#selection-hint').removeClass('active');
-        }, 2000);
-      }
-    });
-
-
-    $('.leaflet-marker-icon').on('mouseover', function(e) {
-        // get index
-        var id = $(this).attr('id');
-        var pattern = /marker_to_/g;
-        var index = id.replace(pattern, '');
-        console.log(index);
-          // change all curves from here
-        $('.curve_normal').removeClass('curve_hover');
-        $('.curve_'+index).addClass('curve_hover');
-     });
-
-
-    /* special overlay for treffentotal map */
-    /*
-    var imageUrl = 'https://map.treffentotal.de/kampnagel_raumplan_by_hand_2000px.png',
-        imageBounds = [[53.583839104119935, 10.020486116409304], [53.58267779635204, 10.023055034408571]];
-        options =  {opacity: 1, className: 'baselayer', interactive: true, attribution: 'Kampnagel'};
-    var kampnagel_map = new L.imageOverlay(imageUrl, imageBounds, options);
-    kampnagel_map.addTo(map);*/
-
-    // ---------------
-
-    <% if ( Rails.env == "test" ) %>
-      // this should be at the very end of this script :) and for test env only!
-      $('footer').append("Javascript enabled");
-    <% end %>
-
   });
-// });
+  L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
+
+  if ( $('#selection').data('layer-id') ) {
+    // localStorage.setItem('Layer',$('#selection').data('layer-id'));
+  }
+  if ( $('#selection').data('map-id') ) {
+    var last_map_id = localStorage.getItem('Map');
+    var new_map_id = $('#selection').data('map-id');
+    var last_layer_id = '';
+    var new_layer_id = '';
+    if ( $('#selection').data('layer-id') ) {
+      last_layer_id = localStorage.getItem('Layer');
+      new_layer_id = $('#selection').data('layer-id');
+    }
+    console.log("Check SetCustomExtent");
+    if ( ( last_map_id == null ) && ( last_layer_id == null ) ) {
+      console.log ("No last ids stored");
+      localStorage.setItem('SetCustomExtent',false);
+    } else if ( parseInt(last_map_id) !== parseInt(new_map_id) ) {
+      console.log (last_map_id +" !== "+ new_map_id );
+      localStorage.setItem('Map',new_map_id);
+      localStorage.setItem('SetCustomExtent',false);
+    } else if ( (new_layer_id ) && ( parseInt(last_layer_id) !== parseInt(new_layer_id) )) {
+      console.log (last_layer_id +"!=="+ new_layer_id );
+      localStorage.setItem('Layer',new_layer_id);
+      localStorage.setItem('SetCustomExtent',false);
+    } else {
+      console.log("Allow SetCustomExtent");
+      localStorage.setItem('SetCustomExtent','true');
+    }
+  }
 
 
-function ClearLookUpField() {
-      $('#addresslookup_address').addClass('hide');
-      $('#addresslookup_address').val('');
-      /* disabled
-      $('#addresslookup_button i.fi-magnifying-glass').addClass('hide');
-      $('#addresslookup_button i.fi-fast-forward').removeClass('hide');
-      */
-      $('#selection-hint').html("");
-      $('#selection-hint').removeClass('active');
-};
-function ShowLookUpField() {
-    $('#addresslookup_address').removeClass('hide');
-    /* disabled
-    $('#addresslookup_button i.fi-magnifying-glass').removeClass('hide');
-    $('#addresslookup_button i.fi-fast-forward').addClass('hide');
-    */
-    $('.leaflet-popup').hide();
-    $('#selection-hint').html("");
-    $('#selection-hint').removeClass('active');
-}
+  L.control.locate({
+    position: 'bottomright',
+    strings: {
+        title: "Show my location on the map"
+    },
+    icon: 'fi-marker',
+    iconLoading: 'fi-clock'
+  }).addTo(map);
+
+  //add zoom control with your options
+  L.control.zoom({
+       position:'topright'
+  }).addTo(map);
+
+  // layers: show all places
+  if ( $('body').attr('id') === 'layers' )  {
+    ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
+  }
+  if ( $('body').attr('id') === 'places' )  {
+    ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'places');
+  }
+  if ( $('body').attr('id') === 'maps' )  {
+    ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'maps');
+  }
+
+
+  // addresslookup_address
+  // click on map to get latlon and adress
+  map.on('dblclick', function(e){
+    console.log(e.latlng);
+    console.log(e.latlng.lat);
+    // minimize address lookup form
+    if ( $('#addresslookup_address').length > 0 ) {
+      clearLookUpField();
+      reverselookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
+    } else {
+      console.log("No mapping possible. Please select a map and a layer first");
+      $('#selection-hint').html("<p>Please select a map and a layer first.</p>");
+      $('#selection-hint').addClass('active');
+      setTimeout(function(){
+        $('#selection-hint').removeClass('active');
+      }, 2000);
+    }
+  });
+
+
+  $('.leaflet-marker-icon').on('mouseover', function(e) {
+      // get index
+      var id = $(this).attr('id');
+      var pattern = /marker_to_/g;
+      var index = id.replace(pattern, '');
+      console.log(index);
+        // change all curves from here
+      $('.curve_normal').removeClass('curve_hover');
+      $('.curve_'+index).addClass('curve_hover');
+   });
+
+
+  /* special overlay for treffentotal map */
+  /*
+  var imageUrl = 'https://map.treffentotal.de/kampnagel_raumplan_by_hand_2000px.png',
+      imageBounds = [[53.583839104119935, 10.020486116409304], [53.58267779635204, 10.023055034408571]];
+      options =  {opacity: 1, className: 'baselayer', interactive: true, attribution: 'Kampnagel'};
+  var kampnagel_map = new L.imageOverlay(imageUrl, imageBounds, options);
+  kampnagel_map.addTo(map);*/
+
+  // ---------------
+
+  <% if ( Rails.env == "test" ) %>
+    // this should be at the very end of this script :) and for test env only!
+    $('footer').append("Javascript enabled");
+  <% end %>
+
+});
+
 
 function scrollToAnchor(aid){
   var aTag = $("a[name='"+ aid +"']");
