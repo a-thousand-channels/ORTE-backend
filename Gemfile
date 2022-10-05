@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma', '~> 5'
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 6'
 gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
@@ -46,7 +46,7 @@ gem 'sprockets', '>= 3.0.0'
 gem 'sprockets-es6'
 
 gem 'image_processing', '~> 1.12'
-gem 'mini_racer', platforms: :ruby
+gem 'mini_racer', '~> 0.6', platforms: :ruby
 
 gem 'color-generator'
 
