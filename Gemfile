@@ -15,7 +15,6 @@ gem 'uglifier'
 
 gem 'friendly_id', '~> 5.4.0'
 
-gem 'coffee-rails'
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 5'
@@ -49,22 +48,14 @@ gem 'image_processing', '~> 1.12'
 gem 'mini_racer', '~> 0.6', platforms: :ruby
 
 gem 'color-generator'
-
 gem 'tinymce-rails', '~> 5.10'
-
 gem 'acts-as-taggable-on', '~> 8'
-
 gem 'turnout'
-
 gem 'mobility', '~> 1.2'
-
-gem 'bundler-audit', require: false
-gem 'rubocop'
-gem 'rubocop-rspec'
-gem 'ruby_audit', require: false
-
 gem 'mini_magick'
 gem 'rubyzip'
+
+gem 'net-smtp'
 
 group :staging, :production do
   # gem 'pg'
@@ -74,6 +65,11 @@ end
 gem 'coveralls_reborn', '~> 0', require: false
 
 group :development, :test do
+  gem 'bundler-audit', require: false
+  gem 'rubocop'
+  gem 'rubocop-rspec'
+  gem 'ruby_audit', require: false
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # Adds support for Capybara system testing and selenium driver
