@@ -22,6 +22,8 @@ module OrteBackend
     
     config.action_cable.mount_path = '/cable'
 
+    config.active_storage.replace_on_assign_to_many = false
+
     config.middleware.use Rack::Attack
 
     config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']

@@ -35,11 +35,18 @@ FactoryBot.define do
       published { true }
     end
     trait :with_audio do
-      audio { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')] }
+      audio { Rack::Test::UploadedFile.new('spec/support/files/test.mp3', 'audio/mpeg') }
     end
     trait :with_images do
       # deprecated
-      images { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+      # images { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
+      after(:build) do |post|
+        post.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
   end
 end
