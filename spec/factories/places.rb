@@ -35,13 +35,18 @@ FactoryBot.define do
       published { true }
     end
     trait :with_audio do
-      audio { Rack::Test::UploadedFile.new('spec/support/files/test.mp3', 'audio/mpeg') }
+      after(:build) do |place|
+        place.audio.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.mp3')),
+          filename: 'test.mp3',
+          content_type: 'audio/mpeg'
+        )
+      end
     end
     trait :with_images do
       # deprecated
-      # images { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
-      after(:build) do |post|
-        post.file.attach(
+      after(:build) do |place|
+        place.file.attach(
           io: File.open(Rails.root.join('spec/support/files/test.jpg')),
           filename: 'test.jpg',
           content_type: 'image/jpeg'
