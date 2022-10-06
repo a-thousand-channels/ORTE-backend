@@ -48,8 +48,8 @@ gem 'image_processing'
 gem 'mini_racer', '0.4', platforms: :ruby
 
 gem 'color-generator'
-gem 'tinymce-rails', '~> 5.10'
-gem 'acts-as-taggable-on', '~> 8'
+gem 'tinymce-rails', '~> 5'
+gem 'acts-as-taggable-on', '~> 9'
 gem 'turnout'
 gem 'mobility', '~> 1.2'
 gem 'mini_magick'
@@ -92,7 +92,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'listen', '~> 3'
-  gem 'web-console', '~> 3'
+  gem 'web-console', '~> 4'
 
   gem 'capistrano', '~> 3', require: false
   gem 'capistrano-bundler'
