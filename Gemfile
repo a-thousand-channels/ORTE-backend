@@ -47,13 +47,13 @@ gem 'sprockets-es6'
 gem 'image_processing'
 gem 'mini_racer', '0.4', platforms: :ruby
 
-gem 'color-generator'
-gem 'tinymce-rails', '~> 5'
 gem 'acts-as-taggable-on', '~> 9'
-gem 'turnout'
-gem 'mobility', '~> 1.2'
+gem 'color-generator'
 gem 'mini_magick'
+gem 'mobility', '~> 1.2'
 gem 'rubyzip'
+gem 'tinymce-rails', '~> 5'
+gem 'turnout'
 
 gem 'net-smtp'
 
