@@ -12,8 +12,10 @@ class Build::Maptogo
   end
 
   def build
-    build_config = Rails.application.config_for('build/maptogo')
-    meta = initialize_meta(build_config)
+    build_config = Rails.application.config_for('build/maptogo').with_indifferent_access['commands']
+    version = Rails.application.config_for('build/maptogo').with_indifferent_access['version']
+
+    meta = initialize_meta(version)
     data = {}
     build_start = Time.now
 
@@ -41,19 +43,19 @@ class Build::Maptogo
       FileUtils.cp(file_hash['disk'], dest_folder)
     end
 
-    if build_config['commands'].length.positive?
-      step_count = build_config['commands'].count
+    if build_config.length.positive?
+      step_count = build_config.count
       BuildChannel.broadcast_to(
         @current_user,
         {
-          content: "Build process started (#{build_config['commands'].count} Steps)",
+          content: "Build process started (#{build_config.count} Steps)",
           status: 'start',
           step_count: step_count,
           duration: time_ago_in_words(build_start, include_seconds: true)
         }
       )
 
-      build_config['commands'].each_with_index do |command, index|
+      build_config.each_with_index do |command, index|
         BuildChannel.broadcast_to(
           @current_user,
           {
@@ -139,9 +141,9 @@ class Build::Maptogo
     ActiveSupport::Gzip.compress(content)
   end
 
-  def initialize_meta(config)
+  def initialize_meta(version)
     {
-      version: config['version'] || '1.0.0',
+      version: version || '1.0.0',
       created_at: DateTime.current.to_s
     }
   end
