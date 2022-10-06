@@ -12,13 +12,25 @@ FactoryBot.define do
     sorting { 2 }
     preview { false }
     trait :with_file do
-      file { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.mp4'), 'video/mp4')] }
+      after(:build) do |video|
+        video.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.mp4')),
+          filename: 'test.txt',
+          content_type: 'video/mp4'
+        )
+      end
     end
     trait :without_file do
       file { [] }
     end
     trait :with_wrong_fileformat do
-      file { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.txt'), '')] }
+      after(:build) do |post|
+        post.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.txt')),
+          filename: 'test.txt',
+          content_type: 'image/jpeg'
+        )
+      end
     end
     trait :invalid do
       title { nil }
