@@ -10,7 +10,13 @@ FactoryBot.define do
     place
     person
     trait :with_audio do
-      audio { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')] }
+      after(:build) do |annotation|
+        annotation.audio.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.mp3')),
+          filename: 'test.mp3',
+          content_type: 'audio/mpeg'
+        )
+      end
     end
     trait :invalid do
       text { nil }
