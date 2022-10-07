@@ -232,6 +232,7 @@ function reverseLookupNominatim(map, latlng, lat, lon, url) {
 
 function clearLookUpField() {
     'use strict';
+    console.log('clearLookUpField');
     $('#addresslookup_address').addClass('hide');
     $('#addresslookup_address').val('');
     /* disabled
