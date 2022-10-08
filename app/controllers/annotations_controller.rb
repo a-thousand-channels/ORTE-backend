@@ -12,15 +12,18 @@ class AnnotationsController < ApplicationController
     @annotation = Annotation.new
     @annotation.place_id = params[:place_id]
     @annotations = Annotation.all
+    @map = @annotation.place.layer.map if @annotation.place
   end
 
   def edit
     @annotations = Annotation.all
+    @map = @annotation.place.layer.map if @annotation.place
   end
 
   def create
     @annotation = Annotation.new(annotation_params)
     @annotations = Annotation.all
+    @map = @annotation.place.layer.map if @annotation.place
 
     respond_to do |format|
       if @annotation.save
@@ -39,6 +42,7 @@ class AnnotationsController < ApplicationController
   # PATCH/PUT /annotation/1 or /annotation/1.json
   def update
     @annotations = Annotation.all
+    @map = @annotation.place.layer.map
     respond_to do |format|
       if @annotation.update(annotation_params)
         if params[:back_to] == 'edit'
