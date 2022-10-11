@@ -230,16 +230,22 @@ select {
     min-width: 440px;
 }
 
-
 @media screen and (max-width: 63.9375em) {
-
+  .top-bar .top-bar-left {
+    max-width: 45%;
+  }
+}@media screen and (max-width: 43.9375em) {
+  .top-bar .top-bar-left {
+    max-width: 40%;
+  }
 }
 @media screen and (max-width: 39.9375em) {
-  .top-bar .top-bar-left, .top-bar .top-bar-right {
+  .top-bar .top-bar-left {
       flex: 0 0 100%;
-      max-width: 50%;
+      max-width: 40%;
   }
-  .top-bar-right {
+  .top-bar .top-bar-right {
+    max-width: 55%;
       ul.menu {
         float: right;
       }
@@ -255,6 +261,9 @@ select {
     text-decoration: none;
     display: block;
     padding: 0.6rem 1rem;
+    @media screen and (max-width: 63.9375em) {
+      padding: 0.6rem 0.5rem;
+    }
 }
 .menu a#login {
     line-height: 1;

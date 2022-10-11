@@ -19,4 +19,20 @@ RSpec.describe Annotation, type: :model do
       expect(subject.errors.full_messages).to include('Audio format must be MP3.')
     end
   end
+
+  describe 'dynamic fields' do
+    it 'person_name' do
+      m = FactoryBot.create(:map)
+      p = FactoryBot.create(:person, map: m)
+      a = FactoryBot.create(:annotation, person: p)
+      expect(a.person_name).to eq(p.name)
+    end
+    it 'audiolink' do
+      m = FactoryBot.create(:map)
+      p = FactoryBot.create(:person, map: m)
+      a = FactoryBot.create(:annotation, person: p)
+      a.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
+      expect(a.audiolink).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(a.audio)}\"></audio>")
+    end
+  end
 end
