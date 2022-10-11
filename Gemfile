@@ -39,6 +39,7 @@ gem 'rack-attack'
 gem 'rack-cors'
 gem 'secure_headers'
 gem 'select2-rails'
+# NOTE: settingslogic != rails 3
 gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'

@@ -11,7 +11,7 @@
         = f.input :title
         = tinymce
         = f.input :text, :input_html => {:rows => 8, class: 'large-text tinymce' }
-        = f.association :person, collection: Person.all, include_blank: true
+        = f.association :person, collection: @map.people, include_blank: true
         %p.hint Who is speaking here?
         = f.input :source
         %p.hint Where this annotation come from?
