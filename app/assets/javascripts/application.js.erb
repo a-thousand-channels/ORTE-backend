@@ -494,12 +494,11 @@ jQuery(function ($) {
   // addresslookup_address
   // click on map to get latlon and adress
   map.on('dblclick', function(e){
-    console.log(e.latlng);
-    console.log(e.latlng.lat);
+    console.log('Read coordinates from dblclick '+e.latlng.lat+'/'+e.latlng.lng);
     // minimize address lookup form
     if ( $('#addresslookup_address').length > 0 ) {
       clearLookUpField();
-      reverselookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
+      reverseLookupNominatim(map,e.latlng,e.latlng.lat,e.latlng.lng,$('#addresslookup_address').data('url'));
     } else {
       console.log("No mapping possible. Please select a map and a layer first");
       $('#selection-hint').html("<p>Please select a map and a layer first.</p>");
