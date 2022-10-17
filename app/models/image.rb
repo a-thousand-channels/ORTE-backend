@@ -58,18 +58,21 @@ class Image < ApplicationRecord
   def extract_exif_data
     return unless file.attached?
     return unless place.layer.exif_remove
+    return unless attachment_changes['file']
+    return if attachment_changes['file'].attachable.is_a?(Hash)
 
     filename = file.filename.to_s
     attachment_path = "#{Dir.tmpdir}/#{file.filename}"
+    tmp_new_image = File.read(attachment_changes['file'].attachable)
     File.open(attachment_path, 'wb') do |tmp_file|
-      tmp_file.write(file.download)
+      tmp_file.write(tmp_new_image)
       tmp_file.close
     end
-    exif_data = MiniMagick::Image.open(attachment_path)
-    exif_data.auto_orient # Before stripping
-    exif_data.strip # Strip Exif
-    exif_data.write attachment_path
-    file.attach(io: File.open(attachment_path), filename: filename)
+    tmp_image = MiniMagick::Image.open(attachment_path)
+    tmp_image.auto_orient # Before stripping
+    tmp_image.strip # Strip Exif
+    tmp_image.write attachment_path
+    file.attach(io: File.open(attachment_path), filename: file.filename)
   end
 
   def check_file_presence

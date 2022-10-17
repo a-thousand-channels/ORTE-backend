@@ -22,52 +22,57 @@ RSpec.describe Image, type: :model do
     it 'is valid' do
       subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       expect(subject.file).to be_attached
+      expect(subject).to have_one_attached(:file)
     end
   end
 
   describe 'Image links and tags' do
+    before do
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      p = FactoryBot.create(:place, layer: l)
+      @i = FactoryBot.create(:image, place: p)
+      @i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+    end
     it 'image_filename' do
-      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.image_filename).to eq(subject.file.filename)
+      expect(@i.image_filename).to eq(@i.file.filename)
     end
     it 'image_url' do
-      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.image_url).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(subject.file.variant(resize: '800x800').processed))}")
+      expect(@i.image_url).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(@i.file.variant(resize: '800x800')))}")
     end
     it 'image_path' do
-      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.image_path).to eq(Rails.application.routes.url_helpers.url_for(polymorphic_path(subject.file.variant(resize: '800x800').processed)))
+      expect(@i.image_path).to eq(Rails.application.routes.url_helpers.url_for(polymorphic_path(@i.file.variant(resize: '800x800').processed)))
     end
     it 'image_linktag' do
-      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.image_linktag).to eq("<img src=\"http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(subject.file.variant(resize: '800x800').processed))}\" title=\"\">")
+      expect(@i.image_linktag).to eq("<img src=\"http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(@i.file.variant(resize: '800x800').processed))}\" title=\"#{@i.title}\">")
     end
     it 'image_on_disk' do
-      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      variant = subject.file.variant(resize: '1200x1200').processed
+      variant = @i.file.variant(resize: '1200x1200').processed
       full_path = ActiveStorage::Blob.service.path_for(variant.key)
-      expect(subject.image_on_disk).to eq(full_path.gsub(Rails.root.to_s, ''))
+      expect(@i.image_on_disk).to eq(full_path.gsub(Rails.root.to_s, ''))
     end
   end
 
   describe 'EXIF' do
-    it 'should read EXIF data' do
-      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.get_exif_data).to eq({})
-    end
-
-    it 'should remove EXIF data' do
+    before do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
-      l.exif_remove = true
       p = FactoryBot.create(:place, layer: l)
-      i = create(:image, place: p)
-      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      i.save!
+      @i = FactoryBot.create(:image, place: p)
+      @i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+    end
+    it 'should read EXIF data' do
+      expect(@i.get_exif_data).to eq({})
+    end
+
+    xit 'should remove EXIF data' do
+      @i.save!
+      @i.reload
+      expect(@i.get_exif_data).to eq({})
     end
   end
 
-  describe 'Image checks and validations' do
+  describe 'checks and validations' do
     before do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
@@ -89,7 +94,7 @@ RSpec.describe Image, type: :model do
       expect(image.errors[:file]).to eq(['no file present'])
     end
     it 'should check_file_format' do
-      image = build(:image, :nofile, place: @p)
+      image = build(:image, place: @p)
       image.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'attachment.txt', content_type: 'txt/plain')
       expect(image).not_to be_valid
       expect(image.errors[:file]).to eq(['File format must be JPG/PNG or GIF'])
