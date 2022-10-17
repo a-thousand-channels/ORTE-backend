@@ -77,7 +77,7 @@ RSpec.describe Public::LayersController, type: :controller do
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
         expect(response).to have_http_status(200)
         expect(response.status).to eq 200
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('application/json; charset=utf-8')
       end
 
       it 'returns json with a valid scheme' do
@@ -107,7 +107,7 @@ RSpec.describe Public::LayersController, type: :controller do
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'geojson' }, session: valid_session
         expect(response).to have_http_status(200)
         expect(response.status).to eq 200
-        expect(response.content_type).to eq('application/geo+json')
+        expect(response.content_type).to eq('application/geo+json; charset=utf-8')
       end
 
       it 'returns geojson with a valid scheme' do

@@ -20,7 +20,7 @@ RSpec.describe Layer, type: :model do
 
   describe 'Layer image' do
     describe 'Attachment' do
-      it 'is valid  ' do
+      it 'is valid' do
         subject.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
         expect(subject.image).to be_attached
       end
@@ -31,8 +31,10 @@ RSpec.describe Layer, type: :model do
       expect(subject.image_filename).to eq(subject.image.filename)
     end
     it 'image_link' do
-      subject.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.image_link).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(subject.image.variant(resize: '800x800').processed))}")
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      expect(l.image_link).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(l.image.variant(resize: '800x800').processed))}")
     end
   end
 
@@ -41,6 +43,7 @@ RSpec.describe Layer, type: :model do
       it 'is valid' do
         subject.backgroundimage.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
         expect(subject.backgroundimage).to be_attached
+        expect(subject).to have_one_attached(:backgroundimage)
       end
     end
 
@@ -49,8 +52,10 @@ RSpec.describe Layer, type: :model do
       expect(subject.backgroundimage_filename).to eq(subject.backgroundimage.filename)
     end
     it 'backgroundimage_link' do
-      subject.backgroundimage.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.backgroundimage_link).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(subject.backgroundimage.variant(resize: '800x800').processed))}")
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      l.backgroundimage.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      expect(l.backgroundimage_link).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(l.backgroundimage.variant(resize: '800x800').processed))}")
     end
   end
 
@@ -67,23 +72,29 @@ RSpec.describe Layer, type: :model do
       expect(subject.favicon_filename).to eq(subject.favicon.filename)
     end
     it 'favicon_link' do
-      subject.favicon.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.favicon_link).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(subject.favicon.variant(resize: '800x800').processed))}")
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      l.favicon.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      expect(l.favicon_link).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(l.favicon.variant(resize: '800x800').processed))}")
     end
   end
 
   describe 'EXIF' do
     it 'should read EXIF data' do
-      subject.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(subject.get_exif_data).to eq({})
+      m = FactoryBot.create(:map)
+      l = FactoryBot.create(:layer, map: m)
+      l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      expect(l.get_exif_data).to eq({})
     end
 
-    it 'should remove EXIF data' do
+    xit 'should remove EXIF data' do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
       l.exif_remove = true
-      l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       l.save!
+      l.reload
+      expect(l.get_exif_data).to eq({})
     end
   end
 

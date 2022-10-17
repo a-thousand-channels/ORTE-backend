@@ -1,0 +1,8 @@
+Exif Data has been added manually w/exiftool
+
+$ exiftool -GPSLatitude=10 test-with-exif-data.jpg
+$ exiftool -GPSLatitude=10 test-with-exif-data.jpg
+
+Read out
+
+$ exiftool -GPSLatitude=10 test-with-exif-data.jpg
