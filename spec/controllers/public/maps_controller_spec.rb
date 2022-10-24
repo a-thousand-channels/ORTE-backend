@@ -51,7 +51,7 @@ RSpec.describe Public::MapsController, type: :controller do
         get :show, params: { id: map.friendly_id, format: 'json' }, session: valid_session
         expect(response).to have_http_status(200)
         expect(response.status).to eq 200
-        expect(response.content_type).to eq('application/json')
+        expect(response.content_type).to eq('application/json; charset=utf-8')
       end
 
       it 'returns json with a valid scheme' do
