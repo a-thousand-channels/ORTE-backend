@@ -57,11 +57,25 @@ $ bundle exec rails db:seed
 
 ### Credentials
 
-If you need custom credentials, e.g for your database setup or mailer settings necessary for a server installation, you can secure them with rails credentials and a master.key. Edit the credentials with
+Some settings are kept in the credential file, e.g for your database setup or mailer settings necessary for a server installation.
+
+Edit the credentials with
 
 ```bash
 $ EDITOR=vim bundle exec rails credentials:edit
 ```
+
+All used and needed variables are defined in the credentials.yml.default file.
+
+To use this in different environments, with development and installations for staging or production server you can use the multi-environment credentials that came with Rails 6.1.
+
+To create/edit a specific credential file for staging use:
+
+```bash
+$ EDITOR=vim bundle exec rails credentials:edit --environment staging
+```
+
+
 
 ### Optional: Mapbox Token for satellite imagery
 
