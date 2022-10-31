@@ -57,15 +57,15 @@ $ bundle exec rails db:seed
 
 ### Credentials
 
-Some settings are kept in the credential file, e.g for your database setup or mailer settings necessary for a server installation.
+Some settings (like email settings or database setup) you'll need for productive installation on a server are stored in the credential file.
 
-Edit the credentials with
+Edit the credential file with
 
 ```bash
 $ EDITOR=vim bundle exec rails credentials:edit
 ```
 
-All used and needed variables are defined in the credentials.yml.default file.
+All used and needed variables are explained in the credentials.yml.default file.
 
 To use this in different environments, with development and installations for staging or production server you can use the multi-environment credentials that came with Rails 6.1.
 
@@ -75,11 +75,11 @@ To create/edit a specific credential file for staging use:
 $ EDITOR=vim bundle exec rails credentials:edit --environment staging
 ```
 
-
+For details on this technique please read this good explainer about [credentials in Rails 6.1](https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-credentials.html)
 
 ### Optional: Mapbox Token for satellite imagery
 
-You can define your mapbox token in the credentials (token[:mapbox])
+For zoom level 19-21 are no you can addiontanlly use Mapbox satellite imagery as base layer. You'll need a Mapbox account and an API Token. You can define your mapbox token in the credentials (token[:mapbox])
 
 
 ### Run application locally
