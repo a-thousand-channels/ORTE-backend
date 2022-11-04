@@ -272,16 +272,21 @@ jQuery(function ($) {
   };
 
   if ( !localStorage.overlayPlaces ) {
-     localStorage.overlayPlaces = true;
+     localStorage.overlayPlaces = 'true';
   }
   if ( !localStorage.overlayRelations ) {
-      localStorage.overlayRelations = true;
+      localStorage.overlayRelations = 'true';
   }
   if ( !localStorage.overlayLabels ) {
-      localStorage.overlayLabels = false;
+      localStorage.overlayLabels = 'false';
   }
   if ( !localStorage.overlayImages ) {
-      localStorage.overlayImages = false;
+      localStorage.overlayImages = 'false';
+  }
+console.log("true true")
+  if ( ( localStorage.overlayPlaces == 'false' ) && ( localStorage.overlayRelations == 'false' ) && ( localStorage.overlayLabels == 'false' ) &&  ( localStorage.overlayImages == 'false' ) ) {
+      localStorage.overlayPlaces = 'true';
+      console.log("true true")
   }
 
   // ---------------
