@@ -79,8 +79,9 @@ For details on this technique please read this good explainer about [credentials
 
 ### Optional: Mapbox Token for satellite imagery
 
-For zoom level 19-21 are no you can addiontanlly use Mapbox satellite imagery as base layer. You'll need a Mapbox account and an API Token. You can define your mapbox token in the credentials (token[:mapbox])
+As a default at ORTE, satellite imagery is used as a base layer. This imagery is available only up to level 18. If you want to have satellite imagery on a higher zoom level (19-21), where you can more clearly see details on streets, places and buildings, than you have to define an additional satellite imagery provider. ORTE has as a preset for Mapbox satellite imagery, but to use it, you need to have a Mapbox account and to generate a Mapbox API Token. (Of course this completely optional, and you switch on user level or permant on map level to a OSM base map.)
 
+You can define your mapbox token in the credentials (token[:mapbox])
 
 ### Run application locally
 
