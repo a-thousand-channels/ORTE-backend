@@ -120,6 +120,11 @@ input#addresslookup_address.hide {
   max-width: 310px;
   display: block;
   font-size: 11pt;
+
+  a {
+    color: #555;
+    text-decoration: underline;
+  }
 }
 @media screen and (max-width: 43.9375em) {
   #selection #selection-hint {
