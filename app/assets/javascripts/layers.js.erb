@@ -275,8 +275,8 @@ function getParams() {
   var hashes = url.split("?")[1];
   if ( hashes ) {
     var hash = hashes.split('&');
-    for (i = 0; i < hash.length; i++) {
-      params=hash[i].split("=");
+    for (let i = 0; i < hash.length; i++) {
+      let params=hash[i].split("=");
       vars[params[0]] = params[1];
     }
   }
