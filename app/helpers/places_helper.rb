@@ -32,7 +32,7 @@ module PlacesHelper
   end
 
   def image_link(image)
-    return unless image.file && image.file.attached?
+    return unless image.file&.attached?
 
     begin
       if image.place.layer.rasterize_images && image.itype == 'image'
@@ -45,7 +45,6 @@ module PlacesHelper
     rescue ActiveStorage::FileNotFoundError => e
       ''
     end
-
   end
 
   def audio_link(audio)
