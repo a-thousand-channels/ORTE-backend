@@ -264,6 +264,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             $("#setbound").attr('href', setbound_url);
           });
         }
+    }).fail(function( jqxhr, textStatus, error ) {
+      // display error only if != 'Not Found' (which is normal behaviour for edit mode)
+      if ( error !== 'Not Found') {
+      console.log( "Error: Could not load layer data (w/JSON) "+ error );
+        $('#flash_wrapper').append('<div id="flash" class="callout alert">Layer data could not be loaded. ('+error+')</div>');
+      };
     });
   }
 }
