@@ -56,7 +56,7 @@ jQuery(function ($) {
 
   setTimeout(function(){
       $('#flash').slideUp(2000);
-  }, 3500);
+  }, 4500);
 
   $('#place_tag_list').select2({
       tags: true,
@@ -292,8 +292,10 @@ console.log("true true")
   // ---------------
   // baselayer map
 
-  var MAP_LAT = 53.55;
-  var MAP_LON = 9.99;
+  // var MAP_LAT = 53.55;
+  // var MAP_LON = 9.99;
+  var MAP_LAT = 0;
+  var MAP_LON = 0;
 
   if ( $('#form-wrapper').data('lat') ) {
     MAP_LAT = $('#form-wrapper').data('lat');
