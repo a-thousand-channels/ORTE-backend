@@ -57,16 +57,31 @@ $ bundle exec rails db:seed
 
 ### Credentials
 
-If you need custom credentials, e.g for your database setup or mailer settings necessary for a server installation, you can secure them with rails credentials and a master.key. Edit the credentials with
+Some settings (like email settings or database setup) you'll need for productive installation on a server are stored in the credential file.
+
+Edit the credential file with
 
 ```bash
 $ EDITOR=vim bundle exec rails credentials:edit
 ```
 
+All used and needed variables are explained in the credentials.yml.default file.
+
+To use this in different environments, with development and installations for staging or production server you can use the multi-environment credentials that came with Rails 6.1.
+
+To create/edit a specific credential file for staging use:
+
+```bash
+$ EDITOR=vim bundle exec rails credentials:edit --environment staging
+```
+
+For details on this technique please read this good explainer about [credentials in Rails 6.1](https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-credentials.html)
+
 ### Optional: Mapbox Token for satellite imagery
 
-You can define your mapbox token in the credentials (token[:mapbox])
+As a default at ORTE, satellite imagery is used as a base layer. This imagery is available only up to level 18. If you want to have satellite imagery on a higher zoom level (19-21), where you can more clearly see details on streets, places and buildings, than you have to define an additional satellite imagery provider. ORTE has as a preset for Mapbox satellite imagery, but to use it, you need to have a Mapbox account and to generate a Mapbox API Token. (Of course this completely optional, and you switch on user level or permant on map level to a OSM base map.)
 
+You can define your mapbox token in the credentials (token[:mapbox])
 
 ### Run application locally
 
