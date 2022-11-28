@@ -2,7 +2,7 @@ development:
   adapter: async
 
 test:
-  adapter: async
+  adapter: test
 
 staging_async:
   adapter: async
@@ -16,3 +16,4 @@ production:
   adapter: redis
   url: redis://localhost:6379/
   channel_prefix: OrteBackend_production
+  #  channel_prefix: orte_backend_production

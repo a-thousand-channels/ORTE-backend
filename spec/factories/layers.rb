@@ -50,16 +50,37 @@ FactoryBot.define do
     end
 
     trait :with_image do
-      image { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+      # image { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
+      after(:build) do |layer|
+        layer.image.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
     trait :without_image do
       image { [] }
     end
     trait :with_backgroundimage do
-      backgroundimage { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+      # backgroundimage { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
+      after(:build) do |layer|
+        layer.backgroundimage.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
     trait :with_favicon do
-      favicon { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+      # favicon { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
+      after(:build) do |layer|
+        layer.favicon.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
 
     trait :invalid do
