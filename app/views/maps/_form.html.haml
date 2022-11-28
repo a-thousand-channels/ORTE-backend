@@ -48,7 +48,11 @@
             %p
               = f.input :popup_display_mode, :collection => popup_display_mode_for_select, :input_html => { :class => '' }, label: 'Popup display mode'
             %p.hint
-              Choose, which event triggers the display of the popup of a place
+              Choose, which event triggers the display of the popup of a place. (Click is default)
+            %p
+              = f.input :marker_display_mode, :collection => marker_display_mode_for_select, :input_html => { :class => '' }, label: 'Marker display mode'
+            %p.hint
+              Choose, if near-by or overlapping markers should displayed as a marker cluster (default) or as single markers.
 
           .large-4.medium-4.small-6.cell
             %p
