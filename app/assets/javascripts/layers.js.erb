@@ -80,7 +80,11 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       if ( level !== 'maps') {
         console.log("Render places of one layer");
         console.log(data);
-        var marker_layers = L.markerClusterGroup(markerclusterSettings);
+        if ( $('#selection').data('map-marker-display-mode') == 'single' ) {
+          var marker_layers =  L.featureGroup();
+        } else {
+          var marker_layers = L.markerClusterGroup(markerclusterSettings);
+        }
         clustercolor = data.color;
         var places = [];
         if (level === 'places') {
@@ -113,7 +117,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         });
         var show_annotations_on_map = data.show_annotations_on_map;
 
-        marker_layers = L.markerClusterGroup(markerclusterSettings);
+        if ( $('#selection').data('map-marker-display-mode') == 'single' ) {
+          marker_layers =  L.featureGroup();
+        } else {
+          marker_layers = L.markerClusterGroup(markerclusterSettings);
+        }
+
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
           drawMarkers(map,data.id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
