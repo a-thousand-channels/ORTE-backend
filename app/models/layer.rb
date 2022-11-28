@@ -74,22 +74,23 @@ class Layer < ApplicationRecord
     exif_data.exif
   end
 
-  private
-
   def extract_exif_data
     return unless image.attached?
     return unless exif_remove
+    return unless attachment_changes['image']
+    return if attachment_changes['image'].attachable.is_a?(Hash)
 
     filename = image.filename.to_s
     attachment_path = "#{Dir.tmpdir}/#{image.filename}"
+    tmp_new_image = File.read(attachment_changes['image'].attachable)
     File.open(attachment_path, 'wb') do |tmp_file|
-      tmp_file.write(image.download)
+      tmp_file.write(tmp_new_image)
       tmp_file.close
     end
-    exif_data = MiniMagick::Image.open(attachment_path)
-    exif_data.auto_orient # Before stripping
-    exif_data.strip # Strip Exif
-    exif_data.write attachment_path
-    image.attach(io: File.open(attachment_path), filename: filename)
+    tmp_image = MiniMagick::Image.open(attachment_path)
+    tmp_image.auto_orient # Before stripping
+    tmp_image.strip # Strip Exif
+    tmp_image.write attachment_path
+    image.attach(io: File.open(attachment_path), filename: image.filename)
   end
 end
