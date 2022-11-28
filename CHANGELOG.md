@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres (more or less) to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.72] - 2022-11-28
+
+This release comes with an update to Ruby on Rails 6.1 and some minor fixes.
+
 ## [0.71] - 2022-10-03
 
 This release contains some nice improvements and customization for the display of tile layers, map center and the markers on the map.
