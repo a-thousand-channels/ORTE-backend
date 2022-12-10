@@ -35,7 +35,8 @@ class RelationsController < ApplicationController
     @layers_from = @map.layers
     @layers_to = @map.layers
     @relation = Relation.new(relation_params)
-    @layer = @relation.relation_from ? @relation.relation_from.layer : nil
+    # @layer = @relation.relation_from ? @relation.relation_from.layer : nil
+    @layer = @relation.relation_from.layer if @relation.relation_from&.layer
 
     respond_to do |format|
       if @relation.save
