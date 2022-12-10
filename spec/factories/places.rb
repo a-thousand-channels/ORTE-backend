@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :place do
     title { 'MyTitle' }
+    subtitle { 'MySubTitle' }
     teaser { 'MyText' }
     text { 'MyText' }
     link { 'http://domain.com' }

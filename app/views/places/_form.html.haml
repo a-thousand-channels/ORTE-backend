@@ -94,6 +94,7 @@
             %li= item
 
       = f.input :title
+      %hr
 
   .grid-x.grid-padding-x
     .large-6.medium-6.cell
@@ -116,7 +117,8 @@
             = f.input :enddate_date, as: :date, html5: true, :label => false
           .large-6.medium-6.small-5.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
-
+        %hr
+        = f.input :subtitle
         = tinymce
         = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
@@ -151,7 +153,8 @@
             %span.switch-inactive{:aria-hidden=>"true"} Sensitive
         %div.inline{:id=>'radius_select', style: 'width: 220px; display: inline-block; padding-left: 20px;'}
           = f.input :sensitive_radius, collection: [100, 1000, 10000]    
-      
+        %p.hint Disguise the geo coordinates by the given radius (in meters)
+        %hr
         = f.input :address, :input_html => {:placeholder => 'Street + Number' }
         .grid-x.grid-padding-x
           .small-4.cell
@@ -159,6 +162,7 @@
           .small-8.cell
             = f.input :city
         = f.input :country, :input_html => {:placeholder => 'Land' }
+        %hr
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
         %hr

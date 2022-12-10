@@ -250,6 +250,7 @@
                            "required":[
                               "id",
                               "title",
+                              "subtitle",
                               "teaser",
                               "link",
                               "imagelink",
@@ -288,6 +289,16 @@
                                  "default":"",
                                  "examples":[
                                     "Session am Deich"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "subtitle":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/subtitle",
+                                 "type":"string",
+                                 "title":"The Sub Title Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "Eine dramatische Szene"
                                  ],
                                  "pattern":"^(.*)$"
                               },
