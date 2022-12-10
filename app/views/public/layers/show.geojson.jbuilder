@@ -17,7 +17,10 @@ if @layer&.published
     json.properties do
       json.id place.id
       json.name place.title
+      json.subtitle place.subtitle
+      json.location place.location
       json.address place.address
+      json.zip place.zip
       json.city place.city
       json.country place.country
       json.teaser place.teaser
