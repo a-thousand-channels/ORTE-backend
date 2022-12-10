@@ -5,11 +5,9 @@
       = f.association :place, as: :hidden, :input_html => { :value => @place.id }
 
   .grid-x
-    .large-2.cell
-      &nbsp;
-    .large-8.medium-12.cell
+    .large-12.medium-12.cell
       .form-inputs
-        = f.input :title
+        = f.input :title, input_html: { maxlength: 254 }
         %hr
         .grid-x.grid-padding-x
           .large-6.medium-6.cell
@@ -52,25 +50,27 @@
                 %hr
                   %label Type
                   = f.input :itype, :collection => itype_for_select, include_blank: false, label: false, :selected => @image.itype
-                  %p.shy Please select if this image is a graphics (like a logo or a faksimile)
-
-
+                  %p.shy Please select if this is a graphic (like a logo or a faksimile)
 
         %hr
         .grid-x.grid-padding-x
-          .large-6.medium-6.cell
-            = f.input :creator
-            %p.shy Who is the creator (photographer, designer,...) of this image?
-            = f.input :licence
-            %p.shy Under which licence the image is and/or shall be published? (CC, Public Domain, Rights reserved)
-            = f.input :source
-            %p.shy Origin of this image
-          .large-6.medium-6.cell
-            = f.input :alt, label: "Alternate Text"
-            %p.shy Please provide a short description for screenreader
+          .large-12.medium-12.cell
+            = f.input :alt, label: "Alternate Text", input_html: { maxlength: 254 }
+            %p.shy Please provide a short illustrative description of the image for screenreader
 
-            = f.input :caption
+            = f.input :caption, input_html: { maxlength: 254 }
             %p.shy Do you want to add a caption?
+        %hr
+        .grid-x.grid-padding-x
+          .large-6.medium-6.cell
+            = f.input :creator, input_html: { maxlength: 254 }
+            %p.shy Who is the creator (photographer, designer,...) of this image?
+            = f.input :source, input_html: { maxlength: 254 }
+            %p.shy Origin of this image (e.g. an archive, a printed matter,...)
+          .large-6.medium-6.cell
+            = f.input :licence, input_html: { maxlength: 254 }
+            %p.shy Under which licence the image is and/or shall be published? (CC, Public Domain, Rights reserved)
+        %hr
 
 
       .form-actions
