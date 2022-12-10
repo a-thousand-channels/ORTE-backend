@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_28_192056) do
+ActiveRecord::Schema.define(version: 2022_12_10_161323) do
 
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -251,6 +251,7 @@ ActiveRecord::Schema.define(version: 2022_11_28_192056) do
     t.boolean "shy", default: false
     t.boolean "sensitive", default: false
     t.integer "sensitive_radius", default: 100
+    t.string "subtitle"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
