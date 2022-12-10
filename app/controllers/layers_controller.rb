@@ -168,17 +168,19 @@ class LayersController < ApplicationController
     # If an old id or a numeric id was used to find the record, then
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
-    redirect_to map_layer_path(@map, @layer), status: :moved_permanently if @map && @layer && request.path != map_layer_path(@map, @layer) && request.format == 'html'
+    redirect_to map_layer_path(@map, @layer, last_action: @last_action, last_action_latlon: @last_action_latlon), status: :moved_permanently if @map && @layer && request.path != map_layer_path(@map, @layer) && request.format == 'html'
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_layer
     @map = Map.by_user(current_user).find_by_slug(params[:map_id]) || Map.by_user(current_user).find_by_id(params[:map_id])
     @layer = Layer.find_by_slug(params[:id]) || Layer.find_by_id(params[:id])
+    @last_action = params[:last_action]
+    @last_action_latlon = params[:last_action_latlon]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption)
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :last_action, :last_action_latlon)
   end
 end

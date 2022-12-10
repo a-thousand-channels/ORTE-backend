@@ -218,8 +218,17 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           bounds = L.latLngBounds(northeast_array.split(","), southwest_array.split(","));
         }
 
+
+        // special: after place creation oder update: fokus there
+        if ( $('#selection').data('last-action') === 'update' ) {
+
+          console.log("Setview to last edited place");
+          console.log($('#selection').data('last-action-latlon'));
+          /* map.setView($('#selection').data('last-action-latlon'), 14); */
+          map.panToOffset($('#selection').data('last-action-latlon'),[120,0]);
+        }
         // set map center after last user action
-        if ( ( localStorage.getItem('SetCustomExtent') === 'true' ) && ( northeast_array ) ) {
+        else if ( ( localStorage.getItem('SetCustomExtent') === 'true' ) && ( northeast_array ) ) {
           northeast_array = localStorage.getItem('UserMapBoundsNE');
           console.log("set map bounds to user values NE " + northeast_array);
           southwest_array = localStorage.getItem('UserMapBoundsSW');

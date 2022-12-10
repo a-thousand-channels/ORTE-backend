@@ -5,7 +5,7 @@ env:
   MYSQL_DB: orte_test
   MYSQL_USER: root
   MYSQL_PASSWORD: root
-name: Rails - Install dependencies, run linters & rspec
+name: Rails CI (Rubocop, Brakeman & RSpec)
 on:
   push:
     branches:
