@@ -4,7 +4,7 @@ json.extract! layer, :id, :title, :subtitle, :text, :credits, :image_link, :publ
 json.url map_layer_url(layer, format: :json)
 json.iconset layer.map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if layer.map.iconset
 json.places layer.places do |place|
-  json.extract! place, :id, :title, :teaser, :text, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :layer_id, :created_at, :updated_at, :date, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name
+  json.extract! place, :id, :title, :subtitle, :teaser, :text, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :layer_id, :created_at, :updated_at, :date, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name
   json.lat place.public_lat
   json.lon place.public_lon
   json.annotations place.annotations do |annotation|

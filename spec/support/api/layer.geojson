@@ -54,7 +54,16 @@
                 "name": {
                   "type": "string"
                 },
+                "subtitle": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
                 "address": {
+                  "type": "string"
+                },
+                "zip": {
                   "type": "string"
                 },
                 "city": {

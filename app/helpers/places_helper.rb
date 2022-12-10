@@ -32,7 +32,7 @@ module PlacesHelper
   end
 
   def image_link(image)
-    return unless image.file.attached?
+    return unless image.file&.attached?
 
     begin
       if image.place.layer.rasterize_images && image.itype == 'image'
@@ -41,7 +41,9 @@ module PlacesHelper
         polymorphic_url(image.file.variant(resize: '800x800').processed)
       end
     rescue Errno::ENOENT => e
-      # nothing
+      ''
+    rescue ActiveStorage::FileNotFoundError => e
+      ''
     end
   end
 
