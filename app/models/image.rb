@@ -33,7 +33,8 @@ class Image < ApplicationRecord
   end
 
   def image_on_disk
-    return unless file.attached?
+    return unless file&.attached?
+    return unless ActiveStorage::Blob.service.exist?(file.blob.key)
 
     # original size
     # full_path = ActiveStorage::Blob.service.path_for(file.key)

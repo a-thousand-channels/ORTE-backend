@@ -38,8 +38,8 @@ class Public::LayersController < ActionController::Base
         end
       else
         # format.json { head :no_content }
-        format.json { render json: { error: 'Layer not accessible' }, status: :forbidden }
-        format.geojson { render json: { error: 'Layer not accessible' }, status: :forbidden }
+        format.json { render json: { error: 'Layer not accessible (You\'ll have to publish the layer first)' }, status: :forbidden }
+        format.geojson { render json: { error: 'Layer not accessible (You\'ll have to publish the layer first)' }, status: :forbidden }
       end
     end
   end
