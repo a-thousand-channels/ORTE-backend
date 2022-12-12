@@ -26,9 +26,17 @@ module ImagesHelper
   def image_linktag(file, title = '')
     return unless file.attached?
 
-    filename = ActiveStorage::Blob.service.path_for(file.key)
-    return unless File.exist?(filename)
+    begin
+      filename = ActiveStorage::Blob.service.path_for(file.key)
+      return unless File.exist?(filename)
 
-    "<img src=\"#{polymorphic_url(file.variant(resize: '800x800').processed)}\" title=\"#{title.present? ? title : ''}\">".html_safe
+      "<img src=\"#{polymorphic_url(file.variant(resize: '800x800').processed)}\" title=\"#{title.present? ? title : ''}\">".html_safe
+    rescue Errno::ENOENT => e
+      ''
+    rescue ActiveStorage::FileNotFoundError => e
+      ''
+    rescue ActiveStorage::IntegrityError => e
+      ''
+    end
   end
 end
