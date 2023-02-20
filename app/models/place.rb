@@ -83,6 +83,18 @@ class Place < ApplicationRecord
     [x + long.to_f, y + lat.to_f]
   end
 
+  def layer_id
+    layer.id
+  end
+
+  def layer_title
+    layer.title
+  end
+
+  def color
+    layer.color
+  end
+
   def date
     ApplicationController.helpers.smart_date_display(startdate, enddate)
   end

@@ -40,4 +40,25 @@ class Public::MapsController < ActionController::Base
       end
     end
   end
+
+  # GET /maps/1/allplaces.json
+  def allplaces
+    @map = Map.published.find_by_slug(params[:id]) || Map.published.find_by_id(params[:id])
+    respond_to do |format|
+      @map_layers = @map.layers if @map&.layers
+      @allplaces = []
+      @map_layers.each do |l|
+        next unless l.published
+
+        (@allplaces << l.places).flatten!
+      end
+
+      if @map_layers.present?
+        format.json { render :allplaces, location: @map }
+      else
+        # format.json { head :no_content }
+        format.json { render json: { error: 'Map not accessible' }, status: :forbidden }
+      end
+    end
+  end
 end
