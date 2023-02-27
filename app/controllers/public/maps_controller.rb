@@ -47,13 +47,12 @@ class Public::MapsController < ActionController::Base
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
       @allplaces = []
-      @map_layers.each do |l|
-        next unless l.published
-
-        (@allplaces << l.places).flatten!
-      end
 
       if @map_layers.present?
+        @map_layers.each do |l|
+          next unless l.published
+          (@allplaces << l.places).flatten!
+        end
         format.json { render :allplaces, location: @map }
       else
         # format.json { head :no_content }
