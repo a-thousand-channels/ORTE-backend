@@ -112,20 +112,20 @@ class Place < ApplicationRecord
   end
 
   def icon_name
-    ApplicationController.helpers.icon_name(icon.title) if icon
+    icon ? ApplicationController.helpers.icon_name(icon.title) : ''
   end
 
   def icon_link
-    ApplicationController.helpers.icon_link(icon.file) if icon&.file&.attached?
+    icon&.file&.attached? ? ApplicationController.helpers.icon_link(icon.file) : ''
   end
 
   def icon_class
-    ApplicationController.helpers.icon_class(icon.iconset.class_name, icon.title) if icon&.iconset&.class_name
+    icon&.iconset&.class_name ? ApplicationController.helpers.icon_class(icon.iconset.class_name, icon.title) : ''
   end
 
   def imagelink2
     i = Image.preview(id)
-    ApplicationController.helpers.image_link(i.first) if i.count.positive?
+    i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 
   def audiolink

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_10_161323) do
+ActiveRecord::Schema.define(version: 2023_02_27_174811) do
 
   create_table "active_storage_attachments", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -123,13 +123,13 @@ ActiveRecord::Schema.define(version: 2022_12_10_161323) do
   create_table "layers", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
-    t.boolean "published"
+    t.boolean "published", default: false
     t.bigint "map_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
     t.text "text"
-    t.boolean "public_submission"
+    t.boolean "public_submission", default: false
     t.string "slug"
     t.text "credits"
     t.string "mapcenter_lat"
@@ -160,7 +160,7 @@ ActiveRecord::Schema.define(version: 2022_12_10_161323) do
   create_table "maps", charset: "utf8", collation: "utf8_general_ci", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
-    t.boolean "published"
+    t.boolean "published", default: false
     t.bigint "group_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -240,13 +240,13 @@ ActiveRecord::Schema.define(version: 2022_12_10_161323) do
     t.string "zip"
     t.string "city"
     t.string "country"
-    t.boolean "published"
+    t.boolean "published", default: false
     t.bigint "layer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "imagelink"
     t.integer "icon_id"
-    t.boolean "featured"
+    t.boolean "featured", default: false
     t.string "ptype", default: "info"
     t.boolean "shy", default: false
     t.boolean "sensitive", default: false
