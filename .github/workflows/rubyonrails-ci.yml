@@ -5,7 +5,7 @@ env:
   MYSQL_DB: orte_test
   MYSQL_USER: root
   MYSQL_PASSWORD: root
-name: CI w/Linters & RSpecs
+name: Linters & Rspec
 on:
   push:
     branches:
