@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Public::MapsController, type: :controller do
   render_views
 
-  describe "functionalities with anonymous access" do
+  describe 'functionalities with anonymous access' do
     before do
       @group = FactoryBot.create(:group)
       user = FactoryBot.create(:admin_user, group_id: @group.id)
@@ -26,16 +26,10 @@ RSpec.describe Public::MapsController, type: :controller do
     let(:valid_session) { {} }
 
     describe 'GET #index' do
-      it 'returns a success response for published maps' do
+      it 'returns a 403' do
         map = Map.create! valid_attributes
         get :index, params: { format: 'json' }, session: valid_session
-        expect(response).to have_http_status(200)
-      end
-
-      it 'returns a success response for unpublished resources' do
-        map = Map.create! invalid_attributes
-        get :index, params: { format: 'json' }, session: valid_session
-        expect(response).to have_http_status(200)
+        expect(response).to have_http_status(403)
       end
     end
 
@@ -106,6 +100,5 @@ RSpec.describe Public::MapsController, type: :controller do
         expect(JSON.parse(response.body)['error']).to match(/Map not accessible/)
       end
     end
-
   end
 end

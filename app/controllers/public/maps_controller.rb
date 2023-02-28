@@ -14,13 +14,8 @@ class Public::MapsController < ActionController::Base
 
   # GET /maps.json
   def index
-    @maps = Map.published
     respond_to do |format|
-      if @maps
-        format.json { render json: @maps }
-      else
-        format.json { head :no_content }
-      end
+      format.json { render json: { error: 'No data accessible' }, status: :forbidden }
     end
   end
 
@@ -35,7 +30,6 @@ class Public::MapsController < ActionController::Base
       elsif @map.present?
         format.json { render :show, location: @map }
       else
-        # format.json { head :no_content }
         format.json { render json: { error: 'Map not accessible' }, status: :forbidden }
       end
     end
@@ -51,11 +45,11 @@ class Public::MapsController < ActionController::Base
       if @map_layers.present?
         @map_layers.each do |l|
           next unless l.published
+
           (@allplaces << l.places).flatten!
         end
         format.json { render :allplaces, location: @map }
       else
-        # format.json { head :no_content }
         format.json { render json: { error: 'Map not accessible' }, status: :forbidden }
       end
     end
