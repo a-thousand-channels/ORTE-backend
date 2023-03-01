@@ -11,7 +11,7 @@ json.map do
     json.array! @allplaces do |place|
       next unless place.published
 
-      json.call(place, :id, :title, :subtitle, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name, :layer_id, :layer_title, :color)
+      json.call(place, :id, :title, :subtitle, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :icon_link, :icon_class, :icon_name, :layer_id, :layer_title, :layer_slug, :color)
       json.lat place.public_lat
       json.lon place.public_lon
       json.annotations place.annotations do |annotation|

@@ -101,11 +101,12 @@
                             "country",
                             "featured",
                             "shy",
-                            "layer_id",
                             "icon_link",
                             "icon_class",
                             "icon_name",
+                            "layer_id",
                             "layer_title",
+                            "layer_slug",
                             "color",
                             "lat",
                             "lon",
@@ -193,10 +194,6 @@
                                 "title": "The shy Schema",
                                 "type": "boolean"
                             },
-                            "layer_id": {
-                                "title": "The layer_id Schema",
-                                "type": "integer"
-                            },
                             "icon_link": {
                                 "title": "The icon_link Schema",
                                 "type": "string"
@@ -213,8 +210,16 @@
                                     "string"
                                 ]
                             },
+                            "layer_id": {
+                                "title": "The layer_id Schema",
+                                "type": "integer"
+                            },
                             "layer_title": {
                                 "title": "The layer_title Schema",
+                                "type": "string"
+                            },
+                            "layer_slug": {
+                                "title": "The layer_slug Schema",
                                 "type": "string"
                             },
                             "color": {
