@@ -83,6 +83,18 @@ class Place < ApplicationRecord
     [x + long.to_f, y + lat.to_f]
   end
 
+  def layer_id
+    layer.id
+  end
+
+  def layer_title
+    layer.title
+  end
+
+  def color
+    layer.color
+  end
+
   def date
     ApplicationController.helpers.smart_date_display(startdate, enddate)
   end
@@ -100,20 +112,20 @@ class Place < ApplicationRecord
   end
 
   def icon_name
-    ApplicationController.helpers.icon_name(icon.title) if icon
+    icon ? ApplicationController.helpers.icon_name(icon.title) : ''
   end
 
   def icon_link
-    ApplicationController.helpers.icon_link(icon.file) if icon&.file&.attached?
+    icon&.file&.attached? ? ApplicationController.helpers.icon_link(icon.file) : ''
   end
 
   def icon_class
-    ApplicationController.helpers.icon_class(icon.iconset.class_name, icon.title) if icon&.iconset&.class_name
+    icon&.iconset&.class_name ? ApplicationController.helpers.icon_class(icon.iconset.class_name, icon.title) : ''
   end
 
   def imagelink2
     i = Image.preview(id)
-    ApplicationController.helpers.image_link(i.first) if i.count.positive?
+    i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 
   def audiolink

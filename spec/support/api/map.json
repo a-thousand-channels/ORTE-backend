@@ -333,29 +333,29 @@
                               },
                               "imagelink":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/imagelink",
-                                 "type":"null",
+                                 "type":"string",
                                  "title":"The Imagelink Schema",
-                                 "default":null,
+                                 "default":"",
                                  "examples":[
-                                    null
+                                    ""
                                  ]
                               },
                               "imagelink2":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/imagelink2",
-                                 "type":"null",
+                                 "type":"string",
                                  "title":"The Imagelink Schema",
-                                 "default":null,
+                                 "default":"",
                                  "examples":[
-                                    null
+                                    ""
                                  ]
                               },
                               "audiolink":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/audiolink",
-                                 "type":"null",
+                                 "type":"string",
                                  "title":"The Audiolink Schema",
-                                 "default":null,
+                                 "default":"",
                                  "examples":[
-                                    null
+                                    ""
                                  ]
                               },
                               "published":{
@@ -458,7 +458,7 @@
                               },
                               "featured":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/featured",
-                                 "type":"null",
+                                 "type":"boolean",
                                  "title":"The Featured Schema",
                                  "default":false,
                                  "examples":[
@@ -476,7 +476,7 @@
                               },
                               "icon_link":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/icon_link",
-                                 "type":"null",
+                                 "type":"string",
                                  "title":"The Icon Link Schema",
                                  "default":"",
                                  "examples":[
@@ -486,7 +486,7 @@
                               },
                               "icon_class":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/icon_class",
-                                 "type":"null",
+                                 "type":"string",
                                  "title":"The Icon Class Schema",
                                  "default":"",
                                  "examples":[
@@ -496,7 +496,7 @@
                               },
                               "icon_name":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/icon_name",
-                                 "type":"null",
+                                 "type":"string",
                                  "title":"The Icon Name Schema",
                                  "default":"",
                                  "examples":[
@@ -603,11 +603,11 @@
                                        },
                                        "image_url":{
                                           "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/image_url",
-                                          "type":"null",
+                                          "type":"string",
                                           "title":"The Image URL Schema",
-                                          "default":null,
+                                          "default":"",
                                           "examples":[
-                                             null
+                                             ""
                                           ]
                                        }
                                     }
