@@ -1,0 +1,301 @@
+{
+    "title": "Root Schema",
+    "type": "object",
+    "default": {},
+    "required": [
+        "map"
+    ],
+    "properties": {
+        "map": {
+            "title": "The map Schema",
+            "type": "object",
+            "default": {},
+            "required": [
+                "id",
+                "title",
+                "subtitle",
+                "text",
+                "credits",
+                "image_link",
+                "created_at",
+                "updated_at",
+                "published",
+                "owner",
+                "places"
+            ],
+            "properties": {
+                "id": {
+                    "title": "The id Schema",
+                    "type": "integer",
+                    "default": 0
+                },
+                "title": {
+                    "title": "The title Schema",
+                    "type": "string",
+                    "default": ""
+                },
+                "subtitle": {
+                    "title": "The subtitle Schema",
+                    "type": "string",
+                    "default": ""
+                },
+                "text": {
+                    "title": "The text Schema",
+                    "type": "string",
+                    "default": ""
+                },
+                "credits": {
+                    "title": "The credits Schema",
+                    "type": "string",
+                    "default": ""
+                },
+                "image_link": {
+                    "title": "The image_link Schema",
+                    "type": "null",
+                    "default": null
+                },
+                "created_at": {
+                    "title": "The created_at Schema",
+                    "type": "string",
+                    "default": ""
+                },
+                "updated_at": {
+                    "title": "The updated_at Schema",
+                    "type": "string",
+                    "default": ""
+                },
+                "published": {
+                    "title": "The published Schema",
+                    "type": "boolean",
+                    "default": false
+                },
+                "owner": {
+                    "title": "The owner Schema",
+                    "type": "string",
+                    "default": ""
+                },
+                "places": {
+                    "title": "The places Schema",
+                    "type": "array",
+                    "default": [],
+                    "items": {
+                        "title": "A Schema",
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "title",
+                            "subtitle",
+                            "teaser",
+                            "link",
+                            "imagelink",
+                            "imagelink2",
+                            "audiolink",
+                            "published",
+                            "startdate",
+                            "enddate",
+                            "location",
+                            "address",
+                            "zip",
+                            "city",
+                            "text",
+                            "country",
+                            "featured",
+                            "shy",
+                            "layer_id",
+                            "icon_link",
+                            "icon_class",
+                            "icon_name",
+                            "layer_title",
+                            "color",
+                            "lat",
+                            "lon",
+                            "annotations",
+                            "images"
+                        ],
+                        "properties": {
+                            "id": {
+                                "title": "The id Schema",
+                                "type": "integer"
+                            },
+                            "title": {
+                                "title": "The title Schema",
+                                "type": "string"
+                            },
+                            "subtitle": {
+                                "title": "The subtitle Schema",
+                                "type": "string"
+                            },
+                            "teaser": {
+                                "title": "The teaser Schema",
+                                "type": "string"
+                            },
+                            "link": {
+                                "title": "The link Schema",
+                                "type": "string"
+                            },
+                            "imagelink": {
+                                "title": "The imagelink Schema",
+                                "type": "string"
+                            },
+                            "imagelink2": {
+                                "title": "The imagelink2 Schema",
+                                "type": "string"
+                            },
+                            "audiolink": {
+                                "title": "The audiolink Schema",
+                                "type": "string"
+                            },
+                            "published": {
+                                "title": "The published Schema",
+                                "type": "boolean"
+                            },
+                            "startdate": {
+                                "title": "The startdate Schema",
+                                "type": "string"
+                            },
+                            "enddate": {
+                                "title": "The enddate Schema",
+                                "type": "string"
+                            },
+                            "location": {
+                                "title": "The location Schema",
+                                "type": "string"
+                            },
+                            "address": {
+                                "title": "The address Schema",
+                                "type": "string"
+                            },
+                            "zip": {
+                                "title": "The zip Schema",
+                                "type": "string"
+                            },
+                            "city": {
+                                "title": "The city Schema",
+                                "type": "string"
+                            },
+                            "text": {
+                                "title": "The text Schema",
+                                "type": "string"
+                            },
+                            "country": {
+                                "title": "The country Schema",
+                                "type": [
+                                    "string"
+                                ]
+                            },
+                            "featured": {
+                                "title": "The featured Schema",
+                                "type": [
+                                    "boolean"
+                                ]
+                            },
+                            "shy": {
+                                "title": "The shy Schema",
+                                "type": "boolean"
+                            },
+                            "layer_id": {
+                                "title": "The layer_id Schema",
+                                "type": "integer"
+                            },
+                            "icon_link": {
+                                "title": "The icon_link Schema",
+                                "type": "string"
+                            },
+                            "icon_class": {
+                                "title": "The icon_class Schema",
+                                "type": [
+                                    "string"
+                                ]
+                            },
+                            "icon_name": {
+                                "title": "The icon_name Schema",
+                                "type": [
+                                    "string"
+                                ]
+                            },
+                            "layer_title": {
+                                "title": "The layer_title Schema",
+                                "type": "string"
+                            },
+                            "color": {
+                                "title": "The color Schema",
+                                "type": "string"
+                            },
+                            "lat": {
+                                "title": "The lat Schema",
+                                "type": "string"
+                            },
+                            "lon": {
+                                "title": "The lon Schema",
+                                "type": "string"
+                            },
+                            "annotations": {
+                                "title": "The annotations Schema",
+                                "type": "array",
+                                "items": {}
+                            },
+                            "images": {
+                                "title": "The images Schema",
+                                "type": "array",
+                                "items": {
+                                    "title": "A Schema",
+                                    "type": "object",
+                                    "required": [
+                                        "id",
+                                        "title",
+                                        "source",
+                                        "creator",
+                                        "alt",
+                                        "sorting",
+                                        "image_linktag",
+                                        "image_url"
+                                    ],
+                                    "properties": {
+                                        "id": {
+                                            "title": "The id Schema",
+                                            "type": "integer"
+                                        },
+                                        "title": {
+                                            "title": "The title Schema",
+                                            "type": "string"
+                                        },
+                                        "source": {
+                                            "title": "The source Schema",
+                                            "type": "string"
+                                        },
+                                        "creator": {
+                                            "title": "The creator Schema",
+                                            "type": "string"
+                                        },
+                                        "alt": {
+                                            "title": "The alt Schema",
+                                            "type": "string"
+                                        },
+                                        "sorting": {
+                                            "title": "The sorting Schema",
+                                            "type": [
+                                                "integer"
+                                            ]
+                                        },
+                                        "image_linktag": {
+                                            "title": "The image_linktag Schema",
+                                            "type": [
+                                                "string"
+                                            ]
+                                        },
+                                        "image_url": {
+                                            "title": "The image_url Schema",
+                                            "type": [
+                                                "string"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

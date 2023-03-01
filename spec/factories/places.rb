@@ -17,6 +17,7 @@ FactoryBot.define do
     city { 'City' }
     country { 'Country' }
     published { false }
+    imagelink { 'Some link' }
     layer
     trait :published do
       published { true }
