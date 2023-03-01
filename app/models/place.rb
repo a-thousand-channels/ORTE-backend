@@ -91,6 +91,10 @@ class Place < ApplicationRecord
     layer.title
   end
 
+  def layer_slug
+    layer.title.parameterize
+  end
+
   def color
     layer.color
   end
