@@ -32,8 +32,9 @@ RSpec.describe Layer, type: :model do
     end
     it 'image_link' do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, map: m)
+      l = FactoryBot.build(:layer, map: m)
       l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      l.save!
       expect(l.image_link).to eq("http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(l.image.variant(resize: '800x800').processed))}")
     end
   end
@@ -80,16 +81,19 @@ RSpec.describe Layer, type: :model do
   end
 
   describe 'EXIF' do
-    it 'should read EXIF data' do
+    it 'should retain EXIF data' do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, map: m)
-      l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-      expect(l.get_exif_data).to eq({})
+      l = FactoryBot.build(:layer, map: m)
+      l.exif_remove = false
+      l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      l.save!
+      l.reload
+      expect(l.get_exif_data['GPSLatitude']).to match('10/1, 0/1, 0/1')
     end
 
-    xit 'should remove EXIF data' do
+    it 'should remove EXIF data' do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, map: m)
+      l = FactoryBot.build(:layer, map: m)
       l.exif_remove = true
       l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       l.save!
@@ -99,15 +103,13 @@ RSpec.describe Layer, type: :model do
   end
 
   describe 'ZIP' do
-    xit 'should create a ZIP archive' do
+    it 'should create a ZIP archive' do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, map: m)
+      l = FactoryBot.create(:layer, map: m, published: true)
       p1 = FactoryBot.create(:place, layer: l)
       p2 = FactoryBot.create(:place, layer: l)
-      l.reload
-      puts l.places.count
       zip_file = "orte-map-#{l.map.title.parameterize}-layer-#{l.title.parameterize}-#{I18n.l Date.today}.zip"
-      expect(l.to_zip(zip_file)).to eq('bla')
+      expect(l.to_zip(zip_file)).to eq("public/#{zip_file}")
     end
   end
 end
