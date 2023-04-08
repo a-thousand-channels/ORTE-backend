@@ -12,7 +12,7 @@ class Layer < ApplicationRecord
 
   validates :title, presence: true
 
-  before_save :extract_exif_data
+  before_save :strip_exif_data
 
   extend FriendlyId
   friendly_id :title, use: :slugged
@@ -74,15 +74,14 @@ class Layer < ApplicationRecord
     exif_data.exif
   end
 
-  def extract_exif_data
-    return unless image.attached?
+  def strip_exif_data
     return unless exif_remove
-    return unless attachment_changes['image']
-    return if attachment_changes['image'].attachable.is_a?(Hash)
+
+    return unless image.attached? && image.changed? && attachment_changes['image']
 
     filename = image.filename.to_s
     attachment_path = "#{Dir.tmpdir}/#{image.filename}"
-    tmp_new_image = File.read(attachment_changes['image'].attachable)
+    tmp_new_image = File.read(attachment_changes['image'].attachable[:io])
     File.open(attachment_path, 'wb') do |tmp_file|
       tmp_file.write(tmp_new_image)
       tmp_file.close
