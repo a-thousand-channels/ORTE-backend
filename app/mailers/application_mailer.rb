@@ -30,17 +30,17 @@ class ApplicationMailer < ActionMailer::Base
 
   def production_label(target)
     if target == 'admin'
-      "[#{Settings.app_shortname} Admin]"
+      "[#{Rails.application.config_for(:settings).app_shortname} Admin]"
     else
-      "[#{Settings.app_shortname}]"
+      "[#{Rails.application.config_for(:settings).app_shortname}]"
     end
   end
 
   def label_for_other_envs(target)
     if target == 'admin'
-      "[#{Settings.app_shortname} Admin -- #{Rails.env}]"
+      "[#{Rails.application.config_for(:settings).app_shortname} Admin -- #{Rails.env}]"
     else
-      "[#{Settings.app_shortname} -- #{Rails.env}]"
+      "[#{Rails.application.config_for(:settings).app_shortname} -- #{Rails.env}]"
     end
   end
 end
