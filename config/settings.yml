@@ -26,16 +26,16 @@ test:
 
 staging:
   <<: *defaults
-  app_host:          'staging.orte.link'
+  app_host:          'staging.example.com'
   app_host_protocol: 'https'
-  app_url:           'https://staging.orte.link'
+  app_url:           'https://staging.example.com'
   relative_url_root:  ""
   secure:             'true'
 
 production:
   <<: *defaults
-  app_host:          'orte.link'
+  app_host:          'www.example.com'
   app_host_protocol: 'https'
-  app_url:           'https://orte.link'
+  app_url:           'https://www.example.com'
   relative_url_root:  ""
   secure:             'true'

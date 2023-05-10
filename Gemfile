@@ -57,7 +57,6 @@ gem 'turnout'
 gem 'net-smtp'
 
 group :staging, :production do
-  # gem 'pg'
   gem 'passenger'
 end
 
