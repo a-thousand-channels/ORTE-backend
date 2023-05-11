@@ -39,7 +39,7 @@ Capybara.register_driver :headless_chrome do |app|
 
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
-                                 capabilities: options
+                                 options: options
 end
 
 # switch to :chrome for watching the tests in browser

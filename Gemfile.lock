@@ -377,7 +377,7 @@ GEM
       tilt
     secure_headers (6.5.0)
     select2-rails (4.0.13)
-    selenium-webdriver (4.9.1)
+    selenium-webdriver (4.9.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -519,6 +519,7 @@ DEPENDENCIES
   sassc-rails
   secure_headers
   select2-rails
+  selenium-webdriver (= 4.9.0)
   shoulda-matchers
   simple_form
   simplecov

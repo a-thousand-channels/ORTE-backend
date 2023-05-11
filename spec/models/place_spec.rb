@@ -74,7 +74,7 @@ RSpec.describe Place, type: :model do
   it 'title_and_location (while no location is defined)' do
     m = FactoryBot.create(:map)
     l = FactoryBot.create(:layer, map: m)
-    p = FactoryBot.create(:place, layer: l, location: NIL)
+    p = FactoryBot.create(:place, layer: l, location: nil)
     expect(p.title_and_location).to eq(p.title)
   end
 
