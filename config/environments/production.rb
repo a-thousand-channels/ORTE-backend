@@ -47,7 +47,7 @@ Rails.application.configure do
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
   # rails5?
   config.action_controller.default_url_options = { host: config_for(:settings).app_host.to_s, :protocol => config_for(:settings).app_host_protocol.to_s }
-  # config.action_controller.asset_host = Settings.app_host
+  # config.action_controller.asset_host = Rails.application.config_for(:settings).app_host
   # rails5?
   config.action_mailer.default_url_options = { host: config_for(:settings).app_host.to_s, :protocol => config_for(:settings).app_host_protocol.to_s }
 
