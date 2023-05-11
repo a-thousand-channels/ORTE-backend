@@ -67,10 +67,6 @@ GEM
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.2)
-    axiom-types (0.1.1)
-      descendants_tracker (~> 0.0.4)
-      ice_nine (~> 0.11.0)
-      thread_safe (~> 0.3, >= 0.3.1)
     babel-source (5.8.35)
     babel-transpiler (0.7.0)
       babel-source (>= 4.0, < 6)
@@ -111,8 +107,6 @@ GEM
     capybara-chromedriver-logger (0.3.0)
       capybara
       colorize
-    coercible (1.0.0)
-      descendants_tracker (~> 0.0.1)
     color-generator (0.0.4)
     colorize (0.8.1)
     concurrent-ruby (1.2.2)
@@ -134,8 +128,6 @@ GEM
     date (3.3.3)
     deep_cloneable (3.2.0)
       activerecord (>= 3.1.0, < 8)
-    descendants_tracker (0.0.4)
-      thread_safe (~> 0.3, >= 0.3.1)
     devise (4.9.2)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -144,7 +136,6 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
     docile (1.4.0)
-    equalizer (0.0.11)
     erubi (1.12.0)
     exception_notification (4.5.0)
       actionmailer (>= 5.2, < 8)
@@ -156,15 +147,6 @@ GEM
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
     ffi (1.15.5)
-    flay (2.13.0)
-      erubi (~> 1.10)
-      path_expander (~> 1.0)
-      ruby_parser (~> 3.0)
-      sexp_processor (~> 4.0)
-    flog (4.6.6)
-      path_expander (~> 1.0)
-      ruby_parser (~> 3.1, > 3.1.0)
-      sexp_processor (~> 4.8)
     foundation-icons-sass-rails (3.0.0)
       railties (>= 3.1.1)
       sass-rails (>= 3.1.1)
@@ -172,7 +154,7 @@ GEM
       railties (>= 3.1.0)
       sass (>= 3.3.0)
       sprockets-es6 (>= 0.9.0)
-    friendly_id (5.4.2)
+    friendly_id (5.5.0)
       activerecord (>= 4.0.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
@@ -190,7 +172,6 @@ GEM
       concurrent-ruby (~> 1.0)
     i18n-js (3.9.2)
       i18n (>= 0.6.6)
-    ice_nine (0.11.2)
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
@@ -221,18 +202,17 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    kwalify (0.7.2)
     launchy (2.5.2)
       addressable (~> 2.8)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
-    libv8-node (15.14.0.1)
+    libv8-node (16.10.0.0)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
-    loofah (2.20.0)
+    loofah (2.21.2)
       crass (~> 1.0.2)
-      nokogiri (>= 1.5.9)
+      nokogiri (>= 1.12.0)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
       net-imap
@@ -244,8 +224,8 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.2)
-    mini_racer (0.4.0)
-      libv8-node (~> 15.14.0.0)
+    mini_racer (0.6.3)
+      libv8-node (~> 16.10.0.0)
     minitest (5.18.0)
     mobility (1.2.9)
       i18n (>= 0.6.10, < 2)
@@ -274,7 +254,6 @@ GEM
     passenger (6.0.12)
       rack
       rake (>= 0.8.1)
-    path_expander (1.1.1)
     public_suffix (5.0.1)
     puma (6.2.2)
       nio4r (~> 2.0)
@@ -327,10 +306,6 @@ GEM
       redis-client (>= 0.9.0)
     redis-client (0.14.1)
       connection_pool
-    reek (6.1.4)
-      kwalify (~> 0.7.0)
-      parser (~> 3.2.0)
-      rainbow (>= 2.0, < 4.0)
     regexp_parser (2.8.0)
     repo-small-badge (0.2.7)
       victor (~> 0.2.8)
@@ -384,19 +359,6 @@ GEM
       ffi (~> 1.12)
     ruby_audit (2.2.0)
       bundler-audit (~> 0.9.0)
-    ruby_parser (3.20.0)
-      sexp_processor (~> 4.16)
-    rubycritic (4.7.0)
-      flay (~> 2.8)
-      flog (~> 4.4)
-      launchy (>= 2.0.0)
-      parser (>= 2.6.0)
-      rainbow (~> 3.0)
-      reek (~> 6.0, < 7.0)
-      ruby_parser (~> 3.8)
-      simplecov (>= 0.17.0)
-      tty-which (~> 0.4.0)
-      virtus (~> 1.0)
     rubyzip (2.3.2)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
@@ -415,11 +377,10 @@ GEM
       tilt
     secure_headers (6.5.0)
     select2-rails (4.0.13)
-    selenium-webdriver (4.9.0)
+    selenium-webdriver (4.9.1)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
-    sexp_processor (4.17.0)
     shoulda-matchers (5.3.0)
       activesupport (>= 5.2.0)
     simple_form (5.2.0)
@@ -454,14 +415,12 @@ GEM
     term-ansicolor (1.7.1)
       tins (~> 1.0)
     thor (1.2.1)
-    thread_safe (0.3.6)
     tilt (2.1.0)
     timeout (0.3.2)
     tins (1.32.1)
       sync
     tinymce-rails (5.10.5)
       railties (>= 3.1.1)
-    tty-which (0.4.2)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
@@ -476,11 +435,6 @@ GEM
       execjs (>= 0.3.0, < 3)
     unicode-display_width (2.4.2)
     victor (0.2.8)
-    virtus (1.0.5)
-      axiom-types (~> 0.1)
-      coercible (~> 1.0)
-      descendants_tracker (~> 0.0, >= 0.0.3)
-      equalizer (~> 0.0, >= 0.0.9)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.0)
@@ -530,8 +484,8 @@ DEPENDENCIES
   factory_bot_rails
   foundation-icons-sass-rails
   foundation-rails (~> 6)
-  friendly_id (~> 5.4)
-  haml-rails (~> 2.0)
+  friendly_id
+  haml-rails
   i18n-js (~> 3)
   image_processing
   jbuilder
@@ -543,10 +497,11 @@ DEPENDENCIES
   letter_opener
   listen (~> 3)
   mini_magick
-  mini_racer (= 0.4)
+  mini_racer
   mobility (~> 1.2)
   mysql2
   net-smtp
+  nokogiri
   passenger
   puma (~> 6)
   rack-attack
@@ -559,7 +514,6 @@ DEPENDENCIES
   rubocop
   rubocop-rspec
   ruby_audit
-  rubycritic
   rubyzip
   sassc (~> 2.4)
   sassc-rails

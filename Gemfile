@@ -13,7 +13,7 @@ gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
 
-gem 'friendly_id', '~> 5.4'
+gem 'friendly_id'
 
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
@@ -28,8 +28,8 @@ gem 'devise'
 gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
 gem 'foundation-rails', '~> 6'
-gem 'haml-rails', '~> 2.0'
-gem 'i18n-js', '~> 3'
+gem 'haml-rails'
+gem 'i18n-js', '~> 3' # breaking changes with v4
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
@@ -44,7 +44,8 @@ gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 
 gem 'image_processing'
-gem 'mini_racer', '0.4', platforms: :ruby
+gem 'mini_racer', platforms: :ruby
+gem 'nokogiri'
 
 gem 'acts-as-taggable-on', '~> 9'
 gem 'color-generator'
@@ -104,5 +105,4 @@ group :development do
   gem 'spring', '~> 4'
 
   gem 'brakeman', require: false
-  gem 'rubycritic', require: false
 end
