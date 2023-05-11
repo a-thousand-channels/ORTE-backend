@@ -26,6 +26,7 @@ Basic steps for a local installation on your machine:
 ### Requirements
 
 * Webserver (e.g. Apache or NGINX)
+* Passenger stand-alone
 * Ruby 2.7+, RVM, Rubygems
 * MySQL/Maria DB
 * ffmpeg (for the video feature), ImageMagick (for the image feature)
@@ -55,7 +56,7 @@ $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
 ```
 
-### Credentials
+### Settings for server setup
 
 Some settings (like email settings or database setup) you'll need for productive installation on a server are stored in the credential file.
 
@@ -76,6 +77,8 @@ $ EDITOR=vim bundle exec rails credentials:edit --environment staging
 ```
 
 For details on this technique please read this good explainer about [credentials in Rails 6.1](https://blog.saeloun.com/2019/10/10/rails-6-adds-support-for-multi-environment-credentials.html)
+
+Also edit settings.yml to define your custom server address.
 
 ### Optional: Mapbox Token for satellite imagery
 
@@ -103,9 +106,10 @@ Project by A thousand channels, initiated by [Ulf Treger](https://github.com/ut)
 
 * [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for initial code donation,
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
-* Participants of recent workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
+* Participants of workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
 * Members of the working group "Queer narratives, mappped" 💖 for acceptance testing, ideas and requests for improving the user interface and the maps.
 * [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface and to [Sefux](https://github.com/Sefux) for coding it.
+* There is forks by [Leerstandsmeldungen](https://gitlab.com/leerstandsmelder/lsm-orte) with PostgreSQL and Pundit for authorization and roles.
 
 ## Feedback & Contributions
 
