@@ -31,8 +31,10 @@ RSpec.describe Image, type: :model do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
       p = FactoryBot.create(:place, layer: l)
-      @i = FactoryBot.create(:image, place: p)
+      @i = FactoryBot.build(:image, place: p)
       @i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      @i.save!
+      @i.reload
     end
     it 'image_filename' do
       expect(@i.image_filename).to eq(@i.file.filename)
@@ -56,19 +58,24 @@ RSpec.describe Image, type: :model do
   describe 'EXIF' do
     before do
       m = FactoryBot.create(:map)
-      l = FactoryBot.create(:layer, map: m)
-      p = FactoryBot.create(:place, layer: l)
-      @i = FactoryBot.create(:image, place: p)
-      @i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      l1 = FactoryBot.create(:layer, map: m, exif_remove: false)
+      l2 = FactoryBot.create(:layer, map: m, exif_remove: true)
+      @p1 = FactoryBot.create(:place, layer: l1)
+      @p2 = FactoryBot.create(:place, layer: l2)
     end
-    it 'should read EXIF data' do
-      expect(@i.get_exif_data).to eq({})
+    it 'should retain EXIF data' do
+      i = FactoryBot.build(:image, place: @p1)
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      i.save!
+      i.reload
+      expect(i.get_exif_data['GPSLatitude']).to match('10/1, 0/1, 0/1')
     end
-
-    xit 'should remove EXIF data' do
-      @i.save!
-      @i.reload
-      expect(@i.get_exif_data).to eq({})
+    it 'should remove EXIF data' do
+      i = FactoryBot.build(:image, place: @p2)
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      i.save!
+      i.reload
+      expect(i.get_exif_data).to eq({})
     end
   end
 

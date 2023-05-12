@@ -1,5 +1,5 @@
 %h3
-  A profile has been created at #{Settings.app_name}
+  A profile has been created at #{Rails.application.config_for(:settings).app_name}
 %p
   E-Mail:   #{@user.email}
   %br

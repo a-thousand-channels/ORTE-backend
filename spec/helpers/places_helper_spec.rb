@@ -18,8 +18,10 @@ RSpec.describe PlacesHelper, type: :helper do
   describe 'image_link' do
     it 'it returns an polymorphic image link' do
       p = create(:place)
-      i = create(:image, place: p)
+      i = build(:image, place: p)
       i.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      i.save!
+      i.reload
       expect(helper.image_link(i)).to eq("http://test.host#{polymorphic_path(i.file.variant(resize: '800x800').processed)}")
     end
   end

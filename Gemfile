@@ -7,13 +7,13 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'puma', '~> 5'
+gem 'puma', '~> 6'
 gem 'rails', '~> 6.1'
 gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
 
-gem 'friendly_id', '~> 5.4'
+gem 'friendly_id'
 
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
@@ -28,8 +28,8 @@ gem 'devise'
 gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
 gem 'foundation-rails', '~> 6'
-gem 'haml-rails', '~> 2.0'
-gem 'i18n-js', '~> 3'
+gem 'haml-rails'
+gem 'i18n-js', '~> 3' # breaking changes with v4
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
@@ -39,14 +39,13 @@ gem 'rack-attack'
 gem 'rack-cors'
 gem 'secure_headers'
 gem 'select2-rails'
-# NOTE: settingslogic != ruby 3
-gem 'settingslogic'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 
 gem 'image_processing'
-gem 'mini_racer', '0.4', platforms: :ruby
+gem 'mini_racer', platforms: :ruby
+gem 'nokogiri'
 
 gem 'acts-as-taggable-on', '~> 9'
 gem 'color-generator'
@@ -59,7 +58,6 @@ gem 'turnout'
 gem 'net-smtp'
 
 group :staging, :production do
-  # gem 'pg'
   gem 'passenger'
 end
 
@@ -73,7 +71,6 @@ group :development, :test do
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3'
   gem 'capybara-chromedriver-logger'
   gem 'database_cleaner'
@@ -82,6 +79,7 @@ group :development, :test do
   gem 'rails-controller-testing'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
+  gem 'selenium-webdriver', '4.9.0' # 4.9.1 crashed feature tests
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'simplecov-small-badge', require: false
@@ -107,5 +105,4 @@ group :development do
   gem 'spring', '~> 4'
 
   gem 'brakeman', require: false
-  gem 'rubycritic', require: false
 end

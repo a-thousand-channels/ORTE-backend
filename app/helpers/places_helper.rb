@@ -4,7 +4,7 @@ module PlacesHelper
   include Rails.application.routes.url_helpers
 
   def default_url_options
-    { host: Settings.app_host, protocol: Settings.app_host_protocol }
+    { host: Rails.application.config_for(:settings).app_host, protocol: Rails.application.config_for(:settings).app_host_protocol }
   end
 
   def show_link(title, map_id, layer_id, id)
