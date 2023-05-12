@@ -6,7 +6,7 @@ class Image < ApplicationRecord
   has_one_attached :file
   delegate_missing_to :file
 
-  before_save :extract_exif_data
+  before_save :strip_exif_data
 
   validates :title, presence: true
   validate :check_file_presence
@@ -56,15 +56,14 @@ class Image < ApplicationRecord
 
   private
 
-  def extract_exif_data
-    return unless file.attached?
+  def strip_exif_data
     return unless place.layer.exif_remove
-    return unless attachment_changes['file']
-    return if attachment_changes['file'].attachable.is_a?(Hash)
+
+    return unless file.attached? && file.changed? && attachment_changes['file']
 
     filename = file.filename.to_s
     attachment_path = "#{Dir.tmpdir}/#{file.filename}"
-    tmp_new_image = File.read(attachment_changes['file'].attachable)
+    tmp_new_image = File.read(attachment_changes['file'].attachable[:io])
     File.open(attachment_path, 'wb') do |tmp_file|
       tmp_file.write(tmp_new_image)
       tmp_file.close
