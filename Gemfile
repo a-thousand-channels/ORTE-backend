@@ -77,6 +77,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'json-schema'
   gem 'rails-controller-testing'
+  gem 'rspec'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
   gem 'selenium-webdriver', '4.9.0' # 4.9.1 crashed feature tests
@@ -96,13 +97,13 @@ group :development do
   gem 'capistrano', '~> 3', require: false
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
-  gem 'capistrano-rails', '~> 1.6', require: false
+  gem 'capistrano-rails', require: false
   gem 'capistrano-rvm'
 
   gem 'letter_opener'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring', '~> 4'
+  gem 'spring'
 
   gem 'brakeman', require: false
 end
