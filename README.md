@@ -109,7 +109,7 @@ Project by A thousand channels, initiated by [Ulf Treger](https://github.com/ut)
 * Participants of workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
 * Members of the working group "Queer narratives, mappped" 💖 for acceptance testing, ideas and requests for improving the user interface and the maps.
 * [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface and to [Sefux](https://github.com/Sefux) for coding it.
-* There is forks by [Leerstandsmeldungen](https://gitlab.com/leerstandsmelder/lsm-orte) with PostgreSQL and Pundit for authorization and roles.
+* There is a fork by [Leerstandsmeldungen](https://gitlab.com/leerstandsmelder/lsm-orte) with PostgreSQL and Pundit Gem for a more sophisticated model of  authorization and roles.
 
 ## Feedback & Contributions
 
