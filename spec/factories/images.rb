@@ -49,5 +49,8 @@ FactoryBot.define do
     trait :changed do
       title { 'OtherTitle' }
     end
+    trait :preview do
+      preview { true }
+    end
   end
 end

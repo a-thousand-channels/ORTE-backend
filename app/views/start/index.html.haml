@@ -1,9 +1,9 @@
 
 #info-wrapper
 
-  - if Settings.app_shortname == 'A1000C-ORTE'
+  - if Rails.application.config_for(:settings).app_shortname == 'A1000C-ORTE'
     %h1 ORTE Backend
-    %h3 #{Settings.app_tagline}
+    %h3 #{Rails.application.config_for(:settings).app_tagline}
     %p
       This is part of A Thousand Channels – a queer 🏳️‍🌈 mapping 🌎 platform 🎁
     %p
@@ -11,8 +11,8 @@
       = link_to 'https://www.a-thousand-channels.xyz/' do
         our website.
   - else
-    %h1 #{Settings.app_name}
-    %h3 #{Settings.app_tagline}
+    %h1 #{Rails.application.config_for(:settings).app_name}
+    %h3 #{Rails.application.config_for(:settings).app_tagline}
     %p
       About this application:
       = link_to 'https://github.com/ut/ORTE-backend' do
@@ -25,7 +25,7 @@
       = link_to 'users/sign_in', :class => 'button'  do
         Sign in
 
-  - if Settings.app_shortname == 'A1000C-ORTE'
+  - if Rails.application.config_for(:settings).app_shortname == 'A1000C-ORTE'
     %p
       Would you like to contribute and start mapping?
       %br

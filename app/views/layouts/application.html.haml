@@ -5,14 +5,13 @@
     %meta{ name: 'robots', content: 'noindex, nofollow' }
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
 
-    - # title = content_for?(:title) ? "#{yield(:title)} — #{Settings.app_name}" : "#{Settings.app_name}"
-    - title = "bla"
+    - title = content_for?(:title) ? "#{yield(:title)} — #{Rails.application.config_for(:settings).app_name}" : "#{Rails.application.config_for(:settings).app_name}"
     %title= title
 
     %meta{property:"og:type", content:"website"}
     %meta{property:"og:title", content:"#{title}"}
-    %meta{property:"og:description", content:"#{Settings.app_tagline}"}
-    %meta{property:"og:image", content:"#{Settings.app_url}#{asset_path('apple-touch-icon.png')}"}
+    %meta{property:"og:description", content:"#{Rails.application.config_for(:settings).app_tagline}"}
+    %meta{property:"og:image", content:"#{Rails.application.config_for(:settings).app_url}#{asset_path('apple-touch-icon.png')}"}
 
 
     = stylesheet_link_tag "application"
@@ -40,7 +39,7 @@
   - if params[:action]
     - klass = klass + " #{params[:action]}"
 
-  %body{:id=>"#{id}", :class=>"#{klass}", "data-app-shortname"=>"#{Settings.app_shortname}"}
+  %body{:id=>"#{id}", :class=>"#{klass}", "data-app-shortname"=>"#{Rails.application.config_for(:settings).app_shortname}"}
     %header
       = render 'layouts/navigation'
 

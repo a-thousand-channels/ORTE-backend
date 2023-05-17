@@ -74,7 +74,7 @@ RSpec.describe Place, type: :model do
   it 'title_and_location (while no location is defined)' do
     m = FactoryBot.create(:map)
     l = FactoryBot.create(:layer, map: m)
-    p = FactoryBot.create(:place, layer: l, location: NIL)
+    p = FactoryBot.create(:place, layer: l, location: nil)
     expect(p.title_and_location).to eq(p.title)
   end
 
@@ -95,8 +95,13 @@ RSpec.describe Place, type: :model do
   it 'imagelink2' do
     m = FactoryBot.create(:map)
     l = FactoryBot.create(:layer, map: m)
-    p = FactoryBot.create(:place, layer: l)
-    expect(p.imagelink2).to eq(p.imagelink)
+    p1 = FactoryBot.create(:place, layer: l)
+    expect(p1.imagelink2).not_to eq(p1.imagelink)
+    p2 = FactoryBot.create(:place, layer: l)
+    i = build(:image, :preview, place: p2)
+    i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
+    i.save!
+    expect(p2.imagelink2).not_to eq(p2.imagelink)
   end
 
   it 'audiolink' do

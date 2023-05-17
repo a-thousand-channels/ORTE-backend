@@ -1,7 +1,7 @@
 - content_for(:title) { 'Sign in' }
 
 #form-wrapper
-  %h1 #{Settings.app_name}
+  %h1 #{Rails.application.config_for(:settings).app_name}
   %h3 Sign in
   = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     .grid-x
