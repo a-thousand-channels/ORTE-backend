@@ -5,8 +5,8 @@
     =link_to maps_path, :class=>'close_link' do
       %i.fi.fi-x
   %h1
-    #{Settings.app_name}
-  %h3 #{Settings.app_tagline}
+    #{Rails.application.config_for(:settings).app_name}
+  %h3 #{Rails.application.config_for(:settings).app_tagline}
   %p
     This application is intended to create and edit temporary or permanent, contemporary or past places on a map.
   %h4
@@ -25,7 +25,7 @@
   %p Do you need help? Are you having ideas or proposals on the usage of this application? We would happy to help or to receive feedback. Drop an email at <a href="mailto:orte@dekoder.de">orte@dekoder.de</a>
   %p
     This application will be extended with more features and functions. Checkout
-    = link_to Settings.github_url, target: '_blank' do
+    = link_to Rails.application.config_for(:settings).github_url, target: '_blank' do
       ORTE Backend at GitHub
   %p Feedback and contributions are welcome!
 

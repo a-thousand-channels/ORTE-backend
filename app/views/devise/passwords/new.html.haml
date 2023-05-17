@@ -2,7 +2,7 @@
 
 
 #form-wrapper
-  %h1 #{Settings.app_name}
+  %h1 #{Rails.application.config_for(:settings).app_name}
   %h3 Forgot your password?
   = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
     = f.error_notification

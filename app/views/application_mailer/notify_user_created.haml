@@ -1,9 +1,9 @@
 %h3
-  Hurray, we have created a profile at #{Settings.app_name} for you!
+  Hurray, we have created a profile at #{Rails.application.config_for(:settings).app_name} for you!
 %p
   Please visit
-  %a{href: "#{Settings.app_url}"}
-    #{Settings.app_url}
+  %a{href: "#{Rails.application.config_for(:settings).app_url}"}
+    #{Rails.application.config_for(:settings).app_url}
   and login with your credentials:
 %p
   E-Mail:   #{@user.email}

@@ -4,7 +4,7 @@ module PlacesHelper
   include Rails.application.routes.url_helpers
 
   def default_url_options
-    { host: Settings.app_host, protocol: Settings.app_host_protocol }
+    { host: Rails.application.config_for(:settings).app_host, protocol: Rails.application.config_for(:settings).app_host_protocol }
   end
 
   def show_link(title, map_id, layer_id, id)
@@ -48,7 +48,7 @@ module PlacesHelper
   end
 
   def audio_link(audio)
-    return unless audio.attached?
+    return '' unless audio.attached?
 
     audio_tag rails_blob_url(audio), autoplay: false, controls: true
   end

@@ -1,10 +1,10 @@
 = link_to root_url, class: 'shy' do
-  = Settings.app_name
+  = Rails.application.config_for(:settings).app_name
 %span.show-for-medium
   \&mdash;
-  = link_to Settings.github_url, target: '_blank', class: 'shy' do
-    v#{Settings.app_version}
+  = link_to Rails.application.config_for(:settings).github_url, target: '_blank', class: 'shy' do
+    v#{Rails.application.config_for(:settings).app_version}
 %span.show-for-large.small
-  = Settings.app_tagline
+  = Rails.application.config_for(:settings).app_tagline
   \&mdash;
   = "#{DEPLOY_REVISION} #{I18n.l DEPLOY_DATE}"
