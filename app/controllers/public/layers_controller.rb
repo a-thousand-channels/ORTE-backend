@@ -3,6 +3,8 @@
 class Public::LayersController < ActionController::Base
   before_action :cors_set_access_control_headers
 
+  protect_from_forgery with: :exception
+
   # For all responses in this controller, return the CORS access control headers.
 
   def cors_set_access_control_headers
