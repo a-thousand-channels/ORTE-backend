@@ -37,6 +37,7 @@ $-zf-bp-value: null;
 
 @import 'foundation';
 @import 'foundation-icons';
+@import 'mingcute';
 @import 'worksans';
 @import 'orte';
 
@@ -148,6 +149,14 @@ h1 .orte-icons-places:before {
 
 .fi-marker.fi-24 {
     padding: 0 2px;
+}
+
+[class^="mgc_"], [class*=" mgc_"] {
+  font-size: 21px; vertical-align: middle;
+  color: #939300 !important;
+}
+[class^="mgc_"]::before, [class*=" mgc_"]::before {
+  color: #939300;
 }
 
 

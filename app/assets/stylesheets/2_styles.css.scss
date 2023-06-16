@@ -20,9 +20,12 @@ main {
     color: darken(#c6c600,10%);
   }
 }
-main.action-bar-padding { margin-top: 100px }
+main.action-bar-padding {
+  margin: 65px 0 0 20px;
+}
 @media screen and (max-width: 63.9375em) {
   main {
+      margin: 10px 0 0 5px;
   }
 }
 @media screen and (max-width: 39.9375em) {
