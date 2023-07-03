@@ -62,17 +62,21 @@ class Image < ApplicationRecord
     return unless file.attached? && file.changed? && attachment_changes['file']
 
     filename = file.filename.to_s
-    attachment_path = "#{Dir.tmpdir}/#{file.filename}"
-    tmp_new_image = File.read(attachment_changes['file'].attachable[:io])
-    File.open(attachment_path, 'wb') do |tmp_file|
-      tmp_file.write(tmp_new_image)
-      tmp_file.close
+    begin
+      attachment_path = "#{Dir.tmpdir}/#{file.filename}"
+      tmp_new_image = File.read(attachment_changes['file'].attachable[:io])
+      File.open(attachment_path, 'wb') do |tmp_file|
+        tmp_file.write(tmp_new_image)
+        tmp_file.close
+      end
+      tmp_image = MiniMagick::Image.open(attachment_path)
+      tmp_image.auto_orient # Before stripping
+      tmp_image.strip # Strip Exif
+      tmp_image.write attachment_path
+      file.attach(io: File.open(attachment_path), filename: file.filename)
+    rescue
+      self.errors.add(:created_on, " could not be striped from exif data!")
     end
-    tmp_image = MiniMagick::Image.open(attachment_path)
-    tmp_image.auto_orient # Before stripping
-    tmp_image.strip # Strip Exif
-    tmp_image.write attachment_path
-    file.attach(io: File.open(attachment_path), filename: file.filename)
   end
 
   def check_file_presence
@@ -80,6 +84,6 @@ class Image < ApplicationRecord
   end
 
   def check_file_format
-    errors.add(:file, 'File format must be JPG/PNG or GIF') if file.attached? && !file.content_type.in?(%w[image/png image/jpeg image/gif])
+    errors.add(:file, 'File format must be either JPG, PNG or GIF') if file.attached? && !file.content_type.in?(%w[image/png image/jpeg image/gif])
   end
 end

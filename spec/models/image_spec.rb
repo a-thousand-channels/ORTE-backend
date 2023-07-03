@@ -20,9 +20,10 @@ RSpec.describe Image, type: :model do
 
   describe 'Attachment' do
     it 'is valid' do
-      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      subject.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-png-with-wrong-ext.jpeg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       expect(subject.file).to be_attached
       expect(subject).to have_one_attached(:file)
+      expect(subject.errors).to be_empty
     end
   end
 
@@ -104,7 +105,7 @@ RSpec.describe Image, type: :model do
       image = build(:image, place: @p)
       image.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'attachment.txt', content_type: 'txt/plain')
       expect(image).not_to be_valid
-      expect(image.errors[:file]).to eq(['File format must be JPG/PNG or GIF'])
+      expect(image.errors[:file]).to eq(['File format must be either JPG, PNG or GIF'])
     end
   end
 end
