@@ -44,8 +44,7 @@
         %li
           %a{:href => settings_path, :title => 'Settings', id: "settings_caller", "data-maptogo": maptogo_flag }
             %i.fi-widget.fi-21
-            %span.show-for-large
-              Settings
+
         %li.show-for-medium-up
           = link_to destroy_user_session_path, method: :delete, :id => 'logout', :title => "#{t('.sign_out')}", :class=>'button logout' do
             %i.mgc_exit_line

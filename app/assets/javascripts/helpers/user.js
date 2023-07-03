@@ -7,7 +7,8 @@ function userZoomLevel(map) {
     map.on('zoomend', function () {
         var zl = map.getZoom();
         localStorage.setItem('UserZoomLevel', zl);
-        $('#show_zoomlevel').html("Custom level: " + zl);
+        // only for debugging
+        // $('#show_zoomlevel').html("Map zoom: " + zl);
     });
 }
 function userMapBounds(map) {

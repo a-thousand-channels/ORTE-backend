@@ -25,9 +25,6 @@ function PopupFullContent(place) {
     content += "<h4>";
     if (place.show_link) {
         content += place.show_link;
-        if (place.published !== true) {
-            content += " <i class='fi-lock fi-18'></i>";
-        }
     }
     content += "</h4>";
     if (place.teaser) {
@@ -39,7 +36,14 @@ function PopupFullContent(place) {
         content += "<p>" + teaser + "</p>";
     }
     if (place.edit_link) {
-        content += "<p class='text-right'>" + place.edit_link + "</p>";
+        content += "<p class='text-right'>";
+        if (place.images) {
+            content += " <i class='fi-lock fi-18' title='Place is not published (yet)'></i> ";
+        }
+        if (place.published !== true) {
+            content += " <i class='fi-lock fi-18' title='Place is not published (yet)'></i> ";
+        }
+        content += place.edit_link + "</p>";
     }
     content += '</div>';
     return content;
