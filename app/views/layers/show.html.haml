@@ -15,6 +15,7 @@
           .input-group-label
             =link_to map_path(@map) do
               %i.mgc_map_line
+              = @maps.count
           = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}", :include_blank => false, input_html: {:class => 'nav-selector'}
           .input-group-button.hide
             =link_to edit_map_path(@map), :class => 'button secondary', :title => 'Edit map' do
@@ -27,6 +28,7 @@
           .input-group-label
             =link_to map_layers_path(@map), :title => "Show all layers of this map" do
               %i.mgc_copy_2_line
+              = @map.layers.count
           =simple_form_for :navselector, url: '', html: { method: :get }  do |f|
             = f.input :id, :collection => @map_layers.map { |l| ["#{l.title} (#{l.places.count})", "/maps/#{@map.id}/layers/#{l.id}", :class => "layer-#{l.id} input-group-field"] }, :label => false, :selected => "/maps/#{@map.id}/layers/#{@layer.id}", :include_blank => 'All layers', input_html: {:class => 'nav-selector', :data => { :map => @map.id}}
 
@@ -46,6 +48,7 @@
           .input-group-label
             = link_to map_layer_places_path(@map,@layer), :title => "Show all places for this layer" do
               %i.mgc_location_line
+              = @layer.places.count
 
           = f.input :address, :label => false, :placeholder => 'Add place: Name, Street + Number...', input_html: {:class => "address-lookup-field input-group-field", :data => { 'url' => "/maps/#{@map.id}/layers/#{@layer.id}" }}
           .input-group-button

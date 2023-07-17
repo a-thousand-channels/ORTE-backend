@@ -6,6 +6,9 @@
           .input-group
             .input-group-label
               %i.mgc_map_line
+              &nbsp;
+              %span.badge
+                = @maps.count
             = f.input :id, :collection => @maps.map { |m| ["#{m.title}", "/maps/#{m.id}", :class => "map-#{m.id} input-group-field"] }, :label => false, :selected => @map, :include_blank => 'Select a map...', input_html: {:class => 'nav-selector'}
             .input-group-button
               = link_to new_map_path, :class => 'button secondary', :id => 'new_map_button', :title => 'Create a new map' do
