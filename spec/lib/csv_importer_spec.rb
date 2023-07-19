@@ -10,12 +10,12 @@ RSpec.describe Imports::CsvImporter do
 
     context 'with valid CSV' do
       it 'creates new Place records from valid rows' do
-        importer = Imports::CsvImporter.new(file,layer.id)
+        importer = Imports::CsvImporter.new(file, layer.id)
 
-        expect {
+        # Assuming the CSV file has 3 valid rows
+        expect do
           importer.import
-        }.to change(Place, :count).by(3) # Assuming the CSV file has 3 valid rows
-
+        end.to change(Place, :count).by(3)
         # Additional assertions if needed
         expect(Place.pluck(:title)).to contain_exactly('Place 1', 'Place 2', 'Place 3')
       end
@@ -25,11 +25,11 @@ RSpec.describe Imports::CsvImporter do
       it 'handles invalid rows and does not create Place records' do
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid.csv', 'text/csv')
 
-        importer = Imports::CsvImporter.new(invalid_file,layer.id)
+        importer = Imports::CsvImporter.new(invalid_file, layer.id)
 
-        expect {
+        expect do
           importer.import
-        }.not_to change(Place, :count)
+        end.not_to change(Place, :count)
 
         expect(importer.invalid_rows.count).to eq(1)
       end

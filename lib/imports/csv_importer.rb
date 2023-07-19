@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require 'csv'
-  
+
 class Imports::CsvImporter
   attr_reader :invalid_rows
 
-
-  def initialize(file,layer_id)
+  def initialize(file, layer_id)
     @file = file
     @invalid_rows = []
     @layer = Layer.find(layer_id)
@@ -44,13 +45,13 @@ class Imports::CsvImporter
   def process_valid_rows
     CSV.foreach(@file.path, headers: true) do |row|
       title = sanitize(row['title'])
-      unless @existing_titles.include?(title)
-        place = Place.new(title: title, teaser: sanitize(row['teaser']),  layer_id: @layer.id)
+      if @existing_titles.include?(title)
+        Rails.logger.error("Place already exists! #{title}")
+        puts 'Place already exists'
+      else
+        place = Place.new(title: title, teaser: sanitize(row['teaser']), layer_id: @layer.id)
         place.save!
         @existing_titles << title
-      else
-        Rails.logger.error("Place already exists! #{title}")
-        puts "Place already exists"
       end
     end
   end
