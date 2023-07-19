@@ -236,7 +236,7 @@ RSpec.describe Public::SubmissionsController, type: :controller do
           session[:submission_id] = submission.id
           image_attributes = FactoryBot.attributes_for(:image, :with_file)
           expect do
-            post :create_image, params: { image: image_attributes, layer_id: @layer.id, place_id: submission.place.id,  submission_id: submission.id, locale: 'de' }, session: valid_session
+            post :create_image, params: { image: image_attributes, layer_id: @layer.id, place_id: submission.place.id, submission_id: submission.id, locale: 'de' }, session: valid_session
           end.to change(Image, :count).by(0)
           expect(response).to have_http_status(302)
           expect(response).to redirect_to(submission_finished_url(layer_id: @layer.id, place_id: @place.id, submission_id: submission.id))
