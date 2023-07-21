@@ -7,7 +7,7 @@ class Imports::CsvImporter
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
-  ALLOWED_FIELDS = %[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms].freeze
+  ALLOWED_FIELDS = %(title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms)
 
   # TODO: param: update or skip existing place?
 
@@ -19,7 +19,6 @@ class Imports::CsvImporter
   end
 
   def import
-
     validate_header
 
     CSV.foreach(@file.path, headers: true) do |row|
@@ -31,7 +30,7 @@ class Imports::CsvImporter
       title = sanitize(row['title'])
       if @existing_titles.include?(title)
         @invalid_rows << row
-      else
+        # else
         # FIXME
         # @existing_titles << title
       end
@@ -52,7 +51,6 @@ class Imports::CsvImporter
     missing_fields = REQUIRED_FIELDS - headers
 
     raise StandardError, "Missing required fields: #{missing_fields.join(', ')}" if missing_fields.any?
-
   end
 
   def valid_row?(row)
@@ -63,10 +61,8 @@ class Imports::CsvImporter
   def process_valid_rows
     CSV.foreach(@file.path, headers: true) do |row|
       title = sanitize(row['title'])
-      puts "Process #{title}"
       if @existing_titles.include?(title)
         Rails.logger.error("Place already exists! #{title}")
-        puts 'Place already exists'
       else
         place = Place.new(title: title, lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
         place.save!
