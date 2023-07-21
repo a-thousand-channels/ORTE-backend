@@ -5,6 +5,12 @@ require 'csv'
 class Imports::CsvImporter
   attr_reader :invalid_rows
 
+  REQUIRED_FIELDS = %w[title lat lon].freeze
+
+  ALLOWED_FIELDS = %[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms].freeze
+
+  # TODO: param: update or skip existing place?
+
   def initialize(file, layer_id)
     @file = file
     @invalid_rows = []
@@ -13,6 +19,9 @@ class Imports::CsvImporter
   end
 
   def import
+
+    validate_header
+
     CSV.foreach(@file.path, headers: true) do |row|
       unless valid_row?(row)
         @invalid_rows << row
@@ -23,7 +32,8 @@ class Imports::CsvImporter
       if @existing_titles.include?(title)
         @invalid_rows << row
       else
-        @existing_titles << title
+        # FIXME
+        # @existing_titles << title
       end
     end
 
@@ -37,19 +47,28 @@ class Imports::CsvImporter
 
   private
 
+  def validate_header
+    headers = CSV.read(@file.path, headers: true).headers
+    missing_fields = REQUIRED_FIELDS - headers
+
+    raise StandardError, "Missing required fields: #{missing_fields.join(', ')}" if missing_fields.any?
+
+  end
+
   def valid_row?(row)
-    place = Place.new(title: sanitize(row['title']), teaser: sanitize(row['teaser']), layer_id: @layer.id)
+    place = Place.new(title: sanitize(row['title']), lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
     place.valid?
   end
 
   def process_valid_rows
     CSV.foreach(@file.path, headers: true) do |row|
       title = sanitize(row['title'])
+      puts "Process #{title}"
       if @existing_titles.include?(title)
         Rails.logger.error("Place already exists! #{title}")
         puts 'Place already exists'
       else
-        place = Place.new(title: title, teaser: sanitize(row['teaser']), layer_id: @layer.id)
+        place = Place.new(title: title, lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
         place.save!
         @existing_titles << title
       end
@@ -58,7 +77,7 @@ class Imports::CsvImporter
 
   def handle_invalid_rows
     error_messages = @invalid_rows.map do |row|
-      place = Place.new(title: sanitize(row['title']), teaser: sanitize(row['teaser']))
+      place = Place.new(title: sanitize(row['title']), lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
       place.valid?
       place.errors.full_messages
     end
@@ -72,7 +91,7 @@ class Imports::CsvImporter
 
   def sanitize(value)
     # Implement any sanitization logic you require
-    # For example, you can strip leading/trailing whitespace: value.strip
-    value
+    # strip leading/trailing whitespace: value.strip
+    value.strip
   end
 end
