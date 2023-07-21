@@ -10,7 +10,6 @@ RSpec.describe Imports::CsvImporter do
 
     context 'with valid CSV' do
       it 'creates new Place records from valid rows' do
-
         Place.destroy_all
         importer = Imports::CsvImporter.new(file, layer.id)
 
@@ -27,11 +26,11 @@ RSpec.describe Imports::CsvImporter do
       it 'handles empty rows and does not create Place records' do
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_nodata.csv', 'text/csv')
 
-        importer = Imports::CsvImporter.new(invalid_file,layer.id)
+        importer = Imports::CsvImporter.new(invalid_file, layer.id)
 
-        expect {
+        expect do
           importer.import
-        }.not_to change(Place, :count)
+        end.not_to change(Place, :count)
 
         expect(importer.invalid_rows.count).to eq(1)
       end
@@ -39,12 +38,11 @@ RSpec.describe Imports::CsvImporter do
       it 'handles wrong csv header and does not create Place records' do
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header.csv', 'text/csv')
 
-        importer = Imports::CsvImporter.new(invalid_file,layer.id)
+        importer = Imports::CsvImporter.new(invalid_file, layer.id)
 
-        expect {
+        expect do
           importer.import
-        }.to raise_error(StandardError)
-
+        end.to raise_error(StandardError)
       end
 
       it 'handles invalid row with wrong lat value and does not create Place records' do
