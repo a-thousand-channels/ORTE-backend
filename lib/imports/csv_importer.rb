@@ -9,7 +9,9 @@ class Imports::CsvImporter
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
-  ALLOWED_FIELDS = %(title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms)
+  ALLOWED_FIELDS = %w[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms].freeze
+
+  TEXT_FIELDS = %w[title subtitle teaser text location address zip city country].freeze
 
   # TODO: param: update or skip existing place?
 
@@ -24,22 +26,30 @@ class Imports::CsvImporter
     validate_header
 
     CSV.foreach(@file.path, headers: true) do |row|
-      unless valid_row?(row)
-        @invalid_rows << row
+      processed_row = row.to_hash.slice(*ALLOWED_FIELDS)
+
+      unless !processed_row.empty? && valid_row?(processed_row)
+        @invalid_rows << processed_row
         next
       end
 
-      title = sanitize(row['title'])
+      # dupe handling
+      title = sanitize(processed_row['title'])
+
       if @existing_titles.include?(title)
-        @invalid_rows << row
+        # TODO!
+        # skip existing rows with this title
+        @invalid_rows << processed_row
         # else
-        # FIXME
+        # update existing row
         # @existing_titles << title
+      else
+        @existing_titles << title
+        create_place(processed_row)
       end
     end
 
     if @invalid_rows.empty?
-      process_valid_rows
       Rails.logger.info('CSV import completed successfully!')
     else
       handle_invalid_rows
@@ -48,11 +58,19 @@ class Imports::CsvImporter
 
   private
 
+  def required_fields_present?(row)
+    REQUIRED_FIELDS.all? { |field| row[field].present? }
+  end
+
   def validate_header
     headers = CSV.read(@file.path, headers: true).headers
     missing_fields = REQUIRED_FIELDS - headers
 
     raise StandardError, "Missing required fields: #{missing_fields.join(', ')}" if missing_fields.any?
+
+    processable_fields = headers - ALLOWED_FIELDS
+
+    raise StandardError, 'Now allowed fields found if missing_fields.any?' if processable_fields.empty?
   end
 
   def valid_row?(row)
@@ -72,6 +90,22 @@ class Imports::CsvImporter
         @existing_titles << title
       end
     end
+  end
+
+  def create_place(row)
+    place_attrs = {}
+    ALLOWED_FIELDS.each do |field|
+      puts "#{field} #{row[field]}"
+      if TEXT_FIELDS.include?(field)
+        place_attrs[field.to_sym] = strip_tags(row[field]).strip if row[field]
+      elsif row[field]
+        place_attrs[field.to_sym] = sanitize(row[field])
+      end
+    end
+    place_attrs[:layer_id] = @layer.id unless place_attrs[:layer_id]
+
+    place = Place.new(place_attrs)
+    place.save
   end
 
   def handle_invalid_rows
