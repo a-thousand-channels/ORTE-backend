@@ -10,7 +10,6 @@ RSpec.describe Imports::CsvImporter do
 
     context 'with valid CSV' do
       it 'creates new Place records from valid rows' do
-        Place.destroy_all
         importer = Imports::CsvImporter.new(file, layer.id)
 
         # Assuming the CSV file has 3 valid rows
@@ -55,6 +54,18 @@ RSpec.describe Imports::CsvImporter do
         end.not_to change(Place, :count)
 
         expect(importer.invalid_rows.count).to eq(1)
+      end
+
+      it 'sanitizes a title with js and html', focus: true do
+        file_with_html = Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv')
+
+        importer = Imports::CsvImporter.new(file_with_html, layer.id)
+
+        expect do
+          importer.import
+        end.to change(Place, :count).by(1)
+
+        expect(Place.first.teaser).to eq('Ein etwas versteckt gelegenes Fleckchen')
       end
     end
   end

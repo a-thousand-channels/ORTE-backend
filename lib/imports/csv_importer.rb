@@ -2,6 +2,8 @@
 
 require 'csv'
 
+include ActionView::Helpers::SanitizeHelper
+
 class Imports::CsvImporter
   attr_reader :invalid_rows
 
@@ -64,7 +66,8 @@ class Imports::CsvImporter
       if @existing_titles.include?(title)
         Rails.logger.error("Place already exists! #{title}")
       else
-        place = Place.new(title: title, lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
+        # TODO: write all fields within ALLOWED_FIELDS array
+        place = Place.new(title: title, teaser: strip_tags(row['teaser']).strip, lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
         place.save!
         @existing_titles << title
       end
