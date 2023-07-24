@@ -12,12 +12,24 @@ RSpec.describe Imports::CsvImporter do
       it 'creates new Place records from valid rows' do
         importer = Imports::CsvImporter.new(file, layer.id)
 
-        # Assuming the CSV file has 3 valid rows
         expect do
           importer.import
         end.to change(Place, :count).by(2)
 
         expect(Place.pluck(:title)).to contain_exactly('Place 1', 'Place 2')
+      end
+      it 'creates new Place records from valid rows except non-allowed columns' do
+        file = Rack::Test::UploadedFile.new('spec/support/files/places_valid_but_with_not_allowed_data.csv', 'text/csv')
+
+        importer = Imports::CsvImporter.new(file, layer.id)
+
+        expect do
+          importer.import
+        end.to change(Place, :count).by(2)
+
+        expect(importer.unprocessable_fields).to contain_exactly('id', 'annotations', 'unknown')
+
+        # TODO: test outcome
       end
     end
 
@@ -56,7 +68,7 @@ RSpec.describe Imports::CsvImporter do
         expect(importer.invalid_rows.count).to eq(1)
       end
 
-      it 'sanitizes a title with js and html', focus: true do
+      it 'sanitizes a title with js and html' do
         file_with_html = Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv')
 
         importer = Imports::CsvImporter.new(file_with_html, layer.id)

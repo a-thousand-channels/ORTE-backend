@@ -5,7 +5,7 @@ require 'csv'
 include ActionView::Helpers::SanitizeHelper
 
 class Imports::CsvImporter
-  attr_reader :invalid_rows
+  attr_reader :invalid_rows, :unprocessable_fields # values needed for testing
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
@@ -20,6 +20,7 @@ class Imports::CsvImporter
     @invalid_rows = []
     @layer = Layer.find(layer_id)
     @existing_titles = []
+    @unprocessable_fields = []
   end
 
   def import
@@ -34,7 +35,7 @@ class Imports::CsvImporter
       end
 
       # dupe handling
-      title = sanitize(processed_row['title'])
+      title = do_sanitize(processed_row['title'])
 
       if @existing_titles.include?(title)
         # TODO!
@@ -64,32 +65,20 @@ class Imports::CsvImporter
 
   def validate_header
     headers = CSV.read(@file.path, headers: true).headers
-    missing_fields = REQUIRED_FIELDS - headers
 
+    missing_fields = REQUIRED_FIELDS - headers
     raise StandardError, "Missing required fields: #{missing_fields.join(', ')}" if missing_fields.any?
 
-    processable_fields = headers - ALLOWED_FIELDS
+    @unprocessable_fields = headers - ALLOWED_FIELDS
+    Rails.logger.error('Not allowed fields found (and skipped)') unless @unprocessable_fields.empty?
 
-    raise StandardError, 'Now allowed fields found if missing_fields.any?' if processable_fields.empty?
+    processable_fields = headers - @unprocessable_fields
+    raise StandardError, 'No allowed fields found' if processable_fields.empty?
   end
 
   def valid_row?(row)
-    place = Place.new(title: sanitize(row['title']), lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
+    place = Place.new(title: do_sanitize(row['title']), lat: do_sanitize(row['lat']), lon: do_sanitize(row['lon']), layer_id: @layer.id)
     place.valid?
-  end
-
-  def process_valid_rows
-    CSV.foreach(@file.path, headers: true) do |row|
-      title = sanitize(row['title'])
-      if @existing_titles.include?(title)
-        Rails.logger.error("Place already exists! #{title}")
-      else
-        # TODO: write all fields within ALLOWED_FIELDS array
-        place = Place.new(title: title, teaser: strip_tags(row['teaser']).strip, lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
-        place.save!
-        @existing_titles << title
-      end
-    end
   end
 
   def create_place(row)
@@ -99,7 +88,7 @@ class Imports::CsvImporter
       if TEXT_FIELDS.include?(field)
         place_attrs[field.to_sym] = strip_tags(row[field]).strip if row[field]
       elsif row[field]
-        place_attrs[field.to_sym] = sanitize(row[field])
+        place_attrs[field.to_sym] = do_sanitize(row[field])
       end
     end
     place_attrs[:layer_id] = @layer.id unless place_attrs[:layer_id]
@@ -110,21 +99,18 @@ class Imports::CsvImporter
 
   def handle_invalid_rows
     error_messages = @invalid_rows.map do |row|
-      place = Place.new(title: sanitize(row['title']), lat: sanitize(row['lat']), lon: sanitize(row['lon']), layer_id: @layer.id)
+      place = Place.new(title: do_sanitize(row['title']), lat: do_sanitize(row['lat']), lon: do_sanitize(row['lon']), layer_id: @layer.id)
       place.valid?
       place.errors.full_messages
     end
 
-    # Implement how you want to handle the invalid rows
-    # For example, you can log the error messages or store them in a separate file
     error_messages.each_with_index do |messages, index|
       Rails.logger.error("Invalid row #{index + 1}: #{@invalid_rows[index]} - Errors: #{messages.join(', ')}")
     end
   end
 
-  def sanitize(value)
-    # Implement any sanitization logic you require
-    # strip leading/trailing whitespace: value.strip
-    value.strip
+  def do_sanitize(value)
+    # call rails sanitizer
+    sanitize(value).strip
   end
 end
