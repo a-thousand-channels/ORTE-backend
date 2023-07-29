@@ -43,6 +43,8 @@ Rails.application.routes.draw do
         get :annotations
         get :relations
         get :images
+        get :import
+        post :importing
       end
       resources :places do
         resources :images
