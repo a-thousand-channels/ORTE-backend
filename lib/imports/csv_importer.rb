@@ -84,7 +84,6 @@ class Imports::CsvImporter
   def create_place(row)
     place_attrs = {}
     ALLOWED_FIELDS.each do |field|
-      puts "#{field} #{row[field]}"
       if TEXT_FIELDS.include?(field)
         place_attrs[field.to_sym] = strip_tags(row[field]).strip if row[field]
       elsif row[field]
@@ -110,7 +109,7 @@ class Imports::CsvImporter
   end
 
   def do_sanitize(value)
-    # call rails sanitizer
+    # call rails sanitizer + strip string
     sanitize(value).strip
   end
 end

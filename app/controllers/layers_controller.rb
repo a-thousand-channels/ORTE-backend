@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images show edit update destroy annotations relations pack build]
+  before_action :set_layer, only: %i[images import show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -18,6 +18,21 @@ class LayersController < ApplicationController
 
   def images
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
+  end
+
+  def import; end
+
+  def importing
+    file = params[:file]
+
+    if file
+      importer = Imports::CsvImporter.new(file, @layer.id)
+      importer.import
+
+      redirect_to map_layer_path(@map, @layer), notice: 'CSV import completed successfully!'
+    else
+      redirect_to map_layer_path(@map, @layer), notice: 'No CSV file provided to import'
+    end
   end
 
   def search
