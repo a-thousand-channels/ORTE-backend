@@ -29,17 +29,21 @@ class LayersController < ApplicationController
     importer = Imports::CsvImporter.new(file, @layer.id)
     importer.import
     @valid_rows = importer.valid_rows
+    session[:importing_rows] = @valid_rows
     @invalid_rows = importer.invalid_rows
   end
 
   def importing
+    importing_rows_data = session[:importing_rows]
+    # if file
+    # importer = Imports::CsvImporter.new(file, @layer.id)
+    #  importer.import
 
-    file = params[:import][:file]
-    if file
-      importer = Imports::CsvImporter.new(file, @layer.id)
-      importer.import
-
-      redirect_to import_map_layer_path(@map, @layer), notice: 'CSV import completed successfully!'
+    if importing_rows_data
+      @importing_rows = importing_rows_data.map { |place_data| Place.new(place_data) }
+      @importing_rows.each(&:save)
+      session.delete(:importing_rows)
+      redirect_to import_map_layer_path(@map, @layer), notice: "CSV import completed successfully! (#{@importing_rows.count} places has been imported)"
     else
       redirect_to import_map_layer_path(@map, @layer), notice: 'No CSV file provided to import'
     end
