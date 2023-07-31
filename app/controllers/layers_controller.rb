@@ -23,9 +23,7 @@ class LayersController < ApplicationController
   def import; end
 
   def import_preview
-    file = params[:file]
     file = params[:import][:file]
-
     return unless file
 
     importer = Imports::CsvImporter.new(file, @layer.id)
@@ -35,8 +33,8 @@ class LayersController < ApplicationController
   end
 
   def importing
-    file = params[:file]
 
+    file = params[:import][:file]
     if file
       importer = Imports::CsvImporter.new(file, @layer.id)
       importer.import
