@@ -5,7 +5,7 @@ require 'csv'
 include ActionView::Helpers::SanitizeHelper
 
 class Imports::CsvImporter
-  attr_reader :invalid_rows, :unprocessable_fields # values needed for testing
+  attr_reader :invalid_rows, :valid_rows, :unprocessable_fields # values needed for testing
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
@@ -15,10 +15,12 @@ class Imports::CsvImporter
 
   # TODO: param: update or skip existing place?
 
-  def initialize(file, layer_id)
+  def initialize(file, layer_id, dry_run: true)
     @file = file
-    @invalid_rows = []
     @layer = Layer.find(layer_id)
+    @dry_run = dry_run
+    @invalid_rows = []
+    @valid_rows = []
     @existing_titles = []
     @unprocessable_fields = []
   end
@@ -46,7 +48,11 @@ class Imports::CsvImporter
         # @existing_titles << title
       else
         @existing_titles << title
-        create_place(processed_row)
+        if @dry_run
+          @valid_rows << processed_row
+        else
+          create_place(processed_row)
+        end
       end
     end
 

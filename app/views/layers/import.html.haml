@@ -22,7 +22,7 @@
         %code
           subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms
 
-      = simple_form_for :import, url: importing_map_layer_path(@map), method: "POST", html: { class: 'form-inline' } do |f|
+      = simple_form_for :import, url: import_preview_map_layer_path(@map), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
         %hr
         %p
           = f.input :file, :as => "file", :label => 'CSV File'
