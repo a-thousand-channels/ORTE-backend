@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images importing import show edit update destroy annotations relations pack build]
+  before_action :set_layer, only: %i[images import import_preview importing show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -21,6 +21,18 @@ class LayersController < ApplicationController
   end
 
   def import; end
+
+  def import_preview
+    file = params[:file]
+    file = params[:import][:file]
+
+    return unless file
+
+    importer = Imports::CsvImporter.new(file, @layer.id)
+    importer.import
+    @valid_rows = importer.valid_rows
+    @invalid_rows = importer.invalid_rows
+  end
 
   def importing
     file = params[:file]

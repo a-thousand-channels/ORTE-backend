@@ -44,6 +44,7 @@ Rails.application.routes.draw do
         get :relations
         get :images
         get :import
+        post :import_preview
         post :importing
       end
       resources :places do
