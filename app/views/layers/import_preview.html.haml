@@ -8,6 +8,10 @@
     Import preview:
     = link_to map_layer_path(@map,@layer) do
       = @layer.title
+  %p
+    Map: #{@layer.map.title}
+    \|
+    Places: #{@layer.places.count}
   .grid-x.grid-padding-x
     .large-12.medium-12.small-12.cell
       %hr
@@ -18,25 +22,54 @@
       - if @invalid_rows.any?
         .alert.alert-danger
           %p Some rows in the CSV are invalid and cannot be imported. Please review the errors below.
+      - if @duplicate_rows.any?
+        .alert.alert-danger
+          %p Some rows in the CSV are duplicates and cannot be imported:
+          %table.table.table-striped
+            %tbody
+              - @duplicate_rows.each do |row|
+                %tr
+                  %td
+                    = row['title']
+
+          %p.hint If you want to replace duplicates, go back, tick the "Overwrite?" option and try again.
+
+      - if @errored_rows
+        %table.table.table-striped
+          %tbody
+            - @errored_rows.each do |error_hash|
+              %tr
+                %td= error_hash[:data]['title']
+                %td= error_hash[:type]
+                %td= error_hash[:messages].join(', ')
 
       - if @valid_rows.any?
         %h2 Preview:
-        %table.table.table-striped
-          %thead
-            %tr
-              - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
-                %th= field.capitalize
-          %tbody
-            - @valid_rows.each do |row|
+        %p Entries: #{@valid_rows.count}
+        .table-wrapper
+          %table.table.table-striped
+            %thead
               %tr
                 - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
-                  %td= row[field]
+                  %th= field.capitalize
+            %tbody
+              - @valid_rows.each do |row|
+                %tr
+                  - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
+                    %td
+                      - if field == 'title'
+                        %span.nobr
+                          = row[field]
+                      - elsif row[field]
+                        = row[field].html_safe
 
         = simple_form_for :import, url: importing_map_layer_path(@map), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
           = hidden_field_tag :dry_run, false
+          = link_to 'Cancel', :back, class: 'button secondary large'
           = button_tag(type: 'submit', class: 'button') do
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" style="vertical-align: -7px"><path d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z"></path></svg>
             Confirm Import
+
 
       - else
         %p No valid rows found.
