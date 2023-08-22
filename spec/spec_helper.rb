@@ -10,7 +10,9 @@ WebMock.disable_net_connect!(allow: [
                                'localhost',
                                '0.0.0.0',
                                '127.0.0.1',
-                               'chromedriver.storage.googleapis.com'
+                               'chromedriver.storage.googleapis.com',
+                               'googlechromelabs.github.io',
+                               'edgedl.me.gvt1.com'
                              ])
 
 # special setup to make feature tests run on ubuntu 20.4 LTS
