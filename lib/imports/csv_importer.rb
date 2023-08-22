@@ -5,7 +5,7 @@ require 'csv'
 include ActionView::Helpers::SanitizeHelper
 
 class Imports::CsvImporter
-  attr_reader :invalid_rows, :valid_rows, :unprocessable_fields # values needed for testing
+  attr_reader :invalid_rows, :valid_rows, :duplicate_rows, :errored_rows, :unprocessable_fields # values needed for testing
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
@@ -20,8 +20,11 @@ class Imports::CsvImporter
     @layer = Layer.find(layer_id)
     @dry_run = dry_run
     @invalid_rows = []
+    @duplicate_rows = []
     @valid_rows = []
-    @existing_titles = []
+    @errored_rows = []
+    # @existing_titles = []
+    @existing_titles = @layer.places.pluck(:title)
     @unprocessable_fields = []
   end
 
@@ -42,7 +45,9 @@ class Imports::CsvImporter
       if @existing_titles.include?(title)
         # TODO!
         # skip existing rows with this title
-        @invalid_rows << processed_row
+        @duplicate_rows << processed_row
+        error_hash = { data: processed_row, type: 'Duplicate', messages: ['Title already exists'] }
+        @errored_rows << error_hash
         # else
         # update existing row
         # @existing_titles << title
@@ -103,14 +108,16 @@ class Imports::CsvImporter
   end
 
   def handle_invalid_rows
-    error_messages = @invalid_rows.map do |row|
+    @invalid_rows.map do |row|
       place = Place.new(title: do_sanitize(row['title']), lat: do_sanitize(row['lat']), lon: do_sanitize(row['lon']), layer_id: @layer.id)
-      place.valid?
-      place.errors.full_messages
+      unless place.valid?
+        error_hash = { data: row, type: 'Invalid data', messages: place.errors.full_messages }
+        @errored_rows << error_hash
+      end
     end
 
-    error_messages.each_with_index do |messages, index|
-      Rails.logger.error("Invalid row #{index + 1}: #{@invalid_rows[index]} - Errors: #{messages.join(', ')}")
+    @errored_rows.each_with_index do |row, index|
+      Rails.logger.error("Invalid row #{index + 1}: #{@invalid_rows[index]} - Errors: #{row['messages']}")
     end
   end
 
