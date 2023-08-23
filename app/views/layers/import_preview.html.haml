@@ -19,11 +19,29 @@
         .alert.alert-danger
           %p= flash[:alert]
 
-      - if @invalid_rows.any?
-        .alert.alert-danger
+
+
+      - if @errored_rows
+        .alert
+          %h3 Invalid entries
           %p Some rows in the CSV are invalid and cannot be imported. Please review the errors below.
+
+          %table.table.table-striped
+            %thead
+              %tr
+                %th Title
+                %th Reason
+                %th Messages
+            %tbody
+              - @errored_rows.each do |error_hash|
+                %tr
+                  %td= error_hash[:data]['title']
+                  %td.nobr= error_hash[:type]
+                  %td
+                    %tt= error_hash[:messages].join(', ')
       - if @duplicate_rows.any?
-        .alert.alert-danger
+        .alert
+          %h3 Duplicate entries
           %p Some rows in the CSV are duplicates and cannot be imported:
           %table.table.table-striped
             %tbody
@@ -34,34 +52,26 @@
 
           %p.hint If you want to replace duplicates, go back, tick the "Overwrite?" option and try again.
 
-      - if @errored_rows
-        %table.table.table-striped
-          %tbody
-            - @errored_rows.each do |error_hash|
-              %tr
-                %td= error_hash[:data]['title']
-                %td= error_hash[:type]
-                %td= error_hash[:messages].join(', ')
-
       - if @valid_rows.any?
-        %h2 Preview:
-        %p Entries: #{@valid_rows.count}
-        .table-wrapper
-          %table.table.table-striped
-            %thead
-              %tr
-                - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
-                  %th= field.capitalize
-            %tbody
-              - @valid_rows.each do |row|
+        .feedback
+          %h3 Entries to be imported
+          %p These #{@valid_rows.count} rows are validated and will be imported:
+          .table-wrapper
+            %table.table.table-striped
+              %thead
                 %tr
                   - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
-                    %td
-                      - if field == 'title'
-                        %span.nobr
-                          = row[field]
-                      - elsif row[field]
-                        = row[field].html_safe
+                    %th= field.capitalize
+              %tbody
+                - @valid_rows.each do |row|
+                  %tr
+                    - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
+                      %td
+                        - if field == 'title'
+                          %span.nobr
+                            = row[field]
+                        - elsif row[field]
+                          = row[field].html_safe
 
         = simple_form_for :import, url: importing_map_layer_path(@map), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
           = hidden_field_tag :dry_run, false

@@ -5,7 +5,7 @@ require 'csv'
 include ActionView::Helpers::SanitizeHelper
 
 class Imports::CsvImporter
-  attr_reader :invalid_rows, :valid_rows, :duplicate_rows, :errored_rows, :unprocessable_fields # values needed for testing
+  attr_reader :invalid_rows, :valid_rows, :duplicate_rows, :errored_rows, :unprocessable_fields
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
@@ -15,22 +15,19 @@ class Imports::CsvImporter
 
   # TODO: param: update or skip existing place?
 
-  def initialize(file, layer_id, dry_run: true)
+  def initialize(file, layer_id)
     @file = file
     @layer = Layer.find(layer_id)
-    @dry_run = dry_run
     @invalid_rows = []
     @duplicate_rows = []
     @valid_rows = []
     @errored_rows = []
-    # @existing_titles = []
     @existing_titles = @layer.places.pluck(:title)
     @unprocessable_fields = []
   end
 
   def import
     validate_header
-
     CSV.foreach(@file.path, headers: true) do |row|
       processed_row = row.to_hash.slice(*ALLOWED_FIELDS)
 
@@ -53,15 +50,12 @@ class Imports::CsvImporter
         # @existing_titles << title
       else
         @existing_titles << title
-        if @dry_run
-          @valid_rows << processed_row
-        else
-          create_place(processed_row)
-        end
+        @valid_rows << processed_row
       end
     end
-
-    if @invalid_rows.empty?
+    if @valid_rows.empty?
+      Rails.logger.info('CSV import returns no valid rows!')
+    elsif @invalid_rows.empty?
       Rails.logger.info('CSV import completed successfully!')
     else
       handle_invalid_rows
@@ -90,21 +84,6 @@ class Imports::CsvImporter
   def valid_row?(row)
     place = Place.new(title: do_sanitize(row['title']), lat: do_sanitize(row['lat']), lon: do_sanitize(row['lon']), layer_id: @layer.id)
     place.valid?
-  end
-
-  def create_place(row)
-    place_attrs = {}
-    ALLOWED_FIELDS.each do |field|
-      if TEXT_FIELDS.include?(field)
-        place_attrs[field.to_sym] = strip_tags(row[field]).strip if row[field]
-      elsif row[field]
-        place_attrs[field.to_sym] = do_sanitize(row[field])
-      end
-    end
-    place_attrs[:layer_id] = @layer.id unless place_attrs[:layer_id]
-
-    place = Place.new(place_attrs)
-    place.save
   end
 
   def handle_invalid_rows
