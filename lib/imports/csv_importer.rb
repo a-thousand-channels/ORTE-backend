@@ -30,7 +30,7 @@ class Imports::CsvImporter
     validate_header
     CSV.foreach(@file.path, headers: true) do |row|
       processed_row = row.to_hash.slice(*ALLOWED_FIELDS)
-      Rails.logger.info("Process row")
+      Rails.logger.info('Process row')
 
       unless !processed_row.empty? && valid_row?(processed_row)
         @invalid_rows << processed_row
@@ -45,12 +45,13 @@ class Imports::CsvImporter
         @duplicate_rows << processed_row
         error_hash = { data: processed_row, type: 'Duplicate', messages: ['Title already exists'] }
         @errored_rows << error_hash
-        # TODO: 
-        # else
+        # TODO: else
         # update existing row
         # @existing_titles << title
       else
         @existing_titles << title
+        processed_row['title'] = title
+        processed_row['teaser'] = do_sanitize(processed_row['teaser']) if processed_row['teaser'].present?
         @valid_rows << processed_row
       end
     end
@@ -83,13 +84,13 @@ class Imports::CsvImporter
   end
 
   def valid_row?(row)
-    place = Place.new(title: do_sanitize(row['title']), lat: do_sanitize(row['lat']), lon: do_sanitize(row['lon']), layer_id: @layer.id)
+    place = Place.new(title: row['title'], lat: row['lat'], lon: row['lon'], layer_id: @layer.id)
     place.valid?
   end
 
   def handle_invalid_rows
     @invalid_rows.map do |row|
-      place = Place.new(title: do_sanitize(row['title']), lat: do_sanitize(row['lat']), lon: do_sanitize(row['lon']), layer_id: @layer.id)
+      place = Place.new(title: row['title'], lat: row['lat'], lon: row['lon'], layer_id: @layer.id)
       unless place.valid?
         error_hash = { data: row, type: 'Invalid data', messages: place.errors.full_messages }
         @errored_rows << error_hash
