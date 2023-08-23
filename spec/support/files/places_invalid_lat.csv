@@ -1,4 +1,4 @@
 id,title,teaser,text,annotations,startdate,enddate,lat,lon,location,address,zip,city,country
-"1","title1","teaser1","text1","annotations1","2025-01-01","2025-01-02","1.2","9","Main Street"
-"2","title2","teaser2","text2","annotations2","2025-01-02","2025-01-03","1,2","",""
-"3","","teaser2","text2","annotations2","2025-01-02","2025-01-03","1.2","9",""
+"1","title1","row with valid data","text1","annotations1","2025-01-01","2025-01-02","1.2","9","Main Street"
+"2","title2","row with wrong lat","text2","annotations2","2025-01-02","2025-01-03","1,2","",""
+"3","","row without title","text2","annotations2","2025-01-02","2025-01-03","1.2","9",""

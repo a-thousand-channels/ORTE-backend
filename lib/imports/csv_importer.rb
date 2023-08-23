@@ -13,7 +13,7 @@ class Imports::CsvImporter
 
   TEXT_FIELDS = %w[title subtitle teaser text location address zip city country].freeze
 
-  # TODO: param: update or skip existing place?
+  # TODO: update existing place as an option
 
   def initialize(file, layer_id)
     @file = file
@@ -22,7 +22,7 @@ class Imports::CsvImporter
     @duplicate_rows = []
     @valid_rows = []
     @errored_rows = []
-    @existing_titles = @layer.places.pluck(:title)
+    @existing_titles = @layer.places ? @layer.places.pluck(:title) : []
     @unprocessable_fields = []
   end
 
@@ -30,6 +30,7 @@ class Imports::CsvImporter
     validate_header
     CSV.foreach(@file.path, headers: true) do |row|
       processed_row = row.to_hash.slice(*ALLOWED_FIELDS)
+      Rails.logger.info("Process row")
 
       unless !processed_row.empty? && valid_row?(processed_row)
         @invalid_rows << processed_row
@@ -40,11 +41,11 @@ class Imports::CsvImporter
       title = do_sanitize(processed_row['title'])
 
       if @existing_titles.include?(title)
-        # TODO!
         # skip existing rows with this title
         @duplicate_rows << processed_row
         error_hash = { data: processed_row, type: 'Duplicate', messages: ['Title already exists'] }
         @errored_rows << error_hash
+        # TODO: 
         # else
         # update existing row
         # @existing_titles << title

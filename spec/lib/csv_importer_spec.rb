@@ -9,23 +9,24 @@ RSpec.describe Imports::CsvImporter do
     let(:layer) { create(:layer) }
 
     context 'with valid CSV' do
-      it 'returns valid rows' do
+      it 'returns valid rows', focus:true do
         importer = Imports::CsvImporter.new(file, layer.id)
-        expect(importer.valid_rows).to contain_exactly('id', 'annotations', 'unknown')
+        expect(importer.valid_rows.count).to eq(1)
       end
+      
       it 'returns valid rows except non-allowed columns' do
         file = Rack::Test::UploadedFile.new('spec/support/files/places_valid_but_with_not_allowed_data.csv', 'text/csv')
 
         importer = Imports::CsvImporter.new(file, layer.id)
         expect(importer.unprocessable_fields).to contain_exactly('id', 'annotations', 'unknown')
-
-        # TODO: test outcome
+        expect(importer.valid_rows).to contain_exactly('id', 'annotations')
       end
 
-      it 'sanitizes a title with js and html', focus: true do
+      it 'sanitizes a title with js and html' do
         file_with_html = Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv')
 
         importer = Imports::CsvImporter.new(file_with_html, layer.id)
+        puts importer.valid_rows.inspect
         expect(importer.valid_rows.count).to eq(1)
         expect(importer.valid_rows.first.teaser).to eq('Ein etwas versteckt gelegenes Fleckchen')
       end

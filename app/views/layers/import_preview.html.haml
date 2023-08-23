@@ -21,7 +21,7 @@
 
 
 
-      - if @errored_rows
+      - if !@errored_rows.empty?
         .alert
           %h3 Invalid entries
           %p Some rows in the CSV are invalid and cannot be imported. Please review the errors below.
@@ -39,18 +39,9 @@
                   %td.nobr= error_hash[:type]
                   %td
                     %tt= error_hash[:messages].join(', ')
-      - if @duplicate_rows.any?
-        .alert
-          %h3 Duplicate entries
-          %p Some rows in the CSV are duplicates and cannot be imported:
-          %table.table.table-striped
-            %tbody
-              - @duplicate_rows.each do |row|
-                %tr
-                  %td
-                    = row['title']
-
-          %p.hint If you want to replace duplicates, go back, tick the "Overwrite?" option and try again.
+          - if @duplicate_rows.any?
+            %p.small If you want to replace duplicates, go back, tick the "Overwrite?" option and try again.
+          = link_to 'Back', :back, class: 'button secondary'            
 
       - if @valid_rows.any?
         .feedback
@@ -75,7 +66,7 @@
 
         = simple_form_for :import, url: importing_map_layer_path(@map), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
           = hidden_field_tag :dry_run, false
-          = link_to 'Cancel', :back, class: 'button secondary large'
+          = link_to 'Back', :back, class: 'button secondary'
           = button_tag(type: 'submit', class: 'button') do
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" style="vertical-align: -7px"><path d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z"></path></svg>
             Confirm Import
