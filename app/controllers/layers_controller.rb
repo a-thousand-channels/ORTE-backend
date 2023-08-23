@@ -43,7 +43,7 @@ class LayersController < ApplicationController
       session.delete(:importing_rows)
       redirect_to map_layer_path(@map, @layer), notice: "CSV import completed successfully! (#{@importing_rows.count} places has been imported to #{@layer.title})"
     else
-      redirect_to import_map_layer_path(@map, @layer), notice: 'No data provided to import'
+      redirect_to import_map_layer_path(@map, @layer), notice: 'No data provided to import!'
     end
   end
 
