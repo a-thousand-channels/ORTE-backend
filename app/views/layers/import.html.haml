@@ -11,8 +11,12 @@
   .grid-x.grid-padding-x
     .large-12.medium-12.small-12.cell
       %hr
-      %p Here you can mass create places for this layer by importing a CSV file.
-      %p.hint You can use this importer to reimport an exported CSV (as a backup) or to set up a set of new places.
+      %p You can create many places for this layer by importing a CSV file.
+      %p.hint
+        You can use this importer also to re-import an earlier exported
+        = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV" do
+          Layer-CSV (as a backup)
+        or to quickly fill a layer with places defined elsewhere.
       %p
         The CSV file must contain the following named columns:
         %code

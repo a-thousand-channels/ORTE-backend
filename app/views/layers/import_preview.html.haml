@@ -39,8 +39,9 @@
                   %td.nobr= error_hash[:type]
                   %td
                     %tt= error_hash[:messages].join(', ')
-          - if @duplicate_rows.any?
+          - if @duplicate_rows.count > 0
             %p.small If you want to replace duplicates, go back, tick the "Overwrite?" option and try again.
+            %p.small Otherwise edit your CSV file and remove those rows.
           = link_to 'Back', :back, class: 'button secondary'            
 
       - if @valid_rows.any?
