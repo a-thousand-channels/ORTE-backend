@@ -1,5 +1,11 @@
 #inherit_from: ../.rubocop.yml
 
+AllCops:
+  NewCops: enable
+
+require: 
+  # - rubocop-rspec
+
 Style/AsciiComments:
   Enabled: false
 
