@@ -28,7 +28,7 @@ class LayersController < ApplicationController
     return unless file
 
     begin
-      importer = Imports::CsvImporter.new(file, @layer.id, @overwrite)
+      importer = Imports::CsvImporter.new(file, @layer.id, overwrite: @overwrite)
       importer.import
       flash[:notice] = 'CSV read successfully!'
     rescue CSV::MalformedCSVError => e
