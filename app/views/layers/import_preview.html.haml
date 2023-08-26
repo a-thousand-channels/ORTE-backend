@@ -19,6 +19,9 @@
         .alert.alert-danger
           %p= flash[:alert]
 
+      - if @overwrite
+        %p.hint
+          Overwriting places with the same title is enabled.
 
 
       - if !@errored_rows.empty?
@@ -43,7 +46,6 @@
             %p.small If you want to replace duplicates, go back, tick the "Overwrite?" option and try again.
             %p.small Otherwise edit your CSV file and remove those rows.
           = link_to 'Back', :back, class: 'button secondary'            
-
       - if @valid_rows.any?
         .feedback
           %h3 Entries to be imported

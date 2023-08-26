@@ -5,7 +5,7 @@ require 'csv'
 include ActionView::Helpers::SanitizeHelper
 
 class Imports::CsvImporter
-  attr_reader :invalid_rows, :valid_rows, :duplicate_rows, :errored_rows, :unprocessable_fields
+  attr_reader :valid_rows, :invalid_rows, :duplicate_rows, :errored_rows, :unprocessable_fields, :error
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
@@ -15,9 +15,10 @@ class Imports::CsvImporter
 
   # TODO: update existing place as an option
 
-  def initialize(file, layer_id)
+  def initialize(file, layer_id, overwrite: false)
     @file = file
     @layer = Layer.find(layer_id)
+    @overwrite = overwrite
     @invalid_rows = []
     @duplicate_rows = []
     @valid_rows = []
@@ -40,14 +41,11 @@ class Imports::CsvImporter
       # dupe handling
       title = do_sanitize(processed_row['title'])
 
-      if @existing_titles.include?(title)
+      if @existing_titles.include?(title) && @overwrite == false
         # skip existing rows with this title
         @duplicate_rows << processed_row
         error_hash = { data: processed_row, type: 'Duplicate', messages: ['Title already exists'] }
         @errored_rows << error_hash
-        # TODO: else
-        # update existing row
-        # @existing_titles << title
       else
         @existing_titles << title
         processed_row['title'] = title
@@ -59,9 +57,10 @@ class Imports::CsvImporter
       Rails.logger.info('CSV import returns no valid rows!')
     elsif @invalid_rows.empty?
       Rails.logger.info('CSV import completed successfully!')
-    else
-      handle_invalid_rows
     end
+    return if @invalid_rows.empty?
+
+    handle_invalid_rows
   end
 
   private
@@ -72,7 +71,6 @@ class Imports::CsvImporter
 
   def validate_header
     headers = CSV.read(@file.path, headers: true).headers
-
     missing_fields = REQUIRED_FIELDS - headers
     raise StandardError, "Missing required fields: #{missing_fields.join(', ')}" if missing_fields.any?
 

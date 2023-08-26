@@ -24,10 +24,16 @@ class LayersController < ApplicationController
 
   def import_preview
     file = params[:import][:file]
+    @overwrite = params[:import][:overwrite] == '1'
     return unless file
 
-    importer = Imports::CsvImporter.new(file, @layer.id)
-    importer.import
+    begin
+      importer = Imports::CsvImporter.new(file, @layer.id, @overwrite)
+      importer.import
+      flash[:notice] = 'CSV read successfully!'
+    rescue CSV::MalformedCSVError => e
+      flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
+    end
     @valid_rows = importer.valid_rows
     session[:importing_rows] = @valid_rows
     @invalid_rows = importer.invalid_rows
