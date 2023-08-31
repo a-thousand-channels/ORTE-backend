@@ -54,31 +54,33 @@
           = yield
     %footer.footer
       .grid-x
-        .cell.large-8.medium-8.small-6
+        .cell.large-6.medium-6.small-12
           = render partial: "layouts/version"
           = render partial: "layouts/credits"
-        .cell.large-4.medium-4.small-6.text-right
+          - if user_signed_in?
+            %span.show-for-small-only
+              &nbsp;
+              %a{:href => settings_path, :title => 'Your Settings'}
+                %i.fi-widget.fi-18
+
+
+        .cell.large-6.medium-6.small-12.text-right
           - if controller_name == 'layers' && params[:action] == 'show' && @map && @layer
-            Export:
+            %span.show-for-medium
+              Export:
             = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV", class: 'small' do
               CSV
             \::
             = link_to public_map_layer_path(@map,@layer,:format => :json ), :title => "Export this layer as JSON", class: 'small' do
               JSON
             \::
+            = link_to public_map_layer_path(@map,@layer,:format => :zip), :title => "Export this layer as ZIP archive (JSON & images)", class: 'small' do
+              JSON & Img
+            \::
             = link_to public_map_layer_path(@map,@layer,:format => :geojson ), :title => "Export this layer as GeoJSON", class: 'small' do
               GeoJSON
-            \::
-            = link_to public_map_layer_path(@map,@layer,:format => :zip), :title => "Export this layer as ZIP archive (JSON & images)", class: 'small' do
-              JSON & Images
           - if controller_name == 'maps' && params[:action] == 'show' && @map
             \::
             = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON", class: 'small' do
               Public JSON
-          - if user_signed_in?
-            %span.show-for-small-only
-              &nbsp;|&nbsp;
-              %a{:href => settings_path, :title => 'Your Settings'}
-                %i.fi-widget.fi-21
-
 
