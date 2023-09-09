@@ -103,12 +103,18 @@ function lookupNominatim(address, url) {
                                 address = "&address=" + road;
                             }
                         }
-                        if (typeof val.address.postcode !== 'undefined') {
-                            postcode = "&postcode=" + val.address.postcode;
+                        if (val.address.postcode) {
+                            postcode = "&zip=" + val.address.postcode;
                         }
                         var city = '';
                         if (val.address && val.address.city && (val.address.city !== 'undefined')) {
                             city = val.address.city;
+                        } else if (val.address.town) {
+                            city = val.address.town;
+                        } else if (val.address.village) {
+                            city = val.address.village;
+                        } else if (val.address.municipality) {
+                            city = val.address.municipality;
                         } else {
                             city = val.address.state;
                         }
