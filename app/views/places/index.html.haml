@@ -15,7 +15,7 @@
     %span.shy (with #{@places.count} Places)
 
   .grid-x.grid-padding-x
-    .medium-12.cell
+    .medium-12.cell.card
       %p.text-left.hint-simple
         - if @layer.published
           %i.fi-eye.fi-18
@@ -24,7 +24,7 @@
           %i.fi-lock.fi-18
           The content of this layer is not public
   .grid-x.grid-padding-x
-    .medium-7.cell
+    .medium-7.cell.card
       %p.text-left.hint-simple
         Privacy settings for this layer:
       %ul.hint
@@ -46,19 +46,24 @@
         You can change these settings
         = link_to edit_map_layer_path(@map,@layer) do
           in the edit mode
+        %br
+        %br
     .medium-5.cell
-      %p.text-right.hint-simple
-        See also:
       %ul.hint
         %li
           = link_to annotations_map_layer_path(@map,@layer) do
-            Annotations (about Places)
+            All Annotations (about Places)
         %li
           = link_to relations_map_layer_path(@map,@layer) do
-            Relations (between places)
+            All relations (between places)
         %li
           = link_to images_map_layer_path(@map,@layer) do
-            All Images of this layer
+            List of all images
+      %hr
+      %ul.hint
+        %li
+          = link_to import_map_layer_path(@map,@layer) do
+            Import CSV to create places from
   %p
     &nbsp;
   %table
