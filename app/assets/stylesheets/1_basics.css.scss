@@ -86,6 +86,9 @@ span.name, label {
     line-height: 1.2;
     padding-bottom: 5px;
 }
+label > [type="checkbox"] {
+  margin: 0 0.2rem 0.2rem;
+}
 label.text {
   padding-top: 10px;
 
@@ -144,6 +147,9 @@ a.button.small {
     font-size: 1em;
     line-height: 1;
     position: absolute;
+    @media screen and (max-width: 39.9375em) {
+      right: 18px;
+    }
 }
 a.small.button.rounded {
     border-radius: 20px;
@@ -468,11 +474,15 @@ div.switch {
     margin-bottom: 0;
     vertical-align: -10px;
     .switch-paddle {
-      width: 7rem;
+      width: 7.2rem;
+      padding-right: 6px;
     }
     input:checked ~ .switch-paddle::after {
       left: auto;
       right: 0.25rem;
+    }
+    .switch-inactive {
+      right: 10%;
     }
 }
 p#remap {
