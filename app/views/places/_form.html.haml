@@ -136,7 +136,7 @@
           %p.hint Select one item from list
         - if @place.submissions.count > 0
           = render 'places/list/submissions'
-        %hr
+          %hr
         = render 'places/list/annotations'
         %hr.show-for-small-only
     .large-6.medium-6.cell
@@ -166,8 +166,8 @@
         = f.input :link, :label => 'Weblink', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
         %hr
+        %label Images
         - if params[:action] == 'edit'
-          %label Images
           = link_to new_map_layer_place_image_path(@place.layer.map,@place.layer,@place), class: 'button' do
             %i.fi.fi-plus
             Add image
@@ -175,7 +175,7 @@
             Please upload one image and describe its content and metadata. You can repeat this to add multiple images to this place.
         - else
           %p.hint.text-left
-            You have to create this place before you can add images
+            You have to save this place, before you can add images
         = render 'places/form/images'
         %hr
         - if params[:action] == 'edit'
@@ -186,7 +186,6 @@
           %p.hint
             Please upload one video and describe its content and metadata. You can repeat this to add multiple videos to this place.
         = render 'places/form/videos'
-        %hr
         %label Audio
         - if @place.audio && @place.audio.attached?
           %p
@@ -194,11 +193,11 @@
               = @place.audio.filename
           %p.shy Upload a new file:
         = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
-        %p.hint Please upload MP3 only
+        %p.hint Please upload in MP3 format only
         %hr
         - if admin?
-          = f.input :shy, label: "Don't show this place on the map level (with all layers)"
-          %p.hint This option is useful, if have the same place on several layers. Define all but one of those places as shy to hide them on the map level"
+          = f.input :shy, label: "Hide on map level (w/all layers)"
+          %p.hint This option is useful, if have the same place on several layers. Select all but one of those places to hide them on the map level"
   %hr
   .grid-x
     .large-6.medium-6.small-12.cell

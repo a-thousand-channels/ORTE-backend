@@ -30,6 +30,9 @@ function PopupFullContent(place) {
         }
     }
     content += "</h4>";
+    if (place.subtitle) {
+        content += "<p>" + place.address + "</p>";
+    }
     if (place.teaser) {
         var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
         teaser = teaser.replace(/(?:\r\n|\r|\n)/g, '<br>'); // line breaks
