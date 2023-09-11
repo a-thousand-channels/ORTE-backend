@@ -9,10 +9,10 @@ Based on Ruby on Rails 6.1, Ruby 3, MySQL/MariaDB, jQuery, Leaflet and Foundatio
 
 Contributions to this application are appreciated (see below).
 
-<img src="https://raw.githubusercontent.com/ut/ORTE-backend/main/app/assets/images/ORTE-sample-map-desktop.jpg" style="max-width: 640px" width="640" />
+<img src="https://raw.githubusercontent.com/a-thousand-channels/ORTE-backend/main/app/assets/images/ORTE-sample-map-desktop.jpg" style="max-width: 640px" width="640" />
 
-<img src="https://raw.githubusercontent.com/ut/ORTE-backend/main/app/assets/images/ORTE-sample-map-mobile.jpg" style="max-width: 360px" width="320" />
-<img src="https://raw.githubusercontent.com/ut/ORTE-backend/main/app/assets/images/ORTE-sample-map-mobile2.jpg" style="max-width: 360px" width="320" />
+<img src="https://raw.githubusercontent.com/a-thousand-channels/ORTE-backend/main/app/assets/images/ORTE-sample-map-mobile.jpg" style="max-width: 360px" width="320" />
+<img src="https://raw.githubusercontent.com/a-thousand-channels/ORTE-backend/main/app/assets/images/ORTE-sample-map-mobile2.jpg" style="max-width: 360px" width="320" />
 
 
 ## Address and geolocation lookup
