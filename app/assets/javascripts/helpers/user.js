@@ -8,9 +8,9 @@ function userZoomLevel(map) {
         var zl = map.getZoom();
         localStorage.setItem('UserZoomLevel', zl);
         var sw = screen.width;
-        var sw_em = sw / parseFloat($('body').css('font-size'))
+        var sw_em = parseInt(sw / parseFloat($('body').css('font-size')));
         if ( sw_em > 39.9375 ) {
-            $('#show_zoomlevel').html("Custom level: " + zl + " - "+sw_em);
+            $('#show_zoomlevel').html("Level: " + zl);
         }
     });
 }
