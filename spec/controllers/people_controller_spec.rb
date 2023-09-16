@@ -2,69 +2,68 @@
 
 require 'rails_helper'
 
-RSpec.describe PeopleController, type: :controller do
+RSpec.describe PagesController, type: :controller do
   describe "functionalities with logged in user with role 'admin'" do
     before do
       group = FactoryBot.create(:group)
       user = FactoryBot.create(:admin_user, group: group)
       sign_in user
-      @map = create(:map, group: group)
     end
 
-    let(:person) do
-      FactoryBot.create(:person, map: @map)
+    let(:page) do
+      FactoryBot.create(:page)
     end
 
     let(:valid_attributes) do
-      FactoryBot.build(:person, map: @map).attributes
+      FactoryBot.build(:page).attributes
     end
 
     let(:invalid_attributes) do
-      FactoryBot.attributes_for(:person, :invalid, map: @map)
+      FactoryBot.attributes_for(:page, :invalid)
     end
 
     let(:valid_session) { {} }
 
     describe 'GET #index' do
       it 'returns a success response' do
-        person = Person.create! valid_attributes
-        get :index, params: { map_id: @map.id }, session: valid_session
+        page = Page.create! valid_attributes
+        get :index, params: {}, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
 
     describe 'GET #new' do
       it 'returns a success response' do
-        get :new, params: { map_id: @map.id }, session: valid_session
+        get :new, params: {}, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
 
     describe 'GET #edit' do
       it 'returns a success response' do
-        person = Person.create! valid_attributes
-        get :edit, params: { id: person.to_param, map_id: @map.id }, session: valid_session
+        page = Page.create! valid_attributes
+        get :edit, params: { id: page.to_param }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
 
     describe 'POST #create' do
       context 'with valid params' do
-        it 'creates a new Person' do
+        it 'creates a new Page' do
           expect do
-            post :create, params: { person: valid_attributes, map_id: @map.id }, session: valid_session
-          end.to change(Person, :count).by(1)
+            post :create, params: { page: valid_attributes }, session: valid_session
+          end.to change(Page, :count).by(1)
         end
 
-        it 'redirects to the created person' do
-          post :create, params: { person: valid_attributes, map_id: @map.id }, session: valid_session
-          expect(response).to redirect_to(map_people_url(@map))
+        it 'redirects to the created page' do
+          post :create, params: { page: valid_attributes }, session: valid_session
+          expect(response).to redirect_to(page_url(@page))
         end
       end
 
       context 'with invalid params' do
         it "returns a success response (i.e. to display the 'new' template)" do
-          post :create, params: { person: invalid_attributes, map_id: @map.id }, session: valid_session
+          post :create, params: { page: invalid_attributes }, session: valid_session
           expect(response).to have_http_status(422)
         end
       end
@@ -73,29 +72,29 @@ RSpec.describe PeopleController, type: :controller do
     describe 'PUT #update' do
       context 'with valid params' do
         let(:new_attributes) do
-          FactoryBot.attributes_for(:person, :changed)
+          FactoryBot.attributes_for(:page, :changed)
         end
 
-        it 'updates the requested person' do
-          person = Person.create! valid_attributes
-          put :update, params: { id: person.to_param, map_id: @map.id, person: new_attributes }, session: valid_session
-          person.reload
-          expect(person.name).to eq('OtherName')
+        it 'updates the requested page' do
+          page = Page.create! valid_attributes
+          put :update, params: { id: page.to_param, page: new_attributes }, session: valid_session
+          page.reload
+          expect(page.name).to eq('OtherName')
         end
 
-        it 'redirects to the personset' do
-          person = Person.create! valid_attributes
-          put :update, params: { id: person.to_param, map_id: @map.id, person: valid_attributes }, session: valid_session
-          expect(response).to redirect_to(map_people_url(@map))
+        it 'redirects to the pageset' do
+          page = Page.create! valid_attributes
+          put :update, params: { id: page.to_param, page: valid_attributes }, session: valid_session
+          expect(response).to redirect_to(page_url(@page))
         end
       end
 
       context 'with invalid params' do
         it 'returns an error response' do
-          person = Person.create! valid_attributes
+          page = Page.create! valid_attributes
           expect do
-            post :update, params: { id: person.to_param, map_id: @map.id, person: invalid_attributes }
-          end.to_not change(Person, :count)
+            post :update, params: { id: page.to_param, page: invalid_attributes }
+          end.to_not change(Page, :count)
 
           expect(response).to have_http_status(422)
         end
@@ -103,17 +102,17 @@ RSpec.describe PeopleController, type: :controller do
     end
 
     describe 'DELETE #destroy' do
-      it 'destroys the requested person' do
-        person = Person.create! valid_attributes
+      it 'destroys the requested page' do
+        page = Page.create! valid_attributes
         expect do
-          delete :destroy, params: { id: person.to_param, map_id: @map.id }, session: valid_session
-        end.to change(Person, :count).by(-1)
+          delete :destroy, params: { id: page.to_param }, session: valid_session
+        end.to change(Page, :count).by(-1)
       end
 
-      it 'redirects to the persons list' do
-        person = Person.create! valid_attributes
-        delete :destroy, params: { id: person.to_param, map_id: @map.id }, session: valid_session
-        expect(response).to redirect_to(map_people_url(@map))
+      it 'redirects to the pages list' do
+        page = Page.create! valid_attributes
+        delete :destroy, params: { id: page.to_param }, session: valid_session
+        expect(response).to redirect_to(page_url(@page))
       end
     end
   end
