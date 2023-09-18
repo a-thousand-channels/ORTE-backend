@@ -1,0 +1,5 @@
+- if @pages && @pages.count > 0
+  - @pages.each do |page|
+    = link_to page, { class: 'shy spacer' } do 
+      = page.title
+

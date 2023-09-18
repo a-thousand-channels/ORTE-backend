@@ -109,6 +109,10 @@ footer {
     position: fixed;
     bottom: 0;
     width: 100vw;
+
+    @media screen and (max-width: 39.9375em) {
+      padding: 10px 10px;
+    }
 }
 
 
