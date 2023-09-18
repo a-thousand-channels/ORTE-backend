@@ -6,8 +6,6 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-
-
   def report_csp
     # do nothing right now...
   end
