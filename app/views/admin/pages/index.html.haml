@@ -1,0 +1,46 @@
+- content_for(:title) { "Pages" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to settings_path, :class=>'close_link' do
+      %i.fi.fi-x
+  %p.small
+    %a{:href => settings_path, :title => 'Settings'}
+      %i.fi-widget.fi-21
+      Settings
+
+  %h1 Pages
+
+  %table
+    %tbody
+      - @pages.each do |page|
+        %tr
+          %td
+            %h4
+              = link_to admin_page_path(page) do
+                = page.title
+              - if page.is_published
+                %i.fi-eye.fi-24{title: 'Page is published'}
+              - else
+                %i.fi-x.fi-24{title: 'Page is hidden'}
+              - if page.in_menu
+                %i.fi-check.fi-24{title: 'Page is in Menu'}
+
+
+
+
+            - if page.teasertext.present?
+              %p= page.teasertext.html_safe
+
+          %td
+            = link_to edit_admin_page_path(page), :class => 'button' do
+              %i.fi.fi-pencil
+              Edit
+            %p.shy
+              Last edited:
+              %br
+              #{page.updated_at.strftime("%d.%m.%y, %H:%M")}
+  %p
+    = link_to new_admin_page_path, :class=>'button' do
+      %i.fi-plus.fi-24
+      New Page
