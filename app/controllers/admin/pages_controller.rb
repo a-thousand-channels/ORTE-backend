@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class PagesController < ApplicationController
+class Admin::PagesController < ApplicationController
   before_action :set_page, only: %i[show edit update destroy]
 
   def index
-    @pages = if admin?
+    @pages = if current_user.admin? && current_user.group.title == 'Admins'
                Page.all
              else
                Page.published
@@ -22,7 +22,7 @@ class PagesController < ApplicationController
 
     respond_to do |format|
       if @page.save
-        format.html { redirect_to page_url(@page), notice: 'Page was successfully created.' }
+        format.html { redirect_to admin_page_url(@page), notice: 'Page was successfully created.' }
         format.json { render :index, status: :created, location: @page }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -35,7 +35,7 @@ class PagesController < ApplicationController
   def update
     respond_to do |format|
       if @page.update(page_params)
-        format.html { redirect_to page_url(@page), notice: 'Page was successfully updated.' }
+        format.html { redirect_to admin_page_url(@page), notice: 'Page was successfully updated.' }
         format.json { render :index, status: :ok, location: @page }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -47,12 +47,12 @@ class PagesController < ApplicationController
   def destroy
     if @page.destroy
       respond_to do |format|
-        format.html { redirect_to page_url(@page), notice: 'Page was successfully destroyed.' }
+        format.html { redirect_to admin_page_url(@page), notice: 'Page was successfully destroyed.' }
         format.json { head :no_content }
       end
     else
       respond_to do |format|
-        format.html { redirect_to page_url(@page), notice: 'Page could not be destroyed, since its connected to 1 or more annotations.' }
+        format.html { redirect_to admin_page_url(@page), notice: 'Page could not be destroyed, since its connected to 1 or more annotations.' }
       end
     end
   end
@@ -64,6 +64,6 @@ class PagesController < ApplicationController
   end
 
   def page_params
-    params.require(:page).permit(:title, :is_published, :is_in_menu, :ptype, :teasertext, :fulltext, :footertext)
+    params.require(:page).permit(:title, :is_published, :in_menu, :ptype, :teasertext, :fulltext, :footertext)
   end
 end
