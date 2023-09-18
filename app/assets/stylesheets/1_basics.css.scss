@@ -56,6 +56,17 @@ div.small {
     line-height: 1;
 }
 .clear { clear: both; }
+.spacer {
+  padding: 0 10px;
+
+  @media screen and (max-width: 39.9375em) {
+    padding: 0 2px;
+  }
+  i {
+    vertical-align: bottom;
+  }
+}
+
 
 tt {
   font-size: 9pt;

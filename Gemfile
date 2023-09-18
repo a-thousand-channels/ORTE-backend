@@ -80,7 +80,7 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
-  gem 'selenium-webdriver', '4.9.0' # 4.9.1 crashed feature tests
+  gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'simplecov-small-badge', require: false
