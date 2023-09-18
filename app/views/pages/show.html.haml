@@ -18,12 +18,12 @@
 
   - if @page.teasertext
     %p.teasertext
-      = @page.teasertext.html_safe
+      =sanitze @page.teasertext.html_safe
   - if @page.fulltext
     %p.fulltext
-      = @page.fulltext.html_safe
+      =sanitze @page.fulltext.html_safe
   - if @page.footertext
     %p.footertext
-      = @page.footertext.html_safe
+      =sanitze @page.footertext.html_safe
  
 
