@@ -60,7 +60,7 @@ class Admin::PagesController < ApplicationController
   private
 
   def set_page
-    @page = Page.find(params[:id])
+    @page = Page.find_by_slug(params[:id]) || Layer.find_by_id(params[:id])
   end
 
   def page_params
