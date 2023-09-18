@@ -21,6 +21,12 @@ function PopupFullContent(place) {
             content += " // " + place.address;
         }
         content += "</p>";
+    } else if (place.address) {
+        content += "<p class='shy'>" + place.address;
+        if ( place.city) {
+            content += ", " + place.city;
+        }
+        content += "</p>";
     }
     content += "<h4>";
     if (place.show_link) {
@@ -31,7 +37,7 @@ function PopupFullContent(place) {
     }
     content += "</h4>";
     if (place.subtitle) {
-        content += "<p>" + place.address + "</p>";
+        content += "<p>" + place.subtitle + "</p>";
     }
     if (place.teaser) {
         var teaser = place.teaser.replace(/<[^>]*>?/gm, ''); // remove html
