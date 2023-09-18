@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_16_110019) do
+ActiveRecord::Schema.define(version: 2023_09_18_151955) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -227,6 +227,8 @@ ActiveRecord::Schema.define(version: 2023_09_16_110019) do
     t.text "footertext"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "slug"
+    t.index ["slug"], name: "index_pages_on_slug", unique: true
   end
 
   create_table "people", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
