@@ -160,6 +160,6 @@
               - warning = 'Are you sure to delete this place and all attached images and/or videos?'
             - else
               - warning = 'Are you sure to delete this place?'
-            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button warning small" do
+            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button alert small" do
               %i.fi-trash.fi-21
               Destroy
