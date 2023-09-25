@@ -117,15 +117,33 @@ class LayersController < ApplicationController
   # POST /layers.json
   def create
     @layer = Layer.new(layer_params)
+    @layer.exif_remove = false 
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
+
+    if params[:ltype] == 'image'
+      @layer.ltype = 'image'
+    end
+
+    # TODO: normal save if ltype is not image
+
     respond_to do |format|
-      if @layer.save
-        format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was created.' }
-        format.json { render :show, status: :created, location: @layer }
-      else
-        format.html { render :new }
-        format.json { render json: @layer.errors, status: :unprocessable_entity }
+      if validate_images_format 
+        created_places, skipped_images = create_places_with_exif_data
+        if skipped_images && skipped_images.any?
+          flash[:alert] = "The following images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}"
+        end
+
+        unless created_places
+          flash[:alert] = "There has been no images with geodata found. Please check your images and try again."
+          format.html { render :new }
+        elseif @layer.save
+          format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was created.' }
+          format.json { render :show, status: :created, location: @layer }
+        else
+          format.html { render :new }
+          format.json { render json: @layer.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -177,8 +195,73 @@ class LayersController < ApplicationController
     @layer = Layer.find_by_slug(params[:id]) || Layer.find_by_id(params[:id])
   end
 
+  def images_params
+    params.require(:layer).permit(:images_creator, :images_licence, :images_source, :images_files => [])
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption)
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :images_creator, :images_licence, :images_source, :images_files => [])
+  end
+
+  def validate_images_format
+    if images_params
+      images_params[:images_files].each do |file|
+        unless ['image/jpeg', 'image/png', 'image/gif'].include?(file.content_type)
+          @layer.errors.add(:images, "Invalid file format for #{file.filename}")
+          return false
+        end
+      end
+      true
+    end
+  end 
+
+  def convert_dms_to_decimal(coord, ref)
+    # Extract the parts of the coordinate
+    parts = coord.split(', ')
+    degrees = parts[0].to_f
+    minutes = parts[1].to_f
+    seconds = parts[2].to_f
+
+    # Calculate the decimal degrees
+    decimal_degrees = degrees + (minutes / 60) + (seconds / 3600)
+
+    # Adjust for the hemisphere
+    if ref == "S" or ref == "W"
+      decimal_degrees *= -1
+    end
+    decimal_degrees
+  end
+
+  def create_places_with_exif_data
+    created_places = []
+    skipped_images = []    
+    images_params[:images_files].each do |file|
+      place = @layer.places.build
+      # exif = MiniExiftool.new(file.tempfile.path)
+      i = MiniMagick::Image.open(file.tempfile.path)
+      exif = i.exif
+      # Extract EXIF data and set Place or Image attributes
+      place.title = exif['ImageDescription'] || file.original_filename
+      place.teaser = ''
+      place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
+      place.lon = convert_dms_to_decimal(exif['GPSLongitude'], exif['GPSLongitudeRef'])
+      place.published = true
+ 
+      image = place.images.build
+      image.title = exif['ImageDescription'] || file.original_filename
+      image.creator = exif['Artist'] | images_params[:images_creator]
+      image.licence = exif['Copyright'] | images_params[:images_licence]
+      image.source = images_params[:images_source] 
+      image.file = file
+      image.preview = true
+      if exif['GPSLatitude'].present?
+        place.save!      
+        created_places << place  
+      else
+        skipped_images << file.original_filename
+      end
+    end
+    [created_places, skipped_images]
   end
 end

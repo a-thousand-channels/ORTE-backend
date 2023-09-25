@@ -14,6 +14,9 @@ class Layer < ApplicationRecord
 
   before_save :strip_exif_data
 
+  attr_accessor :images_creator, :images_licence, :images_source, :images_files
+
+
   extend FriendlyId
   friendly_id :title, use: :slugged
 
