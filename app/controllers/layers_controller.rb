@@ -128,7 +128,7 @@ class LayersController < ApplicationController
     # TODO: normal save if ltype is not image
 
     respond_to do |format|
-      if validate_images_format 
+      if params[:ltype] == 'image' && validate_images_format 
         created_places, skipped_images = create_places_with_exif_data
         if skipped_images && skipped_images.any?
           flash[:alert] = "The following images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}"
@@ -144,6 +144,14 @@ class LayersController < ApplicationController
           format.html { render :new }
           format.json { render json: @layer.errors, status: :unprocessable_entity }
         end
+      else
+        if @layer.save
+          format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was created.' }
+          format.json { render :show, status: :created, location: @layer }
+        else
+          format.html { render :new }
+          format.json { render json: @layer.errors, status: :unprocessable_entity }
+        end        
       end
     end
   end

@@ -26,18 +26,19 @@
             = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
             = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
             = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
-        %hr
-        .grid-x.grid-padding-x
-          .small-6.cell        
-            = f.input :images_files, as: :file, label: 'Images', :input_html => { multiple: true}, required: false
-            %p.shy Please upload one or more images. If the images are having geodata, a place will be created for each image and placed on the map.
-          .small-6.cell                      
-            = f.input :images_creator, label: 'Creator of these images'
-            %p.hint Creator of these images
-            = f.input :images_licence, label: 'Licence for all images'
-            %p.hint Licence of the image (CC, Public Domain, Rights reserved)
-            = f.input :images_source, label: 'Source'
-            %p.hint Origin of these images    
+        - if params[:ltype] == 'image'            
+          %hr
+          .grid-x.grid-padding-x
+            .small-6.cell        
+              = f.input :images_files, as: :file, label: 'Images', :input_html => { multiple: true}, required: false
+              %p.shy Please upload one or more images. If the images are having geodata, a place will be created for each image and placed on the map.
+            .small-6.cell                      
+              = f.input :images_creator, label: 'Creator of these images'
+              %p.hint Creator of these images
+              = f.input :images_licence, label: 'Licence for all images'
+              %p.hint Licence of the image (CC, Public Domain, Rights reserved)
+              = f.input :images_source, label: 'Source'
+              %p.hint Origin of these images    
         %hr        
         .grid-x.grid-padding-x
           .small-5.cell
