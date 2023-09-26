@@ -101,7 +101,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         } else {
           console.log("DRAW MARKER");
-          drawMarkers(map,data.id,level,String(false),text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
+          drawMarkers(map,data.id,data.ltype,level,String(false),text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         }
         drawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,places_with_relations,data.relations_bending,data.relations_coloring);
@@ -125,7 +125,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
-          drawMarkers(map,data.id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
+          drawMarkers(map,data.id,data.ltype,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
         });
         marker_meta_layers.addLayer(marker_layers);
 
