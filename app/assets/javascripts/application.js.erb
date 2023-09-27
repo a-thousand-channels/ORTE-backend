@@ -283,7 +283,7 @@ jQuery(function ($) {
   if ( !localStorage.overlayImages ) {
       localStorage.overlayImages = 'false';
   }
-console.log("true true")
+  // ensure that places are always visible
   if ( ( localStorage.overlayPlaces == 'false' ) && ( localStorage.overlayRelations == 'false' ) && ( localStorage.overlayLabels == 'false' ) &&  ( localStorage.overlayImages == 'false' ) ) {
       localStorage.overlayPlaces = 'true';
       console.log("true true")
@@ -405,7 +405,7 @@ console.log("true true")
     console.log("Baselayer change to " + e.name);
     localStorage.baselayer = e.name;
   })
-  map.on('overlayadd', function(e){
+   map.on('overlayadd', function(e){
     console.log("Overlay added");
     console.log(e.name);
     if ( e.name == 'Places' ) {
@@ -417,7 +417,7 @@ console.log("true true")
     } else if ( e.name == 'Images' ) {
       localStorage.overlayImages = true;
     }
-  })
+  });
   map.on('overlayremove ', function(e){
     console.log("Overlay removed");
     console.log(e.name);
@@ -430,13 +430,16 @@ console.log("true true")
     } else if ( e.name == 'Images' ) {
       localStorage.overlayImages = false;
     }
-
-  })
+  });
   map.on('zoomend',function(e){
-    if (map.getZoom() < 14 ){
-      map.removeLayer(text_layers);
-    } else {
-      map.addLayer(text_layers);
+    if ( localStorage.overlayLabels == 'true' ) {   
+      $('#show_zoomlevel').html("Level: "+map.getZoom());
+      if (map.getZoom() < 14 ){
+        map.removeLayer(text_layers);
+        localStorage.overlayLabels = true;
+      } else {
+        map.addLayer(text_layers);
+      }
     }
   });
   L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
