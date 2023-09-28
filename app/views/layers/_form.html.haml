@@ -1,4 +1,5 @@
 = simple_form_for([@map, @layer]) do |f|
+  = f.hidden_field :ltype, value: @layer.ltype
   .grid-x
     .large-12.cell
       = f.error_notification
