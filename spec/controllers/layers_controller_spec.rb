@@ -199,6 +199,58 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
+    describe 'POST #create with image layer' do
+      let(:image_layer) do
+        FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
+        # TODO: add images
+      end
+      let(:image_files) do
+        p = create(:place, layer: image_layer)
+        i = FactoryBot.build(:image, :with_geocoded_file, place: p)
+        j = FactoryBot.build(:image, :with_geocoded_file, place: p)
+        [i.file, j]
+      end
+      let(:valid_image_layer_attributes) do
+        p = create(:place, layer: image_layer)
+        i = FactoryBot.build(:image, :with_geocoded_file, place: p)
+        j = FactoryBot.build(:image, :with_geocoded_file, place: p)
+
+        FactoryBot.build(:layer, :with_ltype_image, map_id: @map.id, images_files: [i.file, j]).attributes
+      end
+
+      context 'with valid params', focus: true do
+        it 'creates a new Layer' do
+          puts valid_image_layer_attributes
+          expect do
+            post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          end.to change(Layer, :count).by(1)
+          puts flash[:notice]
+          expect(flash[:notice]).to match 'Layer was successfully created.'
+        end
+
+        it 'redirects to the map' do
+          post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          layer = Layer.last
+          expect(response).to redirect_to(map_layer_path(@map.friendly_id, layer))
+        end
+      end
+
+      context 'with invalid params (images are missing)' do
+        it 'creates a new Layer' do
+          expect do
+            post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          end.not_to change(Place, :count)
+          expect(flash[:notice]).to match 'This is a image layer, but no images has been provided.'
+        end
+
+        it 'redirects to the map' do
+          post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          layer = Layer.last
+          expect(response).to render_template(:new)
+        end
+      end
+    end
+
     describe 'PUT #update' do
       context 'with valid params' do
         let(:new_attributes) do
@@ -241,6 +293,49 @@ RSpec.describe LayersController, type: :controller do
         layer = Layer.create! valid_attributes
         delete :destroy, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
         expect(response).to redirect_to(map_url(@map))
+      end
+    end
+  end
+
+  describe '#validate_images_format' do
+    let(:layer_params) { {} }
+    let(:layer) { build(:layer, :with_ltype_image) }
+    context 'with valid image files' do
+      let(:image_files) do
+        p = create(:place)
+        i = build(:image, place: p)
+        i.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+        i
+      end
+
+      before { layer_params[:images_files] = image_files }
+
+      xit 'returns true' do
+        controller.params[:layer] = layer_params
+        expect(controller.instance_variable_get(:@layer_params)[:images_files][0][:file]).to be_truthy
+        expect(controller.send(:validate_images_format)).to be_truthy
+      end
+    end
+
+    context 'with invalid image files' do
+      let(:image_files) do
+        p = create(:place)
+        i = build(:image, place: p)
+        i.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+        [i]
+      end
+
+      before { layer_params[:images_files] = image_files }
+
+      it 'returns false' do
+        controller.params[:layer] = layer_params
+        expect(controller.send(:validate_images_format)).to be_falsey
+      end
+
+      xit 'adds an error to the layer' do
+        controller.params[:layer] = layer_params
+        controller.send(:validate_images_format)
+        expect(layer.errors[:images]).to include("Invalid file format for #{image_files.first.filename}")
       end
     end
   end

@@ -27,8 +27,13 @@ FactoryBot.define do
     image_source { 'The image source' }
     image_creator { 'The creator of the image' }
     image_caption { 'A caption for this image' }
+    ltype { 'standard' }
     map
 
+    trait :with_ltype_image do
+      ltype { 'image' }
+      images_files { [] }
+    end
     trait :use_background_from_parent_map do
       use_background_from_parent_map { true }
     end
@@ -50,7 +55,6 @@ FactoryBot.define do
     end
 
     trait :with_image do
-      # image { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
       after(:build) do |layer|
         layer.image.attach(
           io: File.open(Rails.root.join('spec/support/files/test.jpg')),
@@ -63,7 +67,6 @@ FactoryBot.define do
       image { [] }
     end
     trait :with_backgroundimage do
-      # backgroundimage { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
       after(:build) do |layer|
         layer.backgroundimage.attach(
           io: File.open(Rails.root.join('spec/support/files/test.jpg')),
@@ -73,7 +76,6 @@ FactoryBot.define do
       end
     end
     trait :with_favicon do
-      # favicon { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
       after(:build) do |layer|
         layer.favicon.attach(
           io: File.open(Rails.root.join('spec/support/files/test.jpg')),
