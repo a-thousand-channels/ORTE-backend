@@ -254,6 +254,7 @@ class LayersController < ApplicationController
       place.teaser = ''
       place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
       place.lon = convert_dms_to_decimal(exif['GPSLongitude'], exif['GPSLongitudeRef'])
+      place.direction = exif['GPSImgDirection'] if exif['GPSImgDirection'].present?
       place.published = true
       place.teaser = "Place tagged by geo-encoded photo <tt>#{file.original_filename}</tt> at <tt>#{exif['GPSLatitude']}</tt> and <tt>#{exif['GPSLongitude']}</tt>." 
       place.teaser << " and with direction: #{exif['GPSImgDirection']}." if exif['GPSImgDirection'].present?
