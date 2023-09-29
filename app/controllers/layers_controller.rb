@@ -122,25 +122,17 @@ class LayersController < ApplicationController
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
 
-    puts "-----------------------------"
-    puts @layer.ltype
-    # TODO: normal save if ltype is not image
-
     respond_to do |format|
       if @layer.ltype == 'image' && validate_images_format 
         created_places, skipped_images = create_places_with_exif_data
         if skipped_images && skipped_images.any?
-          flash[:alert] = "The following images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}"
+          flash[:alert] = "The following #{skipped_images.count} images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}"
         end
-
-        unless created_places
-          flash[:alert] = "There has been no images with geodata found. Please check your images and try again."
-          # format.html { render :new }
-          format.html { redirect_to map_layer_path(@map, @layer), notice: 'There has been no images with geodata found.' }
-        elseif @layer.save
-          format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was created with geocoded images.' }
+        if created_places && created_places.any? && @layer.save
+          format.html { redirect_to map_layer_path(@map, @layer), notice: "Layer was created with #{created_places.count} geocoded images." }
           format.json { render :show, status: :created, location: @layer }
         else
+          flash[:alert] << "No places with geodata has been found. Or some other error occured."
           format.html { render :new }
           format.json { render json: @layer.errors, status: :unprocessable_entity }
         end
@@ -244,13 +236,14 @@ class LayersController < ApplicationController
   def create_places_with_exif_data
     created_places = []
     skipped_images = []    
-    layer_params[:images_files].each do |file|
+    layer_params[:images_files].each_with_index do |file,index|
       place = @layer.places.build
       # exif = MiniExiftool.new(file.tempfile.path)
       i = MiniMagick::Image.open(file.tempfile.path)
       exif = i.exif
       # Extract EXIF data and set Place or Image attributes
-      place.title = exif['ImageDescription'] || file.original_filename
+      place.title = exif['ImageDescription'] || ("#"+index.to_s)
+      place.subtitle = file.original_filename
       place.teaser = ''
       place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
       place.lon = convert_dms_to_decimal(exif['GPSLongitude'], exif['GPSLongitudeRef'])
@@ -263,8 +256,8 @@ class LayersController < ApplicationController
  
       image = place.images.build
       image.title = exif['ImageDescription'] || file.original_filename
-      image.creator = exif['Artist'] | layer_params[:images_creator]
-      image.licence = exif['Copyright'] | layer_params[:images_licence]
+      image.creator = exif['Artist'] || layer_params[:images_creator]
+      image.licence = exif['Copyright'] || layer_params[:images_licence]
       image.source = layer_params[:images_source] 
       image.file = file
       image.preview = true
