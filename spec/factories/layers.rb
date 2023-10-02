@@ -32,8 +32,8 @@ FactoryBot.define do
 
     trait :with_ltype_image do
       ltype { 'image' }
-      images_files { [] }
     end
+
     trait :use_background_from_parent_map do
       use_background_from_parent_map { true }
     end
