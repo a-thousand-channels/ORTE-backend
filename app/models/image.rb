@@ -63,7 +63,7 @@ class Image < ApplicationRecord
 
     filename = file.filename.to_s
     attachment_path = "#{Dir.tmpdir}/#{file.filename}"
-    tmp_new_image = File.read(attachment_changes['file'].attachable[:io])
+    tmp_new_image = File.read(attachment_changes['file'].attachable)
     File.open(attachment_path, 'wb') do |tmp_file|
       tmp_file.write(tmp_new_image)
       tmp_file.close
