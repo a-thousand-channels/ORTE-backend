@@ -202,30 +202,32 @@ RSpec.describe LayersController, type: :controller do
     describe 'POST #create with image layer' do
       let(:image_layer) do
         FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
-        # TODO: add images
       end
-      let(:image_files) do
-        p = create(:place, layer: image_layer)
-        i = FactoryBot.build(:image, :with_geocoded_file, place: p)
-        j = FactoryBot.build(:image, :with_geocoded_file, place: p)
-        [i.file, j]
+
+      let(:images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
+        ]
       end
+
       let(:valid_image_layer_attributes) do
-        p = create(:place, layer: image_layer)
-        i = FactoryBot.build(:image, :with_geocoded_file, place: p)
-        j = FactoryBot.build(:image, :with_geocoded_file, place: p)
-
-        FactoryBot.build(:layer, :with_ltype_image, map_id: @map.id, images_files: [i.file, j]).attributes
+        FactoryBot.build(:layer, :with_ltype_image, map_id: @map.id).attributes
       end
 
-      context 'with valid params', focus: true do
+      context 'with valid params' do
+        before do
+          # HINT: none-model values must be merge into the factory here
+          valid_image_layer_attributes.merge!(images_files: images_files)
+        end
+
         it 'creates a new Layer' do
-          puts valid_image_layer_attributes
           expect do
             post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
           end.to change(Layer, :count).by(1)
           puts flash[:notice]
-          expect(flash[:notice]).to match 'Layer was successfully created.'
+          expect(flash[:notice]).to match 'Layer was created with 3 geocoded images.'
         end
 
         it 'redirects to the map' do
@@ -240,7 +242,7 @@ RSpec.describe LayersController, type: :controller do
           expect do
             post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
           end.not_to change(Place, :count)
-          expect(flash[:notice]).to match 'This is a image layer, but no images has been provided.'
+          expect(flash[:alert]).to match 'This is a image layer, but no images has been provided.'
         end
 
         it 'redirects to the map' do
@@ -295,47 +297,69 @@ RSpec.describe LayersController, type: :controller do
         expect(response).to redirect_to(map_url(@map))
       end
     end
-  end
 
-  describe '#validate_images_format' do
-    let(:layer_params) { {} }
-    let(:layer) { build(:layer, :with_ltype_image) }
-    context 'with valid image files' do
-      let(:image_files) do
-        p = create(:place)
-        i = build(:image, place: p)
-        i.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-        i
+    describe '#validate_images_format' do
+      let(:images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
+        ]
+      end
+      let(:falsey_images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
+        ]
+      end
+      let(:no_images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'text/plain'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'text/plain')
+        ]
       end
 
-      before { layer_params[:images_files] = image_files }
-
-      xit 'returns true' do
-        controller.params[:layer] = layer_params
-        expect(controller.instance_variable_get(:@layer_params)[:images_files][0][:file]).to be_truthy
-        expect(controller.send(:validate_images_format)).to be_truthy
-      end
-    end
-
-    context 'with invalid image files' do
-      let(:image_files) do
-        p = create(:place)
-        i = build(:image, place: p)
-        i.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'attachment.jpg', content_type: 'image/jpeg')
-        [i]
+      let(:layer) do
+        FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
       end
 
-      before { layer_params[:images_files] = image_files }
-
-      it 'returns false' do
-        controller.params[:layer] = layer_params
-        expect(controller.send(:validate_images_format)).to be_falsey
+      let(:valid_image_layer_attributes) do
+        layer.attributes
       end
 
-      xit 'adds an error to the layer' do
-        controller.params[:layer] = layer_params
-        controller.send(:validate_images_format)
-        expect(layer.errors[:images]).to include("Invalid file format for #{image_files.first.filename}")
+      context 'with valid image files' do
+        before do
+          valid_image_layer_attributes.merge!(images_files: images_files)
+        end
+
+        it 'returns true' do
+          controller.params[:layer] = valid_image_layer_attributes
+          expect(controller.send(:validate_images_format)).to be_truthy
+        end
+      end
+
+      context 'with image files without geocoding' do
+        before do
+          valid_image_layer_attributes.merge!(images_files: falsey_images_files)
+        end
+
+        it 'returns true' do
+          controller.params[:layer] = valid_image_layer_attributes
+          expect(controller.send(:validate_images_format)).to be_truthy
+        end
+      end
+
+      context 'with invalid image files' do
+        before do
+          valid_image_layer_attributes.merge!(images_files: no_images_files)
+        end
+
+        it 'adds an error to the layer' do
+          controller.params[:layer] = valid_image_layer_attributes
+          expect(controller.send(:validate_images_format)).to be_falsey
+          expect(flash[:alert]).to match 'Invalid file formats found. Only JPEG, PNG and GIF are allowed.'
+        end
       end
     end
   end

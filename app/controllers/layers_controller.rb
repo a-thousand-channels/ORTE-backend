@@ -123,15 +123,10 @@ class LayersController < ApplicationController
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     respond_to do |format|
       if @layer.ltype == 'image'
-        puts '-----------'
-        puts layer_params[:images_files]
+
         if validate_images_format
-          puts '-----------'
-          puts layer.errors[:images]
-          puts validate_images_format
-          puts created_places
           created_places, skipped_images = create_places_with_exif_data
-          flash[:alert] = "The following #{skipped_images.count} images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}" if skipped_images && skipped_images.any?
+          flash[:alert] = "The following #{skipped_images.count} images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}" if skipped_images&.any?
           if @layer.save && created_places && created_places.any?
             format.html { redirect_to map_layer_path(@map, @layer), notice: "Layer was created with #{created_places.count} geocoded images." }
             format.json { render :show, status: :created, location: @layer }
@@ -202,10 +197,6 @@ class LayersController < ApplicationController
     @layer = Layer.find_by_slug(params[:id]) || Layer.find_by_id(params[:id])
   end
 
-  def images_params
-    params.require(:layer).permit(:images_creator, :images_licence, :images_source, images_files: [])
-  end
-
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
     params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :ltype, :images_creator, :images_licence, :images_source, images_files: [])
@@ -215,10 +206,8 @@ class LayersController < ApplicationController
     return unless layer_params && layer_params[:images_files] && layer_params[:images_files].any?
 
     layer_params[:images_files].each do |file|
-      puts '--------'
-      puts file.content_type
       unless ['image/jpeg', 'image/png', 'image/gif'].include?(file.content_type)
-        @layer.errors.add(:images, "Invalid file format for #{file.filename}")
+        flash[:alert] = 'Invalid file formats found. Only JPEG, PNG and GIF are allowed.'
         return false
       end
     end
@@ -249,7 +238,7 @@ class LayersController < ApplicationController
       i = MiniMagick::Image.open(file.tempfile.path)
       exif = i.exif
       # Extract EXIF data and set Place or Image attributes
-      place.title = exif['ImageDescription'] || ('#' + index.to_s)
+      place.title = exif['ImageDescription'] || "##{index}"
       place.subtitle = file.original_filename
       place.teaser = ''
       place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
