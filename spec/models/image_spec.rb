@@ -72,7 +72,7 @@ RSpec.describe Image, type: :model do
     end
     it 'should remove EXIF data' do
       i = FactoryBot.build(:image, place: @p2)
-      image.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'attachment.txt', content_type: 'txt/plain')
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       i.save!
       i.reload
       expect(i.get_exif_data).to eq({})
