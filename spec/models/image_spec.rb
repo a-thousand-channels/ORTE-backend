@@ -72,7 +72,7 @@ RSpec.describe Image, type: :model do
     end
     it 'should remove EXIF data' do
       i = FactoryBot.build(:image, place: @p2)
-      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      image.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'attachment.txt', content_type: 'txt/plain')
       i.save!
       i.reload
       expect(i.get_exif_data).to eq({})
@@ -102,7 +102,8 @@ RSpec.describe Image, type: :model do
     end
     it 'should check_file_format' do
       image = build(:image, place: @p)
-      image.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.txt')), filename: 'attachment.txt', content_type: 'txt/plain')
+      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'txt/plain')
+      image.file.attach(uploaded)
       expect(image).not_to be_valid
       expect(image.errors[:file]).to eq(['File format must be JPG/PNG or GIF'])
     end

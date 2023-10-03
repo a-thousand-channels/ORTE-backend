@@ -19,7 +19,8 @@ RSpec.describe PlacesHelper, type: :helper do
     it 'it returns an polymorphic image link' do
       p = create(:place)
       i = build(:image, place: p)
-      i.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
+      i.attach(uploaded)
       i.save!
       i.reload
       expect(helper.image_link(i)).to eq("http://test.host#{polymorphic_path(i.file.variant(resize: '800x800').processed)}")
@@ -49,7 +50,8 @@ RSpec.describe PlacesHelper, type: :helper do
   describe 'audio_link' do
     it 'it returns an polymorphic audio link' do
       p = Place.new
-      p.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'attachment.mp3', content_type: 'audio/mpeg')
+      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')
+      p.audio.attach(uploaded)
       expect(helper.audio_link(p.audio)).to eq("<audio controls=\"controls\" src=\"http://test.host#{rails_blob_path(p.audio)}\"></audio>")
     end
   end

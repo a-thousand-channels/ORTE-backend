@@ -7,7 +7,8 @@ RSpec.describe ImagesHelper, type: :helper do
     it 'it returns an polymorphic image link' do
       p = create(:place)
       i = build(:image, place: p)
-      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
+      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
+      i.file.attach(uploaded)
       i.save!
       i.reload
       expect(helper.image_url(i.file)).to eq(polymorphic_url(i.file.variant(resize: '800x800').processed).to_s)
