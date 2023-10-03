@@ -128,7 +128,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         // text_layers.addLayer(marker);
       }
 
-      var content = PopupFullContent(place);
+      var content = (place.layer_type == 'standard') ? PopupFullContent(place) : PopupImageOnlyContent(place);
       marker.bindPopup(content).on('click', function(){
 
           // map.panTo(marker.getLatLng());
