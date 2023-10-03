@@ -17,7 +17,7 @@ RSpec.describe ImagesHelper, type: :helper do
     it 'it returns an image link tag' do
       p = create(:place)
       i = build(:image, place: p)
-      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
       i.save!
       i.reload
       expect(helper.image_linktag(i.file)).to eq("<img src=\"#{polymorphic_url(i.file.variant(resize: '800x800').processed)}\" title=\"\">")
