@@ -122,10 +122,11 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         } else {
           marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
-
+        console.log("###############################");
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
-          drawMarkers(map,data.id,data.ltype,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
+          console.log(data);
+          drawMarkers(map,data.id,data.layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
         });
         marker_meta_layers.addLayer(marker_layers);
 
