@@ -4,20 +4,23 @@
 function PopupImageOnlyContent(place) {
     'use strict';
     var content = '';
-    if (place.images && place.images[0]) {
-        jQuery.each(place.images, function (kkey, image) {
-            content += "<div class='leaflet-popup-content-image' id='popup-content-image-'" + kkey + "''><img src='" + image.image_url + "' /></div>";
-        });
-    }
+
     if (place.imagelink2) {
         content += "<div class='leaflet-popup-content-image'><img src='" + place.imagelink2 + "' /></div>";
-    } else if (place.imagelink) {
-        content += "<img src='" + place.imagelink + "' />";
-    }
-    if (place.edit_link) {
-        content += "<p class='text-right'>" + place.edit_link + "</p>";
-    }
-    content += '</div>';
+    } 
+    if (place.edit_link || place.show_link) {
+        content += "<p class='text-right'>";
+        if (place.show_link) {        
+            content += place.show_link;
+        }
+        if (place.edit_link && place.show_link) {
+            content += " | ";
+        }
+        if (place.edit_link) {
+            content += place.edit_link;
+        }
+        content += "</p>";
+    }        
     return content;
 }
 
