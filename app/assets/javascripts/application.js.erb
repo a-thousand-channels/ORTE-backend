@@ -328,7 +328,7 @@ console.log("true true")
 
   });
   var Openstreetmap_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
+      maxZoom: 21,
       attribution: 'OpenStreetMap + its contributors, CC-BY-SA'
   });
 
@@ -353,7 +353,6 @@ console.log("true true")
         Openstreetmap: Openstreetmap_layer
     };
 
-
     // TODO: reset baselayer if custom was set or changed server-side
 
     if ( localStorage.baselayer == 'Openstreetmap') {
@@ -365,7 +364,7 @@ console.log("true true")
     }
 
   } else {
-
+    console.log("No custom base layer defined");
     if ( localStorage.baselayer == 'Openstreetmap') {
       Openstreetmap_layer.addTo(map);
     } else {
