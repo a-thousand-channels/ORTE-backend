@@ -99,7 +99,8 @@ RSpec.describe Place, type: :model do
     expect(p1.imagelink2).not_to eq(p1.imagelink)
     p2 = FactoryBot.create(:place, layer: l)
     i = build(:image, :preview, place: p2)
-    i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
+    uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
+    i.file.attach(uploaded)
     i.save!
     expect(p2.imagelink2).not_to eq(p2.imagelink)
   end
@@ -108,7 +109,8 @@ RSpec.describe Place, type: :model do
     m = FactoryBot.create(:map)
     l = FactoryBot.create(:layer, map: m)
     p = FactoryBot.create(:place, layer: l)
-    p.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
+    uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')
+    p.audio.attach(uploaded)
     expect(p.audiolink).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(p.audio)}\"></audio>")
   end
 
