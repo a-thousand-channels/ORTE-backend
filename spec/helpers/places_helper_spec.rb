@@ -30,8 +30,7 @@ RSpec.describe PlacesHelper, type: :helper do
   describe 'icon_link' do
     it 'it returns an polymorphic icon link' do
       i = Icon.new
-      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
-      i.file.attach(uploaded)
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
       expect(helper.icon_link(i.file)).to eq("<img src=\"http://test.host#{rails_blob_path(i.file)}\">")
     end
   end
