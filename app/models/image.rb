@@ -3,10 +3,12 @@
 class Image < ApplicationRecord
   belongs_to :place
 
+  attr_accessor :skip_beforesave_callback
+
+  before_save :strip_exif_data, unless: :skip_beforesave_callback
+
   has_one_attached :file
   delegate_missing_to :file
-
-  before_save :strip_exif_data
 
   validates :title, presence: true
   validate :check_file_presence
@@ -15,6 +17,7 @@ class Image < ApplicationRecord
   scope :sorted, -> { order(sorting: :asc) }
   scope :sorted_by_place, ->(place_id) { where('place_id': place_id).order(sorting: :asc) }
   scope :preview, ->(place_id) { where('place_id': place_id, 'preview': true) }
+  scope :without_attached_file, -> { left_joins(:file_attachment).where('active_storage_attachments.id IS NULL') }
 
   def image_filename
     file.filename if file&.attached?
@@ -63,7 +66,15 @@ class Image < ApplicationRecord
 
     filename = file.filename.to_s
     attachment_path = "#{Dir.tmpdir}/#{file.filename}"
-    tmp_new_image = File.read(attachment_changes['file'].attachable)
+
+    attachable = if attachment_changes['file'].attachable.is_a?(Hash) && attachment_changes['file'].attachable[:io]
+                   attachment_changes['file'].attachable[:io]
+                 else
+                   attachment_changes['file'].attachable
+                 end
+
+    tmp_new_image = File.read(attachable)
+
     File.open(attachment_path, 'wb') do |tmp_file|
       tmp_file.write(tmp_new_image)
       tmp_file.close
@@ -72,6 +83,7 @@ class Image < ApplicationRecord
     tmp_image.auto_orient # Before stripping
     tmp_image.strip # Strip Exif
     tmp_image.write attachment_path
+    self.skip_beforesave_callback = true
     file.attach(io: File.open(attachment_path), filename: file.filename)
   end
 

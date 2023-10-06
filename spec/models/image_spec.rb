@@ -32,8 +32,7 @@ RSpec.describe Image, type: :model do
       l = FactoryBot.create(:layer, map: m)
       p = FactoryBot.create(:place, layer: l)
       @i = FactoryBot.build(:image, place: p)
-      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
-      @i.file.attach(uploaded)
+      @i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       @i.save!
       @i.reload
     end
@@ -66,16 +65,14 @@ RSpec.describe Image, type: :model do
     end
     it 'should retain EXIF data' do
       i = FactoryBot.build(:image, place: @p1)
-      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
-      i.file.attach(uploaded)
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       i.save!
       i.reload
       expect(i.get_exif_data['GPSLatitude']).to match('10/1, 0/1, 0/1')
     end
     it 'should remove EXIF data' do
       i = FactoryBot.build(:image, place: @p2)
-      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
-      i.file.attach(uploaded)
+      i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       i.save!
       i.reload
       expect(i.get_exif_data).to eq({})
