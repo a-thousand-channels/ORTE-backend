@@ -118,12 +118,11 @@ class LayersController < ApplicationController
   # POST /layers.json
   def create
     @layer = Layer.new(layer_params)
-    @layer.exif_remove = false
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     respond_to do |format|
       if @layer.ltype == 'image'
-
+        @layer.exif_remove = false
         if validate_images_format
           created_places, skipped_images = create_places_with_exif_data
           flash[:alert] = "The following #{skipped_images.count} images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}" if skipped_images&.any?
@@ -136,7 +135,7 @@ class LayersController < ApplicationController
             format.json { render json: @layer.errors, status: :unprocessable_entity }
           end
         else
-          flash[:alert] = 'This is a image layer, but no images has been provided.'
+          flash[:alert] = 'This is an image layer, but no images has been provided.'
           format.html { render :new }
           format.json { render json: @layer.errors, status: :unprocessable_entity }
         end
@@ -158,7 +157,18 @@ class LayersController < ApplicationController
     params[:layer][:rasterize_images] = default_checkbox(params[:layer][:rasterize_images])
 
     respond_to do |format|
-      if @layer.update(layer_params)
+      if @layer.ltype == 'image' && validate_images_format
+        created_places, skipped_images = create_places_with_exif_data
+        flash[:alert] = "The following #{skipped_images.count} images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}" if skipped_images&.any?
+        if @layer.update(layer_params) && created_places && created_places.any?
+          format.html { redirect_to map_layer_path(@map, @layer), notice: "Layer was updated with #{created_places.count} new geocoded images." }
+          format.json { render :show, status: :created, location: @layer }
+        else
+          flash[:alert] << 'No places with geodata has been found. Or some other error occured.'
+          format.html { render :new }
+          format.json { render json: @layer.errors, status: :unprocessable_entity }
+        end
+      elsif @layer.update(layer_params)
         format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was successfully updated.' }
         format.json { render :show, status: :ok, location: @layer }
       else
@@ -232,13 +242,16 @@ class LayersController < ApplicationController
   def create_places_with_exif_data
     created_places = []
     skipped_images = []
+    existing_places = @layer.places
+    pindex = existing_places.any? ? existing_places.count : 0
     layer_params[:images_files].each_with_index do |file, index|
+      # TODO: dupe check?
       place = @layer.places.build
+      # TODO: use MiniExiftool instead of MiniMagick
       # exif = MiniExiftool.new(file.tempfile.path)
       i = MiniMagick::Image.open(file.tempfile.path)
       exif = i.exif
-      # Extract EXIF data and set Place or Image attributes
-      place.title = exif['ImageDescription'] || "##{index}"
+      place.title = exif['ImageDescription'] || "##{index+pindex+1}"
       place.subtitle = file.original_filename
       place.teaser = ''
       place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])

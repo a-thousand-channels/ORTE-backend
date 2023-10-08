@@ -226,7 +226,6 @@ RSpec.describe LayersController, type: :controller do
           expect do
             post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
           end.to change(Layer, :count).by(1)
-          puts flash[:notice]
           expect(flash[:notice]).to match 'Layer was created with 3 geocoded images.'
         end
 
@@ -242,7 +241,7 @@ RSpec.describe LayersController, type: :controller do
           expect do
             post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
           end.not_to change(Place, :count)
-          expect(flash[:alert]).to match 'This is a image layer, but no images has been provided.'
+          expect(flash[:alert]).to match 'This is an image layer, but no images has been provided.'
         end
 
         it 'redirects to the map' do
