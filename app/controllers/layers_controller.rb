@@ -76,6 +76,7 @@ class LayersController < ApplicationController
     @layer = Layer.new
     generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
     @layer.color = "##{generator.create_hex}"
+    @layer.ltype = 'image' if params[:ltype] == 'image'
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @colors_selectable = []
     6.times do
@@ -120,7 +121,25 @@ class LayersController < ApplicationController
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     respond_to do |format|
-      if @layer.save
+      if @layer.ltype == 'image'
+        @layer.exif_remove = false
+        if validate_images_format
+          created_places, skipped_images = create_places_with_exif_data
+          flash[:alert] = "The following #{skipped_images.count} images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}" if skipped_images&.any?
+          if @layer.save && created_places && created_places.any?
+            format.html { redirect_to map_layer_path(@map, @layer), notice: "Layer was created with #{created_places.count} geocoded images." }
+            format.json { render :show, status: :created, location: @layer }
+          else
+            flash[:alert] << 'No places with geodata has been found. Or some other error occured.'
+            format.html { render :new }
+            format.json { render json: @layer.errors, status: :unprocessable_entity }
+          end
+        else
+          flash[:alert] = 'This is an image layer, but no images has been provided.'
+          format.html { render :new }
+          format.json { render json: @layer.errors, status: :unprocessable_entity }
+        end
+      elsif @layer.save
         format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was created.' }
         format.json { render :show, status: :created, location: @layer }
       else
@@ -138,7 +157,18 @@ class LayersController < ApplicationController
     params[:layer][:rasterize_images] = default_checkbox(params[:layer][:rasterize_images])
 
     respond_to do |format|
-      if @layer.update(layer_params)
+      if @layer.ltype == 'image' && validate_images_format
+        created_places, skipped_images = create_places_with_exif_data
+        flash[:alert] = "The following #{skipped_images.count} images were not created due to missing GPSLatitude data: #{skipped_images.join(', ')}" if skipped_images&.any?
+        if @layer.update(layer_params) && created_places && created_places.any?
+          format.html { redirect_to map_layer_path(@map, @layer), notice: "Layer was updated with #{created_places.count} new geocoded images." }
+          format.json { render :show, status: :created, location: @layer }
+        else
+          flash[:alert] << 'No places with geodata has been found. Or some other error occured.'
+          format.html { render :new }
+          format.json { render json: @layer.errors, status: :unprocessable_entity }
+        end
+      elsif @layer.update(layer_params)
         format.html { redirect_to map_layer_path(@map, @layer), notice: 'Layer was successfully updated.' }
         format.json { render :show, status: :ok, location: @layer }
       else
@@ -179,6 +209,74 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption)
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :ltype, :images_creator, :images_licence, :images_source, images_files: [])
+  end
+
+  def validate_images_format
+    return unless layer_params && layer_params[:images_files] && layer_params[:images_files].any?
+
+    layer_params[:images_files].each do |file|
+      unless ['image/jpeg', 'image/png', 'image/gif'].include?(file.content_type)
+        flash[:alert] = 'Invalid file formats found. Only JPEG, PNG and GIF are allowed.'
+        return false
+      end
+    end
+    true
+  end
+
+  def convert_dms_to_decimal(coord, ref)
+    # Extract the parts of the coordinate
+    parts = coord.split(', ')
+    degrees = parts[0].to_f
+    minutes = parts[1].to_f / 100
+    seconds = parts[2].to_f
+
+    # Calculate the decimal degrees
+    decimal_degrees = degrees + (minutes / 60) + (seconds / 3600)
+
+    # Adjust for the hemisphere
+    decimal_degrees *= -1 if %w[S W].include?(ref)
+    decimal_degrees
+  end
+
+  def create_places_with_exif_data
+    created_places = []
+    skipped_images = []
+    existing_places = @layer.places
+    pindex = existing_places.any? ? existing_places.count : 0
+    layer_params[:images_files].each_with_index do |file, index|
+      # TODO: dupe check?
+      place = @layer.places.build
+      # TODO: use MiniExiftool instead of MiniMagick
+      # exif = MiniExiftool.new(file.tempfile.path)
+      i = MiniMagick::Image.open(file.tempfile.path)
+      exif = i.exif
+      place.title = exif['ImageDescription'] || "##{index + pindex + 1}"
+      place.subtitle = file.original_filename
+      place.teaser = ''
+      place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
+      place.lon = convert_dms_to_decimal(exif['GPSLongitude'], exif['GPSLongitudeRef'])
+      place.direction = exif['GPSImgDirection'] if exif['GPSImgDirection'].present?
+      place.published = true
+      place.teaser = "Place tagged by geo-encoded photo <tt>#{file.original_filename}</tt> at <tt>#{exif['GPSLatitude']}</tt> and <tt>#{exif['GPSLongitude']}</tt>."
+      place.teaser << " and with direction: #{exif['GPSImgDirection']}." if exif['GPSImgDirection'].present?
+      place.teaser << " <br />Geodata converted from DMS to decimal degrees: #{place.lat}/#{place.lon}."
+      place.teaser << " <bv />Photo taken at #{exif['DateTimeOriginal']}." if exif['DateTimeOriginal'].present?
+
+      image = place.images.build
+      image.title = exif['ImageDescription'] || file.original_filename
+      image.creator = exif['Artist'] || layer_params[:images_creator]
+      image.licence = exif['Copyright'] || layer_params[:images_licence]
+      image.source = layer_params[:images_source]
+      image.file = file
+      image.preview = true
+      if exif['GPSLatitude'].present?
+        place.save!
+        created_places << place
+      else
+        skipped_images << file.original_filename
+      end
+    end
+    [created_places, skipped_images]
   end
 end

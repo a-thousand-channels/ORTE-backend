@@ -1,6 +1,30 @@
 /*jshint unparam: true, node: true */
 /*global jQuery */
 
+function PopupImageOnlyContent(place) {
+    'use strict';
+    var content = '';
+
+    if (place.imagelink2) {
+        content += "<div class='leaflet-popup-content-image'><img src='" + place.imagelink2 + "' /></div>";
+    } 
+    if (place.edit_link || place.show_link) {
+        content += "<p class='text-right'>";
+        if (place.show_link) {        
+            content += place.show_link;
+        }
+        if (place.edit_link && place.show_link) {
+            content += " | ";
+        }
+        if (place.edit_link) {
+            content += place.edit_link;
+        }
+        content += "</p>";
+    }        
+    return content;
+}
+
+
 function PopupFullContent(place) {
     'use strict';
     var content = '';

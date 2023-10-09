@@ -13,11 +13,18 @@ FactoryBot.define do
     preview { false }
     itype { 'image' }
     trait :with_file do
-      # file { Rack::Test::UploadedFile.new('spec/support/files/test.jpg', 'image/jpeg') }
-      # file { attach(io: File.open(Rails.root.join('spec/support/files/test.jpg', 'test.jpg')) }
-      after(:build) do |post|
-        post.file.attach(
+      after(:build) do |image|
+        image.file.attach(
           io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
+    trait :with_geocoded_file do
+      after(:build) do |image|
+        image.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test-with-exif-data.jpg')),
           filename: 'test.jpg',
           content_type: 'image/jpeg'
         )

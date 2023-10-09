@@ -49,6 +49,7 @@ gem 'nokogiri'
 
 gem 'acts-as-taggable-on', '~> 9'
 gem 'color-generator'
+gem 'mini_exiftool'
 gem 'mini_magick'
 gem 'mobility', '~> 1.2'
 gem 'rubyzip'
