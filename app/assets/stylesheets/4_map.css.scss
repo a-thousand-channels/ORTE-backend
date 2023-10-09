@@ -68,6 +68,9 @@
       bottom: 50px;
     }
 }
+.leaflet-container {
+  font: 12px/1.5 "worksans-light","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+}
 .leaflet-container .leaflet-control-attribution {
     background: #fff;
     background: rgba(55, 55, 55, 0.7);
@@ -102,11 +105,13 @@
     .leaflet-popup-content {
       margin: 0;
       padding: 0;
+      min-width: 300px;
 
       h4, h5 {
         margin: 0.5rem 1rem 0.5rem 0.5rem;
         line-height: 1;
         padding-right: 10px;
+        word-wrap: anywhere;
       }
 
       p {

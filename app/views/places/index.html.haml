@@ -123,9 +123,17 @@
                     = link_to map_tag_path(@map,tag) do
                       %i.fi-price-tag
                       = tag.name
-            %p.hint.text-left
+            %p.shy.text-left
               - if place.lat
-                #{place.lat[0..6]}/#{place.lon[0..5]}
+                #{place.lat[0..6]}, #{place.lon[0..5]}
+              \|
+              Created at
+              #{l(place.created_at)}
+              - if place.created_at != place.updated_at
+                \|
+                last edit at
+                #{l(place.updated_at)}
+
           %td
             = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
               %i.fi-pencil.fi-21
@@ -160,6 +168,6 @@
               - warning = 'Are you sure to delete this place and all attached images and/or videos?'
             - else
               - warning = 'Are you sure to delete this place?'
-            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button warning small" do
+            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button alert small" do
               %i.fi-trash.fi-21
               Destroy

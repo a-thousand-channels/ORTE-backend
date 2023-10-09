@@ -1,11 +1,18 @@
 
 
-function drawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
+function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
     var c = 0;
+    var marker_size = 30;
+    if ( layer_type === 'image' ) {
+      marker_size = 15;
+    }
+    console.log("Drawing "+places.length+" markers for layer "+layer_id+" of type "+layer_type+" at level "+level); 
+    console.log("Layer type is "+layer_type);
+    console.log("Marker size is "+marker_size);
     console.log("Setting show_annotations_on_map set to "+show_annotations_on_map);
     var CustomLargeIcon = L.Icon.extend({
         options: {
-            iconSize:     [30, 30],
+            iconSize:     [marker_size, marker_size],
             iconAnchor:   [15, 15],
             popupAnchor:  [-2, -15]
         }
@@ -22,13 +29,13 @@ function drawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
         mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
         color: '#cc756b',
         opacity: 1,
-        radius: 30
+        radius: marker_size
     };
     var divIcon = L.divIcon({
         className: "leaflet-data-marker",
         html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
         iconAnchor  : [15, 15],
-        iconSize    : [30, 30],
+        iconSize    : [marker_size, marker_size],
         popupAnchor : [0, -28]
     });
 
@@ -53,7 +60,7 @@ function drawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
         if (color.indexOf('#') == -1) {
           color = '#'+color;
         }
-        var svg = "<svg height='30' width='30' xmlns='http://www.w3.org/2000/svg'><circle cx='13' cy='13' r='13' fill='"+this_color+"' fill-opacity='"+opacity+"' stroke='"+stroke+"' stroke-width='"+stroke_width+"' stroke-opacity='"+stroke_opacity+"'  shape-rendering='geometricPrecision'></circle></svg>";
+        var svg = "<svg height='"+marker_size+"' width='"+marker_size+"' xmlns='http://www.w3.org/2000/svg'><circle cx='"+marker_size/2+"' cy='"+marker_size/2+"' r='"+marker_size/2+"' fill='"+this_color+"' fill-opacity='"+opacity+"' stroke='"+stroke+"' stroke-width='"+stroke_width+"' stroke-opacity='"+stroke_opacity+"'  shape-rendering='geometricPrecision'></circle></svg>";
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
         var icon = new CustomLargeIcon({iconUrl: url});
       } else {
@@ -121,7 +128,7 @@ function drawMarkers(map,layer_id,level,show_annotations_on_map,text_layers,imag
         // text_layers.addLayer(marker);
       }
 
-      var content = PopupFullContent(place);
+      var content = (place.layer_type == 'standard') ? PopupFullContent(place) : PopupImageOnlyContent(place);
       marker.bindPopup(content).on('click', function(){
 
           // map.panTo(marker.getLatLng());
