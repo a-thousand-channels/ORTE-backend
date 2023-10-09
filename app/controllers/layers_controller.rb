@@ -251,7 +251,7 @@ class LayersController < ApplicationController
       # exif = MiniExiftool.new(file.tempfile.path)
       i = MiniMagick::Image.open(file.tempfile.path)
       exif = i.exif
-      place.title = exif['ImageDescription'] || "##{index+pindex+1}"
+      place.title = exif['ImageDescription'] || "##{index + pindex + 1}"
       place.subtitle = file.original_filename
       place.teaser = ''
       place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
