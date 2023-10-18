@@ -149,7 +149,7 @@
                         "examples":[
                            3
                         ]
-                     },
+                     },                   
                      "title":{
                         "$id":"#/properties/map/properties/layer/items/properties/title",
                         "type":"string",
@@ -249,9 +249,11 @@
                            "title":"The Items Schema",
                            "required":[
                               "id",
+                              "uid",
                               "title",
                               "subtitle",
                               "teaser",
+                              "text",
                               "link",
                               "imagelink",
                               "imagelink2",
@@ -282,6 +284,15 @@
                                     4
                                  ]
                               },
+                              "uid": {
+                                "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/uid",
+                                "type": "string",
+                                "title": "The Id Schema",
+                                "default": "",
+                                "examples": [
+                                  "UID"
+                                ]
+                              },                                
                               "title":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/title",
                                  "type":"string",
