@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :place do
+    uid { 'UID1' }
     title { 'MyTitle' }
     subtitle { 'MySubTitle' }
     teaser { 'MyText' }

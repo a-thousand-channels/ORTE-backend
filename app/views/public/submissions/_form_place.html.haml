@@ -43,7 +43,6 @@
       .grid-x.grid-padding-x
         .large-8.large-offset-2.medium-12.cell
           .form-inputs
-
             = f.input :teaser, :label => t('simple_form.labels.teaser'), :as => 'text', :input_html => {:rows => 8, class: 'large-text tinymce', :placeholder => t('simple_form.placeholders.teaser') }
             = #tinymce :onchange_callback => "submission_tinymce_preview"
             :javascript
@@ -116,7 +115,6 @@
               &mdash;
               %span#place_teaser_counter
                 \./.
-
     .large-6.medium-12.cell
       = render partial: 'form_preview', locals: { :index => 1 }
 

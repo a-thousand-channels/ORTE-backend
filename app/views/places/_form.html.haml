@@ -92,8 +92,15 @@
         %ul.hide
           = @place.errors.full_messages.each do |item,msg|
             %li= item
-
-      = f.input :title
+      .grid-x.grid-padding-x
+        .small-1.cell            
+          %label{for: 'place_uid' } 
+            UID
+            %i.fi.fi-info{"data-tooltip"=>true, :title=>"Identification Number"}
+          = f.input :uid, :label => false
+          
+        .small-11.cell                
+          = f.input :title
       %hr
 
   .grid-x.grid-padding-x
@@ -120,7 +127,9 @@
         %hr
         = f.input :subtitle
         = tinymce
-        = f.input :teaser, :label => 'Text', :input_html => {:rows => 8, class: 'large-text tinymce' }
+        = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 8, class: 'large-text tinymce' }
+        = f.input :text, :label => 'Text', :input_html => {:rows => 16, class: 'large-text tinymce'}
+
         %hr
         = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name, label: 'Tags'
         %p.hint.text-left
