@@ -90,14 +90,19 @@
       %p.date
         = smart_date_display(@place.startdate, @place.enddate)
       %h1
+        - if @place.uid.present?
+          = @place.uid
+          \&mdash;
         = @place.title
         = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
           %i.fi.fi-pencil.fi-24
+      - if @place.subtitle.present?
+        %p= @place.subtitle
       %div
         %strong
           =h @place.teaser.html_safe
       %div
-        =h @place.text
+        =h @place.text.html_safe
       %p
         - if @place.link
           =link_to @place.link do

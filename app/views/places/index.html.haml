@@ -91,8 +91,11 @@
                         - if img.alt.present?
                           %i.fi-info{title: img.alt}
                 - rescue
-                  %p.shy Image could not be loaded
+                  %p.shy (Image missing)
             %h4
+              - if place.uid.present?
+                = place.uid
+                \&mdash;
               = link_to map_layer_place_path(place.layer.map,place.layer,place) do
                 = place.title
               - if place.published
@@ -101,6 +104,8 @@
                 %i.fi-lock.fi-21{title: 'Not published'}
               - if place.featured
                 %i.fi-star.fi-21{title: 'Feature'}
+            - if place.subtitle.present?
+              %p= place.subtitle
             %p
               = link_to place.link do
                 = place.link
@@ -128,11 +133,11 @@
                 #{place.lat[0..6]}, #{place.lon[0..5]}
               \|
               Created at
-              #{l(place.created_at)}
-              - if place.created_at != place.updated_at
-                \|
-                last edit at
-                #{l(place.updated_at)}
+              
+              - if place.created_at == place.updated_at
+                #{l(place.created_at)}
+              - else
+                #{l(place.created_at)}, edited at #{l(place.updated_at)}
 
           %td
             = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
