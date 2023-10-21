@@ -93,13 +93,13 @@
           = @place.errors.full_messages.each do |item,msg|
             %li= item
       .grid-x.grid-padding-x
-        .small-1.cell            
-          %label{for: 'place_uid' } 
+        .small-2.cell            
+          %label{for: 'place_uid', class: 'nobr' } 
             UID
             %i.fi.fi-info{"data-tooltip"=>true, :title=>"Identification number, reference "}
           = f.input :uid, :label => false
           
-        .small-11.cell                
+        .small-10.cell                
           = f.input :title
       %hr
 

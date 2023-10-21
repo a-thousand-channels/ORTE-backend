@@ -56,6 +56,7 @@ div.small {
     line-height: 1;
 }
 .clear { clear: both; }
+.nobr { white-space: nowrap; }
 
 tt {
   font-size: 9pt;
@@ -382,7 +383,7 @@ div.input-group {
     padding: 0.2rem;
 }
 input[type="time"] {
-    width: 88px;
+    width: 93px;
 }
 input[type="date"] {
     width: 137px;
