@@ -226,10 +226,18 @@ class LayersController < ApplicationController
 
   def convert_dms_to_decimal(coord, ref)
     # Extract the parts of the coordinate
-    parts = coord.split(', ')
-    degrees = parts[0].to_f
-    minutes = parts[1].to_f / 100
-    seconds = parts[2].to_f
+    return unless coord
+
+    # Split by comma and slash, strip it
+    # [
+    #   degreesNumerator, degreesDenominator,
+    #   minutesNumerator, minutesDenominator,
+    #   secondsNumerator, secondsDenominator
+    # ]
+    parts = coord.split(/[,\/]/).map(&:strip)
+    degrees = parts[0].to_f / parts[1].to_f
+    minutes = parts[2].to_f / parts[3].to_f
+    seconds = parts[4].to_f / parts[5].to_f
 
     # Calculate the decimal degrees
     decimal_degrees = degrees + (minutes / 60) + (seconds / 3600)

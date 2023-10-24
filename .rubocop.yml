@@ -52,6 +52,9 @@ Style/ClassAndModuleChildren:
 Style/Documentation:
   Enabled: false
 
+Style/FloatDivision:
+  Enabled: false
+
 Style/IdenticalConditionalBranches:
   Exclude:
     - app/helpers/application_helper.rb
