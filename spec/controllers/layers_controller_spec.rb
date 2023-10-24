@@ -222,10 +222,13 @@ RSpec.describe LayersController, type: :controller do
           valid_image_layer_attributes.merge!(images_files: images_files)
         end
 
-        it 'creates a new Layer' do
+        it 'creates a new Layer', focus: true do
           expect do
             post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
           end.to change(Layer, :count).by(1)
+                                      .and change(Place, :count).by(3)
+                                                                .and change(Image, :count).by(3)
+          expect(Place.last.lon).to eq('10.0')
           expect(flash[:notice]).to match 'Layer was created with 3 geocoded images.'
         end
 
@@ -237,7 +240,7 @@ RSpec.describe LayersController, type: :controller do
       end
 
       context 'with invalid params (images are missing)' do
-        it 'creates a new Layer' do
+        it 'doest not create a new Layer' do
           expect do
             post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
           end.not_to change(Place, :count)
