@@ -183,7 +183,9 @@
     opacity: 0.5;
 }
 /* ............................. */
-
+#map.darken-icons img.leaflet-marker-icon {
+    filter: saturate(200%) drop-shadow(0 0 2px #888);
+}
 
 .leaflet-marker-icon svg circle {
   transform: scale(0.9);

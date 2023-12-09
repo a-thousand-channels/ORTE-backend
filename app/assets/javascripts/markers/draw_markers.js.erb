@@ -39,7 +39,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
 
     $.each(places, function(key,place) {
       console.log("Place ID " + place.id + " at Layer " + layer_id + " // Title: " + place.title);
-      var opacity = '0.4';
+      var opacity = '0.5';
       var stroke = 'transparent';
       var stroke_width = '0';
       var stroke_opacity = '0';
@@ -49,7 +49,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           opacity= '0.7';
         }
         if ( $('#selection').data('place-id') === place.id ) {
-          opacity = '0.7';
+          opacity = '0.8';
           stroke = '#000000';
           this_color = '#ffff00';
           stroke_width = '2'
