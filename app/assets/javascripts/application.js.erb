@@ -331,6 +331,13 @@ jQuery(function ($) {
       maxZoom: 21,
       attribution: 'OpenStreetMap + its contributors, CC-BY-SA'
   });
+  var wmsLayerHamburg1925s = L.tileLayer.wms('https://geodienste.hamburg.de/HH_WMS_Historische_Karte_1_5000?', {
+    layers: 'jahrgang_1925-1930'
+  });
+  var wmsLayerHamburg1930s = L.tileLayer.wms('https://geodienste.hamburg.de/HH_WMS_Historische_Karte_1_5000?', {
+    layers: 'jahrgang_1930-1940'
+  });
+
 
   if ( $('#selection').data('map-background-color') ) {
       custom_background_color = $('#selection').data('map-background-color');
@@ -350,8 +357,13 @@ jQuery(function ($) {
     var basemaps = {
         Custom: custom_base_layer,
         Satellite: Esri_WorldImagery_layer,
-        Openstreetmap: Openstreetmap_layer
-    };
+        Openstreetmap: Openstreetmap_layer,
+    }
+    if ( $('#selection').data('map-enable-historical-maps') === true ) {
+      console.log("HISTORICAL MAPS enabled");
+      basemaps["Historical HH 1925-1930"] = wmsLayerHamburg1925s;
+      basemaps["Historical HH 1930-1940"] = wmsLayerHamburg1930s;
+    }        
 
     // TODO: reset baselayer if custom was set or changed server-side
 
@@ -372,17 +384,22 @@ jQuery(function ($) {
     } else {
       Esri_WorldImagery_layer.addTo(map);
     }
-    <% if ( Rails.env != "test" && Rails.application.credentials.token ) %>
-       L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token=<%= Rails.application.credentials.token[:mapbox] %>", {
-                attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> Contributors",
-                minZoom: 19,
-                maxZoom: 21
-      }).addTo(map);
+    <% if ( Rails.env != 'test' && Rails.application.credentials.token ) %>
+    let access_token = "<%= Rails.application.credentials.token[:mapbox] %>"
+    L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}@2x.jpg90?access_token="+access_token, {
+      attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> Contributors",
+      minZoom: 19,
+      maxZoom: 21}).addTo(map);
     <% end %>
     var basemaps = {
         "Satellite": Esri_WorldImagery_layer,
         "Openstreetmap": Openstreetmap_layer,
     };
+    if ( $('#selection').data('map-enable-historical-maps') === true ) {
+      console.log("HISTORICAL MAPS enabled");
+      basemaps["Historical HH 1925-1930"] = wmsLayerHamburg1925s;
+      basemaps["Historical HH 1930-1940"] = wmsLayerHamburg1930s;
+    }    
   }
 
   console.log("Check Overlay settings")

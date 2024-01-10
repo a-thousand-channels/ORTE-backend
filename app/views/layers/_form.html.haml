@@ -211,11 +211,11 @@
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
               %div
-                %label{for: 'layer_basemap_url'} Basemap URL
+                %label{for: 'layer_basemap_url'} Default Basemap URL
                 = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false, disabled: (@layer.use_background_from_parent_map ? true : false)
               %p.shy
                 URL for a basemap (used as tile layer in the background)
-                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can define a default basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
               %div
                 %label{for: 'layer_basemap_attribution'} Basemap Attribution
                 = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false, disabled: (@layer.use_background_from_parent_map ? true : false)
