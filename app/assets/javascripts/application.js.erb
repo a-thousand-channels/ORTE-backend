@@ -372,6 +372,12 @@ jQuery(function ($) {
       Openstreetmap_layer.addTo(map);
     } else if ( localStorage.baselayer == 'Satellite') {
       Esri_WorldImagery_layer.addTo(map);
+    } else if ( localStorage.baselayer == 'Historical HH 1925-1930') {
+      $('#map').addClass('darken-icons')
+      wmsLayerHamburg1925s.addTo(map);      
+    } else if ( localStorage.baselayer == 'Historical HH 1930-1940') {
+      $('#map').addClass('darken-icons')
+      wmsLayerHamburg1930s.addTo(map);
     } else {
       custom_base_layer.addTo(map);
     }
@@ -423,8 +429,17 @@ jQuery(function ($) {
     console.log("Baselayer change to " + e.name);
     if ( e.name == 'Openstreetmap') {
       $('#map').addClass('darken-icons')
+    } else if ( localStorage.baselayer == 'Historical HH 1925-1930') {
+      // $('#map').addClass('darken-icons darken-label')
+      $('#map').addClass('darken-icons')
+      wmsLayerHamburg1925s.addTo(map);      
+    } else if ( localStorage.baselayer == 'Historical HH 1930-1940') {
+      // $('#map').addClass('darken-icons darken-label')
+      $('#map').addClass('darken-icons')
+      wmsLayerHamburg1930s.addTo(map);      
     } else {
-      $('#map').removeClass('darken-icons')
+      $('#map').removeClass('darken-icons');
+      $('#map').removeClass('darken-label')
     }
     localStorage.baselayer = e.name;
   })
