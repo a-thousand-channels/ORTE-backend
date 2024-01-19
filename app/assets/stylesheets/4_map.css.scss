@@ -191,9 +191,17 @@
     text-shadow: 0 0 7px #888;
     background-color: rgba(250,250,250,0.8);
     max-width: 250px;
+    max-width: none;
     width: auto;
+    margin-left: 10px;
+    margin-top: -10px;
+    padding-bottom: 4px;    
 }
-
+#map.darken-icons.darken-label .text_inner {
+  color: #ccc;
+  text-shadow: 0 0 7px #888;
+  background-color: rgba(50,50,50,0.8);   
+}
 .leaflet-marker-icon svg circle {
   transform: scale(0.9);
   /* fill: #cc0000; */
