@@ -387,6 +387,12 @@ jQuery(function ($) {
     if ( localStorage.baselayer == 'Openstreetmap') {
       $('#map').addClass('darken-icons')
       Openstreetmap_layer.addTo(map);
+    } else if ( localStorage.baselayer == 'Historical HH 1925-1930') {
+      $('#map').addClass('darken-icons')
+      wmsLayerHamburg1925s.addTo(map);      
+    } else if ( localStorage.baselayer == 'Historical HH 1930-1940') {
+      $('#map').addClass('darken-icons')
+      wmsLayerHamburg1930s.addTo(map);     
     } else {
       Esri_WorldImagery_layer.addTo(map);
     }
