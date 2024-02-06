@@ -32,7 +32,7 @@ gem 'haml-rails'
 gem 'i18n-js', '~> 3' # breaking changes with v4
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '~> 7', git: 'https://github.com/jquery-ui-rails/jquery-ui-rails.git', branch: 'master', ref: '27a942cfa3686716ff85a3cb60f1f885a00e35dc'
 gem 'kaminari'
 gem 'mysql2'
 gem 'rack-attack'
