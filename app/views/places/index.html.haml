@@ -61,6 +61,55 @@
             All Images of this layer
   %p
     &nbsp;
+
+  %table
+    %thead
+      %tr
+        %th 
+          - minyear = @places.minimum(:startdate).year
+          - maxyear = @places.maximum(:enddate).year
+          %b
+            Timeline
+          from
+          = smart_date_display(@places.minimum(:startdate),nil) 
+          \—
+          = smart_date_display(@places.maximum(:enddate),nil)    
+          - timespan = maxyear-minyear
+          (#{timespan} years)
+
+        %th
+          &nbsp;
+    %tbody          
+      - @places.sort_by{ |e| e.startdate.nil? ? Date.new : e.startdate }.each do |place|
+        %tr 
+          %td
+            %p
+              = smart_date_display(place.startdate, place.enddate)
+              %em
+                = place.title
+          %td
+            - for i in minyear..maxyear
+              - if place.startdate && place.startdate.year == i
+                %span> &times;
+              - elsif place.startdate && place.startdate.year < i && place.enddate && place.enddate.year > i
+                %span> &times;
+              - else
+                %span>‒
+
+  %table  
+    %thead
+      %tr  
+        %th{colspan:2}
+          Slider
+          %p.float-right#slider-selection
+            %strong
+              = minyear
+          .slider.radius{"data-slider":true,"data-initial-start":minyear,"data-start":minyear,"data-end":maxyear,"data-step":1}
+            .slider-handle{"data-slider-handle":true,"role":"slider","tabindex":1}
+            .slider-fill{"data-slider-fill":true}
+            %input{"type":"hidden"}
+
+
   %table
     %thead
       %tr
@@ -70,7 +119,7 @@
 
     %tbody
       - @places.sort_by{ |e| e.startdate.nil? ? Date.new : e.startdate }.each do |place|
-        %tr
+        %tr{"data-startyear":(place.startdate ? place.startdate.year : ''),"data-endyear":(place.enddate ? place.enddate.year : '')}
           %td
             = smart_date_display(place.startdate, place.enddate)
             %p.show-for-small-only
