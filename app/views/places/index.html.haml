@@ -67,13 +67,14 @@
       %tr
         %th 
           - minyear = @places.minimum(:startdate).year
-          - maxyear = @places.maximum(:enddate).year
+          - maxyear = @places.maximum(:enddate) ? @places.maximum(:enddate).year : Date.today.year
           %b
             Timeline
           from
           = smart_date_display(@places.minimum(:startdate),nil) 
           \—
-          = smart_date_display(@places.maximum(:enddate),nil)    
+
+          = @places.maximum(:enddate) ? smart_date_display(@places.maximum(:enddate),nil) : 'Today'
           - timespan = maxyear-minyear
           (#{timespan} years)
 
@@ -87,12 +88,17 @@
               = smart_date_display(place.startdate, place.enddate)
               %em
                 = place.title
+              = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), 
+                :class => "",
+                :title => "Edit this place" do
+                %i.fi-pencil
+
           %td
             - for i in minyear..maxyear
               - if place.startdate && place.startdate.year == i
-                %span> &times;
+                %span> <svg height='10' width='10' xmlns='http://www.w3.org/2000/svg'><circle cx='5' cy='5' r='5' fill='#cc0000' fill-opacity='0.8' shape-rendering='geometricPrecision'></circle></svg>
               - elsif place.startdate && place.startdate.year < i && place.enddate && place.enddate.year > i
-                %span> &times;
+                %span> <svg height='10' width='10' xmlns='http://www.w3.org/2000/svg'><circle cx='5' cy='5' r='5' fill='#cc0000' fill-opacity='0.8' shape-rendering='geometricPrecision'></circle></svg>
               - else
                 %span>‒
 
