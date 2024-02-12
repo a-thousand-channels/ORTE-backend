@@ -93,14 +93,14 @@
                 :title => "Edit this place" do
                 %i.fi-pencil
 
-          %td
+          %td.nobr
             - for i in minyear..maxyear
               - if place.startdate && place.startdate.year == i
-                %span> <svg height='10' width='10' xmlns='http://www.w3.org/2000/svg'><circle cx='5' cy='5' r='5' fill='#cc0000' fill-opacity='0.8' shape-rendering='geometricPrecision'></circle></svg>
+                %span.time.time-first>‒
               - elsif place.startdate && place.startdate.year < i && place.enddate && place.enddate.year > i
-                %span> <svg height='10' width='10' xmlns='http://www.w3.org/2000/svg'><circle cx='5' cy='5' r='5' fill='#cc0000' fill-opacity='0.8' shape-rendering='geometricPrecision'></circle></svg>
+                %span.time.time-on>‒
               - else
-                %span>‒
+                %span.time.time-off>‒
 
   %table  
     %thead
