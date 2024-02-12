@@ -127,10 +127,12 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
           clustercolor = 'rgba(50, 54, 153, 0.9)';
+          /* grayish 
           clustercolor = 'rgba(100, 104, 103, 0.9)';
           if ( localStorage.baselayer == 'Satellite' ) {
             clustercolor = 'rgba(220, 224, 223, 0.9)';
           }
+          */
           console.log(data);
           drawMarkers(map,data.id,data.layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
         });
