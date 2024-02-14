@@ -66,15 +66,14 @@
     %thead
       %tr
         %th 
-          - minyear = @places.minimum(:startdate).year
-          - maxyear = @places.maximum(:enddate) ? @places.maximum(:enddate).year : Date.today.year
+          - minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+          - maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
           %b
             Timeline
           from
-          = smart_date_display(@places.minimum(:startdate),nil) 
+          = minyear
           \—
-
-          = @places.maximum(:enddate) ? smart_date_display(@places.maximum(:enddate),nil) : 'Today'
+          = maxyear
           - timespan = maxyear-minyear
           (#{timespan} years)
 
