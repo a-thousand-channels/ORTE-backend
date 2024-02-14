@@ -9,6 +9,18 @@
 #map .leaflet-top {
     top: 40px;
 }
+#map .leaflet-top.leaflet-right {
+  @media screen and (max-width: 39.9375em) {
+    top: unset;
+    right: unset;
+    left: 10px;
+    bottom: 80px;
+    .leaflet-control {
+      float: left;
+    }    
+  }
+
+}
 #map .leaflet-control-layers,
 #map .leaflet-bar {
     border: 0;
@@ -16,7 +28,7 @@
     background-color: #333;
 
     @media screen and (max-width: 39.9375em) {
-        display: none;
+        /* display: none; */
     }
 }
 #map .leaflet-bottom.leaflet-right .leaflet-bar.leaflet-control {

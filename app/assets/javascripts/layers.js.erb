@@ -123,8 +123,16 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
         console.log("###############################");
+        /* cluster on map level */
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
+          clustercolor = 'rgba(50, 54, 153, 0.9)';
+          /* grayish 
+          clustercolor = 'rgba(100, 104, 103, 0.9)';
+          if ( localStorage.baselayer == 'Satellite' ) {
+            clustercolor = 'rgba(220, 224, 223, 0.9)';
+          }
+          */
           console.log(data);
           drawMarkers(map,data.id,data.layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
         });
@@ -158,7 +166,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       $.each(data.layers, function(key,data) {
           layer_style += "#map .marker-cluster-layer-" + data.id;
           layer_style += "{" +
-              "border: 0px solid " + data.color + ";" +
+              "border: 4px solid " + data.color + ";" +
             "}"+
             "#map .marker-cluster-layer-" + data.id + " div {" +
               "background-color: " + data.color + ";" +
@@ -168,10 +176,17 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           "#map .marker-cluster-medium," +
           "#map .marker-cluster-small {" +
           "    background-color: transparent;" +
-          "    border: 0px solid " + clustercolor + ";" +
+          "    border: 3px solid " + clustercolor + ";" +
           "    opacity: 0.9;" +
           "    width: 40px;" +
           "   height: 40px;" +
+          "   display: flex;" +
+          "   align-items: center;" +
+          "   justify-content: center;" +
+          "   flex-wrap: wrap;" +
+          "   flex-direction: row;" +
+          "   padding: 0 0 0 0;" +
+          "   line-height: 0;" +
           "}" +
           "#map .marker-cluster-medium div," +
           "#map .marker-cluster-small div {" +
