@@ -62,7 +62,7 @@
   %p
     &nbsp;
 
-  %table
+  %table#timeline
     %thead
       %tr
         %th 
@@ -160,17 +160,22 @@
                 %i.fi-star.fi-21{title: 'Feature'}
             - if place.subtitle.present?
               %p= place.subtitle
-            %p
-              = link_to place.link do
-                = place.link
+
             %p
               = place.location
               %br
-              = place.address
-              %br
-              = place.zip
-              = place.city
+              - if place.address.present?              
+                - if place.zip.present? && place.city.present?
+                  #{place.address}, #{place.zip} #{place.city}
+                - elsif place.city.present?
+                  #{place.address}, #{place.zip}
+                - else  
+                  #{place.address}
 
+            %p
+              = link_to place.link, {target: '_blank'} do
+                %i.fi-link.fi-21
+                Weblink
             - if place.annotations && place.annotations.count > 0
               %p
                 = link_to map_layer_place_path(place.layer.map,place.layer,place) do
@@ -219,7 +224,7 @@
               Video
             - if admin? && current_user.group.title == 'Admins'
               %br
-              = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small secondary', :title=>'Make a copy of this place and change it' do
+              = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small secondary', :title=>'Make a copy of this place and edit' do
                 %i.fi-page-copy.fi-21
                 Copy
             %br
