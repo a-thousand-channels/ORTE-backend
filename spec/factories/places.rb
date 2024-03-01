@@ -27,7 +27,17 @@ FactoryBot.define do
     trait :date_and_time do
       startdate_date { '2018-04-30' }
       startdate_time { '11:45' }
+      enddate_date { '2022-05-30' }
+      enddate_time { '16:45' }
     end
+    trait :start_date_and_time do
+      startdate_date { '2018-04-30' }
+      startdate_time { '11:45' }
+    end   
+    trait :end_date_and_time do
+      enddate_date { '2022-05-30' }
+      enddate_time { '16:45' }
+    end       
     trait :invalid do
       title { nil }
     end

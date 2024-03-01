@@ -390,7 +390,7 @@
                               },
                               "startdate":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/startdate",
-                                 "type":"string",
+                                 "type":["string", "null"],
                                  "title":"The Startdate Schema",
                                  "default":"",
                                  "examples":[
@@ -400,7 +400,7 @@
                               },
                               "enddate":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/enddate",
-                                 "type":"string",
+                                 "type":["string", "null"],
                                  "title":"The Enddate Schema",
                                  "default":"",
                                  "examples":[
