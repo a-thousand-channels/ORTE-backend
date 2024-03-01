@@ -61,9 +61,9 @@ RSpec.describe Public::LayersController, type: :controller do
 
       it 'returns sorted results a published layer, sorted by startdate' do
         layer = FactoryBot.create(:layer, :sorted_by_startdate, map_id: @map.id, published: true)
-        place1 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now - 2.day)
-        place2 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now - 4.day)
-        place3 = FactoryBot.create(:place, layer: layer, published: true, startdate: Time.now - 3.day)
+        place1 = FactoryBot.create(:place, layer: layer, published: true, startdate_date: Time.now - 2.day )
+        place2 = FactoryBot.create(:place, layer: layer, published: true, startdate_date: Time.now - 4.day)
+        place3 = FactoryBot.create(:place, layer: layer, published: true, startdate_date: Time.now - 3.day)
         place4_notpublished = FactoryBot.create(:place, layer: layer, published: false)
 
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
