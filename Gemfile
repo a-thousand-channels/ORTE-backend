@@ -36,7 +36,7 @@ gem 'jquery-ui-rails', '~> 7', git: 'https://github.com/jquery-ui-rails/jquery-u
 gem 'kaminari'
 gem 'mysql2'
 gem 'rack-attack'
-gem 'rack-cors'
+gem 'rack-cors', '2.0.0'
 gem 'secure_headers'
 gem 'select2-rails'
 gem 'simple_form'
