@@ -33,11 +33,11 @@ FactoryBot.define do
     trait :start_date_and_time do
       startdate_date { '2018-04-30' }
       startdate_time { '11:45' }
-    end   
+    end
     trait :end_date_and_time do
       enddate_date { '2022-05-30' }
       enddate_time { '16:45' }
-    end       
+    end
     trait :invalid do
       title { nil }
     end
