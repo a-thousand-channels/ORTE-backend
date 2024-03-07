@@ -1,20 +1,22 @@
+
 %td.nobr {
     white-space: nowrap;
-    
 }
-.time
-{
-  border-top: 1px dashed #555;
-  border-bottom: 1px dashed #555;
-  line-height: 0;
-  padding: 0;
-  width: 8px;
-  display: inline-block;
-  color: transparent;
-  margin-right: 0;
-}
-.time.time-first,
-.time.time-on {
-  border-top: 4px solid #c6c600;
-  border-bottom: 4px solid #c6c600;
+#timeline {
+  .time
+  {
+    border-top: 1px dashed #555;
+    border-bottom: 1px dashed #555;
+    line-height: 0;
+    padding: 0;
+    width: 8px;
+    display: inline-block;
+    color: transparent;
+    margin-right: 0;
+  }
+  .time.time-first,
+  .time.time-on {
+    border-top: 4px solid #c6c600;
+    border-bottom: 4px solid #c6c600;
+  }
 }
