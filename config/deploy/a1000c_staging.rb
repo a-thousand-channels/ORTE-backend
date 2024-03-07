@@ -1,5 +1,5 @@
 
-set :branch, 'ut/301-timeslider'
+set :branch, 'main'
 set :rails_env, 'staging'
 set :stage, 'a1000c_staging'
 
