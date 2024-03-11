@@ -46,11 +46,16 @@ class Place < ApplicationRecord
       self.startdate = "#{startdate_date} #{startdate_time}"
     elsif startdate_date.present?
       self.startdate = "#{startdate_date} 00:00:00"
+    # nil from factories, blank from post request
+    elsif startdate_date.nil? || startdate_date.blank?
+      self.startdate = nil
     end
     if enddate_date.present? && enddate_time.present?
       self.enddate = "#{enddate_date} #{enddate_time}"
     elsif enddate_date.present?
       self.enddate = "#{enddate_date} 00:00:00"
+    elsif enddate_date.nil? || startdate_date.blank?
+      self.enddate = nil
     end
   end
 
