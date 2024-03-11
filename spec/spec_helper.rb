@@ -13,9 +13,9 @@ WebMock.disable_net_connect!(allow: [
                                'chromedriver.storage.googleapis.com',
                                'storage.googleapis.com',
                                'googlechromelabs.github.io',
+                               'storage.googleapis.com',
                                'edgedl.me.gvt1.com'
                              ])
-
 # special setup to make feature tests run on ubuntu 20.4 LTS
 if ENV['UBUNTU']
   puts 'Running Rspecs on Ubuntu'
