@@ -1,6 +1,6 @@
 
 
-function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,color,clustercolor,places) {
+function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,color,places) {
     var c = 0;
     var marker_size = 30;
     if ( layer_type === 'image' ) {
@@ -58,7 +58,8 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         if (color.indexOf('#') == -1) {
           color = '#'+color;
         }
-        var svg = "<svg height='"+marker_size+"' width='"+marker_size+"' xmlns='http://www.w3.org/2000/svg'><circle cx='"+marker_size/2+"' cy='"+marker_size/2+"' r='"+marker_size/2+"' fill='"+this_color+"' fill-opacity='"+opacity+"' stroke='"+stroke+"' stroke-width='"+stroke_width+"' stroke-opacity='"+stroke_opacity+"'  shape-rendering='geometricPrecision'></circle></svg>";
+    
+        var svg = "<svg height='"+marker_size+"' width='"+marker_size+"' xmlns='http://www.w3.org/2000/svg'><circle cx='"+marker_size/2+"' cy='"+marker_size/2+"' r='"+marker_size/2+"' fill='"+this_color+"' fill-opacity='"+opacity+"' stroke='"+stroke+"' stroke-width='"+stroke_width+"' stroke-opacity='"+stroke_opacity+"' shape-rendering='geometricPrecision'></circle></svg>";
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
         var icon;
         if ( layer_type === 'image' ) {
