@@ -23,11 +23,13 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             console.log("Cluster!!");
             console.log(cluster.getChildCount());      
             let cluster_viz = cluster_small;
-            if ( cluster.getChildCount() >= 7 ) {
+            if ( cluster.getChildCount() >= 10 ) {
+              cluster_viz = cluster_xlarge;
+            } else if ( cluster.getChildCount() >= 6 ) {
               cluster_viz = cluster_large;
-            } else if ( cluster.getChildCount() >= 4 ) {
+            } else if ( cluster.getChildCount() >= 3 ) {
               cluster_viz = cluster_medium;
-            }
+            } 
             let rnd_rotate = Math.floor(Math.random()*25) * 15;
               return L.divIcon({
                 html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '" style="transform: rotate('+rnd_rotate+'deg);">' + cluster_viz + '</div>',
