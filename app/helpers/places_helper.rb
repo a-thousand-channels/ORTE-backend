@@ -7,6 +7,11 @@ module PlacesHelper
     { host: Rails.application.config_for(:settings).app_host, protocol: Rails.application.config_for(:settings).app_host_protocol }
   end
 
+  def qualifier_for_select
+    [['Exact date', 'exact'], ['Approx. date', 'circa']]
+  end
+
+
   def show_link(title, map_id, layer_id, id)
     " <a href=\"/maps/#{map_id}/layers/#{layer_id}/places/#{id}\">#{title}</a>"
   end
