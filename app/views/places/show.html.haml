@@ -88,6 +88,8 @@
           = @place.layer.title
 
       %p.date
+        - if @place.startdate_qualifier && @place.startdate_qualifier == 'circa'
+          Circa 
         = smart_date_display(@place.startdate, @place.enddate)
       %h1
         - if @place.uid.present?
