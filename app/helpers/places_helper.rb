@@ -11,7 +11,6 @@ module PlacesHelper
     [['Exact date', 'exact'], ['Approx. date', 'circa']]
   end
 
-
   def show_link(title, map_id, layer_id, id)
     " <a href=\"/maps/#{map_id}/layers/#{layer_id}/places/#{id}\">#{title}</a>"
   end
