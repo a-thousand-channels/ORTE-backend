@@ -1,5 +1,5 @@
 
-set :branch, 'main'
+set :branch, 'ut/313-fuzzy-date-qualifier'
 set :rails_env, 'staging'
 set :stage, 'a1000c_staging'
 
