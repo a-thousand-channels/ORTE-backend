@@ -85,6 +85,11 @@
           %td
             %p
               = smart_date_display(place.startdate, place.enddate)
+              - if place.startdate_qualifier.present? || place.enddate_qualifier.present?
+                
+                %span.small
+                  (~ #{smart_date_display_with_qualifier(place.startdate, place.enddate, place.startdate_qualifier, place.enddate_qualifier)})
+                %br
               %em
                 = place.title
               = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), 
