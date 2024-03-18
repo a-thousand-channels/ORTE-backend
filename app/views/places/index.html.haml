@@ -61,13 +61,30 @@
             All Images of this layer
   %p
     &nbsp;
+  - minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+  - # if all enddates are nil, check for max in startdates
+  - if @places.all? { |place| place.enddate.nil? }
+    - maxyear = @places.reject { |place| place.startdate.nil? }.max_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+  - else
+    - maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year  
 
+  %table
+    %thead
+      %tr  
+        %th{colspan:2}
+          Slider
+          %p.float-right#slider-selection
+            %strong
+              = minyear
+          .slider.radius{"data-slider":true,"data-initial-start":minyear,"data-start":minyear,"data-end":maxyear,"data-step":1}
+            .slider-handle{"data-slider-handle":true,"role":"slider","tabindex":1}
+            .slider-fill{"data-slider-fill":true}
+            %input{"type":"hidden"}
   %table#timeline
     %thead
       %tr
         %th 
-          - minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
-          - maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
+
           %b
             Timeline
           from
@@ -81,7 +98,9 @@
           &nbsp;
     %tbody          
       - @places.sort_by{ |e| e.startdate.nil? ? Date.new : e.startdate }.each do |place|
-        %tr 
+        - startyear = place.startdate ? place.startdate.year : ''
+        - endyear = place.enddate ? place.enddate.year : startyear
+        %tr{id: "place_#{place.id}", class: "place-entry", "data-startyear":startyear,"data-endyear":endyear}  
           %td
             %p
               = smart_date_display(place.startdate, place.enddate)
@@ -106,18 +125,7 @@
               - else
                 %span.time.time-off>‒
 
-  %table.hidden
-    %thead
-      %tr  
-        %th{colspan:2}
-          Slider
-          %p.float-right#slider-selection
-            %strong
-              = minyear
-          .slider.radius{"data-slider":true,"data-initial-start":minyear,"data-start":minyear,"data-end":maxyear,"data-step":1}
-            .slider-handle{"data-slider-handle":true,"role":"slider","tabindex":1}
-            .slider-fill{"data-slider-fill":true}
-            %input{"type":"hidden"}
+
 
 
   %table
