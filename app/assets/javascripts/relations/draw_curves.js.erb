@@ -26,7 +26,7 @@ function drawCurves(map,layer_id,curve_layers,marker_layers,color,places_with_re
           weight: 4,
           opacity: 0.5,
           className: 'curve_normal curve_'+relation.from.id,
-          animate: false
+          animate: true
       }
       var distance =  L.latLng(point1).distanceTo( L.latLng(point2));
       let distance_in_kms = ((distance) / 1000).toFixed(2);
