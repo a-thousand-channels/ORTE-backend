@@ -67,6 +67,19 @@ class Place < ApplicationRecord
     end
   end
 
+
+  def title_subtitle_and_location
+    if !location.blank?
+      if !subtitle.blank?
+        "#{title} — #{subtitle} (#{location})"
+      else
+        "#{title} (#{location})"
+      end
+    else
+      title
+    end
+  end  
+
   def sensitive_location
     if sensitive
       locs = random_loc(long: read_attribute(:lon), lat: read_attribute(:lat), radius_meters: read_attribute(:sensitive_radius))
