@@ -12,25 +12,33 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   // how to set data.id dynamically?
   var data_id = 1;
 
- 
-  
+  var marker_display_mode = $('#selection').data('map-marker-display-mode');
 
   var markerclusterSettings = {
           maxClusterRadius: 30,
           showCoverageOnHover: false,
           animate: true,
           iconCreateFunction: function(cluster) {
-            console.log("Cluster!!");
-            console.log(cluster.getChildCount());      
-            let cluster_viz = cluster_small;
-            if ( cluster.getChildCount() >= 10 ) {
-              cluster_viz = cluster_xlarge;
-            } else if ( cluster.getChildCount() >= 6 ) {
-              cluster_viz = cluster_large;
-            } else if ( cluster.getChildCount() >= 3 ) {
-              cluster_viz = cluster_medium;
-            } 
-            let rnd_rotate = Math.floor(Math.random()*25) * 15;
+            if ( marker_display_mode == 'cluster' ) {
+              return L.divIcon({
+                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '"><div>' + cluster.getChildCount() + '</div></div>',
+                className: "leaflet-data-markercluster",
+                iconAnchor  : [15, 15],
+                iconSize    : [30, 30],
+                popupAnchor : [0, -28]
+              });
+            } else {
+              console.log("Cluster!!");
+              console.log(cluster.getChildCount());      
+              let cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_small : cluster_small_with_gradient );
+              if ( cluster.getChildCount() >= 10 ) {
+                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_xlarge : cluster_xlarge_with_gradient );
+              } else if ( cluster.getChildCount() >= 6 ) {
+                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_large : cluster_large_with_gradient );
+              } else if ( cluster.getChildCount() >= 3 ) {
+                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_medium : cluster_medium_with_gradient );
+              } 
+              let rnd_rotate = Math.floor(Math.random()*25) * 15;
               return L.divIcon({
                 html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '" style="transform: rotate('+rnd_rotate+'deg);">' + cluster_viz + '</div>',
                 className: "leaflet-data-markercluster",
@@ -38,8 +46,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
                 iconSize    : [30, 30],
                 popupAnchor : [0, -28]
               });
-            },
-
+            }
+          },
           spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
           elementsPlacementStrategy: "clock",
           helpingCircles: true,
@@ -90,10 +98,11 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       var params = getParams();
 
       var clustercolor = '#445';
+      
       if ( level !== 'maps') {
         console.log("Render places of one layer");
         console.log(data);
-        if ( $('#selection').data('map-marker-display-mode') == 'single' ) {
+        if ( marker_display_mode == 'single' ) {
           var marker_layers =  L.featureGroup();
         } else {
           var marker_layers = L.markerClusterGroup(markerclusterSettings);
@@ -131,7 +140,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         });
         var show_annotations_on_map = data.show_annotations_on_map;
 
-        if ( $('#selection').data('map-marker-display-mode') == 'single' ) {
+        if ( marker_display_mode == 'single' ) {
           marker_layers =  L.featureGroup();
         } else {
           marker_layers = L.markerClusterGroup(markerclusterSettings);
