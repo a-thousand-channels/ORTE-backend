@@ -17,12 +17,12 @@ RSpec.describe ImagesHelper, type: :helper do
     it 'it raises a RuntimeError' do
       p = create(:place)
       i = build(:image, place: p)
-      
-      expect { 
-        uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test1.jpg'), 'image/jpeg') 
-        i.file.attach(uploaded) 
-      }.to raise_error(RuntimeError)
-    end    
+
+      expect do
+        uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test1.jpg'), 'image/jpeg')
+        i.file.attach(uploaded)
+      end.to raise_error(RuntimeError)
+    end
   end
 
   describe 'image_path' do
@@ -39,14 +39,14 @@ RSpec.describe ImagesHelper, type: :helper do
     it 'it raises a RuntimeError' do
       p = create(:place)
       i = build(:image, place: p)
-      
-      expect { 
-        uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test1.jpg'), 'image/jpeg') 
-        i.file.attach(uploaded) 
-      }.to raise_error(RuntimeError)
-    end    
+
+      expect do
+        uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test1.jpg'), 'image/jpeg')
+        i.file.attach(uploaded)
+      end.to raise_error(RuntimeError)
+    end
   end
-  
+
   describe 'image_linktag' do
     it 'it returns an image link tag' do
       p = create(:place)
@@ -60,8 +60,8 @@ RSpec.describe ImagesHelper, type: :helper do
     it 'it raises a Errno:ENOENT error' do
       p = create(:place)
       i = build(:image, place: p)
-      
+
       expect { i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test1.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg') }.to raise_error(Errno::ENOENT)
-    end    
+    end
   end
 end

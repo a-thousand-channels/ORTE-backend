@@ -67,7 +67,6 @@ class Place < ApplicationRecord
     end
   end
 
-
   def title_subtitle_and_location
     if !location.blank?
       if !subtitle.blank?
@@ -78,7 +77,7 @@ class Place < ApplicationRecord
     else
       title
     end
-  end  
+  end
 
   def sensitive_location
     if sensitive
