@@ -66,16 +66,19 @@
     %thead
       %tr
         %th 
-          - minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
-          - maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
-          %b
-            Timeline
-          from
-          = minyear
-          \—
-          = maxyear
-          - timespan = maxyear-minyear
-          (#{timespan} years)
+          %p
+            - minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+            - maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
+            %b
+              Timeline
+            from
+            = minyear
+            \—
+            = maxyear
+            - timespan = maxyear-minyear
+            (#{timespan} years)
+          %p.small
+            (Dates in brackets are fuzzy dates with qualifiers)
 
         %th
           &nbsp;
@@ -132,8 +135,6 @@
         %tr{"data-startyear":(place.startdate ? place.startdate.year : ''),"data-endyear":(place.enddate ? place.enddate.year : '')}
           %td
             = smart_date_display(place.startdate, place.enddate)
-            %p.show-for-small-only
-              = smart_date_display(place.startdate, place.enddate)
             - images = Image.preview(place.id)
             - if images.count > 0
               - images.each do |img|
@@ -166,21 +167,23 @@
             - if place.subtitle.present?
               %p= place.subtitle
 
-            %p
+            %p        
+              %i.fi-marker.fi-21            
               = place.location
-              %br
-              - if place.address.present?              
+              - if place.address.present?  
+                - if place.location.present?
+                  %br
                 - if place.zip.present? && place.city.present?
                   #{place.address}, #{place.zip} #{place.city}
                 - elsif place.city.present?
                   #{place.address}, #{place.zip}
                 - else  
                   #{place.address}
-
-            %p
-              = link_to place.link, {target: '_blank'} do
-                %i.fi-link.fi-21
-                Weblink
+              - if place.link.present?
+                %br
+                = link_to place.link, {target: '_blank'} do
+                  %i.fi-link.fi-21
+                  Weblink
             - if place.annotations && place.annotations.count > 0
               %p
                 = link_to map_layer_place_path(place.layer.map,place.layer,place) do

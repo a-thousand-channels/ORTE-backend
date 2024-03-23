@@ -97,7 +97,8 @@
         = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
           %i.fi.fi-pencil.fi-24
       - if @place.subtitle.present?
-        %p= @place.subtitle
+        %p
+          = @place.subtitle
       %div
         %strong
           =h @place.teaser.html_safe
@@ -113,6 +114,7 @@
           = audio_tag rails_blob_url(@place.audio), autoplay: true, controls: true
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
+        %i.fi-marker.fi-21 
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
       %label Annotations
       %hr.small
