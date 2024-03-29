@@ -58,7 +58,7 @@ module ApplicationHelper
     if !enddate
       if startdate_qualifier == 'circa'
         # Ca. 1981
-        "Ca. #{startdate.strftime('%Y')}"
+        "ca. #{startdate.strftime('%Y')}"
       else
         if startdate.strftime('%H:%M') == '00:00'
           if startdate.strftime('%d.%m') == '01.01'
@@ -83,31 +83,32 @@ module ApplicationHelper
     else
       if startdate_qualifier == 'circa'
         if enddate_qualifier == 'circa'
+          # startdate year ends on 0, so 2000, 2010,.. so does enddate year
           if (startdate.strftime('%Y').to_i % 10).zero? && (enddate.strftime('%Y').to_i % 10).zero?
             if (enddate.strftime('%Y').to_i - startdate.strftime('%Y').to_i) < 10
-              # Ca. 1980s ‒ 2020s
+              # ca. 1980s ‒ 2020s
               "ca. #{startdate.strftime('%Y')}s ‒ #{enddate.strftime('%Y')}s"
             elsif (enddate.strftime('%Y').to_i - startdate.strftime('%Y').to_i) == 10
-              # Ca. 1980s
-              "in the #{startdate.strftime('%Y')}s"
+              # ca. 1980s
+              "ca. #{startdate.strftime('%Y')}s"
             else
-              # Ca. 1980s
-              "from #{startdate.strftime('%Y')}s to #{enddate.strftime('%Y')}s"
+              # ca. 1980s
+              "ca. #{startdate.strftime('%Y')}s ‒ #{enddate.strftime('%Y')}s"
             end
           else
+            # ca. 1980 ‒ 2020
             "ca. #{startdate.strftime('%Y')} ‒ #{enddate.strftime('%Y')}"
           end
         elsif enddate_qualifier == 'exact'
-          # (~ Ca. 2010 ‒ 15.10.2024)
+          # ca. 2010 ‒ 15.10.2024
           "ca. #{startdate.strftime('%Y')} ‒ #{enddate.strftime('%-d.%-m.%Y')}"
           # return date with no leading zero
-
         else
           if enddate.strftime('%d.%m') == '01.01'
-            # (~ ca. 2010 ‒ 2024)
+            # ca. 2010 ‒ 2024
             "ca. #{startdate.strftime('%Y')} ‒ #{enddate.strftime('%Y')}"
           else
-            # (~ Ca. 2010 ‒ 15.10.2024)
+            # ca. 2010 ‒ 15.10.2024
             "ca. #{startdate.strftime('%Y')} ‒ #{enddate.strftime('%-d.%-m.%Y')}"
           end
         end
@@ -118,11 +119,11 @@ module ApplicationHelper
         else
           if startdate.strftime('%d.%m') == '01.01'
             if (enddate.strftime('%Y').to_i % 10).zero?
-              # ~ from 1992 to 2000s
-              "from #{startdate.strftime('%Y')} to #{enddate.strftime('%Y')}s"
+              # 1992 ‒ 2000s
+              "#{startdate.strftime('%Y')} ‒ #{enddate.strftime('%Y')}s"
             else
-              # ~ from 1992 to ca. 2008
-              "from #{startdate.strftime('%Y')} to ca. #{enddate.strftime('%Y')}"
+              # ca. 1992 ‒ 2008
+              "ca. #{startdate.strftime('%Y')} ‒ #{enddate.strftime('%Y')}"
             end
           end
         end
