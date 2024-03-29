@@ -77,9 +77,10 @@
             = maxyear
             - timespan = maxyear-minyear
             (#{timespan} years)
-          %p.small
-            (Dates in brackets are fuzzy dates with qualifiers)
-
+          %p
+            %label.small
+              Dates in brackets are the new fuzzy dates with qualifiers (this will replace the old date format!)
+              %i.fi.fi-info{"data-tooltip"=>true, :title=>"This is a new feature to allow to define fuzzy dates, where either the start or end is not exactly known. You have to set a qualifier in the edit form of each place to use this feature."}
         %th
           &nbsp;
     %tbody          
@@ -89,9 +90,9 @@
             %p
               = smart_date_display(place.startdate, place.enddate)
               - if place.startdate_qualifier.present? || place.enddate_qualifier.present?
-                
-                %span.small
-                  (~ #{smart_date_display_with_qualifier(place.startdate, place.enddate, place.startdate_qualifier, place.enddate_qualifier)})
+                %br
+                %label.small
+                  (#{smart_date_display_with_qualifier(place.startdate, place.enddate, place.startdate_qualifier, place.enddate_qualifier)})
                 %br
               %em
                 = place.title
