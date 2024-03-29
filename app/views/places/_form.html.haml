@@ -116,10 +116,18 @@
               Start date
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"If you just want to define the year, like \"1995\", type in the date 1.1.1995"}
             = f.input :startdate_date, as: :date, html5: true, :label => false
-          .large-3.medium-4.small-3.cell
+          .large-3.medium-3.small-3.cell
             = f.input :startdate_time, as: :time, html5: true, :label => 'Start time', :input_html => {:size => 5, class: 'input-time'}
-          .large-5.medium-3.small-4.cell
-            = f.input :startdate_qualifier, :label => 'Qualifier', :collection => qualifier_for_select, include_blank: ' ', :selected => @place.startdate_qualifier         
+          .large-5.medium-4.small-4.cell
+            %p.small.compact#startdate_qualifier_label
+              %a{href: '', title: 'Define date quality', id: 'define_startdate_qualifier'}
+                Startdate quality
+                %i.fi.fi-pencil.fi-13                
+              %a{href: '', title: 'Define date quality', id: 'define_startdate_qualifier_cancel'}
+                Startdate quality
+                %i.fi.fi-x.fi-13
+              %span#startdate_qualifier_preview
+            = f.input :startdate_qualifier, :label => false, :collection => qualifier_for_select, include_blank: ' ', :selected => @place.startdate_qualifier         
         .grid-x
           .large-4.medium-5.small-5.cell
             = f.input :enddate, as: :hidden
@@ -127,10 +135,18 @@
               End date
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"If you just want to define the year, like \"1995\", type in the date 1.1.1995"}
             = f.input :enddate_date, as: :date, html5: true, :label => false
-          .large-3.medium-4.small-3.cell
+          .large-3.medium-3.small-3.cell
             = f.input :enddate_time, as: :time, html5: true, :label => 'End time', :input_html => {:size => 5, class: 'input-time'}
-          .large-5.medium-3.small-4.cell
-            = f.input :enddate_qualifier, :label => 'Qualifier', :collection => qualifier_for_select, include_blank: ' ',  :selected => @place.enddate_qualifier            
+          .large-5.medium-4.small-4.cell
+            %p.small.compact#enddate_qualifier_label
+              %a{href: '', title: 'Define enddate quality', id: 'define_enddate_qualifier'}
+                Enddate quality
+                %i.fi.fi-pencil.fi-13
+              %a{href: '', title: 'Define enddate quality', id: 'define_enddate_qualifier_cancel'}
+                Enddate quality
+                %i.fi.fi-x.fi-13    
+              %span#enddate_qualifier_preview                
+              = f.input :enddate_qualifier, :label => false, :collection => qualifier_for_select, include_blank: ' ',  :selected => @place.enddate_qualifier            
         %hr
         = tinymce
         = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 8, class: 'large-text tinymce' }

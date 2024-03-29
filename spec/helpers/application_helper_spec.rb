@@ -71,7 +71,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  describe 'smart data with qualifier displays', focus: true do
+  describe 'smart data with qualifier displays' do
     it 'returns nothing' do
       startdate = nil
       enddate = nil
@@ -90,7 +90,7 @@ RSpec.describe ApplicationHelper, type: :helper do
     it 'returns %Y with qualifier' do
       startdate = '2015-01-01 00:00:00'.to_time
       enddate = nil
-      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', '')).to eq('Ca. 2015')
+      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', '')).to eq('ca. 2015')
     end
     it 'returns %d.%m.%Y' do
       startdate = '2015-03-16 00:00:00'.to_time
@@ -125,12 +125,12 @@ RSpec.describe ApplicationHelper, type: :helper do
     it 'returns ca. %Ys with qualifier' do
       startdate = '2010-01-01 00:00:00'.to_time
       enddate = '2020-01-01 00:00:00'.to_time
-      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', 'circa')).to eq('in the 2010s')
+      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', 'circa')).to eq('ca. 2010s')
     end
     it 'returns ca. %Ys ‒ %Ys with qualifier' do
       startdate = '2000-01-01 00:00:00'.to_time
       enddate = '2020-01-01 00:00:00'.to_time
-      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', 'circa')).to eq('from 2000s to 2020s')
+      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', 'circa')).to eq('ca. 2000s ‒ 2020s')
     end
     it 'returns %m.d.y ‒ ca. %Ys with exact startdate qualifier and circa enddate qualifier' do
       startdate = '2000-08-15 00:00:00'.to_time

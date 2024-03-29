@@ -16,13 +16,13 @@ jQuery(function ($) {
         let d = $('#place_startdate_date').val();
         console.log(d); 
         console.log($(this).val());
-        $('.place_startdate_qualifier > label').html('Qualifier <span class="label small">'+translateQualifierDate(d,$(this).val())+'</span>');
+        $('#startdate_qualifier_preview').html('<span class="label small">'+translateQualifierDate(d,$(this).val())+'</span>');
     })
     $('#place_enddate_qualifier').change(function () {
         let d = $('#place_enddate_date').val();
         console.log(d); 
         console.log($(this).val());
-        $('.place_enddate_qualifier > label').html('Qualifier <span class="label small">'+translateQualifierDate(d,$(this).val())+'</span>');
+        $('#enddate_qualifier_preview').html('<span class="label small">'+translateQualifierDate(d,$(this).val())+'</span>');
     })
 });
 
