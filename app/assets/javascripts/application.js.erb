@@ -410,6 +410,10 @@ jQuery(function ($) {
     } else {
       custom_base_layer.addTo(map);
     }
+    if ( $('#selection').data('map-marker-display-mode') === 'zigzag cluster, w/gradient' ) {
+      $('#map').addClass('gradient-icons')
+    }
+  
 
   } else {
     console.log("No custom base layer defined");

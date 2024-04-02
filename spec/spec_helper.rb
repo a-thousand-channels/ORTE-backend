@@ -11,6 +11,7 @@ WebMock.disable_net_connect!(allow: [
                                '0.0.0.0',
                                '127.0.0.1',
                                'chromedriver.storage.googleapis.com',
+                               'storage.googleapis.com',
                                'googlechromelabs.github.io',
                                'storage.googleapis.com',
                                'edgedl.me.gvt1.com'
