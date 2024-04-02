@@ -11,11 +11,15 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
   // how to set data.id dynamically?
   var data_id = 1;
+
+  var marker_display_mode = $('#selection').data('map-marker-display-mode');
+
   var markerclusterSettings = {
           maxClusterRadius: 30,
           showCoverageOnHover: false,
           animate: true,
           iconCreateFunction: function(cluster) {
+            if ( marker_display_mode == 'cluster' ) {
               return L.divIcon({
                 html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '"><div>' + cluster.getChildCount() + '</div></div>',
                 className: "leaflet-data-markercluster",
@@ -23,11 +27,28 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
                 iconSize    : [30, 30],
                 popupAnchor : [0, -28]
               });
-            },
-
-
+            } else {
+              console.log("Zigzgag Cluster!!");
+              console.log(cluster.getChildCount());      
+              let cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_small : cluster_small_with_gradient );
+              if ( cluster.getChildCount() >= 10 ) {
+                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_xlarge : cluster_xlarge_with_gradient );
+              } else if ( cluster.getChildCount() >= 6 ) {
+                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_large : cluster_large_with_gradient );
+              } else if ( cluster.getChildCount() >= 3 ) {
+                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_medium : cluster_medium_with_gradient );
+              } 
+              let rnd_rotate = Math.floor(Math.random()*25) * 15;
+              return L.divIcon({
+                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '" style="transform: rotate('+rnd_rotate+'deg);">' + cluster_viz + '</div>',
+                className: "leaflet-data-markercluster",
+                iconAnchor  : [15, 15],
+                iconSize    : [30, 30],
+                popupAnchor : [0, -28]
+              });
+            }
+          },
           spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
-
           elementsPlacementStrategy: "clock",
           helpingCircles: true,
           clockHelpingCircleOptions: {
@@ -77,15 +98,17 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       var params = getParams();
 
       var clustercolor = '#445';
+      
       if ( level !== 'maps') {
         console.log("Render places of one layer");
         console.log(data);
-        if ( $('#selection').data('map-marker-display-mode') == 'single' ) {
+        if ( marker_display_mode == 'single' ) {
           var marker_layers =  L.featureGroup();
         } else {
           var marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
         clustercolor = data.color;
+        clustercolor = 'rgba(255, 0, 153, 0.8)';
         var places = [];
         if (level === 'places') {
           places = data.places;
@@ -101,10 +124,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         } else {
           console.log("DRAW MARKER");
-          drawMarkers(map,data.id,data.ltype,level,String(false),text_layers,image_layers,marker_layers,params,data.color,clustercolor,places);
+          drawMarkers(map,data.id,data.ltype,level,String(false),text_layers,image_layers,marker_layers,params,data.color,places);
           $('.marker-cluster-small').addClass('marker-layer-'+data.id);
         }
-        drawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,places_with_relations,data.relations_bending,data.relations_coloring);
+        drawCurves(map,data.id,curve_layers,marker_layers,data.color,places_with_relations,data.relations_bending,data.relations_coloring);
         marker_meta_layers.addLayer(marker_layers);
 
       } else  {
@@ -117,7 +140,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         });
         var show_annotations_on_map = data.show_annotations_on_map;
 
-        if ( $('#selection').data('map-marker-display-mode') == 'single' ) {
+        if ( marker_display_mode == 'single' ) {
           marker_layers =  L.featureGroup();
         } else {
           marker_layers = L.markerClusterGroup(markerclusterSettings);
@@ -127,14 +150,19 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         $.each(all_places, function(key,data) {
           clustercolor = 'rgba(0, 54, 193, 0.9)';
           clustercolor = 'rgba(50, 54, 153, 0.9)';
+
+          clustercolor = '#ff0099';
+          clustercolor = 'rgba(255, 0, 153, 0.8)';
+
           /* grayish 
           clustercolor = 'rgba(100, 104, 103, 0.9)';
           if ( localStorage.baselayer == 'Satellite' ) {
             clustercolor = 'rgba(220, 224, 223, 0.9)';
           }
+          
           */
           console.log(data);
-          drawMarkers(map,data.id,data.layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,clustercolor,[data]);
+          drawMarkers(map,data.id,data.layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,[data]);
         });
         marker_meta_layers.addLayer(marker_layers);
 
@@ -156,7 +184,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           }
           */
           console.log("Places_with_relations: "+data.places_with_relations.length);
-          drawCurves(map,data.id,curve_layers,marker_layers,data.color,clustercolor,data.places_with_relations, data.relations_bending,data.relations_coloring);
+          drawCurves(map,data.id,curve_layers,marker_layers,data.color,data.places_with_relations, data.relations_bending,data.relations_coloring);
           marker_meta_layers.addLayer(marker_layers);
         });
 
@@ -176,10 +204,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           "#map .marker-cluster-medium," +
           "#map .marker-cluster-small {" +
           "    background-color: transparent;" +
-          "    border: 3px solid " + clustercolor + ";" +
+          "    border: 0px solid " + clustercolor + ";" +
           "    opacity: 0.9;" +
-          "    width: 40px;" +
-          "   height: 40px;" +
+          "    width: 36px;" +
+          "   height: 36px;" +
           "   display: flex;" +
           "   align-items: center;" +
           "   justify-content: center;" +
