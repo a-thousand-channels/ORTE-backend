@@ -116,7 +116,7 @@ module ApplicationHelper
         if startdate_qualifier == 'exact'
           # ~ 15.6.2000 ‒ ca. 2008
           "#{startdate.strftime('%-d.%-m.%Y')} ‒ ca. #{enddate.strftime('%Y')}"
-        else
+        elsif startdate_qualifier == 'circa'
           if startdate.strftime('%d.%m') == '01.01'
             if (enddate.strftime('%Y').to_i % 10).zero?
               # 1992 ‒ 2000s
@@ -126,6 +126,9 @@ module ApplicationHelper
               "ca. #{startdate.strftime('%Y')} ‒ #{enddate.strftime('%Y')}"
             end
           end
+        else
+          # 1992 ‒ ca. 2008
+          "#{startdate.strftime('%Y')} ‒ ca. #{enddate.strftime('%Y')}"
         end
 
       else
