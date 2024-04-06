@@ -40,7 +40,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
               } 
               let rnd_rotate = Math.floor(Math.random()*25) * 15;
               return L.divIcon({
-                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '" style="transform: rotate('+rnd_rotate+'deg);">' + cluster_viz + '</div>',
+                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + ';">' + cluster_viz + '</div>',
                 className: "leaflet-data-markercluster",
                 iconAnchor  : [15, 15],
                 iconSize    : [30, 30],
