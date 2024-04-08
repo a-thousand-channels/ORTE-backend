@@ -224,7 +224,7 @@ jQuery(function ($) {
       $('#layer_display').hide();
   });
   $('#layer_display_cancel').click(function(e){
-      $("#place_layer_id option:selected").removeAttr("selected");
+      // $("#place_layer_id option:selected").removeAttr("selected");
       $('#layer_selector').addClass('hide');
       $('#layer_display').show();
   });
@@ -255,8 +255,37 @@ jQuery(function ($) {
       $('#place_lon').prop('type','hidden');
       $('#edit_coordinates_cancel').hide();
       $('#edit_coordinates').show();
+  }); 
+  // places > form: toggle startdate qualifier
+  $('#define_startdate_qualifier_cancel').hide();
+  $('#place_startdate_qualifier').addClass('hidden');
+  $('#define_startdate_qualifier').click(function(e){
+    e.preventDefault();
+    $('select#place_startdate_qualifier').removeClass('hidden');
+    $('#define_startdate_qualifier').hide();
+    $('#define_startdate_qualifier_cancel').show();
   });
-
+  $('#define_startdate_qualifier_cancel').click(function(e){
+      e.preventDefault();
+      $('select#place_startdate_qualifier').addClass('hidden');
+      $('#define_startdate_qualifier_cancel').hide();
+      $('#define_startdate_qualifier').show();
+  }); 
+  // places > form: toggle enddate qualifier
+  $('#define_enddate_qualifier_cancel').hide();
+  $('#place_enddate_qualifier').addClass('hidden');
+  $('#define_enddate_qualifier').click(function(e){
+    e.preventDefault();
+    $('select#place_enddate_qualifier').removeClass('hidden');
+    $('#define_enddate_qualifier').hide();
+    $('#define_enddate_qualifier_cancel').show();
+  });
+  $('#define_enddate_qualifier_cancel').click(function(e){
+      e.preventDefault();
+      $('select#place_enddate_qualifier').addClass('hidden');
+      $('#define_enddate_qualifier_cancel').hide();
+      $('#define_enddate_qualifier').show();
+  });   
   // ---------------
 
   var text_layers = L.featureGroup();

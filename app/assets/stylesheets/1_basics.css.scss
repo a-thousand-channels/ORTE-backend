@@ -39,6 +39,9 @@ p {
 p.compact {
   margin: 0;
 }
+p.small.compact {
+  margin-bottom: 0.2rem;
+}
 
 a.disabled {
    cursor: not-allowed;
