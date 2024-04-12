@@ -13,6 +13,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   var data_id = 1;
 
   var marker_display_mode = $('#selection').data('map-marker-display-mode');
+  var layer_color = $('#selection').data('layer-color');
 
   var markerclusterSettings = {
           maxClusterRadius: 30,
@@ -29,7 +30,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
               });
             } else {
               console.log("Zigzgag Cluster!!");
-              console.log(cluster.getChildCount());      
+              console.log(cluster.getChildCount());     
+
               let cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_small : cluster_small_with_gradient );
               if ( cluster.getChildCount() >= 10 ) {
                 cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_xlarge : cluster_xlarge_with_gradient );
@@ -38,6 +40,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
               } else if ( cluster.getChildCount() >= 3 ) {
                 cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_medium : cluster_medium_with_gradient );
               } 
+              if ( layer_color && layer_color.length > 0 ) {
+                cluster_viz = cluster_viz.replace(/rgba\(255, 0, 153, 0.8\)/g, layer_color); 
+              }
+              
               let rnd_rotate = Math.floor(Math.random()*25) * 15;
               return L.divIcon({
                 html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '" style="transform: rotate('+rnd_rotate+'deg);">' + cluster_viz + '</div>',
@@ -153,14 +159,6 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
           clustercolor = '#ff0099';
           clustercolor = 'rgba(255, 0, 153, 0.8)';
-
-          /* grayish 
-          clustercolor = 'rgba(100, 104, 103, 0.9)';
-          if ( localStorage.baselayer == 'Satellite' ) {
-            clustercolor = 'rgba(220, 224, 223, 0.9)';
-          }
-          
-          */
           console.log(data);
           drawMarkers(map,data.id,data.layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,[data]);
         });
