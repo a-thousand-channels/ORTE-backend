@@ -12,7 +12,11 @@ module ImagesHelper
       filename = ActiveStorage::Blob.service.path_for(file.key)
       return unless File.exist?(filename)
 
-      polymorphic_url(file.variant(resize: '800x800').processed)
+      if file.variable?
+        polymorphic_url(file.variant(resize: '800x800').processed)
+      else
+        polymorphic_url(file)
+      end
     rescue Errno::ENOENT => e
       'Image not found.'
     rescue ActiveStorage::FileNotFoundError => e
