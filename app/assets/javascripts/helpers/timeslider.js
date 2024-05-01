@@ -1,7 +1,14 @@
 
+
 jQuery(function ($) {
-    
-  
+
+  function filterMarkers(selectedYear) {
+
+    // markers.forEach(function(marker) {
+      console.log("filterMarkers **************");
+      console.log(marker_layers);
+  }
+  // for a single slider, used in places index
   $(document).on('changed.zf.slider', '[data-slider]', function(event) {
     var $slider = $(event.currentTarget);
     var $numberInput = $slider.children('input');

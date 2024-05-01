@@ -148,6 +148,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
         if ( marker_display_mode == 'single' ) {
           marker_layers =  L.featureGroup();
+          window.markers_layer = L.featureGroup();
         } else {
           marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
@@ -187,7 +188,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         });
 
       }
-
+      console.log('******************************');
+      console.log(window.markers_layer)
+      
       var layer_style = '';
       $.each(data.layers, function(key,data) {
           layer_style += "#map .marker-cluster-layer-" + data.id;
