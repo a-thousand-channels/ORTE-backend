@@ -142,6 +142,8 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         marker_layers.addLayer(marker);
         text_layers.addLayer(textmarker);
         // text_layers.addLayer(marker);
+      } else {
+        window.markers_layer.addLayer(marker);
       }
 
       var content = (place.layer_type == 'standard') ? PopupFullContent(place) : PopupImageOnlyContent(place);

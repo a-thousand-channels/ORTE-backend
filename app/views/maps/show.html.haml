@@ -1,5 +1,22 @@
 - content_for(:title) { @map.title }
 
+#info{:style => "background-color: #fff; padding:10px; margin-bottom: 10px;"}
+  Timeline setup 
+  %br
+  #{@places.count} places in #{@map_layers.count} layers
+  %br
+  Timerange: 
+  #{@minyear}
+  \—
+  #{@maxyear}             
+  (#{@timespan} Years)
+  %br
+  - if @map.marker_display_mode == 'single'
+    Marker display mode is set to single ✓
+  %br
+  TODO: generate timeline 
+  %br
+  TODO: set filter active
 #selection{:data => { 'url' => "/maps/#{@map.id}.json", 'map_id' => "#{@map.id}", 'map-center-lat' => "#{@map.mapcenter_lat}", 'map-center-lon' => "#{@map.mapcenter_lon}", 'map-zoom' => "#{@map.zoom}", 'map-extent-northeast' => "#{@map.northeast_corner}", 'map-extent-southwest' => "#{@map.southwest_corner}", 'map-basemap-url' => "#{@map.basemap_url}", 'map-basemap-attribution' => "#{@map.basemap_attribution}", 'map-background-color' => "#{@map.background_color}", 'map-popup-display-mode' => "#{@map.popup_display_mode}", 'map-marker_display_mode' => "#{@map.marker_display_mode}", 'map-enable_historical_maps' => "#{@map.enable_historical_maps}" }}
   - if params[:setbound]
     #form-wrapper.small-wrapper

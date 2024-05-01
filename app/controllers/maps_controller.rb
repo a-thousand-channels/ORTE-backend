@@ -15,8 +15,16 @@ class MapsController < ApplicationController
   # GET /maps/1.json
   def show
     @maps = Map.sorted.by_user(current_user)
+
     if @map
       @map_layers = @map.layers
+
+      @places = @map_layers.flat_map(&:places)
+      # timeline calculation, for now on a yearly basis
+      @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+      @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
+      @timespan = @maxyear - @minyear
+
       respond_to do |format|
         format.html { render :show }
         format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
