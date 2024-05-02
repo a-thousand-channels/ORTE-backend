@@ -20,3 +20,91 @@
     border-bottom: 4px solid #c6c600;
   }
 }
+
+
+
+#timeline {
+  position: fixed;
+  bottom: 10px;
+  padding: 0 20px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  justify-content: center;
+  z-index: 9000;
+  border: 1px solid transparent;
+   
+ }
+#timeline-content {
+   background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.3);
+ border-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+   margin: 0 10px;
+  padding: 5px 30px 5px 220px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+   justify-content: center;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  align-items: center; 
+  
+ }
+#timeline-content div {
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 4px black;
+  width: 40px;
+  height: 30px;
+  background-color: transparent;
+  border-left: 3px solid rgba(200,200,200,0.5);
+  margin: 5px;
+  padding: 0 5px 0 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-items: flex-end;
+}
+#timeline-content div.active
+{ 
+  color: #c6c600;
+  cursor: pointer;
+  border-color: #c6c600;
+  text-shadow: 0 0 4px black;
+  transition: 0.3s all;
+}
+#timeline-content div:hover
+{ 
+  color: #ccc;
+  cursor: pointer;
+  border-color: #ccc;
+  text-shadow: 0 0 4px black;
+  transition: 0.3s all;
+}
+#timeline-content div.active:hover
+{ 
+  color: #c6c600;
+   border-color: #c6c600;
+}
+#scroll-left,
+#scroll-right {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 30px; /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9999; /* Ensure scroll handles are above content */
+}
+
+#scroll-right {
+  left: unset;
+  right: 0;
+}
