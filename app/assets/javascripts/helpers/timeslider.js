@@ -1,42 +1,24 @@
 jQuery(function ($) {
+// scrollbuttons
+let scrollLeft = document.createElement('div');
+scrollLeft.setAttribute('id', 'scroll-left');
+scrollLeft.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.8284 12.0005L14.6569 14.8289L13.2426 16.2431L9 12.0005L13.2426 7.75781L14.6569 9.17203L11.8284 12.0005Z"></path></svg>';
+let scrollRight = document.createElement('div');
+scrollRight.setAttribute('id', 'scroll-right');
+scrollRight.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12.1717 12.0005L9.34326 9.17203L10.7575 7.75781L15.0001 12.0005L10.7575 16.2431L9.34326 14.8289L12.1717 12.0005Z"></path></svg>';
 
-  function filterMarkers(selectedYear) {
-    console.log("filterMarkers **************");
-    console.log(window.marker_layers);
-    window.marker_layers.forEach(function(marker) {
-      if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
-          marker.addTo(map);
-          marker.setIcon(icon);
-      } else {       
-        if ( selectedYear <= current_selected_year ) {
-          map.removeLayer(marker);  
-          // marker.setIcon(icon_past);
-        } else {
-          marker.setIcon(icon_past);
-        }    
-      }
-    });
-  }
-  function SelectAndFilterByYear(el,yearDivs,year) {
-    let active = false;
-    if ( el.classList.contains("active") ) {
-      active = true;
-      resetMarkers();
-    } else {
-      filterMarkers(year);
-    }
-    yearDivs.forEach(function(div) {
-      div.classList.remove("active");
-    });
-    if ( !active ) {
-      el.classList.add("active");
-    }
-  }
+
 // time line
+let timelineWrapper = document.createElement('div');
+timelineWrapper.setAttribute('id', 'timeline-wrapper');
+timelineWrapper.appendChild(scrollLeft);
+timelineWrapper.appendChild(scrollRight);
 let timelineContent = document.createElement('div');
 timelineContent.setAttribute('id', 'timeline-content');
-let main = document.querySelector("main");
-main.appendChild(timelineContent);
+timelineWrapper.appendChild(timelineContent);
+let body = document.querySelector("body");
+document.body.insertBefore(timelineWrapper, document.querySelector("footer"));
+
 
 let minYear = 2000;
 let maxYear = 2024;
@@ -52,14 +34,47 @@ for (var i = minYear; i <= maxYear; i += step) {
   div.textContent = i;
   timelineContent.appendChild(div);
 }
+});
 
+function filterMarkers(selectedYear) {
+  console.log("filterMarkers **************");
+  console.log(window.markers_layer);
+  window.markers_layer.forEach(function(marker) {
+    if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
+        marker.addTo(map);
+        marker.setIcon(icon);
+    } else {       
+      if ( selectedYear <= current_selected_year ) {
+        map.removeLayer(marker);  
+        // marker.setIcon(icon_past);
+      } else {
+        marker.setIcon(icon_past);
+      }    
+    }
+  });
+}
+function SelectAndFilterByYear(el,yearDivs,year) {
+  let active = false;
+  if ( el.classList.contains("active") ) {
+    active = true;
+    resetMarkers();
+  } else {
+    filterMarkers(year);
+  }
+  yearDivs.forEach(function(div) {
+    div.classList.remove("active");
+  });
+  if ( !active ) {
+    el.classList.add("active");
+  }
+}
 document.addEventListener("DOMContentLoaded", function() {
   const timelineContent = document.getElementById("timeline-content");
   const scrollLeft = document.getElementById("scroll-left");
   const scrollRight = document.getElementById("scroll-right");
   const yearDivs = document.querySelectorAll(".year");
 
-   
+   console.log("Prep eventListeners")
   scrollLeft.addEventListener("click", function() {
     timelineContent.scrollBy({
       left: -100, // Adjust the scroll amount as needed
@@ -76,8 +91,8 @@ document.addEventListener("DOMContentLoaded", function() {
   yearDivs.forEach(function(yearDiv) {
     yearDiv.addEventListener("click", function() {
 
-      var selectedYear = this.getAttribute('data-year') // You can modify this to select any year within the range
-      SelectAndFilterByYear(this,yearDivs,selectedYear)
+      var selectedYear = this.getAttribute('data-year');
+      SelectAndFilterByYear(this,yearDivs,selectedYear);
     });
   });
   el = document.getElementById('year2008'); 
@@ -95,4 +110,3 @@ document.addEventListener("DOMContentLoaded", function() {
     // hide all
     // show only those existing in the selected year
   });
-});
