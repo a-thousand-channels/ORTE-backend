@@ -89,7 +89,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           var icon = greyIcon;
         }
       }
-
+      
 
       // alternative place display marker as text
       // TODO: display switch
@@ -129,7 +129,8 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           popupAnchor:[0,0] });
       var imagemarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: imageicon}).addTo(image_layers);
 
-
+      window.icon = icon;
+      window.map = map;
 
       // TODO: add to layer, not map
       // var marker = L.marker([place.lat, place.lon], {icon: icon}).addTo(marker_layers);
@@ -142,8 +143,25 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         marker_layers.addLayer(marker);
         text_layers.addLayer(textmarker);
         // text_layers.addLayer(marker);
+        if ( place.startdate && place.enddate ) {
+          marker.data = setFromToYears(place.startdate,place.enddate); 
+          // Attach fromYear and toYear attributes to marker 
+          console.log("Marker data");
+          console.log(marker.data);
+          window.markers.push(marker);    
+        }
+            
       } else {
-        window.markers_layer.addLayer(marker);
+        
+      }
+      function setFromToYears (startdate,enddate) {
+        var startYear = parseInt(startdate.substring(0, 4));
+        var endYear = parseInt(enddate.substring(0, 4));
+        return {
+            fromYear: startYear,
+            endYear: endYear
+        };
+
       }
 
       var content = (place.layer_type == 'standard') ? PopupFullContent(place) : PopupImageOnlyContent(place);
@@ -220,6 +238,8 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
       c++;
     });
     // console.log(c+" Marker added to map!");
+    console.log('Markers hash');
+    console.log(window.markers);
 
     // thanks to https://github.com/louh - Allow for offset on center of map
     L.Map.prototype.panToOffset = function (latlng, offset, options) {

@@ -2,7 +2,7 @@
 %td.nobr {
     white-space: nowrap;
 }
-#timeline {
+table#timeline-list {
   .time
   {
     border-top: 1px dashed #555;
@@ -43,7 +43,7 @@
   padding: 0 20px;
   display: flex;
   justify-content: center;
-  z-index: 9000;
+  z-index: 996;
   border: 1px solid transparent;
 
 }
