@@ -20,6 +20,7 @@ class MapsController < ApplicationController
       @map_layers = @map.layers
 
       @places = @map_layers.flat_map(&:places)
+      @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
       # timeline calculation, for now on a yearly basis
       @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
       @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year

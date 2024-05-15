@@ -148,7 +148,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
         if ( marker_display_mode == 'single' ) {
           marker_layers =  L.featureGroup();
-          window.markers_layer = L.featureGroup();
+          // Initialize an array to hold markers
+          window.markers = [];
         } else {
           marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
