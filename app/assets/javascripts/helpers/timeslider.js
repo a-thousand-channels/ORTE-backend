@@ -2,7 +2,7 @@ jQuery(function ($) {
 
   let body = document.querySelector("body");
 
-  if ( body.classList.contains("show") && ( body.id == 'maps') ) {
+  if ( body.classList.contains("show") && ( body.id === 'maps') ) {
 
     // scrollbuttons
     let scrollLeft = document.createElement('div');
@@ -24,10 +24,11 @@ jQuery(function ($) {
     document.body.insertBefore(timelineWrapper, document.querySelector("footer"));
 
 
-    let minYear = 2000;
-    let maxYear = 2024;
+    let minYear = $('#selection').data('map-timeline-minyear');
+    let maxYear = $('#selection').data('map-timeline-maxyear');
 
     let diff = maxYear - minYear;
+    console.log("Create Timeline with ",minYear,maxYear,diff);
     let step = 1;
 
     for (var i = minYear; i <= maxYear; i += step) {
@@ -45,17 +46,21 @@ let current_selected_year = 1900;
 function filterMarkers(selectedYear) {
   console.log("filterMarkers **************");
   console.log(window.markers);
-  
 
   const status = document.getElementById("timeline-info-status");
   status.innerHTML = "Selected Year "+selectedYear;
 
   window.markers.forEach(function(marker) {
+    if (!marker.data) {
+      window.map.removeLayer(marker);
+      return;
+    }
     if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
-        console.log(marker.data.fromYear,selectedYear,marker.data.endYear);
+        console.log("1", marker.data.fromYear,selectedYear,marker.data.endYear);
         marker.addTo(window.map);
         marker.setIcon(window.icon);
     } else {       
+      console.log("X", marker.data.fromYear,selectedYear,marker.data.endYear);
       if ( selectedYear <= current_selected_year ) {
         window.map.removeLayer(marker);  
         // marker.setIcon(icon_past);
@@ -67,6 +72,13 @@ function filterMarkers(selectedYear) {
     }
   });
 }
+function resetMarkers() {
+  markers.forEach(function(marker) {
+      marker.addTo(map);
+      marker.setIcon(icon);       
+  });
+}
+
 function SelectAndFilterByYear(el,yearDivs,year) {
   let active = false;
   if ( el.classList.contains("active") ) {
@@ -109,8 +121,9 @@ document.addEventListener("DOMContentLoaded", function() {
       SelectAndFilterByYear(this,yearDivs,selectedYear);
     });
   });
-  el = document.getElementById('year2008'); 
-  // SelectAndFilterByYear(el,yearDivs,'2008')
+  let startyear = $('#selection').data('map-timeline-minyear');
+  el = document.getElementById('year'+startyear); 
+  SelectAndFilterByYear(el,yearDivs,startyear);
 });
 
 

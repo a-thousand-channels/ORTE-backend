@@ -93,6 +93,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   if(typeof layer_json_url !== 'undefined') {
 
     console.log("Drawing placemarks w/data from "+layer_json_url + " at level "+level);
+    // Initialize an array to hold markers
+    window.markers = [];    
 
     var request = $.getJSON(layer_json_url, function(data) {
 
@@ -148,8 +150,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
         if ( marker_display_mode == 'single' ) {
           marker_layers =  L.featureGroup();
-          // Initialize an array to hold markers
-          window.markers = [];
+
         } else {
           marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
@@ -186,11 +187,14 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           console.log("Places_with_relations: "+data.places_with_relations.length);
           drawCurves(map,data.id,curve_layers,marker_layers,data.color,data.places_with_relations, data.relations_bending,data.relations_coloring);
           marker_meta_layers.addLayer(marker_layers);
+          
+          
         });
 
       }
       console.log('******************************');
-      console.log(window.markers_layer)
+      console.log("saved in window.markers: "+window.markers.length);
+      console.log(window.markers)
       
       var layer_style = '';
       $.each(data.layers, function(key,data) {
