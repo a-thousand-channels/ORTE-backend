@@ -148,9 +148,11 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           // Attach fromYear and toYear attributes to marker 
           console.log("Marker data");
           console.log(marker.data);
-          window.markers.push(marker);    
+          
         }
-            
+        window.markers.push(marker);    
+        console.log(window.markers.length)
+          
       } else {
         
       }
@@ -240,6 +242,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
     // console.log(c+" Marker added to map!");
     console.log('Markers hash');
     console.log(window.markers);
+    console.log(window.markers.length);
 
     // thanks to https://github.com/louh - Allow for offset on center of map
     L.Map.prototype.panToOffset = function (latlng, offset, options) {
