@@ -252,14 +252,6 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         }
         else if ( $('#selection').data('map-extent-northeast') ) {
           console.log("Fit to custom map extent");
-          /*
-          var northeast_array = $('#selection').data('map-extent-northeast').split(",").map(Number);
-          console.log(northeast_array);
-          var southwest_array = $('#selection').data('map-extent-southwest').split(",").map(Number);
-          console.log(southwest_array);
-          northeast = L.latLng(northeast_array[0],northeast_array[1]);
-          southwest = L.latLng(southwest_array[0],southwest_array[1]);
-          */
           var northeast_array = $('#selection').data('map-extent-northeast');
           console.log("Map custom extend: NE "+  northeast_array);
           var southwest_array = $('#selection').data('map-extent-southwest');

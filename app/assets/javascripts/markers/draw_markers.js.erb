@@ -72,6 +72,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         
         var svg = '<svg height="'+marker_size+'" width="'+marker_size+'" xmlns="http://www.w3.org/2000/svg">'+defs_with_gradient+'<circle class="cls-1" cx="'+marker_size/2+'" cy="'+marker_size/2+'" r="'+marker_size/2+'" fill="'+color+'" fill-opacity="'+opacity+'" stroke="'+stroke+'" stroke-width="'+stroke_width+'" stroke-opacity="'+stroke_opacity+'" shape-rendering="geometricPrecision"></circle></svg>';
 
+        // major marker definition
         var url = encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
         var icon;
         if ( layer_type === 'image' ) {
@@ -145,6 +146,8 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         // text_layers.addLayer(marker);
         if ( place.startdate && place.enddate ) {
           marker.data = setFromToYears(place.startdate,place.enddate); 
+          marker.data.color = color;
+
           // Attach fromYear and toYear attributes to marker 
           console.log("Marker data");
           console.log(marker.data);
