@@ -58,12 +58,14 @@ function filterMarkers(selectedYear) {
     if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
         console.log("1", marker.data.fromYear,selectedYear,marker.data.endYear);
         marker.addTo(window.map);
+        // TODO: add color!
         marker.setIcon(window.icon);
     } else {       
       console.log("X", marker.data.fromYear,selectedYear,marker.data.endYear);
       if ( selectedYear <= current_selected_year ) {
         window.map.removeLayer(marker);  
         // marker.setIcon(icon_past);
+        // TODO: remove relations and other elements!
       } else {
         window.map.removeLayer(marker);  
         window.icon_past = window.icon;
@@ -95,35 +97,38 @@ function SelectAndFilterByYear(el,yearDivs,year) {
   }
 }
 document.addEventListener("DOMContentLoaded", function() {
-  const timelineContent = document.getElementById("timeline-content");
-  const scrollLeft = document.getElementById("scroll-left");
-  const scrollRight = document.getElementById("scroll-right");
-  const yearDivs = document.querySelectorAll(".year");
+  let body = document.querySelector("body");
+  if ( body.classList.contains("show") && ( body.id === 'maps') ) {
+    const timelineContent = document.getElementById("timeline-content");
+    const scrollLeft = document.getElementById("scroll-left");
+    const scrollRight = document.getElementById("scroll-right");
+    const yearDivs = document.querySelectorAll(".year");
 
-   console.log("Prep eventListeners")
-  scrollLeft.addEventListener("click", function() {
-    timelineContent.scrollBy({
-      left: -100, // Adjust the scroll amount as needed
-      behavior: "smooth"
+    console.log("Prep eventListeners")
+    scrollLeft.addEventListener("click", function() {
+      timelineContent.scrollBy({
+        left: -100, // Adjust the scroll amount as needed
+        behavior: "smooth"
+      });
     });
-  });
 
-  scrollRight.addEventListener("click", function() {
-    timelineContent.scrollBy({
-      left: 100, // Adjust the scroll amount as needed
-      behavior: "smooth"
+    scrollRight.addEventListener("click", function() {
+      timelineContent.scrollBy({
+        left: 100, // Adjust the scroll amount as needed
+        behavior: "smooth"
+      });
     });
-  });
-  yearDivs.forEach(function(yearDiv) {
-    yearDiv.addEventListener("click", function() {
+    yearDivs.forEach(function(yearDiv) {
+      yearDiv.addEventListener("click", function() {
 
-      var selectedYear = this.getAttribute('data-year');
-      SelectAndFilterByYear(this,yearDivs,selectedYear);
+        var selectedYear = this.getAttribute('data-year');
+        SelectAndFilterByYear(this,yearDivs,selectedYear);
+      });
     });
-  });
-  let startyear = $('#selection').data('map-timeline-minyear');
-  el = document.getElementById('year'+startyear); 
-  SelectAndFilterByYear(el,yearDivs,startyear);
+    let startyear = $('#selection').data('map-timeline-minyear');
+    el = document.getElementById('year'+startyear); 
+    SelectAndFilterByYear(el,yearDivs,startyear);
+  }
 });
 
 
