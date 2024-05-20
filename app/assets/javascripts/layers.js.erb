@@ -194,8 +194,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       }
       console.log('******************************');
       console.log("saved in window.markers: "+window.markers.length);
-      console.log(window.markers)
-      
+      console.log(window.markers);
+   
       var layer_style = '';
       $.each(data.layers, function(key,data) {
           layer_style += "#map .marker-cluster-layer-" + data.id;
@@ -233,6 +233,13 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           layer_style +
       "</style>"
   );
+
+  const yearDivs = document.querySelectorAll(".year");
+  let startyear = $('#selection').data('map-timeline-minyear');
+  console.log("Pre-select first year ", startyear, yearDivs.length);
+  let el = document.getElementById('year'+startyear); 
+  SelectAndFilterByYear(el,yearDivs,startyear);         
+  
 
         console.log("Fit to bounds routine");
         var bounds = marker_meta_layers.getBounds().pad(0.35);

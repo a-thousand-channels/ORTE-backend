@@ -28,7 +28,7 @@ jQuery(function ($) {
     let maxYear = $('#selection').data('map-timeline-maxyear');
 
     let diff = maxYear - minYear;
-    console.log("Create Timeline with ",minYear,maxYear,diff);
+    console.log("Create Timeline with ",minYear,maxYear);
     let step = 1;
 
     for (var i = minYear; i <= maxYear; i += step) {
@@ -44,8 +44,10 @@ jQuery(function ($) {
 });
 let current_selected_year = 1900;
 function filterMarkers(selectedYear) {
-  console.log("filterMarkers **************");
+
+  console.log("filterMarkers **************",selectedYear);
   console.log(window.markers);
+  current_selected_year = ( selectedYear > current_selected_year ) ? selectedYear : current_selected_year;
 
   const status = document.getElementById("timeline-info-status");
   status.innerHTML = "Selected Year "+selectedYear;
@@ -57,29 +59,39 @@ function filterMarkers(selectedYear) {
     }
     if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
         console.log("1", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);
-        marker.addTo(window.map);
+        
         // TODO: add color!
         icon = LargeMarkerIcon.create({color: marker.data.color});
         marker.setIcon(icon);
-    } else {       
-      console.log("X", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);
-      if ( selectedYear <= current_selected_year ) {
-        window.map.removeLayer(marker);  
-        // marker.setIcon(icon_past);
+        marker.addTo(window.map);
+    } 
+    // selecting past years
+    else if ( marker.data.endYear <= selectedYear) {
+
+        console.log("X Past", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);        
+
+        // TODO: color depending on background :)
+        icon = LargeMarkerIcon.create({color: '#fff', opacity: 0.25});
+        marker.setIcon(icon);        
         // TODO: remove relations and other elements!
-      } else {
-        window.map.removeLayer(marker);  
-        window.icon_past = window.icon;
-        marker.setIcon(window.icon_past);
-      }    
-    }
+
+    // selecting future years
+    } else {
+      console.log("X Future", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);        
+      window.map.removeLayer(marker);  
+      
+    }    
+    
   });
 }
 function resetMarkers() {
   markers.forEach(function(marker) {
-      marker.addTo(map);
-      icon = LargeMarkerIcon.create({color: marker.data.color});
-      marker.setIcon(icon);       
+    if (!marker.data) {
+      return;
+    }
+    marker.addTo(map);
+    icon = LargeMarkerIcon.create({color: marker.data.color});
+    marker.setIcon(icon);       
   });
 }
 
@@ -127,9 +139,8 @@ document.addEventListener("DOMContentLoaded", function() {
         SelectAndFilterByYear(this,yearDivs,selectedYear);
       });
     });
-    let startyear = $('#selection').data('map-timeline-minyear');
-    el = document.getElementById('year'+startyear); 
-    SelectAndFilterByYear(el,yearDivs,startyear);
+    console.log("Prep eventListeners done");
+    
   }
 });
 
