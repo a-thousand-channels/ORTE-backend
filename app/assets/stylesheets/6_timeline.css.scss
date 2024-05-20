@@ -48,16 +48,15 @@ table#timeline-list {
 
 }
 #timeline-content {
-
-   background-color: transparent;
+  background-color: transparent;
   background-color: rgba(0, 0, 0, 0.3);
- border-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-   margin: 0 10px;
+  border-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  margin: 0 10px;
   padding: 5px 30px 5px 220px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-   justify-content: center;
+  justify-content: center;
   flex-wrap: nowrap;
   overflow: hidden;
   align-items: center; 
