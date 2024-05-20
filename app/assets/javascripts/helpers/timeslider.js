@@ -3,7 +3,9 @@ jQuery(function ($) {
   let body = document.querySelector("body");
 
   if ( body.classList.contains("show") && ( body.id === 'maps') ) {
-
+    if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
+      return;
+    }
     // scrollbuttons
     let scrollLeft = document.createElement('div');
     scrollLeft.setAttribute('id', 'scroll-left');
@@ -70,8 +72,11 @@ function filterMarkers(selectedYear) {
 
         console.log("X Past", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);        
 
-        // TODO: color depending on background :)
-        icon = LargeMarkerIcon.create({color: '#fff', opacity: 0.25});
+        if ( $('#map').hasClass('darken-icons') ) {
+          icon = LargeMarkerIcon.create({color: '#333', opacity: 0.15});
+        } else {
+          icon = LargeMarkerIcon.create({color: '#fff', opacity: 0.25});
+        }
         marker.setIcon(icon);        
         // TODO: remove relations and other elements!
 
@@ -113,6 +118,9 @@ function SelectAndFilterByYear(el,yearDivs,year) {
 document.addEventListener("DOMContentLoaded", function() {
   let body = document.querySelector("body");
   if ( body.classList.contains("show") && ( body.id === 'maps') ) {
+    if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
+      return;
+    }
     const timelineContent = document.getElementById("timeline-content");
     const scrollLeft = document.getElementById("scroll-left");
     const scrollRight = document.getElementById("scroll-right");

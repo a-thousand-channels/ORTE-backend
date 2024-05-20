@@ -234,12 +234,15 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       "</style>"
   );
 
-  const yearDivs = document.querySelectorAll(".year");
-  let startyear = $('#selection').data('map-timeline-minyear');
-  console.log("Pre-select first year ", startyear, yearDivs.length);
-  let el = document.getElementById('year'+startyear); 
-  SelectAndFilterByYear(el,yearDivs,startyear);         
-  
+  if ( $('#selection').data('map-marker-display-mode') === 'single' ) {
+
+    const yearDivs = document.querySelectorAll(".year");
+    let startyear = $('#selection').data('map-timeline-minyear');
+    console.log("Pre-select first year ", startyear, yearDivs.length);
+    let el = document.getElementById('year'+startyear); 
+    SelectAndFilterByYear(el,yearDivs,startyear);   
+  }      
+    
 
         console.log("Fit to bounds routine");
         var bounds = marker_meta_layers.getBounds().pad(0.35);
