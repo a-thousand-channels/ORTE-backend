@@ -56,12 +56,13 @@ function filterMarkers(selectedYear) {
       return;
     }
     if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
-        console.log("1", marker.data.fromYear,selectedYear,marker.data.endYear);
+        console.log("1", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);
         marker.addTo(window.map);
         // TODO: add color!
-        marker.setIcon(window.icon);
+        icon = LargeMarkerIcon.create({color: marker.data.color});
+        marker.setIcon(icon);
     } else {       
-      console.log("X", marker.data.fromYear,selectedYear,marker.data.endYear);
+      console.log("X", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);
       if ( selectedYear <= current_selected_year ) {
         window.map.removeLayer(marker);  
         // marker.setIcon(icon_past);
@@ -77,6 +78,7 @@ function filterMarkers(selectedYear) {
 function resetMarkers() {
   markers.forEach(function(marker) {
       marker.addTo(map);
+      icon = LargeMarkerIcon.create({color: marker.data.color});
       marker.setIcon(icon);       
   });
 }

@@ -78,7 +78,8 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         if ( layer_type === 'image' ) {
          icon = new CustomSmallIcon({iconUrl: url});
         } else {
-         icon = new CustomLargeIcon({iconUrl: url});
+         icon = new CustomLargeIcon({iconUrl: url});      
+         icon = LargeMarkerIcon.create({color: color});
         }
       } else {
         if ( parseInt(place.id) === parseInt(params.place) ) {
@@ -130,7 +131,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           popupAnchor:[0,0] });
       var imagemarker = new L.marker([place.lat, place.lon], {customId:"context"+c, icon: imageicon}).addTo(image_layers);
 
-      window.icon = icon;
+
       window.map = map;
 
       // TODO: add to layer, not map
@@ -144,9 +145,16 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         marker_layers.addLayer(marker);
         text_layers.addLayer(textmarker);
         // text_layers.addLayer(marker);
+        if ( place.startdate && !place.enddate ) {
+          
+          place.enddate = parseInt(place.startdate.substring(0, 4))+"-12-31T00:00:00.000Z";
+          console.log("set enddate with startdate", place.startdate,place.enddate);
+        }
         if ( place.startdate && place.enddate ) {
           marker.data = setFromToYears(place.startdate,place.enddate); 
+          marker.data.title = place.title;
           marker.data.color = color;
+          marker.data.layer_id = layer_id;
 
           // Attach fromYear and toYear attributes to marker 
           console.log("Marker data");

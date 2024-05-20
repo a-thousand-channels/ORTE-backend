@@ -13,22 +13,25 @@ var params = {
 var icon = LargeMarkerIcon.create(params);
 
 */
-var LargeMarkers = {
+var LargeMarkerIcon = {
 
-    CustomLargeIcon = L.Icon.extend({
+    CustomLargeIcon: L.Icon.extend({
         options: {
-            iconSize:     [this.params.marker_size, this.params.marker_size],
+            iconSize:     [30, 30],
             iconAnchor:   [15, 15],
             popupAnchor:  [0, -15]
         }
-    })
+    }),
     iconSVG: function(params) {
-        var svg = `<svg height="${marker_size}" width="${marker_size}" xmlns="http://www.w3.org/2000/svg">${params.defs_with_gradient}<circle class="cls-1" cx="${marker_size/2}" cy="${marker_size/2}" r="${marker_size/2}" fill="${params.color}" fill-opacity="${params.opacity}" stroke="${params.stroke}" stroke-width="${params.stroke_width}" stroke-opacity="${params.stroke_opacity}" shape-rendering="geometricPrecision"></circle></svg>`;
+        console.log("PARAMS",params);
+        var svg = `<svg height="${params.marker_size}" width="${params.marker_size}" xmlns="http://www.w3.org/2000/svg">${params.defs_with_gradient}<circle class="cls-1" cx="${params.marker_size/2}" cy="${params.marker_size/2}" r="${params.marker_size/2}" fill="${params.color}" fill-opacity="${params.opacity}" stroke="${params.stroke}" stroke-width="${params.stroke_width}" stroke-opacity="${params.stroke_opacity}" shape-rendering="geometricPrecision"></circle></svg>`;
         return encodeURI("data:image/svg+xml," + svg).replace(new RegExp('#', 'g'),'%23');
     },
-    create: function(params = {color: "black", opacity: 0.5, stroke: "transparent", stroke_width: 0, stroke_opacity: 0, defs_with_gradient: ""}) {
-
-        return new CustomLargeIcon({iconUrl: iconSVG(params)});
+    create: function(params) {
+        var defaultParams = {marker_size: 30, color: "black", opacity: 0.7, stroke: "transparent", stroke_width: 0, stroke_opacity: 0, defs_with_gradient: ""};
+        params = Object.assign({}, defaultParams, params);        
+        console.log("PARAMS",params);
+        return new this.CustomLargeIcon({iconUrl: this.iconSVG(params)});
     }
 
 };
