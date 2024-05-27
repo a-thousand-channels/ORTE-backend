@@ -73,11 +73,13 @@ function filterMarkers(selectedYear) {
         console.log("X Past", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);        
 
         if ( $('#map').hasClass('darken-icons') ) {
-          icon = LargeMarkerIcon.create({color: '#333', opacity: 0.15});
+          icon = LargeMarkerIcon.create({color: '#555', opacity: 0.2});
         } else {
           icon = LargeMarkerIcon.create({color: '#fff', opacity: 0.25});
         }
-        marker.setIcon(icon);        
+        window.map.removeLayer(marker);  
+        marker.setIcon(icon);    
+        marker.addTo(window.map);    
         // TODO: remove relations and other elements!
 
     // selecting future years
