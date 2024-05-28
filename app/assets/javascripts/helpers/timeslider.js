@@ -2,6 +2,8 @@ jQuery(function ($) {
 
   let body = document.querySelector("body");
 
+  
+
   if ( body.classList.contains("show") && ( body.id === 'maps') ) {
     if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
       return;
@@ -17,6 +19,7 @@ jQuery(function ($) {
     // timeline
     let timelineWrapper = document.createElement('div');
     timelineWrapper.setAttribute('id', 'timeline-wrapper');
+
     timelineWrapper.appendChild(scrollLeft);
     timelineWrapper.appendChild(scrollRight);
     let timelineContent = document.createElement('div');
@@ -52,7 +55,7 @@ function filterMarkers(selectedYear) {
   current_selected_year = ( selectedYear > current_selected_year ) ? selectedYear : current_selected_year;
 
   const status = document.getElementById("timeline-info-status");
-  status.innerHTML = "Selected Year "+selectedYear;
+  status.innerHTML = "Show places in "+selectedYear;
 
   window.markers.forEach(function(marker) {
     if (!marker.data) {
@@ -72,10 +75,12 @@ function filterMarkers(selectedYear) {
 
         console.log("X Past", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);        
 
-        if ( $('#map').hasClass('darken-icons') ) {
+        if ( $('#map').hasClass('darken-icons2') ) {
+          icon = LargeMarkerIcon.create({color: '#222', opacity: 0.2});
+        } else if ( $('#map').hasClass('darken-icons') ) {
           icon = LargeMarkerIcon.create({color: '#555', opacity: 0.2});
         } else {
-          icon = LargeMarkerIcon.create({color: '#fff', opacity: 0.25});
+          icon = LargeMarkerIcon.create({color: '#fff', opacity: 0.3});
         }
         window.map.removeLayer(marker);  
         marker.setIcon(icon);    

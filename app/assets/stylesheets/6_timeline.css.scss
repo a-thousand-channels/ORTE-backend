@@ -1,4 +1,6 @@
 
+
+
 %td.nobr {
     white-space: nowrap;
 }
@@ -20,7 +22,7 @@ table#timeline-list {
     border-bottom: 4px solid #c6c600;
   }
 }
-
+#timeline-info-status {}
 
 
 #timeline {
@@ -45,6 +47,10 @@ table#timeline-list {
   justify-content: center;
   z-index: 996;
   border: 1px solid transparent;
+  @media screen and (max-width: 63.9375em) {
+    left: 20px;
+    right: 50px;
+  }
 
 }
 #timeline-content {
@@ -56,7 +62,7 @@ table#timeline-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  justify-content: center;
+  justify-content: left;
   flex-wrap: nowrap;
   overflow: hidden;
   align-items: center; 
@@ -80,7 +86,16 @@ table#timeline-list {
   align-items: center;
   align-items: flex-end;
 }
-#timeline-content div.active
+#timeline-wrapper.dark #timeline-content {
+  background-color: transparent;
+}
+#timeline-wrapper.dark #timeline-content div {
+  color: rgb(85, 85, 85);
+  text-shadow: 0 0 4px white;
+  border-left: 3px solid rgba(85,85,85,0.6);
+}
+
+#timeline-wrapper #timeline-content div.active
 { 
   color: #c6c600;
   cursor: pointer;
@@ -88,7 +103,15 @@ table#timeline-list {
   text-shadow: 0 0 4px black;
   transition: 0.3s all;
 }
-#timeline-content div:hover
+#timeline-wrapper.dark #timeline-content div.active
+{ 
+  color: hsl(60, 100%, 29%);
+  cursor: pointer;
+  border-color: #c6c600;
+  text-shadow: 0 0 4px #333;
+  transition: 0.3s all;
+}
+#timeline-wrapper #timeline-content div:hover
 { 
   color: #ccc;
   cursor: pointer;
@@ -96,7 +119,15 @@ table#timeline-list {
   text-shadow: 0 0 4px black;
   transition: 0.3s all;
 }
-#timeline-content div.active:hover
+#timeline-wrapper.dark #timeline-content div:hover
+{ 
+  color: #111;
+  cursor: pointer;
+  border-color: #111;
+  text-shadow: 0 0 4px white;
+  transition: 0.3s all;
+}
+#timeline-wrapper #timeline-content div.active:hover
 { 
   color: #c6c600;
    border-color: #c6c600;
@@ -115,6 +146,11 @@ table#timeline-list {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 9999; /* Ensure scroll handles are above content */
+}
+#timeline-wrapper.dark #scroll-left,
+#timeline-wrapper.dark #scroll-right {
+  color: black;
+  background-color: transparent;
 }
 
 #scroll-right {

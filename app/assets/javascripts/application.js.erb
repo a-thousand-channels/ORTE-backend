@@ -393,18 +393,23 @@ jQuery(function ($) {
     // TODO: reset baselayer if custom was set or changed server-side
 
     if ( localStorage.baselayer == 'Openstreetmap') {
-      $('#map').addClass('darken-icons')
+      $('#map').addClass('darken-icons');
+      $('#map').addClass('darken-icons2');
+      $('#timeline-wrapper').addClass('dark');
       Openstreetmap_layer.addTo(map);
     } else if ( localStorage.baselayer == 'Satellite') {
       Esri_WorldImagery_layer.addTo(map);
     } else if ( localStorage.baselayer == 'Historical HH 1925-1930') {
       $('#map').addClass('darken-icons')
+      $('#timeline-wrapper').addClass('dark');
       wmsLayerHamburg1925s.addTo(map);      
     } else if ( localStorage.baselayer == 'Historical HH 1930-1940') {
       $('#map').addClass('darken-icons')
+      $('#timeline-wrapper').addClass('dark');
       wmsLayerHamburg1930s.addTo(map);
       } else if ( localStorage.baselayer == 'Historical HH 1980-1990') {
         $('#map').addClass('darken-icons')
+        $('#timeline-wrapper').addClass('dark');
         wmsLayerHamburg1980s.addTo(map);      
     } else {
       custom_base_layer.addTo(map);
@@ -418,12 +423,15 @@ jQuery(function ($) {
     console.log("No custom base layer defined");
     if ( localStorage.baselayer == 'Openstreetmap') {
       $('#map').addClass('darken-icons')
+      $('#timeline-wrapper').addClass('dark');
       Openstreetmap_layer.addTo(map);
     } else if ( localStorage.baselayer == 'Historical HH 1925-1930') {
       $('#map').addClass('darken-icons')
+      $('#timeline-wrapper').addClass('dark');
       wmsLayerHamburg1925s.addTo(map);      
     } else if ( localStorage.baselayer == 'Historical HH 1930-1940') {
       $('#map').addClass('darken-icons')
+      $('#timeline-wrapper').addClass('dark');
       wmsLayerHamburg1930s.addTo(map);     
     } else {
       Esri_WorldImagery_layer.addTo(map);
@@ -467,17 +475,23 @@ jQuery(function ($) {
     console.log("Baselayer change to " + e.name);
     if ( e.name == 'Openstreetmap') {
       $('#map').addClass('darken-icons')
+      $('#map').addClass('darken-icons2')
+      $('#timeline-wrapper').addClass('dark');
     } else if ( localStorage.baselayer == 'Historical HH 1925-1930') {
       // $('#map').addClass('darken-icons darken-label')
       $('#map').addClass('darken-icons')
+      $('#timeline-wrapper').addClass('dark');
       wmsLayerHamburg1925s.addTo(map);      
     } else if ( localStorage.baselayer == 'Historical HH 1930-1940') {
       // $('#map').addClass('darken-icons darken-label')
       $('#map').addClass('darken-icons')
+      $('#timeline-wrapper').addClass('dark');
       wmsLayerHamburg1930s.addTo(map);      
     } else {
       $('#map').removeClass('darken-icons');
-      $('#map').removeClass('darken-label')
+      $('#map').removeClass('darken-icons2');
+      $('#map').removeClass('darken-label');
+      $('#timeline-wrapper').removeClass('dark');
     }
     localStorage.baselayer = e.name;
   })
