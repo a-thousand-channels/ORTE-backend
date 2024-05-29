@@ -106,8 +106,10 @@ table#timeline-list {
 #timeline-wrapper.dark #timeline-content div.active
 { 
   color: hsl(60, 100%, 29%);
+  color: #cc0000;
   cursor: pointer;
   border-color: #c6c600;
+  border-color: #cc0000;
   text-shadow: 0 0 4px white;
   filter: drop-shadow(0 0 0.2em white);
   transition: 0.3s all;
@@ -132,6 +134,11 @@ table#timeline-list {
 { 
   color: #c6c600;
   border-color: #c6c600;
+}
+#timeline-wrapper.dark #timeline-content div.active:hover
+{ 
+  color: #e90202;
+  border-color: #e90202;
 }
 #scroll-left,
 #scroll-right {
