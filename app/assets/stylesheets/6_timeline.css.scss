@@ -35,30 +35,66 @@ table#timeline-list {
   justify-content: center;
   z-index: 9000;
   border: 1px solid transparent;
-   
  }
+
+
 #timeline-wrapper {
   position: absolute;
   left: 10px;
   right: 50px;
   bottom: 60px;
   padding: 0 20px;
-  display: flex;
-  justify-content: center;
   z-index: 996;
   border: 1px solid transparent;
   @media screen and (max-width: 63.9375em) {
     left: 20px;
     right: 50px;
   }
+}
+#timeline-wrapper.light {
+  background-color: white;
+  box-shadow: 0 0 10px #ccc;
+  padding: 0 5px;
+}
+#timeline-wrapper.dark {
+  border: 0px solid #444;
+  background-color: transparent;
+  box-shadow: 0 0 0 #ccc;
 
+}
+#timeline-infobox {
+  display: flex;
+  font-size: 0.8em;
+  padding: 10px 12px 0;
+  color: white;
+}
+#timeline-wrapper.dark #timeline-infobox,
+#timeline-wrapper.light #timeline-infobox
+ {
+  color: #333;
+}
+#timeline-function {
+  margin-left: 10px;
+}
+#timeline-innerwrapper {
+  position: relative;
+  border: 1px solid #444;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;  
+}
+#timeline-wrapper.dark #timeline-innerwrapper {
+  border: 0;
+}
+#timeline-wrapper.light #timeline-innerwrapper {
+  border: 0;
 }
 #timeline-content {
   background-color: transparent;
   background-color: rgba(0, 0, 0, 0.3);
   border-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   margin: 0 10px;
-  padding: 5px 30px 5px 220px;
+  padding: 5px 30px 5px 100px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -66,7 +102,6 @@ table#timeline-list {
   flex-wrap: nowrap;
   overflow: hidden;
   align-items: center; 
-  
  }
 #timeline-content div {
   font-family: sans-serif;
@@ -86,16 +121,26 @@ table#timeline-list {
   align-items: center;
   align-items: flex-end;
 }
-#timeline-wrapper.dark #timeline-content {
+#timeline-wrapper.dark #timeline-content,
+#timeline-wrapper.light #timeline-content {
   background-color: transparent;
+  padding: 5px 30px 5px 40px;
 }
 #timeline-wrapper.dark #timeline-content div {
   color: rgb(85, 85, 85);
   text-shadow: 0 0 4px white;
   border-left: 3px solid rgba(85,85,85,0.6);
 }
+#timeline-wrapper.light #timeline-content div {
+  color: #333;
+  text-shadow: 0 0 4px white;
+  border-left: 3px solid rgba(85,85,85,0.6);
+}
 
-#timeline-wrapper #timeline-content div.active
+
+#timeline-wrapper #timeline-content div.active,
+#timeline-wrapper #timeline-info-status strong,
+#timeline-wrapper #timeline-infobox a
 { 
   color: #c6c600;
   cursor: pointer;
@@ -103,12 +148,23 @@ table#timeline-list {
   text-shadow: 0 0 4px black;
   transition: 0.3s all;
 }
-#timeline-wrapper.dark #timeline-content div.active
+#timeline-wrapper.dark #timeline-content div.active,
+#timeline-wrapper.dark #timeline-info-status strong,
+#timeline-wrapper.dark #timeline-infobox a
 { 
-  color: hsl(60, 100%, 29%);
   color: #cc0000;
   cursor: pointer;
-  border-color: #c6c600;
+  border-color: #cc0000;
+  text-shadow: 0 0 4px white;
+  filter: drop-shadow(0 0 0.2em white);
+  transition: 0.3s all;
+}
+#timeline-wrapper.light #timeline-content div.active,
+#timeline-wrapper.light #timeline-info-status strong,
+#timeline-wrapper.light #timeline-infobox a
+{ 
+  color: #cc0000;
+  cursor: pointer;
   border-color: #cc0000;
   text-shadow: 0 0 4px white;
   filter: drop-shadow(0 0 0.2em white);
@@ -122,7 +178,8 @@ table#timeline-list {
   text-shadow: 0 0 4px black;
   transition: 0.3s all;
 }
-#timeline-wrapper.dark #timeline-content div:hover
+#timeline-wrapper.dark #timeline-content div:hover,
+#timeline-wrapper.light #timeline-content div:hover
 { 
   color: #111;
   cursor: pointer;
@@ -130,11 +187,13 @@ table#timeline-list {
   text-shadow: 0 0 4px white;
   transition: 0.3s all;
 }
+
 #timeline-wrapper #timeline-content div.active:hover
 { 
   color: #c6c600;
   border-color: #c6c600;
 }
+#timeline-wrapper.light #timeline-content div.active:hover,
 #timeline-wrapper.dark #timeline-content div.active:hover
 { 
   color: #e90202;
@@ -155,6 +214,8 @@ table#timeline-list {
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 9999; /* Ensure scroll handles are above content */
 }
+#timeline-wrapper.light #scroll-left,
+#timeline-wrapper.light #scroll-right,
 #timeline-wrapper.dark #scroll-left,
 #timeline-wrapper.dark #scroll-right {
   color: black;

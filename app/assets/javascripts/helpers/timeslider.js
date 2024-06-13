@@ -8,6 +8,12 @@ jQuery(function ($) {
     if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
       return;
     }
+    if ( $('#selection').data('map-enable-time-slider') !== true ) {
+      return;
+    }
+    if ( Object.keys(places_by_year).length === 0 ) {
+      return;
+    }
     // scrollbuttons
     let scrollLeft = document.createElement('div');
     scrollLeft.setAttribute('id', 'scroll-left');
@@ -19,12 +25,19 @@ jQuery(function ($) {
     // timeline
     let timelineWrapper = document.createElement('div');
     timelineWrapper.setAttribute('id', 'timeline-wrapper');
+    let timelineInfoBox = document.createElement('div');
+    timelineInfoBox.setAttribute('id', 'timeline-infobox');    
+    timelineInfoBox.innerHTML = '<div id="timeline-info-status"></div><div id="timeline-function">(<a href="">Show all places</a>)</div>';
 
-    timelineWrapper.appendChild(scrollLeft);
-    timelineWrapper.appendChild(scrollRight);
+    let timelineInnerWrapper = document.createElement('div');
+    timelineInnerWrapper.setAttribute('id', 'timeline-innerwrapper');
+    timelineInnerWrapper.appendChild(scrollLeft);
+    timelineInnerWrapper.appendChild(scrollRight);
     let timelineContent = document.createElement('div');
     timelineContent.setAttribute('id', 'timeline-content');
-    timelineWrapper.appendChild(timelineContent);
+    timelineInnerWrapper.appendChild(timelineContent);
+    timelineWrapper.appendChild(timelineInfoBox);
+    timelineWrapper.appendChild(timelineInnerWrapper);
     let body = document.querySelector("body");
     document.body.insertBefore(timelineWrapper, document.querySelector("footer"));
 
@@ -33,14 +46,19 @@ jQuery(function ($) {
     let maxYear = $('#selection').data('map-timeline-maxyear');
 
     let diff = maxYear - minYear;
+    // check if places_by_year is an empty object
+
+
     console.log("Create Timeline with ",minYear,maxYear);
     let step = 1;
 
     for (var i = minYear; i <= maxYear; i += step) {
       var div = document.createElement('div');
       div.classList.add('year');
+      div.setAttribute('title', 'Show '+places_by_year[i].length+' places for '+i);
       div.setAttribute('id', 'year'+i);
       div.setAttribute('data-year', i);
+      div.setAttribute('data-places', places_by_year[i].length);
       div.textContent = i;
       timelineContent.appendChild(div);
     }
@@ -48,14 +66,15 @@ jQuery(function ($) {
   }
 });
 let current_selected_year = 1900;
-function filterMarkers(selectedYear) {
+function filterMarkers(selectedYear,places) {
 
   console.log("filterMarkers **************",selectedYear);
   console.log(window.markers);
   current_selected_year = ( selectedYear > current_selected_year ) ? selectedYear : current_selected_year;
 
   const status = document.getElementById("timeline-info-status");
-  status.innerHTML = "Show places in "+selectedYear;
+  status.innerHTML = "Showing <strong>"+places+"</strong> "+( places == 1 ? 'place' : 'places' )+" in <strong>"+selectedYear+"</strong>";
+  
 
   window.markers.forEach(function(marker) {
     if (!marker.data) {
@@ -97,6 +116,8 @@ function filterMarkers(selectedYear) {
   });
 }
 function resetMarkers() {
+  const status = document.getElementById("timeline-info-status");
+  status.innerHTML = "Showing all places";
   markers.forEach(function(marker) {
     if (!marker.data) {
       return;
@@ -107,13 +128,19 @@ function resetMarkers() {
   });
 }
 
-function SelectAndFilterByYear(el,yearDivs,year) {
+function SelectAndFilterByYear(el,yearDivs,year,places) {
   let active = false;
   if ( el.classList.contains("active") ) {
-    active = true;
-    resetMarkers();
+
+    // reset disabled for now
+    // active = true;
+    // resetMarkers();
+
+    // maybe a nice panto function?
+    // panTo() 
+    // var bounds = marker_meta_layers.getBounds().pad(0.35);
   } else {
-    filterMarkers(year);
+    filterMarkers(year,places);
   }
   yearDivs.forEach(function(div) {
     div.classList.remove("active");
@@ -128,6 +155,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
       return;
     }
+    if ( $('#selection').data('map-enable-time-slider') !== true ) {
+      return;
+    }    
     const timelineContent = document.getElementById("timeline-content");
     const scrollLeft = document.getElementById("scroll-left");
     const scrollRight = document.getElementById("scroll-right");
@@ -151,22 +181,32 @@ document.addEventListener("DOMContentLoaded", function() {
       yearDiv.addEventListener("click", function() {
 
         var selectedYear = this.getAttribute('data-year');
-        SelectAndFilterByYear(this,yearDivs,selectedYear);
+        var selectedYearPlaces = this.getAttribute('data-places');
+        SelectAndFilterByYear(this,yearDivs,selectedYear,selectedYearPlaces);
       });
     });
     console.log("Prep eventListeners done");
     
   }
 });
+ 
 
+$(document).on('click', '#timeline-function a', function(event) {
+  event.preventDefault();
+  resetMarkers();
+  const yearDivs = document.querySelectorAll(".year");
+  yearDivs.forEach(function(div) {
+    div.classList.remove("active");
+  });  
+});
 
-  // for a single slider, used in places index
-  $(document).on('changed.zf.slider', '[data-slider]', function(event) {
-    var $slider = $(event.currentTarget);
-    var $numberInput = $slider.children('input');
-    console.log($numberInput.val())
-    $('#slider-selection').html($numberInput.val())
-    // TODO: create list of all places with startyear and endyear data values
-    // hide all
-    // show only those existing in the selected year
-  });
+// for a single slider, used in places index
+$(document).on('changed.zf.slider', '[data-slider]', function(event) {
+  var $slider = $(event.currentTarget);
+  var $numberInput = $slider.children('input');
+  console.log($numberInput.val())
+  $('#slider-selection').html($numberInput.val())
+  // TODO: create list of all places with startyear and endyear data values
+  // hide all
+  // show only those existing in the selected year
+});

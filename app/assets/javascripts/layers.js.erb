@@ -235,13 +235,23 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   );
 
   if ( $('#selection').data('map-marker-display-mode') === 'single' ) {
-
     const yearDivs = document.querySelectorAll(".year");
     let startyear = $('#selection').data('map-timeline-minyear');
-    console.log("Pre-select first year ", startyear, yearDivs.length);
-    let el = document.getElementById('year'+startyear); 
-    SelectAndFilterByYear(el,yearDivs,startyear);   
-  }      
+    if ( startyear ) {
+      console.log("Pre-select first year ", startyear, yearDivs.length);
+      // remove other layers from map 
+      map.removeLayer(curve_layers);
+      map.removeLayer(image_layers);
+      map.removeLayer(text_layers);
+
+
+      if ( yearDivs.length > 0 ) {
+        let el = document.getElementById('year'+startyear); 
+        console.log("year with places",startyear, el.getAttribute('data-places'))
+        SelectAndFilterByYear(el,yearDivs,startyear, el.getAttribute('data-places'));   
+      }
+    }      
+  }
     
 
         console.log("Fit to bounds routine");
@@ -277,7 +287,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           southwest_array = localStorage.getItem('UserMapBoundsSW');
           console.log("set map bounds to user values SW " + southwest_array);
           var boundsX = L.latLngBounds(northeast_array.split(","), southwest_array.split(","));
-          console.log("Fit map bounds to user values " + bounds);
+          console.log("Fit map bounds to user values ",boundsX);
           map.fitBounds(boundsX, {maxZoom: 16, minZoom: 2});
         } else {
           console.log("Fit map bounds now");
