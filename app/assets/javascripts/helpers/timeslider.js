@@ -164,6 +164,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if ( $('#selection').data('map-enable-time-slider') !== true ) {
       return;
     }    
+    if ( Object.keys(places_by_year).length === 0 ) {
+      return;
+    }    
     const timelineContent = document.getElementById("timeline-content");
     const scrollLeft = document.getElementById("scroll-left");
     const scrollRight = document.getElementById("scroll-right");
