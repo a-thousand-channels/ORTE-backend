@@ -121,6 +121,7 @@ table#timeline-list {
   align-items: center;
   align-items: flex-end;
 }
+
 #timeline-wrapper.dark #timeline-content,
 #timeline-wrapper.light #timeline-content {
   background-color: transparent;
@@ -169,6 +170,12 @@ table#timeline-list {
   text-shadow: 0 0 4px white;
   filter: drop-shadow(0 0 0.2em white);
   transition: 0.3s all;
+}
+#timeline-wrapper #timeline-content div.stale,
+#timeline-wrapper.light #timeline-content div.stale,
+#timeline-wrapper.dark #timeline-content div.stale {
+  color: #aaa !important;
+  border-color: #bbb !important;
 }
 #timeline-wrapper #timeline-content div:hover
 { 
