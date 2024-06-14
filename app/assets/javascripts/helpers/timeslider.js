@@ -55,10 +55,16 @@ jQuery(function ($) {
     for (var i = minYear; i <= maxYear; i += step) {
       var div = document.createElement('div');
       div.classList.add('year');
-      div.setAttribute('title', 'Show '+places_by_year[i].length+' places for '+i);
       div.setAttribute('id', 'year'+i);
       div.setAttribute('data-year', i);
-      div.setAttribute('data-places', places_by_year[i].length);
+      if ( places_by_year[i] ) {
+        div.setAttribute('title', 'Show '+places_by_year[i].length+' places for '+i);
+        div.setAttribute('data-places', places_by_year[i].length);
+      } else {
+        div.classList.add('stale');
+        div.setAttribute('title', 'No places for '+i);
+        div.setAttribute('data-places', 0);
+      }
       div.textContent = i;
       timelineContent.appendChild(div);
     }
