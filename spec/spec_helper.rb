@@ -27,10 +27,6 @@ else
   puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true")'
 end
 
-Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
-end
-
 Capybara.register_driver :headless_chrome do |app|
   options = ::Selenium::WebDriver::Chrome::Options.new
 
@@ -41,23 +37,18 @@ Capybara.register_driver :headless_chrome do |app|
   options.add_argument('--disable-features=VizDisplayCompositor')
   options.add_argument('--enable-logging') # Enables logging
   options.add_argument('--log-level=0') # Enables all logging
+  # options.add_argument('user-data-dir=/home/osboxes/projects/a-thousand-channels/ORTE-backend/')  
 
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
                                  options: options
 end
 
-# switch to :chrome for watching the tests in browser
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
-
 Capybara.configure do |config|
   config.default_max_wait_time = 5 # seconds
   config.default_driver        = :headless_chrome
 end
 
-# deprecated!
-# Capybara::Chromedriver::Logger::TestHooks.for_rspec!
 
 RSpec.configure do |config|
   config.color = true
