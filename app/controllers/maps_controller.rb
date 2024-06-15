@@ -32,8 +32,8 @@ class MapsController < ApplicationController
         startyear = place.startdate.nil? ? @minyear : place.startdate.year
         endyear = place.enddate.nil? ? startyear : place.enddate.year
         (startyear..endyear).each do |year|
-          @places_by_year[year] ||= []
-          @places_by_year[year] << place
+          @places_by_year[year.to_i] ||= []
+          @places_by_year[year.to_i] << place
         end
       end
       @timespan = @maxyear - @minyear
