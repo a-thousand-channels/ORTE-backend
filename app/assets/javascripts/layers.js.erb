@@ -15,80 +15,79 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   var marker_display_mode = $('#selection').data('map-marker-display-mode');
   var layer_color = $('#selection').data('layer-color');
 
-  var markerclusterSettings = {
-          maxClusterRadius: 30,
-          showCoverageOnHover: false,
-          animate: true,
-          iconCreateFunction: function(cluster) {
-            if ( marker_display_mode == 'cluster' ) {
-              return L.divIcon({
-                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '"><div>' + cluster.getChildCount() + '</div></div>',
-                className: "leaflet-data-markercluster",
-                iconAnchor  : [15, 15],
-                iconSize    : [30, 30],
-                popupAnchor : [0, -28]
-              });
-            } else {
-              console.log("Zigzgag Cluster!!");
-              console.log(cluster.getChildCount());     
+    var markerclusterSettings = {
+            maxClusterRadius: 30,
+            showCoverageOnHover: false,
+            animate: true,
+            iconCreateFunction: function(cluster) {
+              if ( marker_display_mode == 'cluster' ) {
+                return L.divIcon({
+                  html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '"><div>' + cluster.getChildCount() + '</div></div>',
+                  className: "leaflet-data-markercluster",
+                  iconAnchor  : [15, 15],
+                  iconSize    : [30, 30],
+                  popupAnchor : [0, -28]
+                });
+              } else {
+                console.log("Cluster: Zigzgag",cluster.getChildCount());     
 
-              let cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_small : cluster_small_with_gradient );
-              if ( cluster.getChildCount() >= 10 ) {
-                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_xlarge : cluster_xlarge_with_gradient );
-              } else if ( cluster.getChildCount() >= 6 ) {
-                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_large : cluster_large_with_gradient );
-              } else if ( cluster.getChildCount() >= 3 ) {
-                cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_medium : cluster_medium_with_gradient );
-              } 
-              if ( layer_color && layer_color.length > 0 ) {
-                cluster_viz = cluster_viz.replace(/rgba\(255, 0, 153, 0.8\)/g, layer_color); 
-              }
-              
-              let rnd_rotate = Math.floor(Math.random()*25) * 15;
-              return L.divIcon({
-                html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '" style="transform: rotate('+rnd_rotate+'deg);">' + cluster_viz + '</div>',
-                className: "leaflet-data-markercluster",
-                iconAnchor  : [15, 15],
-                iconSize    : [30, 30],
-                popupAnchor : [0, -28]
-              });
-            }
-          },
-          spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
-          elementsPlacementStrategy: "clock",
-          helpingCircles: true,
-          clockHelpingCircleOptions: {
-            weight: 40,
-            opacity: 0,
-            color: "#000000",
-            fill: "#333",
-            fillOpacity: 0.2
-          },
-
-          spiderfyDistanceSurplus: 28,
-          spiderfyDistanceMultiplier: 1,
-
-          spiderfiedClassName: 'spiderfied-places',
-
-          elementsMultiplier: 1.4,
-          firstCircleElements: 10,
-          spiderfyShapePositions: function(count, centerPt) {
-                var distanceFromCenter = 50,
-                    markerDistance = 105,
-                    lineLength = markerDistance * (count - 1),
-                    lineStart = centerPt.y - lineLength / 4,
-                    res = [],
-                    i;
-
-                res.length = count;
-
-                for (i = count - 1; i >= 0; i--) {
-                    res[i] = new Point(centerPt.x + distanceFromCenter, lineStart + markerDistance * i);
+                let cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_small : cluster_small_with_gradient );
+                if ( cluster.getChildCount() >= 10 ) {
+                  cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_xlarge : cluster_xlarge_with_gradient );
+                } else if ( cluster.getChildCount() >= 6 ) {
+                  cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_large : cluster_large_with_gradient );
+                } else if ( cluster.getChildCount() >= 3 ) {
+                  cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_medium : cluster_medium_with_gradient );
+                } 
+                if ( layer_color && layer_color.length > 0 ) {
+                  cluster_viz = cluster_viz.replace(/rgba\(255, 0, 153, 0.8\)/g, layer_color); 
                 }
+                
+                let rnd_rotate = Math.floor(Math.random()*25) * 15;
+                return L.divIcon({
+                  html: '<div class="marker-cluster marker-cluster-small marker-cluster-layer-' + data_id + '" style="transform: rotate('+rnd_rotate+'deg);">' + cluster_viz + '</div>',
+                  className: "leaflet-data-markercluster",
+                  iconAnchor  : [15, 15],
+                  iconSize    : [30, 30],
+                  popupAnchor : [0, -28]
+                });
+              }
+            },
+            spiderLegPolylineOptions: { weight: 0, color: '#efefef', opacity: 0.5 },
+            elementsPlacementStrategy: "clock",
+            helpingCircles: true,
+            clockHelpingCircleOptions: {
+              weight: 40,
+              opacity: 0,
+              color: "#000000",
+              fill: "#333",
+              fillOpacity: 0.2
+            },
 
-                return res;
-            }
-  };
+            spiderfyDistanceSurplus: 28,
+            spiderfyDistanceMultiplier: 1,
+
+            spiderfiedClassName: 'spiderfied-places',
+
+            elementsMultiplier: 1.4,
+            firstCircleElements: 10,
+            spiderfyShapePositions: function(count, centerPt) {
+                  var distanceFromCenter = 50,
+                      markerDistance = 105,
+                      lineLength = markerDistance * (count - 1),
+                      lineStart = centerPt.y - lineLength / 4,
+                      res = [],
+                      i;
+
+                  res.length = count;
+
+                  for (i = count - 1; i >= 0; i--) {
+                      res[i] = new Point(centerPt.x + distanceFromCenter, lineStart + markerDistance * i);
+                  }
+
+                  return res;
+              }
+    };
 
   if(typeof layer_json_url !== 'undefined') {
 
@@ -99,7 +98,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
     var request = $.getJSON(layer_json_url, function(data) {
 
       console.log("-----------------------------");
-      console.log(data);
+      console.log("Data from layer_json_url",data);
 
       // read params, place id is given, render this place special
       console.log("Check for url params");
@@ -109,7 +108,6 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       
       if ( level !== 'maps') {
         console.log("Render places of one layer");
-        console.log(data);
         if ( marker_display_mode == 'single' ) {
           var marker_layers =  L.featureGroup();
         } else {
@@ -162,7 +160,6 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
           clustercolor = '#ff0099';
           clustercolor = 'rgba(255, 0, 153, 0.8)';
-          console.log(data);
           drawMarkers(map,data.id,data.layer_type,level,show_annotations_on_map,text_layers,image_layers,marker_layers,params,data.layer_color,[data]);
         });
         marker_meta_layers.addLayer(marker_layers);
@@ -193,8 +190,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
       }
       console.log('******************************');
-      console.log("saved in window.markers: "+window.markers.length);
-      console.log(window.markers);
+      console.log("Saved in window.markers: "+window.markers.length);
    
       var layer_style = '';
       $.each(data.layers, function(key,data) {
@@ -238,7 +234,14 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
     const yearDivs = document.querySelectorAll(".year");
     let startyear = $('#selection').data('map-timeline-minyear');
     if ( startyear ) {
-      console.log("Pre-select first year ", startyear, yearDivs.length);
+
+      window.places_by_year = data.places_by_year;
+      console.log("places_by_year",data.places_by_year);
+      setupTimeslider(data.places_by_year);
+      setupTimesliderEvents(data.places_by_year);
+
+
+      console.log("Timeline: Pre-select first year ", startyear, yearDivs.length);
       // remove other layers from map 
       map.removeLayer(curve_layers);
       map.removeLayer(image_layers);
@@ -247,7 +250,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
       if ( yearDivs.length > 0 ) {
         let el = document.getElementById('year'+startyear); 
-        console.log("year with places",startyear, el.getAttribute('data-places'))
+        console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
         SelectAndFilterByYear(el,yearDivs,startyear, el.getAttribute('data-places'));   
       }
     }      
@@ -283,9 +286,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         // set map center after last user action
         if ( ( localStorage.getItem('SetCustomExtent') === 'true' ) && ( northeast_array ) ) {
           northeast_array = localStorage.getItem('UserMapBoundsNE');
-          console.log("set map bounds to user values NE " + northeast_array);
+          console.log("Sset map bounds to user values NE " + northeast_array);
           southwest_array = localStorage.getItem('UserMapBoundsSW');
-          console.log("set map bounds to user values SW " + southwest_array);
+          console.log("Set map bounds to user values SW " + southwest_array);
           var boundsX = L.latLngBounds(northeast_array.split(","), southwest_array.split(","));
           console.log("Fit map bounds to user values ",boundsX);
           map.fitBounds(boundsX, {maxZoom: 16, minZoom: 2});
@@ -301,9 +304,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         /* not needed for now
         var zl_after_fitbounds = map.getZoom();
         var zl = localStorage.getItem('UserZoomLevel');
-        console.log("get zoom level if any " + zl);
+        console.log("Get zoom level if any " + zl);
         if ( zl && ( zl_after_fitbounds < zl )) {
-          console.log("set zoom level to " + zl);
+          console.log("Set zoom level to " + zl);
           // map.setZoom(zl);
         } */
         // set custom extent
@@ -316,7 +319,6 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           console.log(setbound_url);
           setbound_url = setbound_url.replace(/\?northeast=(.*?)&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
           setbound_url = setbound_url.replace(/&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
-          console.log(setbound_url);
 
           $("#setbound").attr('href', setbound_url);
 
@@ -327,11 +329,9 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             var new_bound = rect.getBounds();
             northeast = new_bound.getNorthEast();
             southwest = new_bound.getSouthWest();
-            console.log("get new bounds");
-            console.log(northeast);
+            console.log("Get new bounds", northeast);
             setbound_url = setbound_url.replace(/\?northeast=(.*?)&s/, '?northeast='+northeast.lat.toPrecision(5)+","+northeast.lng.toPrecision(5)+'&s');
             setbound_url = setbound_url.replace(/&southwest=(.*)/, '&southwest='+southwest.lat.toPrecision(5)+","+southwest.lng.toPrecision(5));
-            console.log(setbound_url);
             $("#setbound").attr('href', setbound_url);
           });
         }

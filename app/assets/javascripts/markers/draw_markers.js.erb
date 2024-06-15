@@ -148,7 +148,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         if ( place.startdate && !place.enddate ) {
           
           place.enddate = parseInt(place.startdate.substring(0, 4))+"-12-31T00:00:00.000Z";
-          console.log("set enddate with startdate", place.startdate,place.enddate);
+          console.log("Set enddate with startdate", place.startdate,place.enddate);
         }
         if ( place.startdate && place.enddate ) {
           marker.data = setFromToYears(place.startdate,place.enddate); 
@@ -157,12 +157,11 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           marker.data.layer_id = layer_id;
 
           // Attach fromYear and toYear attributes to marker 
-          console.log("Marker data");
-          console.log(marker.data);
+          console.log("Marker data", marker.data);
           
         }
         window.markers.push(marker);    
-        console.log(window.markers.length)
+        console.log("window.markers.length",window.markers.length)
           
       } else {
         
@@ -191,14 +190,14 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
 
       });
       marker.on('click', function (e) {
-        console.log('marker');
+        console.log('Marker clicked');
         console.log(e);
       });
 
       // TODO: change color of marker
-      marker_layers.on('clusterclick', function (a) {
+      marker_layers.on('Clusterclick', function (a) {
         // a.layer is actually a cluster
-        // console.log('cluster ' + a.layer.getAllChildMarkers().length);
+        // console.log('Cluster ' + a.layer.getAllChildMarkers().length);
         // console.log(a.originalEvent.target);
         // console.log(a.originalEvent.target.closest(".leaflet-interactive").classList);
         // $(a.originalEvent.target).closest(".leaflet-interactive").toggleClass("cluster_expanded");
@@ -251,9 +250,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
       c++;
     });
     // console.log(c+" Marker added to map!");
-    console.log('Markers hash');
-    console.log(window.markers);
-    console.log(window.markers.length);
+    // console.log('Markers hash', window.markers, window.markers.length);
  
     // thanks to https://github.com/louh - Allow for offset on center of map
     L.Map.prototype.panToOffset = function (latlng, offset, options) {

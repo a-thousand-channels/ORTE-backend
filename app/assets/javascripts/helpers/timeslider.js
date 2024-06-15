@@ -1,8 +1,6 @@
-jQuery(function ($) {
-
+function setupTimeslider(places_by_year) {
   let body = document.querySelector("body");
-
-  
+  console.log('Timeline: setupTimeslider')
 
   if ( body.classList.contains("show") && ( body.id === 'maps') ) {
     if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
@@ -14,6 +12,7 @@ jQuery(function ($) {
     if ( Object.keys(places_by_year).length === 0 ) {
       return;
     }
+
     // scrollbuttons
     let scrollLeft = document.createElement('div');
     scrollLeft.setAttribute('id', 'scroll-left');
@@ -46,20 +45,32 @@ jQuery(function ($) {
     let maxYear = $('#selection').data('map-timeline-maxyear');
 
     let diff = maxYear - minYear;
-    // check if places_by_year is an empty object
-
-
-    console.log("Create Timeline with ",minYear,maxYear);
+  
+    console.log("Timeline: Create Timeline with ",minYear,maxYear,diff);
     let step = 1;
 
+    // argh, after sending the data via JSON an extra hash level is created
+    function getPlacesByYear(year) {
+      for (let i = 0; i < places_by_year.length; i++) {
+        if (places_by_year[i][year]) {
+          return places_by_year[i][year];
+        }
+      }
+      return null; // oder ein leerer Array [], falls es keine Orte gibt
+    }
+    console.log("Timeline: ",2010, getPlacesByYear(2010));
+
     for (var i = minYear; i <= maxYear; i += step) {
+    // for (var i = 0; i <= diff; i += step) {
       var div = document.createElement('div');
       div.classList.add('year');
       div.setAttribute('id', 'year'+i);
       div.setAttribute('data-year', i);
-      if ( places_by_year[i] ) {
-        div.setAttribute('title', 'Show '+places_by_year[i].length+' places for '+i);
-        div.setAttribute('data-places', places_by_year[i].length);
+      var thisyear = getPlacesByYear(i);
+      console.log("Timeline: Create Timeline entry with ",i, thisyear);
+      if ( thisyear ) {
+        div.setAttribute('title', 'Show '+thisyear.length+' places for '+i);
+        div.setAttribute('data-places', thisyear.length);
       } else {
         div.classList.add('stale');
         div.setAttribute('title', 'No places for '+i);
@@ -68,14 +79,57 @@ jQuery(function ($) {
       div.textContent = i;
       timelineContent.appendChild(div);
     }
-
   }
-});
+}
+function setupTimesliderEvents(places_by_year) {
+    let body = document.querySelector("body");
+    if ( body.classList.contains("show") && ( body.id === 'maps') ) {
+      if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
+        return;
+      }
+      if ( $('#selection').data('map-enable-time-slider') !== true ) {
+        return;
+      }    
+      if ( Object.keys(places_by_year).length === 0 ) {
+        return;
+      }    
+      const timelineContent = document.getElementById("timeline-content");
+      const scrollLeft = document.getElementById("scroll-left");
+      const scrollRight = document.getElementById("scroll-right");
+      const yearDivs = document.querySelectorAll(".year");
+  
+      console.log("Timeline: setupTimesliderEvents","Prep eventListeners")
+      scrollLeft.addEventListener("click", function() {
+        timelineContent.scrollBy({
+          left: -100, // Adjust the scroll amount as needed
+          behavior: "smooth"
+        });
+      });
+  
+      scrollRight.addEventListener("click", function() {
+        timelineContent.scrollBy({
+          left: 100, // Adjust the scroll amount as needed
+          behavior: "smooth"
+        });
+      });
+      yearDivs.forEach(function(yearDiv) {
+        yearDiv.addEventListener("click", function() {
+  
+          var selectedYear = this.getAttribute('data-year');
+          var selectedYearPlaces = this.getAttribute('data-places');
+          SelectAndFilterByYear(this,yearDivs,selectedYear,selectedYearPlaces);
+        });
+      });
+      console.log("Timeline: setupTimesliderEvents","Prep eventListeners done");
+      
+    }
+   
+}
+
 let current_selected_year = 1900;
 function filterMarkers(selectedYear,places) {
 
-  console.log("filterMarkers **************",selectedYear);
-  console.log(window.markers);
+  console.log("Timeline: filterMarkers **************",selectedYear);
   current_selected_year = ( selectedYear > current_selected_year ) ? selectedYear : current_selected_year;
 
   const status = document.getElementById("timeline-info-status");
@@ -155,50 +209,7 @@ function SelectAndFilterByYear(el,yearDivs,year,places) {
     el.classList.add("active");
   }
 }
-document.addEventListener("DOMContentLoaded", function() {
-  let body = document.querySelector("body");
-  if ( body.classList.contains("show") && ( body.id === 'maps') ) {
-    if ( $('#selection').data('map-marker-display-mode') !== 'single' ) {
-      return;
-    }
-    if ( $('#selection').data('map-enable-time-slider') !== true ) {
-      return;
-    }    
-    if ( Object.keys(places_by_year).length === 0 ) {
-      return;
-    }    
-    const timelineContent = document.getElementById("timeline-content");
-    const scrollLeft = document.getElementById("scroll-left");
-    const scrollRight = document.getElementById("scroll-right");
-    const yearDivs = document.querySelectorAll(".year");
 
-    console.log("Prep eventListeners")
-    scrollLeft.addEventListener("click", function() {
-      timelineContent.scrollBy({
-        left: -100, // Adjust the scroll amount as needed
-        behavior: "smooth"
-      });
-    });
-
-    scrollRight.addEventListener("click", function() {
-      timelineContent.scrollBy({
-        left: 100, // Adjust the scroll amount as needed
-        behavior: "smooth"
-      });
-    });
-    yearDivs.forEach(function(yearDiv) {
-      yearDiv.addEventListener("click", function() {
-
-        var selectedYear = this.getAttribute('data-year');
-        var selectedYearPlaces = this.getAttribute('data-places');
-        SelectAndFilterByYear(this,yearDivs,selectedYear,selectedYearPlaces);
-      });
-    });
-    console.log("Prep eventListeners done");
-    
-  }
-});
- 
 
 $(document).on('click', '#timeline-function a', function(event) {
   event.preventDefault();
