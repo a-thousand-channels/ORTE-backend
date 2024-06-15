@@ -19,8 +19,8 @@ RSpec.feature 'User views a map and may create a new one ' do
       @layer = FactoryBot.create(:layer, map_id: @map.id, title: 'my layer')
       @place = FactoryBot.create(:place, layer_id: @layer.id, title: 'my place')
       @place2 = FactoryBot.create(:place, layer_id: @layer.id, title: 'my place')
-      expect(page).to have_current_path '/maps'
-      # save_and_open_page
+      visit "/maps/#{@map.slug}"
+      expect(page).to have_current_path "/maps/#{@map.slug}"
       within '#map' do
         expect(page).to have_css('.leaflet-tile-container')
         expect(page).to have_css('.leaflet-control-container')
