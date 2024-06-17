@@ -7,10 +7,11 @@ function BaseMapLayerChange(map,overlays,action) {
   var custom_basemap_attribution;
     var Esri_WorldImagery_layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri <span class="show-for-large">&mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community</a>',
-              minZoom: 0,
-              maxZoom: 18
+        minZoom: 0,
+        maxZoom: 18
     });
     var Openstreetmap_layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        minZoom: 0,
         maxZoom: 21,
         attribution: 'OpenStreetMap + its contributors, CC-BY-SA'
     });
@@ -20,11 +21,15 @@ function BaseMapLayerChange(map,overlays,action) {
     });
     var wmsLayerHamburg1930s = L.tileLayer.wms('https://geodienste.hamburg.de/HH_WMS_Historische_Karte_1_5000?', {
       layers: 'jahrgang_1930-1940',
+      minZoom: 9,
+      maxZoom: 20, 
       attribution: 'Landesbetriebs Geoinformation und Vermessung (LGV) Hamburg, Datenlizenz Deutschland Namensnennung 2.0'
     });
     var wmsLayerHamburg1980s = L.tileLayer.wms('https://geodienste.hamburg.de/HH_WMS_Historische_Karte_1_5000?', {
       layers: 'jahrgang_1980-1990',
       transparent: true,
+      minZoom: 9,
+      maxZoom: 20,     
       attribution: 'Landesbetriebs Geoinformation und Vermessung (LGV) Hamburg, Datenlizenz Deutschland Namensnennung 2.0'
     });    
     if ( $('#selection').data('map-basemap-url') ) {
@@ -123,7 +128,9 @@ function BaseMapLayerChange(map,overlays,action) {
         $('#map').removeClass('darken-label');
     }
 
-    L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
+     if ( action === 'setup') {
+      L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
+     }
 }
 
 function MapboundsToHamburg(map){ 
