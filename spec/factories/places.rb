@@ -9,7 +9,7 @@ FactoryBot.define do
     text { 'MyText' }
     link { 'http://domain.com' }
     startdate { '2018-04-27 19:48:51' }
-    enddate { '2018-04-27 19:48:51' }
+    enddate { '2019-04-27 19:48:51' }
     lat { '0' }
     lon { '0' }
     direction { '320' }

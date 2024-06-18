@@ -164,6 +164,13 @@
       div.leaflet-popup-content-image {
         max-height: 450px;
         overflow: hidden;
+
+        @media screen and (max-height: 49.9375em) {
+          max-height: 250px;
+        }        
+        @media screen and (max-height: 39.9375em) {
+          max-height: 200px;
+        }
         @media screen and (max-width: 39.9375em) {
           max-height: 250px;
         }
