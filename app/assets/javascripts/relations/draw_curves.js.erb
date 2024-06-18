@@ -3,7 +3,6 @@ function drawCurves(map,layer_id,curve_layers,marker_layers,clustercolor,places_
 
   var boost = ( 2.9 * bending ) + 0.1;
   console.log("Boost: "+boost);
-  console.log("Iterate places_with_relations");
 
   $.each(places_with_relations, function(key,place) {
     $.each(place.relations, function(kkey,relation) {
