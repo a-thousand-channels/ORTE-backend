@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'erb'
 
@@ -5,7 +7,8 @@ require 'erb'
 def read_directory(directory)
   structure = {}
   Dir.foreach(directory) do |item|
-    next if item == '.' or item == '..'
+    next if ['.', '..'].include?(item)
+
     path = File.join(directory, item)
     if File.directory?(path)
       structure[item] = read_directory(path)
@@ -101,7 +104,6 @@ def generate_html_table(structure, path = '')
   rows = ''
   # sort structure by key
   structure = structure.sort.to_h
-  
 
   structure.each do |key, value|
     if value.is_a?(Hash) && value[:total_lines]
