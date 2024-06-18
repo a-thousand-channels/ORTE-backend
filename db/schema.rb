@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_13_185111) do
+ActiveRecord::Schema.define(version: 2024_06_13_101034) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -190,6 +190,7 @@ ActiveRecord::Schema.define(version: 2024_03_13_185111) do
     t.boolean "enable_privacy_features", default: true
     t.string "marker_display_mode", default: "cluster"
     t.boolean "enable_historical_maps", default: false
+    t.boolean "enable_time_slider", default: false
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
