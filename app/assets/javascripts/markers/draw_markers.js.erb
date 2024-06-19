@@ -7,7 +7,6 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
       marker_size = 15;
     }
     console.log("Drawing "+places.length+" markers for layer "+layer_id+" of type "+layer_type+" at level "+level + "(Marker size is "+marker_size+")");
-    console.log("Setting show_annotations_on_map set to "+show_annotations_on_map);
     var CustomLargeIcon = L.Icon.extend({
         options: {
             iconSize:     [marker_size, marker_size],
@@ -161,7 +160,6 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           
         }
         window.markers.push(marker);    
-        console.log("window.markers.length",window.markers.length)
           
       } else {
         

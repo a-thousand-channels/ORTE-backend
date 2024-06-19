@@ -240,20 +240,22 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       setupTimeslider(data.places_by_year);
       setupTimesliderEvents(data.places_by_year);
 
-
       console.log("Timeline: Pre-select first year ", startyear, yearDivs.length);
       // remove other layers from map 
       map.removeLayer(curve_layers);
       map.removeLayer(image_layers);
       map.removeLayer(text_layers);
 
-
+      
       if ( yearDivs.length > 0 ) {
         let el = document.getElementById('year'+startyear); 
         console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
-        SelectAndFilterByYear(el,yearDivs,startyear, el.getAttribute('data-places'));   
+        SelectAndFilterByYear(el,yearDivs,startyear, el.getAttribute('data-places'));  
+        
+         
       }
     }      
+    BaseMapLayerChange(map,'update');
   }
     
 
