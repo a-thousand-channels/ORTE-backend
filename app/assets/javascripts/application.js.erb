@@ -355,7 +355,8 @@ jQuery(function ($) {
   
 
   } 
-  BaseMapLayerChange(map,overlays,'setup');
+  let basemaps = BaseMapLayerChange(map,'setup');
+  L.control.layers(basemaps,overlays,{position: 'topright'}).addTo(map);
 
   console.log("Check Overlay settings")
   if ( localStorage.overlayPlaces == 'true' ) {
@@ -377,7 +378,7 @@ jQuery(function ($) {
   map.on('baselayerchange', function(e){
     console.log("Baselayer change to " + e.name);
     localStorage.baselayer = e.name;
-    BaseMapLayerChange(map,overlays,'update');
+    BaseMapLayerChange(map,'update');
   })
    map.on('overlayadd', function(e){
     console.log("Overlay added");
