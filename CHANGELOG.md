@@ -5,6 +5,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres (more or less) to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [0.8] - 2024-06-19
+
+Here come a set of improvements and features, that has been developed in the last months. As earlier, features ideas come in existance usually by request of contributors of the A Thousand Channels Platform (and by enough time resources by our side, for concepting, coding, designing, testing).
+
+With this version we introduce time visualisation to each map, some nicer marker cluster signs, import functions for KML and CSV to get a bunch of places with geodata into one map layer, and a batch importer of georeferenced images. Let's see the details:
+
+### Zigzag Cluster
+
+Clustered markers are a nice feature to keep an oversight about multiple entries on a map. Since some time, we were quite unhappy with the default symbolism by the plugin we use (leaflet.markercluster by) and also by the circle with a generic colour we set in place. 
+
+Now we have created flowerish symbols with a smooth ziczac outline in four different styles, dpending how much points are clustererd. You can choose to show these shapes with either a solid color or a nice color gradient.
+
+### Time Slider
+
+For the research project "Lacune" we build a time slider to filter the shown places or events by year they exists. 
+Since entries will vanish completly after closure or ending (at least in our memories and/or in written documents, images or videos), we decided that "past" entries will remain on the timeslider some time after the enddate as a shadow.
+
+Since very often we have places with uncertainty about the clear beginning and or the ending, we needed an approach to work with those fuzzy dates, because otherwise those places would not appear in the timeline. 
+
+### Fuzzy Dates
+
+One focus of maps, that are created with our tool, is the mapping of informal, ephermal places. Also time is factor, to describe from when to when a place exists. Often those dates are blurry, even vague, sometimes unknown. So we decided to add qualifiers for dates (start and enddates of a place), so fuzzy dates will be declared as such.
+It makes a difference if I say, this venue was created exact on "February 15h, 2005" (by huge opening party), or somewhen "in the middle of the 2000s". With those qualifiers, its no possible to make a difference between exact or estimated or fuzzy dates. That also allows to include entries with uncertain dates on the timeslider! Otherwise, such entries might get invisible, if no dates are defined due to uncertainty. 
+
+### Imports
+
+Finally we have implemented import routines for geodata in KML and CSV format.
+
+Etc
+
+Batch image upload with geodata from EXIF data
+
+
+
+Cluster symbols with gradients and zigzag shapes
+Introducing fuzzy dates
+Timeline navigation
+Import of geodata in KML (Keyhole Markup Language) and CSV (Comma-seperated Values) format
+
+Including WMS Tile layers
+
+
+
 ## [0.72] - 2022-11-28
 
 This release comes with an update to Ruby on Rails 6.1 and some minor fixes.
