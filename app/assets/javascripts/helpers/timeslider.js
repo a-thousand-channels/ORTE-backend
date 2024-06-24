@@ -3,11 +3,6 @@ function setupTimeslider2(places_by_year,timelineWrapper,minYear,maxYear,diff) {
   let timelineSlider = document.createElement('div');
   timelineSlider.setAttribute('id', 'timeline-slider');    
   timelineSlider.innerHTML = `\
-    Slider\
-    <p class="float-right" id="#slider-selection">\
-      <strong>${minYear}</strong>\
-          \
-    </p>\
     <div class="slider radius" data-slider data-initial-start="${minYear}" data-start="${minYear}" data-end="${maxYear}" data-step="1">\
         <div class="slider-handle" data-slider-handle role=slider tabindex="1"></div>\
         <div class="slider-fill" data-slider-fill></div>\
@@ -16,9 +11,6 @@ function setupTimeslider2(places_by_year,timelineWrapper,minYear,maxYear,diff) {
     timelineWrapper.appendChild(timelineSlider);
     console.log("Timeline: Create Timeline Slider with ",minYear,maxYear,diff);
     $('#timeline-slider .slider').foundation();
-    // $(document).find('.slider').foundation('_reflow');
-
-
 }
 
 function setupTimeslider(places_by_year) {
