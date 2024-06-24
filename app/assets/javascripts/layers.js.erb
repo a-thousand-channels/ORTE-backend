@@ -15,8 +15,14 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   var marker_display_mode = $('#selection').data('map-marker-display-mode');
   var layer_color = $('#selection').data('layer-color');
 
-    var markerclusterSettings = {
-            maxClusterRadius: 30,
+  var maxClusterRadius = 30;
+  if ( marker_display_mode == 'single' ) {
+    // cluster is used here to show entries on the very same coordinates
+    maxClusterRadius = 0;
+  }
+
+  var markerclusterSettings = {
+            maxClusterRadius: maxClusterRadius,
             showCoverageOnHover: false,
             animate: true,
             iconCreateFunction: function(cluster) {
@@ -30,14 +36,36 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
                 });
               } else {
                 console.log("Cluster: Zigzgag",cluster.getChildCount());     
+                console.log("Cluster: Childmarkers", cluster.getAllChildMarkers());
+                if ( cluster.getAllChildMarkers()[0].data ) {
+                  console.log("Cluster: Childmarker Data", cluster.getAllChildMarkers()[0].data.color);
+                }
+                // TODO: add color from data
+                // TODO: build array of colors of all Childmarkers
+                let childmarker_colors = [];
+                cluster.getAllChildMarkers().forEach(function(marker) {
+                  if ( marker.data ) {
+                    childmarker_colors.push(marker.data.color);
+                  }
+                });
+                // check if all values of childmarker_colors are the same
+                let check_all_same = childmarker_colors.every( (val, i, arr) => val === arr[0] );
+                console.log("All colors are the same: ", check_all_same);
+                let cluster_color = '';
+                if ( childmarker_colors.length > 0 && check_all_same ) {
+                  cluster_color = childmarker_colors[0]
+                }
 
-                let cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_small : cluster_small_with_gradient );
+                // TODO: if all the same: use this color!
+                // TODO: if different: use default color
+
+                let cluster_viz = ( marker_display_mode === 'zigzag cluster, w/gradient' ? cluster_small_with_gradient : cluster_small(cluster_color) );
                 if ( cluster.getChildCount() >= 10 ) {
-                  cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_xlarge : cluster_xlarge_with_gradient );
+                  cluster_viz = ( marker_display_mode === 'zigzag cluster, w/gradient' ? cluster_xlarge_with_gradient : cluster_xlarge(cluster_color) );
                 } else if ( cluster.getChildCount() >= 6 ) {
-                  cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_large : cluster_large_with_gradient );
+                  cluster_viz = ( marker_display_mode === 'zigzag cluster, w/gradient' ? cluster_large_with_gradient : cluster_large(cluster_color) );
                 } else if ( cluster.getChildCount() >= 3 ) {
-                  cluster_viz = ( marker_display_mode === 'zigzag cluster' ? cluster_medium : cluster_medium_with_gradient );
+                  cluster_viz = ( marker_display_mode === 'zigzag cluster, w/gradient' ? cluster_medium_with_gradient : cluster_medium(cluster_color) );
                 } 
                 if ( layer_color && layer_color.length > 0 ) {
                   cluster_viz = cluster_viz.replace(/rgba\(255, 0, 153, 0.8\)/g, layer_color); 
@@ -109,7 +137,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       if ( level !== 'maps') {
         console.log("Render places of one layer");
         if ( marker_display_mode == 'single' ) {
-          var marker_layers =  L.featureGroup();
+          // var marker_layers =  L.featureGroup();
+          var marker_layers = L.markerClusterGroup(markerclusterSettings);
         } else {
           var marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
@@ -147,8 +176,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         var show_annotations_on_map = data.show_annotations_on_map;
 
         if ( marker_display_mode == 'single' ) {
-          marker_layers =  L.featureGroup();
-
+          // marker_layers =  L.featureGroup();
+          marker_layers = L.markerClusterGroup(markerclusterSettings);
         } else {
           marker_layers = L.markerClusterGroup(markerclusterSettings);
         }
@@ -191,7 +220,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       }
       console.log('******************************');
       console.log("Saved in window.markers: "+window.markers.length);
-   
+      window.marker_layers = marker_layers;
+      
       var layer_style = '';
       $.each(data.layers, function(key,data) {
           layer_style += "#map .marker-cluster-layer-" + data.id;
@@ -233,26 +263,23 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
   if ( $('#selection').data('map-marker-display-mode') === 'single' ) {
     const yearDivs = document.querySelectorAll(".year");
     let startyear = $('#selection').data('map-timeline-minyear');
+    $('#selection').data('map-selected-year',startyear);
     if ( startyear ) {
 
       window.places_by_year = data.places_by_year;
       console.log("places_by_year",data.places_by_year);
       setupTimeslider(data.places_by_year);
       setupTimesliderEvents(data.places_by_year);
-
       console.log("Timeline: Pre-select first year ", startyear, yearDivs.length);
       // remove other layers from map 
       map.removeLayer(curve_layers);
       map.removeLayer(image_layers);
       map.removeLayer(text_layers);
 
-      
       if ( yearDivs.length > 0 ) {
         let el = document.getElementById('year'+startyear); 
         console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
-        SelectAndFilterByYear(el,yearDivs,startyear, el.getAttribute('data-places'));  
-        
-         
+        SelectAndFilterByYear(el, yearDivs, startyear, el.getAttribute('data-places'));  
       }
     }      
     BaseMapLayerChange(map,'update');

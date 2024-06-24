@@ -114,9 +114,9 @@ function setupTimesliderEvents(places_by_year) {
       });
       yearDivs.forEach(function(yearDiv) {
         yearDiv.addEventListener("click", function() {
-  
           var selectedYear = this.getAttribute('data-year');
           var selectedYearPlaces = this.getAttribute('data-places');
+          $('#selection').data('map-selected-year',selectedYear);
           SelectAndFilterByYear(this,yearDivs,selectedYear,selectedYearPlaces);
         });
       });
@@ -129,7 +129,9 @@ function setupTimesliderEvents(places_by_year) {
 let current_selected_year = 1900;
 function filterMarkers(selectedYear,places) {
 
-  console.log("Timeline: filterMarkers **************",selectedYear);
+  console.log("Timeline: filterMarkers **************",selectedYear,places,document.getElementById('timeline-wrapper').classList);
+
+
   current_selected_year = ( selectedYear > current_selected_year ) ? selectedYear : current_selected_year;
 
   const status = document.getElementById("timeline-info-status");
@@ -138,7 +140,8 @@ function filterMarkers(selectedYear,places) {
 
   window.markers.forEach(function(marker) {
     if (!marker.data) {
-      window.map.removeLayer(marker);
+      // window.map.removeLayer(marker);
+      window.marker_layers.removeLayer(marker);
       return;
     }
     if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
@@ -147,7 +150,7 @@ function filterMarkers(selectedYear,places) {
         // TODO: add color!
         icon = LargeMarkerIcon.create({color: marker.data.color});
         marker.setIcon(icon);
-        marker.addTo(window.map);
+        marker.addTo(window.marker_layers);
     } 
     // selecting past years
     else if ( marker.data.endYear <= selectedYear) {
@@ -161,19 +164,23 @@ function filterMarkers(selectedYear,places) {
         } else {
           icon = LargeMarkerIcon.create({color: '#fff', opacity: 0.42});
         }
-        window.map.removeLayer(marker);  
+        // window.map.removeLayer(marker);  
+        window.marker_layers.removeLayer(marker);
         marker.setIcon(icon);    
-        marker.addTo(window.map);    
+        marker.addTo(window.marker_layers);    
         // TODO: remove relations and other elements!
 
     // selecting future years
     } else {
       console.log("X Future", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);        
-      window.map.removeLayer(marker);  
+      // window.map.removeLayer(marker);  
+      window.marker_layers.removeLayer(marker);
+      
       
     }    
     
   });
+  window.marker_layers.refreshClusters();
 }
 function resetMarkers() {
   const status = document.getElementById("timeline-info-status");
