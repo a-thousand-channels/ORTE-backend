@@ -269,7 +269,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       window.places_by_year = data.places_by_year;
       console.log("places_by_year",data.places_by_year);
       setupTimeslider(data.places_by_year);
-      setupTimesliderEvents(data.places_by_year);
+
+      // disabled for real slider
+      // setupTimesliderEvents(data.places_by_year);
+      
       console.log("Timeline: Pre-select first year ", startyear, yearDivs.length);
       // remove other layers from map 
       map.removeLayer(curve_layers);

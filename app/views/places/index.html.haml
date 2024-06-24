@@ -110,7 +110,7 @@
               - else
                 %span.time.time-off>‒
 
-  %table.hidden
+  %table
     %thead
       %tr  
         %th{colspan:2}
@@ -133,7 +133,7 @@
 
     %tbody
       - @places.sort_by{ |e| e.startdate.nil? ? Date.new : e.startdate }.each do |place|
-        %tr{"data-startyear":(place.startdate ? place.startdate.year : ''),"data-endyear":(place.enddate ? place.enddate.year : '')}
+        %tr.place{"data-startyear":(place.startdate ? place.startdate.year : ''),"data-endyear":(place.enddate ? place.enddate.year : '')}
           %td
             = smart_date_display(place.startdate, place.enddate)
             - images = Image.preview(place.id)

@@ -1,3 +1,26 @@
+function setupTimeslider2(places_by_year,timelineWrapper,minYear,maxYear,diff) {
+  
+  let timelineSlider = document.createElement('div');
+  timelineSlider.setAttribute('id', 'timeline-slider');    
+  timelineSlider.innerHTML = `\
+    Slider\
+    <p class="float-right" id="#slider-selection">\
+      <strong>${minYear}</strong>\
+          \
+    </p>\
+    <div class="slider radius" data-slider data-initial-start="${minYear}" data-start="${minYear}" data-end="${maxYear}" data-step="1">\
+        <div class="slider-handle" data-slider-handle role=slider tabindex="1"></div>\
+        <div class="slider-fill" data-slider-fill></div>\
+        <input type="hidden">\
+    </div>`;
+    timelineWrapper.appendChild(timelineSlider);
+    console.log("Timeline: Create Timeline Slider with ",minYear,maxYear,diff);
+    $('#timeline-slider .slider').foundation();
+    // $(document).find('.slider').foundation('_reflow');
+
+
+}
+
 function setupTimeslider(places_by_year) {
   let body = document.querySelector("body");
   console.log('Timeline: setupTimeslider')
@@ -12,6 +35,8 @@ function setupTimeslider(places_by_year) {
     if ( Object.keys(places_by_year).length === 0 ) {
       return;
     }
+
+    
 
     // scrollbuttons
     let scrollLeft = document.createElement('div');
@@ -36,15 +61,18 @@ function setupTimeslider(places_by_year) {
     timelineContent.setAttribute('id', 'timeline-content');
     timelineInnerWrapper.appendChild(timelineContent);
     timelineWrapper.appendChild(timelineInfoBox);
-    timelineWrapper.appendChild(timelineInnerWrapper);
+    // timelineWrapper.appendChild(timelineInnerWrapper);
     let body = document.querySelector("body");
     document.body.insertBefore(timelineWrapper, document.querySelector("footer"));
+   
 
 
     let minYear = $('#selection').data('map-timeline-minyear');
     let maxYear = $('#selection').data('map-timeline-maxyear');
 
     let diff = maxYear - minYear;
+
+    setupTimeslider2(places_by_year,timelineWrapper,minYear,maxYear,diff)
   
     console.log("Timeline: Create Timeline with ",minYear,maxYear,diff);
     let step = 1;
@@ -223,7 +251,9 @@ $(document).on('click', '#timeline-function a', function(event) {
   resetMarkers();
   const yearDivs = document.querySelectorAll(".year");
   yearDivs.forEach(function(div) {
-    div.classList.remove("active");
+    if (marker.data.fromYear <= selectedYear && marker.data.endYear >= selectedYear) {
+      div.classList.remove("active");
+    }
   });  
 });
 
@@ -233,7 +263,24 @@ $(document).on('changed.zf.slider', '[data-slider]', function(event) {
   var $numberInput = $slider.children('input');
   console.log($numberInput.val())
   $('#slider-selection').html($numberInput.val())
-  // TODO: create list of all places with startyear and endyear data values
-  // hide all
-  // show only those existing in the selected year
+  const selectedYear = $numberInput.val();
+
+  if ( $('body').attr('id') === 'places' ) {
+    // maps > layers > places > index
+    const placeDivs = document.querySelectorAll(".place");
+    placeDivs.forEach(function(div) {
+      div.classList.add("hidden");
+      console.log(selectedYear, div,div.dataset.startyear,div.dataset.endyear)
+      if (div.dataset.startyear <= selectedYear && div.dataset.endyear >= selectedYear) {
+        div.classList.remove("hidden");
+      }
+    });
+  } else {
+    // maps > index
+    var selectedYearPlaces = 0;
+    $('#selection').data('map-selected-year',selectedYear);
+    console.log("Slider: changed.zf.slider",selectedYear,selectedYearPlaces)
+    filterMarkers(selectedYear,selectedYearPlaces);
+  }
+
 });
