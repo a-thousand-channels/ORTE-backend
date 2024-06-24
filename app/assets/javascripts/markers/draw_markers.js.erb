@@ -6,7 +6,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
     if ( layer_type === 'image' ) {
       marker_size = 15;
     }
-    console.log("Drawing "+places.length+" markers for layer "+layer_id+" of type "+layer_type+" at level "+level + "(Marker size is "+marker_size+")");
+    console.log("Drawing "+places.length+" markers for layer "+layer_id+" of type "+layer_type+" at level "+level + " (Marker size is "+marker_size+")");
     var CustomLargeIcon = L.Icon.extend({
         options: {
             iconSize:     [marker_size, marker_size],
@@ -141,6 +141,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
       // TODO: use this ID for triggering relations visibility (show relation on hover)
       // marker.CustomID = 'marker_to_'+place.id;
       if ( ( level != 'maps' ) || ( place.shy == false )) {
+        
         marker_layers.addLayer(marker);
         text_layers.addLayer(textmarker);
         // text_layers.addLayer(marker);
@@ -149,16 +150,18 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
           place.enddate = parseInt(place.startdate.substring(0, 4))+"-12-31T00:00:00.000Z";
           console.log("Set enddate with startdate", place.startdate,place.enddate);
         }
+        marker.data = []
         if ( place.startdate && place.enddate ) {
           marker.data = setFromToYears(place.startdate,place.enddate); 
-          marker.data.title = place.title;
-          marker.data.color = color;
-          marker.data.layer_id = layer_id;
-
-          // Attach fromYear and toYear attributes to marker 
-          console.log("Marker data", marker.data);
-          
         }
+        marker.data.title = place.title;
+        marker.data.color = color;
+        marker.data.layer_id = layer_id;
+
+        // Attach fromYear and toYear attributes to marker 
+        console.log("Marker data", marker.data);
+        
+        
         window.markers.push(marker);    
           
       } else {
