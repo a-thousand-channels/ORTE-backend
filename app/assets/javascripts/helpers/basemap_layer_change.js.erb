@@ -139,9 +139,13 @@ function BaseMapLayerChange(map,action) {
         // refresh markers
         let startyear = $('#selection').data('map-selected-year');
         console.log("BaseMapLayerChange: startyear",startyear);
+
+        // disabled for real slider
+        /*
         let el = document.getElementById('year'+startyear); 
         console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
         filterMarkers(startyear, el.getAttribute('data-places'));  
+        */
     }
       
   return basemaps;
