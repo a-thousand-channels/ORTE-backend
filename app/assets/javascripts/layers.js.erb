@@ -51,7 +51,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
                 // check if all values of childmarker_colors are the same
                 let check_all_same = childmarker_colors.every( (val, i, arr) => val === arr[0] );
                 console.log("All colors are the same: ", check_all_same);
-                let cluster_color = '';
+                let cluster_color;
                 if ( childmarker_colors.length > 0 && check_all_same ) {
                   cluster_color = childmarker_colors[0]
                 }
@@ -226,7 +226,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       $.each(data.layers, function(key,data) {
           layer_style += "#map .marker-cluster-layer-" + data.id;
           layer_style += "{" +
-              "border: 4px solid " + data.color + ";" +
+              "border: 0px solid " + data.color + ";" +
             "}"+
             "#map .marker-cluster-layer-" + data.id + " div {" +
               "background-color: " + data.color + ";" +

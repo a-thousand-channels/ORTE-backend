@@ -203,10 +203,13 @@
 }
 /* ............................. */
 #map.darken-icons img.leaflet-marker-icon {
-    filter: saturate(200%) drop-shadow(0 0 1px #888);
+  filter: saturate(200%) drop-shadow(0 0 1px #888);
 }
 #map.darken-icons.gradient-icons img.leaflet-marker-icon {
   filter: saturate(200%);
+}
+#map.darken-icons .marker-cluster svg path {
+  filter: saturate(200%) drop-shadow(0 0 1px #888) brightness(90%);
 }
 #map.darken-icons .text_inner {
     color: #333;
