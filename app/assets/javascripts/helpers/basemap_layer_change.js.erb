@@ -138,11 +138,13 @@ function BaseMapLayerChange(map,action) {
     if ( action !== 'setup') {
         // refresh markers
         let startyear = $('#selection').data('map-selected-year');
-        console.log("BaseMapLayerChange: startyear",startyear);
-        const yearDivs = document.querySelectorAll(".year");
-        let el = document.getElementById('year'+startyear); 
-        console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
-        SelectAndFilterByYear(el, yearDivs, startyear, el.getAttribute('data-places'));  
+        if ( startyear !== undefined ) {
+          console.log("BaseMapLayerChange: startyear",startyear);
+          const yearDivs = document.querySelectorAll(".year");
+          let el = document.getElementById('year'+startyear); 
+          console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
+          SelectAndFilterByYear(el, yearDivs, startyear, el.getAttribute('data-places'));  
+        }
     }
       
   return basemaps;
