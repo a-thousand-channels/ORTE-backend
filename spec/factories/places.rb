@@ -2,15 +2,17 @@
 
 FactoryBot.define do
   factory :place do
+    uid { 'UID1' }
     title { 'MyTitle' }
     subtitle { 'MySubTitle' }
     teaser { 'MyText' }
     text { 'MyText' }
     link { 'http://domain.com' }
     startdate { '2018-04-27 19:48:51' }
-    enddate { '2018-04-27 19:48:51' }
+    enddate { '2019-04-27 19:48:51' }
     lat { '0' }
     lon { '0' }
+    direction { '320' }
     location { 'Location' }
     address { 'Address' }
     zip { 'Zip' }
@@ -25,6 +27,16 @@ FactoryBot.define do
     trait :date_and_time do
       startdate_date { '2018-04-30' }
       startdate_time { '11:45' }
+      enddate_date { '2022-05-30' }
+      enddate_time { '16:45' }
+    end
+    trait :start_date_and_time do
+      startdate_date { '2018-04-30' }
+      startdate_time { '11:45' }
+    end
+    trait :end_date_and_time do
+      enddate_date { '2022-05-30' }
+      enddate_time { '16:45' }
     end
     trait :invalid do
       title { nil }

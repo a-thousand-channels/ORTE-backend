@@ -4,6 +4,41 @@ All notable changes to this project (since Version 0.3) will be documented in th
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres (more or less) to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8] - 2024-06-19
+
+Here comes a set of improvements and features, that has been developed poco a poco in the last half year. As earlier, features ideas come in existance usually by request of contributors of the A Thousand Channels Platform (and by enough time resources by our side for concepting, coding, designing, testing).
+
+With this version we introduce time visualisation to each map, some nicer marker cluster symbols, import functions for KML and CSV to get a bunch of places with geodata into one map layer, and a batch importer of georeferenced images. Let's see the details:
+
+### Zigzag Cluster
+
+Clustered markers are a nice feature to keep track of a crowded map when you have multiple entries in the same area. For some time we were quite unhappy with the default symbolism of the plugin we used (leaflet.markercluster) and also with the circular symbol with a generic color we used instead. 
+
+Now we have created flowery icons with a smooth zigzag outline in four different styles depending on how many points are clustered. You can choose to show these shapes with either a solid color or a nice gradient.
+
+### Time Slider
+For the research project "Lacune", we built a time slider to filter the displayed places or events by the year of their existence. Since entries would usually disappear completely after completion or end (at least in our memory and/or in written documents, pictures or videos), we decided that "past" entries remain on the time slider some time after the end date and are displayed as a white shadow.
+
+Since we very often have places where we don't know exactly when they start or end, we needed an approach to work with this uncertainty so that these places can also appear in the timeline without falsely referring to precise points in time. That is why we introced fuzzy dates.
+
+### Fuzzy Dates
+
+One focus of the maps created with our tool is the mapping of informal, temporary places. Time is also a factor in describing from when to when a place exists. Often this data is fuzzy, even vague, sometimes unknown. That's why we decided to add qualifiers for dates (start and end date of a place) so that fuzzy dates are declared as such.
+
+It makes a difference whether I say that this place was founded exactly on "February 15, 2005" (by a huge opening party), or sometime "in the mid-2000s". With these qualifiers, it is now possible to distinguish between exact or estimated/fuzzy dates. 
+
+This also allows entries with uncertain dates to be included in the Timeslider! Otherwise, such entries could become invisible if no data is defined due to the fuzziness.
+
+
+### Imports (KML, CSV, Images)
+
+We have implemented import routines for geodata in KML (Keyhole Markup Language) and CSV (Comma-seperated Values) format. This is useful if you have geodata from another platform and if you want to get those into the database in one single step.
+
+Also the mass import of images with geodata is now possible. You can take a bunch of geocoded photos (e.g. made by your phone with this feature enabled) and import it as an "image layer". The photos will then be displayed on the map on its embedded geolocations. Beware: There is a privacy issue, sometimes you don't want to provide exact location of photos you provide. So think carefully which photos in which context you want to place on the map. COnsider also the privacy enhancing features of our tool: The removal of geodata of uploaded images, so that also nobody who has access to the uploaded files can read out this data.
+
+### Etc
+
+In a very basic implementation we started to embed WMS layer as basemap for maps. More to come.
 
 ## [0.72] - 2022-11-28
 

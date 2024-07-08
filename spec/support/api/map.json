@@ -149,7 +149,7 @@
                         "examples":[
                            3
                         ]
-                     },
+                     },                   
                      "title":{
                         "$id":"#/properties/map/properties/layer/items/properties/title",
                         "type":"string",
@@ -167,6 +167,16 @@
                         "default":"",
                         "examples":[
                            "Events in public space"
+                        ],
+                        "pattern":"^(.*)$"
+                     },
+                     "teaser":{
+                        "$id":"#/properties/map/properties/layer/items/properties/teaser",
+                        "type":"string",
+                        "title":"The Teaser Schema",
+                        "default":"",
+                        "examples":[
+                           ""
                         ],
                         "pattern":"^(.*)$"
                      },
@@ -249,9 +259,11 @@
                            "title":"The Items Schema",
                            "required":[
                               "id",
+                              "uid",
                               "title",
                               "subtitle",
                               "teaser",
+                              "text",
                               "link",
                               "imagelink",
                               "imagelink2",
@@ -282,6 +294,15 @@
                                     4
                                  ]
                               },
+                              "uid": {
+                                "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/uid",
+                                "type": "string",
+                                "title": "The Id Schema",
+                                "default": "",
+                                "examples": [
+                                  "UID"
+                                ]
+                              },                                
                               "title":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/title",
                                  "type":"string",
@@ -369,7 +390,7 @@
                               },
                               "startdate":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/startdate",
-                                 "type":"string",
+                                 "type":["string", "null"],
                                  "title":"The Startdate Schema",
                                  "default":"",
                                  "examples":[
@@ -379,7 +400,7 @@
                               },
                               "enddate":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/enddate",
-                                 "type":"string",
+                                 "type":["string", "null"],
                                  "title":"The Enddate Schema",
                                  "default":"",
                                  "examples":[

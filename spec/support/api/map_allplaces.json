@@ -152,11 +152,11 @@
                             },
                             "startdate": {
                                 "title": "The startdate Schema",
-                                "type": "string"
+                                "type": ["string", "null"]
                             },
                             "enddate": {
                                 "title": "The enddate Schema",
-                                "type": "string"
+                                "type": ["string", "null"]
                             },
                             "location": {
                                 "title": "The location Schema",

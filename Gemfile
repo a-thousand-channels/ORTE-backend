@@ -17,7 +17,7 @@ gem 'friendly_id'
 
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 5'
+gem 'redis', '~> 4'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 gem 'deep_cloneable', '~> 3'
@@ -32,7 +32,7 @@ gem 'haml-rails'
 gem 'i18n-js', '~> 3' # breaking changes with v4
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '~> 7', git: 'https://github.com/jquery-ui-rails/jquery-ui-rails.git', branch: 'master', ref: '27a942cfa3686716ff85a3cb60f1f885a00e35dc'
 gem 'kaminari'
 gem 'mysql2'
 gem 'rack-attack'
@@ -49,6 +49,7 @@ gem 'nokogiri'
 
 gem 'acts-as-taggable-on', '~> 9'
 gem 'color-generator'
+gem 'mini_exiftool'
 gem 'mini_magick'
 gem 'mobility', '~> 1.2'
 gem 'rubyzip'
@@ -80,7 +81,7 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec_junit_formatter'
   gem 'rspec-rails'
-  gem 'selenium-webdriver', '4.9.0' # 4.9.1 crashed feature tests
+  gem 'selenium-webdriver'
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'simplecov-small-badge', require: false
