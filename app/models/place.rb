@@ -29,6 +29,10 @@ class Place < ApplicationRecord
 
   validates :title, presence: true
   validate :check_audio_format
+  validates :lat, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid latitude value' }
+  validates :lon, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid longitude value' }
+  validates :lat, presence: true, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }
+  validates :lon, presence: true, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }
 
   scope :sorted_by_startdate, -> { order(startdate: :asc) }
   scope :sorted_by_title, -> { order(title: :asc) }

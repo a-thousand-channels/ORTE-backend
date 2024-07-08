@@ -1,0 +1,42 @@
+- content_for(:title) { "Import for #{@layer.title}" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %h1
+    Import:
+    = link_to map_layer_path(@map,@layer) do
+      = @layer.title
+  .grid-x.grid-padding-x
+    .large-12.medium-12.small-12.cell
+      %hr
+      %p You can create many places for this layer by importing a CSV file.
+      %p.hint
+        You can use this importer also to re-import an earlier exported
+        = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV" do
+          Layer-CSV (as a backup)
+        or to quickly fill a layer with places defined elsewhere.
+      %p
+        The CSV file must contain the following named columns:
+        %code
+          title; lat; lon
+      %p.hint
+        The following columns are optional (and correspond to the datastructure of the Place model):
+        %code
+          subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms
+
+      = simple_form_for :import, url: import_preview_map_layer_path(@map), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
+        %hr
+        %p
+          = f.input :file, :as => "file", :label => 'CSV File'
+          %span.hint  The format of the file must be CSV.
+        %hr
+        %p
+          = f.input :overwrite, :as => :boolean, :label => 'Overwrite'
+          %span.hint
+            Overwrite existing places with the same title
+        %hr
+        .form-actions
+          %p
+            = f.submit "Import CSV File", class: "button"
