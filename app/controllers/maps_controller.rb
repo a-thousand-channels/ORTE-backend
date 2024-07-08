@@ -15,8 +15,29 @@ class MapsController < ApplicationController
   # GET /maps/1.json
   def show
     @maps = Map.sorted.by_user(current_user)
+
     if @map
       @map_layers = @map.layers
+
+      @places = @map_layers.flat_map(&:places)
+      @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
+
+      # timeline calculation, for now on a yearly basis
+      @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+      @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
+
+      # make a hash, where the key is a single year and it contains all places that are active in that year
+      @places_by_year = {}
+      @places_with_dates.each do |place|
+        startyear = place.startdate.nil? ? @minyear : place.startdate.year
+        endyear = place.enddate.nil? ? startyear : place.enddate.year
+        (startyear..endyear).each do |year|
+          @places_by_year[year.to_i] ||= []
+          @places_by_year[year.to_i] << place
+        end
+      end
+      @timespan = @maxyear - @minyear
+
       respond_to do |format|
         format.html { render :show }
         format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
@@ -94,6 +115,6 @@ class MapsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def map_params
-    params.require(:map).permit(:title, :subtitle, :text, :credits, :published, :script, :image, :group_id, :mapcenter_lat, :mapcenter_lon, :zoom, :northeast_corner, :southwest_corner, :iconset_id, :basemap_url, :basemap_attribution, :background_color, :popup_display_mode, :marker_display_mode, :show_annotations_on_map, :preview_url, :enable_privacy_features, :enable_map_to_go)
+    params.require(:map).permit(:title, :subtitle, :text, :credits, :published, :script, :image, :group_id, :mapcenter_lat, :mapcenter_lon, :zoom, :northeast_corner, :southwest_corner, :iconset_id, :basemap_url, :basemap_attribution, :background_color, :popup_display_mode, :marker_display_mode, :show_annotations_on_map, :preview_url, :enable_privacy_features, :enable_map_to_go, :enable_historical_maps, :enable_time_slider)
   end
 end

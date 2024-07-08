@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_27_174811) do
+ActiveRecord::Schema.define(version: 2024_06_13_101034) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 2023_02_27_174811) do
     t.string "image_creator"
     t.string "image_caption"
     t.boolean "use_background_from_parent_map", default: true
+    t.string "ltype", default: "standard"
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
@@ -188,6 +189,8 @@ ActiveRecord::Schema.define(version: 2023_02_27_174811) do
     t.boolean "enable_map_to_go", default: false
     t.boolean "enable_privacy_features", default: true
     t.string "marker_display_mode", default: "cluster"
+    t.boolean "enable_historical_maps", default: false
+    t.boolean "enable_time_slider", default: false
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
@@ -252,6 +255,10 @@ ActiveRecord::Schema.define(version: 2023_02_27_174811) do
     t.boolean "sensitive", default: false
     t.integer "sensitive_radius", default: 100
     t.string "subtitle"
+    t.string "direction"
+    t.string "uid"
+    t.string "startdate_qualifier"
+    t.string "enddate_qualifier"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
