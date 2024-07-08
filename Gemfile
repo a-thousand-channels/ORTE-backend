@@ -29,6 +29,7 @@ gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
 gem 'foundation-rails', '~> 6'
 gem 'haml-rails'
+gem 'geocoder'
 gem 'i18n-js', '~> 3' # breaking changes with v4
 gem 'jquery-rails'
 gem 'jquery-turbolinks'
