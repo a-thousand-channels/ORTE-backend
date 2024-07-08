@@ -28,6 +28,7 @@ gem 'devise'
 gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
 gem 'foundation-rails', '~> 6'
+gem 'geocoder'
 gem 'haml-rails'
 gem 'i18n-js', '~> 3' # breaking changes with v4
 gem 'jquery-rails'

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  before_action :set_layer, only: %i[images show edit update destroy annotations relations pack build]
+  before_action :set_layer, only: %i[images import import_preview importing show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -18,6 +18,39 @@ class LayersController < ApplicationController
 
   def images
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
+  end
+
+  def import; end
+
+  def import_preview
+    file = params[:import][:file]
+    @overwrite = params[:import][:overwrite] == '1'
+    return unless file
+
+    begin
+      importer = Imports::CsvImporter.new(file, @layer.id, overwrite: @overwrite)
+      importer.import
+      flash[:notice] = 'CSV read successfully!'
+    rescue CSV::MalformedCSVError => e
+      flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
+    end
+    @valid_rows = importer.valid_rows
+    session[:importing_rows] = @valid_rows
+    @invalid_rows = importer.invalid_rows
+    @duplicate_rows = importer.duplicate_rows
+    @errored_rows = importer.errored_rows
+  end
+
+  def importing
+    importing_rows_data = session[:importing_rows]
+    if importing_rows_data
+      @importing_rows = importing_rows_data.map { |place_data| Place.new(place_data.merge(layer_id: @layer.id)) }
+      @importing_rows.each(&:save!)
+      session.delete(:importing_rows)
+      redirect_to map_layer_path(@map, @layer), notice: "CSV import completed successfully! (#{@importing_rows.count} places has been imported to #{@layer.title})"
+    else
+      redirect_to import_map_layer_path(@map, @layer), notice: 'No data provided to import!'
+    end
   end
 
   def search
