@@ -8,6 +8,7 @@ class LayersController < ApplicationController
   protect_from_forgery except: :show
 
   require 'color-generator'
+  require_relative '../../lib/imports/csv_importer'
 
   # GET /layers
   # GET /layers.json
