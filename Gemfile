@@ -110,4 +110,4 @@ group :development do
   gem 'brakeman', require: false
 end
 
-gem "activerecord-session_store", "~> 2.1"
+gem 'activerecord-session_store', '~> 2.1'
