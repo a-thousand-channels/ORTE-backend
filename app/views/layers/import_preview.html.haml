@@ -54,16 +54,18 @@
             %table.table.table-striped
               %thead
                 %tr
-                  - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
+                  - Imports::CsvImporter::PREVIEW_FIELDS.each do |field|
                     %th= field.capitalize
               %tbody
                 - @valid_rows.each do |row|
                   %tr
-                    - Imports::CsvImporter::ALLOWED_FIELDS.each do |field|
+                    - Imports::CsvImporter::PREVIEW_FIELDS.each do |field|
                       %td
                         - if field == 'title'
                           %span.nobr
                             = row[field]
+                        - elsif ['lat', 'lon'].include?(field)
+                          = row[field].to_s[0..5]
                         - elsif row[field]
                           = row[field].html_safe
 
