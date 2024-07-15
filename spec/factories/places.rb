@@ -17,6 +17,7 @@ FactoryBot.define do
     address { 'Address' }
     zip { 'Zip' }
     city { 'City' }
+    state { 'State' }
     country { 'Country' }
     published { false }
     imagelink { 'Some link' }

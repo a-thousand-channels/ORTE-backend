@@ -191,6 +191,8 @@
           .small-4.cell
             = f.input :zip
           .small-8.cell
+            - if @place.state
+              = f.input :state
             = f.input :city
         = f.input :country, :input_html => {:placeholder => 'Land' }
         %hr

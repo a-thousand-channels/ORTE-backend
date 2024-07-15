@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_12_101227) do
+ActiveRecord::Schema.define(version: 2024_07_15_143133) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -273,6 +273,7 @@ ActiveRecord::Schema.define(version: 2024_07_12_101227) do
     t.string "uid"
     t.string "startdate_qualifier"
     t.string "enddate_qualifier"
+    t.string "state"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
