@@ -3,6 +3,12 @@
 module PlacesHelper
   include Rails.application.routes.url_helpers
 
+  def ptype_for_select
+    ptypes = %w[info event group]
+    ptypes.each_with_object({}) { |e, m| m[e.capitalize] = e; }
+  end
+
+
   def default_url_options
     { host: Rails.application.config_for(:settings).app_host, protocol: Rails.application.config_for(:settings).app_host_protocol }
   end
