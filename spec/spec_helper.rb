@@ -37,8 +37,6 @@ Capybara.register_driver :headless_chrome do |app|
   options.add_argument('--disable-features=VizDisplayCompositor')
   options.add_argument('--enable-logging') # Enables logging
   options.add_argument('--log-level=0') # Enables all logging
-  # options.add_argument('user-data-dir=/home/osboxes/projects/a-thousand-channels/ORTE-backend/')
-
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
                                  options: options
