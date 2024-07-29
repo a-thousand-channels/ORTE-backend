@@ -10,12 +10,12 @@ json.map do
     json.array! @map.layers.published do |layer|
       next unless layer.published
 
-      json.call(layer, :id, :title, :subtitle, :text, :credits, :image_link, :color, :created_at, :updated_at, :published)
+      json.call(layer, :id, :title, :subtitle, :text, :teaser, :credits, :image_link, :color, :created_at, :updated_at, :published)
       json.places do
         json.array! layer.places.published do |place|
           next unless place.published
 
-          json.call(place, :id, :title, :subtitle, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
+          json.call(place, :id, :uid, :title, :subtitle, :teaser, :text, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
           json.lat place.public_lat
           json.lon place.public_lon
           json.annotations place.annotations do |annotation|

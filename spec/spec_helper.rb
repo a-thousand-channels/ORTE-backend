@@ -11,51 +11,41 @@ WebMock.disable_net_connect!(allow: [
                                '0.0.0.0',
                                '127.0.0.1',
                                'chromedriver.storage.googleapis.com',
+                               'storage.googleapis.com',
                                'googlechromelabs.github.io',
+                               'storage.googleapis.com',
                                'edgedl.me.gvt1.com'
                              ])
-
 # special setup to make feature tests run on ubuntu 20.4 LTS
 if ENV['UBUNTU']
   puts 'Running Rspecs on Ubuntu'
   # Webdrivers.logger.level = :debug
   # On Ubuntu >= 20 Chrome is installed via snap, so provide the path here
   ::Selenium::WebDriver::Chrome.path = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
-  # For the moment, at my machine, Chromedriver v98 fails with Chromium v98 (sic!)
-  # Webdrivers::Chromedriver.required_version = '97.0.4692.71'
-  Webdrivers::Chromedriver.required_version = '114.0.5735.90'
+  # Webdrivers::Chromedriver.required_version = '114.0.5735.90'
 else
   puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true")'
 end
 
-Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
-end
-
 Capybara.register_driver :headless_chrome do |app|
   options = ::Selenium::WebDriver::Chrome::Options.new
+
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
   options.add_argument('--window-size=1400,1400')
   options.add_argument('--disable-features=VizDisplayCompositor')
-
+  options.add_argument('--enable-logging') # Enables logging
+  options.add_argument('--log-level=0') # Enables all logging
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
                                  options: options
 end
 
-# switch to :chrome for watching the tests in browser
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
-
 Capybara.configure do |config|
   config.default_max_wait_time = 5 # seconds
   config.default_driver        = :headless_chrome
 end
-
-# deprecated!
-# Capybara::Chromedriver::Logger::TestHooks.for_rspec!
 
 RSpec.configure do |config|
   config.color = true

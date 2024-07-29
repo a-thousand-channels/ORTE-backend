@@ -11,7 +11,7 @@ class Imports::CsvImporter
 
   ALLOWED_FIELDS = %w[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms].freeze
 
-  TEXT_FIELDS = %w[title subtitle teaser text location address zip city country].freeze
+  PREVIEW_FIELDS = %w[title lat lon location address zip city country].freeze
 
   # TODO: update existing place as an option
 

@@ -36,6 +36,8 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - app/helpers/application_helper.rb
     - app/controllers/layers_controller.rb
+    - app/controllers/maps_controller.rb
+    
 
 Metrics/MethodLength:
   Enabled: false
@@ -58,6 +60,12 @@ Style/ClassAndModuleChildren:
 Style/Documentation:
   Enabled: false
 
+Style/FloatDivision:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either  
+  
 Style/IdenticalConditionalBranches:
   Exclude:
     - app/helpers/application_helper.rb

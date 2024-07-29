@@ -8,7 +8,7 @@ json.layer do
     json.array! @places do |place|
       next unless place.published
 
-      json.call(place, :id, :title, :subtitle, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :layer_id, :icon_link, :icon_class, :icon_name)
+      json.call(place, :id, :uid, :title, :subtitle, :teaser, :text, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :layer_id, :icon_link, :icon_class, :icon_name)
       json.lat place.public_lat
       json.lon place.public_lon
       json.annotations place.annotations do |annotation|
