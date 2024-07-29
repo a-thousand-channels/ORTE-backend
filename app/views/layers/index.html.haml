@@ -78,10 +78,21 @@
           %td
             = link_to edit_map_layer_path(@map, layer), :class=>"button" do
               %i.fi-pencil.fi-24
+            &nbsp;
+            - if layer.places.count == 0 
+              = link_to map_layer_path(@map, layer), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+                %i.fi-trash.fi-24
 
-
-  %p
-
-    = link_to new_map_layer_path(@map), :class=>'button small' do
-      %i.fi-plus.fi-18
-      New Layer
+  .grid-x.grid-padding-x
+    .cell.medium-3
+      %p
+        = link_to new_map_layer_path(@map), :class=>'button small' do
+          %i.fi-plus.fi-18
+          New Standard Layer
+      %p.shy Create a typical layer with places and various content for this map
+    .cell.medium-3 
+      %p         
+        = link_to new_map_layer_path(@map, :ltype => 'image'), :class=>'button small' do
+          %i.fi-plus.fi-18
+          New Image Layer
+      %p.shy Import a batch of images and create a new layer

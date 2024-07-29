@@ -29,6 +29,10 @@ class Place < ApplicationRecord
 
   validates :title, presence: true
   validate :check_audio_format
+  validates :lat, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid latitude value' }
+  validates :lon, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid longitude value' }
+  validates :lat, presence: true, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }
+  validates :lon, presence: true, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }
 
   scope :sorted_by_startdate, -> { order(startdate: :asc) }
   scope :sorted_by_title, -> { order(title: :asc) }
@@ -46,17 +50,34 @@ class Place < ApplicationRecord
       self.startdate = "#{startdate_date} #{startdate_time}"
     elsif startdate_date.present?
       self.startdate = "#{startdate_date} 00:00:00"
+    # nil from factories, blank from post request
+    elsif startdate_date.nil? || startdate_date.blank?
+      self.startdate = nil
     end
     if enddate_date.present? && enddate_time.present?
       self.enddate = "#{enddate_date} #{enddate_time}"
     elsif enddate_date.present?
       self.enddate = "#{enddate_date} 00:00:00"
+    elsif enddate_date.nil? || startdate_date.blank?
+      self.enddate = nil
     end
   end
 
   def title_and_location
     if !location.blank?
       "#{title} (#{location})"
+    else
+      title
+    end
+  end
+
+  def title_subtitle_and_location
+    if !location.blank?
+      if !subtitle.blank?
+        "#{title} — #{subtitle} (#{location})"
+      else
+        "#{title} (#{location})"
+      end
     else
       title
     end
@@ -93,6 +114,10 @@ class Place < ApplicationRecord
 
   def layer_slug
     layer.title.parameterize
+  end
+
+  def layer_type
+    layer.ltype
   end
 
   def color

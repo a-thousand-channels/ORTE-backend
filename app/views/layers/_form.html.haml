@@ -1,4 +1,5 @@
 = simple_form_for([@map, @layer]) do |f|
+  = f.hidden_field :ltype, value: @layer.ltype
   .grid-x
     .large-12.cell
       = f.error_notification
@@ -25,8 +26,28 @@
             = tinymce
             = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
             = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
-            = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }
-        %hr
+            = f.input :credits, :label => 'Credits', :input_html => {:rows => 8, class: 'large-text tinymce' }        
+          
+        - if @layer.ltype == 'image'  
+          %hr
+          .grid-x.grid-padding-x            
+            .small-6.cell        
+              - if params[:action] == 'edit'  
+                %p
+                  = link_to images_map_layer_path(@map,@layer) do
+                    = @layer.places.count
+                    Places with Images         
+                %hr   
+              = f.input :images_files, as: :file, label: 'Images', :input_html => { multiple: true}, required: false
+              %p.shy Please upload one or more images with embedded geodata. A place will be created for each image and placed on the map.
+            .small-6.cell                      
+              = f.input :images_creator, label: 'Creator of these images'
+              %p.hint Creator of these images
+              = f.input :images_licence, label: 'Licence for all images'
+              %p.hint Licence of the image (CC, Public Domain, Rights reserved)
+              = f.input :images_source, label: 'Source'
+              %p.hint Origin of these images    
+        %hr        
         .grid-x.grid-padding-x
           .small-5.cell
             %p
@@ -190,11 +211,11 @@
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
               %div
-                %label{for: 'layer_basemap_url'} Basemap URL
+                %label{for: 'layer_basemap_url'} Default Basemap URL
                 = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}, label: false, disabled: (@layer.use_background_from_parent_map ? true : false)
               %p.shy
                 URL for a basemap (used as tile layer in the background)
-                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
+                %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can define a default basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
               %div
                 %label{for: 'layer_basemap_attribution'} Basemap Attribution
                 = f.input :basemap_attribution, :input_html => {:placeholder => ''}, label: false, disabled: (@layer.use_background_from_parent_map ? true : false)

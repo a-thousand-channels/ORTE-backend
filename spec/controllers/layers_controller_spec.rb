@@ -26,9 +26,6 @@ RSpec.describe LayersController, type: :controller do
       FactoryBot.attributes_for(:layer, :invalid, map_id: @map.id)
     end
 
-    # This should return the minimal set of values that should be in the session
-    # in order to pass any filters (e.g. authentication) defined in
-    # LayersController. Be sure to keep this updated too.
     let(:valid_session) { {} }
 
     describe 'GET #index' do
@@ -44,6 +41,93 @@ RSpec.describe LayersController, type: :controller do
         layer = Layer.create! valid_attributes
         get :images, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
+      end
+    end
+
+    describe 'GET #import' do
+      it 'renders the import form' do
+        get :import, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
+        expect(response).to render_template(:import)
+      end
+    end
+
+    describe 'GET #import_preview' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
+      let(:layer) { create(:layer) }
+
+      context 'with valid CSV' do
+        it 'renders the import preview' do
+          post :import_preview, params: { map_id: @map.id, id: layer.friendly_id, import: { file: file } }, session: valid_session
+          expect(response).to render_template(:import_preview)
+          expect(session[:importing_rows]).not_to be_nil
+        end
+      end
+
+      context 'with invalid CSV' do
+        let(:invalid_file) { Rack::Test::UploadedFile.new('spec/support/files/places_nodata.csv', 'text/csv') }
+
+        it 'shows an error message' do
+          post :import_preview, params: { map_id: @map.id, id: layer.friendly_id, import: { file: invalid_file } }, session: valid_session
+
+          expect(response).to render_template(:import_preview)
+          expect(session[:importing_rows]).to eq([])
+        end
+      end
+    end
+
+    describe 'POST #importing' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
+      let(:invalid_file) { Rack::Test::UploadedFile.new('spec/support/files/places_invalid_lat.csv', 'text/csv') }
+      let(:layer) { create(:layer) }
+
+      context 'without session data' do
+        it 'redirects to map_layer_path and flashes error message' do
+          post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file }, session: valid_session
+          expect(session[:importing_rows]).to be_nil
+          expect(response).to redirect_to(import_map_layer_path(@map, layer))
+          expect(flash[:notice]).to eq('No data provided to import!')
+        end
+      end
+
+      context 'with session data' do
+        context 'with valid CSV' do
+          before do
+            importing_rows = [build(:place, title: 'Place 1', layer: layer).attributes, build(:place, title: 'Place 2', layer: layer).attributes]
+            allow(controller).to receive(:session).and_return(importing_rows: importing_rows)
+          end
+
+          it 'imports the CSV and redirects to map_layer_path' do
+            post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file }, session: valid_session
+
+            # session gets cleared
+            expect(session[:importing_rows]).to eq(nil)
+            expect(response).to redirect_to(map_layer_path(@map, layer))
+            expect(flash[:notice]).to match('CSV import completed successfully!')
+          end
+
+          it 'creates new place records from the CSV' do
+            expect do
+              post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file }, session: valid_session
+            end.to change(Place, :count).by(2)
+
+            expect(Place.pluck(:title)).to contain_exactly('Place 1', 'Place 2')
+          end
+        end
+
+        context 'with invalid CSV' do
+          it 'does not import the CSV and shows an error message' do
+            post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: invalid_file }, session: valid_session
+
+            expect(response).to redirect_to(import_map_layer_path(@map, layer))
+            expect(flash[:notice]).to include('No data provided')
+          end
+
+          it 'does not create book records from the invalid CSV' do
+            expect do
+              post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: invalid_file }, session: valid_session
+            end.not_to change(Place, :count)
+          end
+        end
       end
     end
 
@@ -199,6 +283,62 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
+    describe 'POST #create with image layer' do
+      let(:image_layer) do
+        FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
+      end
+
+      let(:images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
+        ]
+      end
+
+      let(:valid_image_layer_attributes) do
+        FactoryBot.build(:layer, :with_ltype_image, map_id: @map.id).attributes
+      end
+
+      context 'with valid params' do
+        before do
+          # HINT: none-model values must be merge into the factory here
+          valid_image_layer_attributes.merge!(images_files: images_files)
+        end
+
+        it 'creates a new Layer' do
+          expect do
+            post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          end.to change(Layer, :count).by(1)
+                                      .and change(Place, :count).by(3)
+                                                                .and change(Image, :count).by(3)
+          expect(Place.last.lon).to eq('10.0')
+          expect(flash[:notice]).to match 'Layer was created with 3 geocoded images.'
+        end
+
+        it 'redirects to the map' do
+          post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          layer = Layer.last
+          expect(response).to redirect_to(map_layer_path(@map.friendly_id, layer))
+        end
+      end
+
+      context 'with invalid params (images are missing)' do
+        it 'doest not create a new Layer' do
+          expect do
+            post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          end.not_to change(Place, :count)
+          expect(flash[:alert]).to match 'This is an image layer, but no images has been provided.'
+        end
+
+        it 'redirects to the map' do
+          post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
+          layer = Layer.last
+          expect(response).to render_template(:new)
+        end
+      end
+    end
+
     describe 'PUT #update' do
       context 'with valid params' do
         let(:new_attributes) do
@@ -241,6 +381,71 @@ RSpec.describe LayersController, type: :controller do
         layer = Layer.create! valid_attributes
         delete :destroy, params: { map_id: @map.id, id: layer.friendly_id }, session: valid_session
         expect(response).to redirect_to(map_url(@map))
+      end
+    end
+
+    describe '#validate_images_format' do
+      let(:images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
+        ]
+      end
+      let(:falsey_images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
+        ]
+      end
+      let(:no_images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'text/plain'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'text/plain')
+        ]
+      end
+
+      let(:layer) do
+        FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
+      end
+
+      let(:valid_image_layer_attributes) do
+        layer.attributes
+      end
+
+      context 'with valid image files' do
+        before do
+          valid_image_layer_attributes.merge!(images_files: images_files)
+        end
+
+        it 'returns true' do
+          controller.params[:layer] = valid_image_layer_attributes
+          expect(controller.send(:validate_images_format)).to be_truthy
+        end
+      end
+
+      context 'with image files without geocoding' do
+        before do
+          valid_image_layer_attributes.merge!(images_files: falsey_images_files)
+        end
+
+        it 'returns true' do
+          controller.params[:layer] = valid_image_layer_attributes
+          expect(controller.send(:validate_images_format)).to be_truthy
+        end
+      end
+
+      context 'with invalid image files' do
+        before do
+          valid_image_layer_attributes.merge!(images_files: no_images_files)
+        end
+
+        it 'adds an error to the layer' do
+          controller.params[:layer] = valid_image_layer_attributes
+          expect(controller.send(:validate_images_format)).to be_falsey
+          expect(flash[:alert]).to match 'Invalid file formats found. Only JPEG, PNG and GIF are allowed.'
+        end
       end
     end
   end

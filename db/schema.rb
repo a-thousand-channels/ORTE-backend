@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_18_151955) do
+ActiveRecord::Schema.define(version: 2024_07_15_143133) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 2023_09_18_151955) do
     t.string "image_creator"
     t.string "image_caption"
     t.boolean "use_background_from_parent_map", default: true
+    t.string "ltype", default: "standard"
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
   end
@@ -188,6 +189,8 @@ ActiveRecord::Schema.define(version: 2023_09_18_151955) do
     t.boolean "enable_map_to_go", default: false
     t.boolean "enable_privacy_features", default: true
     t.string "marker_display_mode", default: "cluster"
+    t.boolean "enable_historical_maps", default: false
+    t.boolean "enable_time_slider", default: false
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
@@ -266,6 +269,11 @@ ActiveRecord::Schema.define(version: 2023_09_18_151955) do
     t.boolean "sensitive", default: false
     t.integer "sensitive_radius", default: 100
     t.string "subtitle"
+    t.string "direction"
+    t.string "uid"
+    t.string "startdate_qualifier"
+    t.string "enddate_qualifier"
+    t.string "state"
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
@@ -275,6 +283,15 @@ ActiveRecord::Schema.define(version: 2023_09_18_151955) do
     t.string "rtype"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "sessions", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.text "data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "submission_configs", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|

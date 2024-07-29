@@ -88,16 +88,23 @@
           = @place.layer.title
 
       %p.date
-        = smart_date_display(@place.startdate, @place.enddate)
+        = smart_date_display_with_qualifier(@place.startdate, @place.enddate, @place.startdate_qualifier, @place.enddate_qualifier)
       %h1
+        - if @place.uid.present?
+          = @place.uid
+          \&mdash;
         = @place.title
         = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place.id) do
           %i.fi.fi-pencil.fi-24
+      - if @place.subtitle.present?
+        %p
+          = @place.subtitle
       %div
         %strong
           =h @place.teaser.html_safe
-      %div
-        =h @place.text
+      - if @place.text.present?
+        %div
+          =h @place.text.html_safe
       %p
         - if @place.link
           =link_to @place.link do
@@ -107,6 +114,7 @@
           = audio_tag rails_blob_url(@place.audio), autoplay: true, controls: true
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
       %p
+        %i.fi-marker.fi-21 
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
       %label Annotations
       %hr.small

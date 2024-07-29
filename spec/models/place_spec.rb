@@ -25,9 +25,41 @@ RSpec.describe Place, type: :model do
     end
   end
 
-  describe 'Dates' do
-    it 'returns date' do
+  describe 'Fulldates w/before_save handling' do
+    it 'updates full date' do
       p = FactoryBot.create(:place, startdate: '2018-01-01', enddate: '2018-01-02')
+      p.startdate_date = '2018-01-01'
+      p.enddate_date = '2018-12-31'
+      p.save!
+      p.reload
+      expect(p.startdate).to eq('2018-01-01 00:00:00.000')
+      expect(p.enddate).to eq('2018-12-31 00:00:00.000')
+    end
+
+    it 'removes full date with nil' do
+      p = FactoryBot.create(:place, startdate: '2018-01-01', enddate: '2018-01-02')
+      p.startdate_date = '2018-01-01'
+      p.enddate_date = nil
+      p.save!
+      p.reload
+      expect(p.startdate).to eq('2018-01-01 00:00:00.000')
+      expect(p.enddate).to eq(nil)
+    end
+
+    it 'removes full date with blank' do
+      p = FactoryBot.create(:place, startdate: '2018-01-01', enddate: '2018-01-02')
+      p.startdate_date = ''
+      p.enddate_date = '2018-01-02'
+      p.save!
+      p.reload
+      expect(p.startdate).to eq(nil)
+      expect(p.enddate).to eq('2018-01-02 00:00:00.000')
+    end
+  end
+
+  describe 'Dates for UI' do
+    it 'returns date range' do
+      p = FactoryBot.create(:place, startdate_date: '2018-01-01', enddate_date: '2018-01-02')
       expect(p.date).to eq('01.01.18 ‒ 02.01.18')
     end
 
@@ -36,11 +68,14 @@ RSpec.describe Place, type: :model do
       expect(p.date).to eq('01.01.18, 20:30')
     end
 
-    it 'returns full startdate without time' do
+    it 'returns year (with only startdate given)' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '', enddate: '')
       expect(p.date).to eq('2018')
     end
-
+    it 'returns year' do
+      p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '', enddate: '2018-12-31')
+      expect(p.date).to eq('2018')
+    end
     it 'returns full date range with time' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '12:00', enddate_date: '2018-01-01', enddate_time: '18:00')
       expect(p.date).to eq('01.01.18, 12:00 ‒ 18:00')
@@ -124,9 +159,9 @@ RSpec.describe Place, type: :model do
     it 'is valid  ' do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
-      event_1_in_the_middle = FactoryBot.create(:place, layer: l, startdate: '2016-01-01 00:00:00')
-      event_2_earlier = FactoryBot.create(:place, layer: l, startdate: '2011-01-01 00:00:00')
-      event_3_latest = FactoryBot.create(:place, layer: l, startdate: '2021-01-01 00:00:00')
+      event_1_in_the_middle = FactoryBot.create(:place, layer: l, startdate_date: '2016-01-01 00:00:00')
+      event_2_earlier = FactoryBot.create(:place, layer: l, startdate_date: '2011-01-01 00:00:00')
+      event_3_latest = FactoryBot.create(:place, layer: l, startdate_date: '2021-01-01 00:00:00')
 
       places = l.places
       expect(places).to eq([event_1_in_the_middle, event_2_earlier, event_3_latest])
@@ -137,9 +172,9 @@ RSpec.describe Place, type: :model do
     it 'is valid  ' do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
-      event_1_in_the_middle = FactoryBot.create(:place, layer: l, startdate: '2016-01-01 00:00:00')
-      event_2_earlier = FactoryBot.create(:place, layer: l, startdate: '2011-01-01 00:00:00')
-      event_3_latest = FactoryBot.create(:place, layer: l, startdate: '2021-01-01 00:00:00')
+      event_1_in_the_middle = FactoryBot.create(:place, layer: l, startdate_date: '2016-01-01 00:00:00')
+      event_2_earlier = FactoryBot.create(:place, layer: l, startdate_date: '2011-01-01 00:00:00')
+      event_3_latest = FactoryBot.create(:place, layer: l, startdate_date: '2021-01-01 00:00:00')
 
       places = l.places.sorted_by_startdate
       expect(places).not_to eq([event_1_in_the_middle, event_2_earlier, event_3_latest])

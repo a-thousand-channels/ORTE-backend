@@ -4,6 +4,7 @@ html,body {
 
 body {
   font-family: "worksans","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "worksans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 11.3pt;
 }
 header {
@@ -39,6 +40,9 @@ p {
 p.compact {
   margin: 0;
 }
+p.small.compact {
+  margin-bottom: 0.2rem;
+}
 
 a.disabled {
    cursor: not-allowed;
@@ -56,17 +60,7 @@ div.small {
     line-height: 1;
 }
 .clear { clear: both; }
-.spacer {
-  padding: 0 10px;
-
-  @media screen and (max-width: 39.9375em) {
-    padding: 0 2px;
-  }
-  i {
-    vertical-align: bottom;
-  }
-}
-
+.nobr { white-space: nowrap; }
 
 tt {
   font-size: 9pt;
@@ -89,9 +83,9 @@ span.confirmation {
 }
 
 span.name, label {
-    color: #888;
+    color: #775;
     font-size: 90%;
-    text-transform: uppercase;
+    text-transform: initial;
     font-weight: bold;
     padding-right: 10px;
     line-height: 1.2;
@@ -149,6 +143,8 @@ a.button {
 }
 a.button.small {
   margin: 0 0.25rem 0.25rem;
+  padding: 0.45em 0.7em;
+  white-space: nowrap;
 }
 .close-button.small {
     right: 0.66rem;
@@ -333,6 +329,7 @@ body .top-bar.action-bar {
       display: inline;
       font-weight:  bold;
       font-size:  14px;
+
       opacity:  1;
       transition: 3s all;
       svg {
@@ -393,7 +390,7 @@ div.input-group {
     padding: 0.2rem;
 }
 input[type="time"] {
-    width: 88px;
+    width: 93px;
 }
 input[type="date"] {
     width: 137px;
