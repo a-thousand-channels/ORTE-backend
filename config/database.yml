@@ -15,36 +15,24 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 
-# test w/passwordless database (e.g travis)
 test:
   adapter: mysql2
   database: orte_test
-  host: localhost
-  username: root
-  encoding: utf8
-# test w/password-secured database (e.g. local setup)
-localtest:
-  adapter: mysql2
-  database: orte_test
-  host: localhost
+  host: 127.0.0.1
   username: orte
   password: orte00
   encoding: utf8
-
 staging:
   adapter: mysql2
   database: orte_staging
   host: localhost
   username: orte
-  password: <%= Rails.application.credentials.dig(:mysql, :password, :staging) %>
+  password: <%= Rails.application.credentials.dig(:mysql, :staging, :password ) %>
   encoding: utf8
-
 production:
   adapter: mysql2
-  database: orte_production
+  database: orte
   host: localhost
   username: orte
-  password: <%= Rails.application.credentials.dig(:mysql, :password, :production) %>
+  password: <%= Rails.application.credentials.dig(:mysql, :production, :password ) %>
   encoding: utf8
-
-

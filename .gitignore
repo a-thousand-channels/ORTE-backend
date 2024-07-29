@@ -3,9 +3,11 @@ capybara-*.html
 .rspec
 /log
 /tmp
-/db/*.sqlite3
-/db/*.sqlite3-journal
 /public/system
+/public/*.zip
+/public/client*
+/public/assets
+/public/assets_test
 /coverage/
 /spec/tmp
 /spec/examples.txt
@@ -14,6 +16,8 @@ rerun.txt
 pickle-email-*.html
 # public/assets/
 .sass-cache
+
+analyze_js_report_*.html
 
 # TODO Comment out this rule if you are OK with secrets being uploaded to the repo
 config/initializers/secret_token.rb

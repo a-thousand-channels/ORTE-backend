@@ -11,14 +11,42 @@ FactoryBot.define do
     caption { 'Caption' }
     sorting { 2 }
     preview { false }
+    itype { 'image' }
     trait :with_file do
-      file { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+      after(:build) do |image|
+        image.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
+    trait :with_geocoded_file do
+      after(:build) do |image|
+        image.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test-with-exif-data.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
     trait :without_file do
       file { [] }
     end
     trait :with_wrong_fileformat do
-      file { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.txt'), '')] }
+      after(:build) do |post|
+        post.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.txt')),
+          filename: 'test.txt',
+          content_type: 'image/jpeg'
+        )
+      end
+    end
+    trait :notitle do
+      title { nil }
+    end
+    trait :nofile do
+      file { [] }
     end
     trait :invalid do
       title { nil }
@@ -27,6 +55,9 @@ FactoryBot.define do
     end
     trait :changed do
       title { 'OtherTitle' }
+    end
+    trait :preview do
+      preview { true }
     end
   end
 end

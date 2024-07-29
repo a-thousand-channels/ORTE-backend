@@ -1,0 +1,22 @@
+
+#form-wrapper.large-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %p.small
+    %a{:href => map_path(@map), :title => 'Settings'}
+      %i.fi-map.fi-21
+      Map
+    \&mdash;
+    %a{:href => map_people_path(@map), :title => 'Iconsets'}
+      %i.fi-marker.fi-21
+      People
+
+  %h1 Editing person
+
+  = render 'form'
+
+
+  %hr
+  = link_to 'All people', map_people_path(@map), :class => 'button'
+

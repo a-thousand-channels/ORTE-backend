@@ -1,13 +1,22 @@
 
 #info-wrapper
-  %h1 
-    #{Settings.app_name}
 
-  %h3 #{Settings.app_tagline}
-  %p
-    About this application:
-    = link_to 'https://github.com/ut/ORTE-backend' do
-      ORTE Backend at GitHub
+  - if Rails.application.config_for(:settings).app_shortname == 'A1000C-ORTE'
+    %h1 ORTE Backend
+    %h3 #{Rails.application.config_for(:settings).app_tagline}
+    %p
+      This is part of A Thousand Channels – a queer 🏳️‍🌈 mapping 🌎 platform 🎁
+    %p
+      Want to learn more? Please visit
+      = link_to 'https://www.a-thousand-channels.xyz/' do
+        our website.
+  - else
+    %h1 #{Rails.application.config_for(:settings).app_name}
+    %h3 #{Rails.application.config_for(:settings).app_tagline}
+    %p
+      About this application:
+      = link_to 'https://github.com/ut/ORTE-backend' do
+        ORTE Backend at GitHub
   %p
     - if current_user
       = link_to maps_path, :class => 'button' do
@@ -16,3 +25,9 @@
       = link_to 'users/sign_in', :class => 'button'  do
         Sign in
 
+  - if Rails.application.config_for(:settings).app_shortname == 'A1000C-ORTE'
+    %p
+      Would you like to contribute and start mapping?
+      %br
+      = link_to 'https://www.a-thousand-channels.xyz/' do
+        Please get in touch with us and receive an account.

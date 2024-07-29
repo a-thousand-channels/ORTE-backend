@@ -1,7 +1,7 @@
 - content_for(:title) { 'Unlock instructions' }
 
 #form-wrapper
-  %h1 #{Settings.app_name}
+  %h1 #{Rails.application.config_for(:settings).app_name}
   %h3 Resend unlock instructions
   = simple_form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
     = f.error_notification

@@ -9,6 +9,8 @@ class StartController < ApplicationController
 
   def info; end
 
+  def notfound; end
+
   def settings
     @user = current_user
     @users = User.by_group(current_user).order(:email)

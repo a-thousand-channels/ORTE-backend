@@ -16,7 +16,7 @@
         %li{:class => preview_class(1,index)}
           %div{:id => 'place_teaser_receiver'}
             - if @place && @place.teaser
-              = @place.teaser.html_safe
+              = h(@place.teaser.html_safe)
             - else
               = t('simple_form.placeholders.teaser')
         %li{:id => 'place_image_placeholder', :class => preview_class(2,index)}

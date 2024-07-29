@@ -3,6 +3,8 @@
 class Public::MapsController < ActionController::Base
   before_action :cors_set_access_control_headers
 
+  protect_from_forgery with: :exception
+
   # For all responses in this controller, return the CORS access control headers.
 
   def cors_set_access_control_headers
@@ -14,19 +16,14 @@ class Public::MapsController < ActionController::Base
 
   # GET /maps.json
   def index
-    @maps = Map.published
     respond_to do |format|
-      if @maps
-        format.json { render json: @maps }
-      else
-        format.json { head :no_content }
-      end
+      format.json { render json: { error: 'No data accessible' }, status: :forbidden }
     end
   end
 
   # GET /maps/1.json
   def show
-    @map = Map.published.friendly.find_by_friendly_id(params[:id])
+    @map = Map.published.find_by_slug(params[:id]) || Map.published.find_by_id(params[:id])
 
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
@@ -35,7 +32,26 @@ class Public::MapsController < ActionController::Base
       elsif @map.present?
         format.json { render :show, location: @map }
       else
-        # format.json { head :no_content }
+        format.json { render json: { error: 'Map not accessible' }, status: :forbidden }
+      end
+    end
+  end
+
+  # GET /maps/1/allplaces.json
+  def allplaces
+    @map = Map.published.find_by_slug(params[:id]) || Map.published.find_by_id(params[:id])
+    respond_to do |format|
+      @map_layers = @map.layers if @map&.layers
+      @allplaces = []
+
+      if @map_layers.present?
+        @map_layers.each do |l|
+          next unless l.published
+
+          (@allplaces << l.places).flatten!
+        end
+        format.json { render :allplaces, location: @map }
+      else
         format.json { render json: { error: 'Map not accessible' }, status: :forbidden }
       end
     end

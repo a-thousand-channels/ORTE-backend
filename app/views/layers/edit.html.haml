@@ -1,9 +1,31 @@
-- content_for(:title) { "#{@layer.title} (Edit)" }
+- content_for(:title) { "Layer: #{@layer.title} (Edit)" }
 
 #form-wrapper
   %p.text-right.close_link_wrapper
-    =link_to map_layers_path(@map), :class=>'close_link' do
+    = link_to map_layers_path(@map), :class=>'close_link' do
       %i.fi.fi-x
-  %h1 Editing layer
+  %p
+    Map:
+    = link_to map_layers_path(@map) do
+      = @map.title
+    > Layer:
+    = link_to map_layer_path(@map, @layer) do
+      = @layer.title
+  .grid-x.grid-padding-x
+    .large-6.medium-6.small-6.cell
+      %h1
+        =@layer.title
+    .large-6.medium-6.small-6.cell
+      - if @layer && @layer.created_at
+        %p.shy
+          Created:
+          = l(@layer.created_at)
+          %br
+          = @layer.ltype.titleize
+          Layer 
+          with
+          = link_to map_layer_places_path(@map, @layer) do
+            = @layer.places.count
+            Places.
   = render 'form'
   = link_to 'View Layer', [@map, @layer], :class => 'button secondary'

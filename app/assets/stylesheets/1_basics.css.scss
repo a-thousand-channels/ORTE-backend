@@ -4,6 +4,7 @@ html,body {
 
 body {
   font-family: "worksans","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-family: "worksans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
   font-size: 11.3pt;
 }
 header {
@@ -20,22 +21,27 @@ h1,h2 {
 h3,h4,h5,h6 {
   font-family: "worksans-semibold","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 }
+h3 {
+  font-size: 1.5375rem;
+}
 h4 {
   svg {
     vertical-align: -6px;
     margin-right: 10px;
   }
 }
-h3 {
-  font-size: 1.5375rem;
+h5, .h5 {
+  font-size: 1.1rem;
 }
-
 p {
   font-size: 16px;
   line-height: 1.33;
 }
 p.compact {
   margin: 0;
+}
+p.small.compact {
+  margin-bottom: 0.2rem;
 }
 
 a.disabled {
@@ -54,6 +60,7 @@ div.small {
     line-height: 1;
 }
 .clear { clear: both; }
+.nobr { white-space: nowrap; }
 
 tt {
   font-size: 9pt;
@@ -71,19 +78,46 @@ small.error {
     border: 2px solid red;
     padding: 10px;
 }
+span.confirmation {
+  color: #1bb71b;
+}
+
 span.name, label {
-    color: #888;
+    color: #775;
     font-size: 90%;
-    text-transform: uppercase;
+    text-transform: initial;
     font-weight: bold;
     padding-right: 10px;
+    line-height: 1.2;
+    padding-bottom: 5px;
+}
+label > [type="checkbox"] {
+  margin: 0 0.2rem 0.2rem;
+}
+label.text {
+  padding-top: 10px;
+
+}
+p.label {
+  margin-bottom:  0.2rem;
+}
+.input.boolean labelX {
+  line-height: 0;
+  margin-bottom: 10px;
 }
 span.name.middle {
   padding-top: 7px;
   display: inline-block;
 }
 
+
 hr {border-bottom: 1px solid #aaa;}
+hr.small { margin: 0.25rem auto 0.65rem; }
+
+tbody th, tbody td {
+    text-align: left;
+}
+
 /* -------------------- */
 /* foundation adapations */
 .callout {
@@ -108,7 +142,9 @@ a.button {
   color: white !important;
 }
 a.button.small {
-  margin: 0;
+  margin: 0 0.25rem 0.25rem;
+  padding: 0.45em 0.7em;
+  white-space: nowrap;
 }
 .close-button.small {
     right: 0.66rem;
@@ -118,6 +154,26 @@ a.button.small {
     font-size: 1em;
     line-height: 1;
     position: absolute;
+    @media screen and (max-width: 39.9375em) {
+      right: 18px;
+    }
+}
+a.small.button.rounded {
+    border-radius: 20px;
+    padding: 5px 6px;
+    background-color: white;
+    color: darken(#c6c600,5%) !important;
+    font-size: 0.9rem;
+}
+a.small.button.rounded.rounded-grey {
+    border-radius: 20px;
+    padding: 5px 6px;
+    background-color: #efefef;
+    color: darken(#c6c600,5%) !important;
+    font-size: 0.9rem;
+}
+a.small.button.rounded:hover {
+    color: darken(#c6c600,15%) !important;
 }
 a.button.action {
   font-size: 13pt;
@@ -184,17 +240,25 @@ select {
 .top-bar ul li.name {
     font-family: 'worksans-semibold', "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
     margin-top: 2px;
+    min-width: 440px;
 }
 
 @media screen and (max-width: 63.9375em) {
-
+  .top-bar .top-bar-left {
+    max-width: 45%;
+  }
+}@media screen and (max-width: 43.9375em) {
+  .top-bar .top-bar-left {
+    max-width: 40%;
+  }
 }
 @media screen and (max-width: 39.9375em) {
-  .top-bar .top-bar-left, .top-bar .top-bar-right {
+  .top-bar .top-bar-left {
       flex: 0 0 100%;
-      max-width: 50%;
+      max-width: 40%;
   }
-  .top-bar-right {
+  .top-bar .top-bar-right {
+    max-width: 55%;
       ul.menu {
         float: right;
       }
@@ -210,6 +274,9 @@ select {
     text-decoration: none;
     display: block;
     padding: 0.6rem 1rem;
+    @media screen and (max-width: 63.9375em) {
+      padding: 0.6rem 0.5rem;
+    }
 }
 .menu a#login {
     line-height: 1;
@@ -226,7 +293,7 @@ select {
 .menu a.button.logout {
     background-color: #333;
     color: #aaaa00 !important;
-    margin-top: 3px;
+    /* margin-top: 3px; */
     padding: 0.5rem 0.75rem;
     border-radius: 30px;
 }
@@ -238,6 +305,59 @@ select {
 
 
 /* -------------------- */
+body .top-bar.action-bar {
+  background-color: rgba(255,255,255,0.7);
+  background-image: none !important;
+  padding: 7px 15px 7px 15px;
+  a {
+    color: #333;
+  }
+
+  .action-bar-left {
+    flex-grow: 1;
+    width: 25%;
+    text-align: left;
+  }
+  .action-bar-center {
+    flex-grow: 1;
+    width: 32%;
+    text-align: center;
+
+    a.button.small {
+      padding: 0.6em 0.6em !important;
+      color: #333 !important;
+      display: inline;
+      font-weight:  bold;
+      font-size:  14px;
+
+      opacity:  1;
+      transition: 3s all;
+      svg {
+        height: 18px;
+        vertical-align: -3px;
+        path {
+          color:  #333;
+        }
+      }
+    }
+    a.hide {
+      display: none;
+      opacity:  0;
+      background-color: transparent;
+      color: transparent !important;
+      transition: all 2s;
+    }
+    a.button.disabled {
+      background-color: silver;
+      color: gray !important;
+    }
+  }
+  .action-bar-right {
+    flex-grow: 1;
+    width: 25%;
+    text-align: right;
+  }
+}
 
 /* -------------------- */
 footer {
@@ -270,10 +390,16 @@ div.input-group {
     padding: 0.2rem;
 }
 input[type="time"] {
-    width: 88px;
+    width: 93px;
 }
 input[type="date"] {
     width: 137px;
+}
+input[type="color"] {
+    min-height: 20px;
+}
+textarea {
+  min-height: 57px
 }
 
 .form-actions {
@@ -291,27 +417,80 @@ p.date {
   margin-top: 1em;
   margin-bottom: 0;
 }
-p.hint {
+
+p.hint-simple
+ {
   font-size: 0.8em;
   color: grey;
   margin-bottom: 0;
   text-align: right;
-}
-p.hint.text-left {
-  text-align: left;
+  max-width: 400px;
+  margin: 10px 0;
+  text-align:  left;
+  border-left: 0px solid #aaa;
+  padding-left: 0;
+
 }
 
+span.hint,
+p.hint,
+ul.hint li
+ {
+  font-size: 0.8em;
+  color: grey;
+  margin-bottom: 0;
+  text-align: right;
+  max-width: 400px;
+  margin: 10px 0;
+
+  text-align:  left;
+  border-left: 3px solid #aaa;
+  padding-left: 10px;
+
+}
+p.hint {
+
+}
+p.hint.text-left {
+  border-left: 3px solid #aaa;
+  padding-left: 10px;
+  text-align: left;
+}
+ul.hint {
+  list-style: none;
+  margin-left:  0;
+  margin-bottom: 0.25rem;
+}
+ul.hint li {
+  text-align: left;
+
+}
+p.hint.hint-margin {
+  margin-bottom:  20px;
+}
+p.hint.hint2 {
+   color: #aaa;
+}
+p.hint.hint2:hover {
+  color: grey;
+}
+
+/* ------------------------ */
 div.switch {
     height: initial;
     position: static;
     margin-bottom: 0;
     vertical-align: -10px;
     .switch-paddle {
-      width: 7rem;
+      width: 7.2rem;
+      padding-right: 6px;
     }
     input:checked ~ .switch-paddle::after {
       left: auto;
       right: 0.25rem;
+    }
+    .switch-inactive {
+      right: 10%;
     }
 }
 p#remap {

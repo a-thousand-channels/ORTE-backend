@@ -35,10 +35,10 @@
                   "type": "array",
                   "items": [
                     {
-                      "type": "string"
+                      "type": "number"
                     },
                     {
-                      "type": "string"
+                      "type": "number"
                     }
                   ]
                 }
@@ -54,7 +54,16 @@
                 "name": {
                   "type": "string"
                 },
+                "subtitle": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
                 "address": {
+                  "type": "string"
+                },
+                "zip": {
                   "type": "string"
                 },
                 "city": {

@@ -2,21 +2,25 @@
 
 FactoryBot.define do
   factory :place do
+    uid { 'UID1' }
     title { 'MyTitle' }
+    subtitle { 'MySubTitle' }
     teaser { 'MyText' }
     text { 'MyText' }
     link { 'http://domain.com' }
     startdate { '2018-04-27 19:48:51' }
-    enddate { '2018-04-27 19:48:51' }
-    lat { 'Lat' }
-    lon { 'Lon' }
+    enddate { '2019-04-27 19:48:51' }
+    lat { '0' }
+    lon { '0' }
+    direction { '320' }
     location { 'Location' }
     address { 'Address' }
     zip { 'Zip' }
     city { 'City' }
+    state { 'State' }
     country { 'Country' }
     published { false }
-    ptype { 'info' }
+    imagelink { 'Some link' }
     layer
     trait :published do
       published { true }
@@ -24,6 +28,16 @@ FactoryBot.define do
     trait :date_and_time do
       startdate_date { '2018-04-30' }
       startdate_time { '11:45' }
+      enddate_date { '2022-05-30' }
+      enddate_time { '16:45' }
+    end
+    trait :start_date_and_time do
+      startdate_date { '2018-04-30' }
+      startdate_time { '11:45' }
+    end
+    trait :end_date_and_time do
+      enddate_date { '2022-05-30' }
+      enddate_time { '16:45' }
     end
     trait :invalid do
       title { nil }
@@ -36,11 +50,23 @@ FactoryBot.define do
       published { true }
     end
     trait :with_audio do
-      audio { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')] }
+      after(:build) do |place|
+        place.audio.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.mp3')),
+          filename: 'test.mp3',
+          content_type: 'audio/mpeg'
+        )
+      end
     end
     trait :with_images do
       # deprecated
-      images { [fixture_file_upload(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')] }
+      after(:build) do |place|
+        place.file.attach(
+          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
+          filename: 'test.jpg',
+          content_type: 'image/jpeg'
+        )
+      end
     end
   end
 end

@@ -37,29 +37,6 @@ RSpec.describe PlacesController, type: :controller do
       end
     end
 
-    describe 'GET #show' do
-      it 'returns a success response' do
-        place = Place.create! valid_attributes
-        get :show, params: { id: place.to_param, layer_id: @layer.id, map_id: @map.id }, session: valid_session
-        expect(response).to have_http_status(200)
-      end
-    end
-
-    describe 'GET #show as json' do
-      it 'returns a success reponse' do
-        place = Place.create! valid_attributes
-        get :show, params: { id: place.to_param, layer_id: @layer.id, map_id: @map.id }, session: valid_session, format: 'json'
-        expect(response).to have_http_status(200)
-      end
-
-      it 'returns a placemark w/title' do
-        place = Place.create! valid_attributes
-        get :show, params: { id: place.to_param, layer_id: @layer.id, map_id: @map.id }, session: valid_session, format: 'json'
-        json = JSON.parse(response.body)
-        expect(json['title']).to eq place.title
-      end
-    end
-
     describe 'GET #new' do
       it 'returns a success response' do
         get :new, params: { layer_id: @layer.id, map_id: @map.id }, session: valid_session
@@ -78,6 +55,15 @@ RSpec.describe PlacesController, type: :controller do
         place = Place.create! valid_attributes
         get :edit, params: { id: place.to_param, layer_id: @layer.id, map_id: @map.id, lat: 10, lng: 10 }, session: valid_session
         expect(response).to have_http_status(200)
+      end
+    end
+
+    describe 'GET #clone' do
+      it 'deep clones the admin_page' do
+        @place = FactoryBot.create(:place, layer_id: @layer.id)
+        expect do
+          get :clone, params: { id: @place.to_param, layer_id: @layer.id, map_id: @map.id }, session: valid_session
+        end.to change(Place, :count).by(+1)
       end
     end
 

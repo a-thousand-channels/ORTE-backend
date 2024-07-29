@@ -53,6 +53,7 @@ class ImagesController < ApplicationController
   # PATCH/PUT /images/1
   # PATCH/PUT /images/1.json
   def update
+    params[:image][:preview] = default_checkbox(params[:image][:preview])
     respond_to do |format|
       if @image.update(image_params)
         format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map, @image.place.layer, @image.place), notice: 'Image was successfully updated.' }
@@ -76,14 +77,14 @@ class ImagesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_image
-    @map = Map.by_user(current_user).where(id: params[:map_id]).first
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
     @image = Image.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
   def image_params
-    params.require(:image).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file)
+    params.require(:image).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file, :itype)
   end
 end

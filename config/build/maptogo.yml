@@ -1,0 +1,25 @@
+defaults: &defaults
+  version: 1.0.1
+  commands:
+    - cmd: "pwd"
+      label: "Print working directory"
+    - cmd: "node -v"
+      label: "Show node version"
+    - cmd: "git clone git@github.com:a-thousand-channels/a1000c-map-client.git tmp/CLIENT_PATH"
+      label: "Cloning the web client (from Repository)"
+    - cmd: "cd tmp/CLIENT_PATH && yarn install"
+      label: "Installing sources"
+    - cmd: "mv JSON_FILE tmp/CLIENT_PATH/content/data.json"
+      label: "Adding map/layer data (via JSON)"
+    - cmd: "mv IMAGE_FILE_DIRECTORY tmp/CLIENT_PATH/static/images"
+      label: "Adding images (via static)"
+    - cmd: "cd tmp/CLIENT_PATH && yarn generate"
+      label: "Generating web client"
+development:
+  <<: *defaults
+test:
+  <<: *defaults
+staging:
+  <<: *defaults
+production:
+  <<: *defaults

@@ -1,0 +1,29 @@
+= simple_form_for([@map,@layer,@place]) do |f|
+  .grid-x.grid-padding-x
+    .large-6.medium-3.cell
+      %h1 Clone place
+    .large-6.medium-4.cell
+      &nbsp;
+  .grid-x.grid-padding-x
+    .large-12.cell
+      = f.error_notification
+      - if @place.errors.full_messages.present?
+        %ul.hide
+          = @place.errors.full_messages.each do |item,msg|
+            %li= item
+      %p
+        Place
+        %strong "#{@place.title}"
+        has been cloned from #{@place.layer.map.title}: #{@place.layer.title}:
+      %p
+        Please select a map and a layer!
+      %div#layer_change
+        %div.inline#map_selector
+          = f.input :layer_id, collection: @maps, as: :grouped_select, group_method: :layers, group_label_method: :title, label_method: :title, selected: @place.layer
+
+
+  %hr
+  .grid-x
+    .large-6.medium-6.small-12.cell
+      .form-actions.text-right
+        = f.button :submit, :class => "button"

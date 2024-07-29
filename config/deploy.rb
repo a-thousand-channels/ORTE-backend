@@ -6,7 +6,7 @@ require File.expand_path("./environment", __dir__)
 load File.expand_path('../deploy/tagit.rb', __FILE__)
 require File.expand_path('../deploy/cap_notify', __FILE__)
 
-set :application, "ORTE-backend"
+set :application, Rails.application.credentials.dig(:deploy, :orte, :application)
 set :repo_url, "git@github.com:a-thousand-channels/ORTE-backend.git"
 set :deploy_to, "/home/orte-deploy/#{fetch(:application)}-#{fetch(:stage)}"
 set :ssh_options, forward_agent: true, verify_host_key: :always
@@ -17,11 +17,25 @@ set :bundle_without, [:development]
 # set :bundle_dir,      ''
 # set :bundle_path, nil
 set :bundle_binstubs, nil
-set :notify_emails, ['']
+set :notify_emails, Rails.application.credentials.dig(:notifications, :receiver)
 
-# append :linked_files, "config/secrets.yml"
-set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key')
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "storage"
+# Standalone Passenger
+set :passenger_in_gemfile, true
+set :passenger_restart_with_touch, true
+
+set :passenger_roles, :app
+set :passenger_restart_runner, :sequence
+set :passenger_restart_wait, 5
+set :passenger_restart_limit, 2
+set :passenger_restart_with_sudo, false
+set :passenger_environment_variables, {}
+set :passenger_restart_command, 'passenger-config restart-app'
+set :passenger_restart_options, -> { "#{deploy_to} --ignore-app-not-running" }
+set :rvm_ruby_version, 'ruby-3.2.2'
+set :passenger_rvm_ruby_version, fetch(:rvm_ruby_version)
+
+set :linked_files, fetch(:linked_files, []).push('config/database.yml', 'config/master.key', 'config/settings.yml', 'config/cable.yml', 'Passengerfile.json', 'config/initializers/secure_headers.rb')
+set :linked_dirs, fetch(:linked_dirs, []).push("log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system", "storage")
 
 
 # Default branch is :master
@@ -48,7 +62,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      execute :touch, release_path.join('tmp/restart.txt')
+      # execute :touch, release_path.join('tmp/restart.txt')
     end
   end
   after :publishing,  'deploy:restart'
@@ -95,17 +109,18 @@ namespace :deploy do
   desc 'Backup the remote database'
   task :db_backup do
     on roles(:db) do
-      filename = "pg_#{fetch(:application)}.dump.#{Time.now.to_i}.sql"
+      filename = "#{fetch(:application)}-#{fetch(:rails_env)}.dump.#{Time.now.to_i}.sql"
       dump_dir = "#{shared_path}/dumps"
       file = "#{dump_dir}/#{filename}"
       execute "mkdir -p #{dump_dir}"
-      db = YAML.safe_load(ERB.new(IO.read(File.join(File.dirname(__FILE__), 'database.yml'))).result,[],[],true)[fetch(:rails_env).to_s]
-      execute "PGPASSWORD=#{db['password']} pg_dump -c -U #{db['username']} -h #{db['host']} #{db['database']} > #{file}"
+
+      execute "mysqldump -u #{fetch(:db_user)} --password=#{fetch(:db_password)} #{fetch(:db_name)} > #{file}"
     end
   end
 
-  # before :migrate,    'deploy:db_backup'
-  # after :updating,    'deploy:tagit'
-  # after :publishing,  'deploy:send_notification'
+  before :migrate,    'deploy:db_backup'
+  after :updating,    'deploy:tagit'
+  after :updating,    'passenger:restart'
+  after :publishing,  'deploy:send_notification'
 
 end

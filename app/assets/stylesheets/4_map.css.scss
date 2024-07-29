@@ -1,18 +1,34 @@
 
 /* leaflet overrides */
 #map {
+  background: #454545
+}
+#map.lightmode {
   background: #fefefe;
 }
 #map .leaflet-top {
     top: 40px;
 }
+#map .leaflet-top.leaflet-right {
+  @media screen and (max-width: 39.9375em) {
+    top: unset;
+    right: unset;
+    left: 10px;
+    bottom: 80px;
+    .leaflet-control {
+      float: left;
+    }    
+  }
+
+}
 #map .leaflet-control-layers,
 #map .leaflet-bar {
     border: 0;
     border-radius: 0;
+    background-color: #333;
 
     @media screen and (max-width: 39.9375em) {
-        display: none;
+        /* display: none; */
     }
 }
 #map .leaflet-bottom.leaflet-right .leaflet-bar.leaflet-control {
@@ -24,14 +40,21 @@
 
 #map .leaflet-control-layers-toggle::before {
     content: "*";
-    font-size: 38px;
+    font-size: 30px;
     line-height: 1.2;
     padding-left: 8px;
+
+    font-size: 44px;
+    line-height: 1.3;
+    padding-left: 6px;
+    font-weight: bold;
+    font-family: Helvetica, Arial, sans-serif;    
 }
 #map .leaflet-control-layers-toggle {
     background-image: none;
-    width: 31px;
-    height: 31px;
+    background-color: #333;
+    width: 29px;
+    height: 29px;
 }
 #map .leaflet-control-layers-list label {
   color: darken(#c6c600,10%);
@@ -43,20 +66,34 @@
     color: darken(#c6c600,10%);
 
 }
+.leaflet-bar a, .leaflet-bar a:hover {
+  background-color: #333;
+  border-bottom: 1px solid transparent;
+  margin-bottom: 2px;
+}
 
 #map .leaflet-bar a:first-child,
 #map .leaflet-bar a:last-child
 
  {
     border-radius: 0;
-    background-color: white;
+    background-color: #333;
 }
 
 #map .leaflet-bottom {
     bottom: 43px;
     @media screen and (max-width: 39.9375em) {
-      bottom: 43px;
+      bottom: 50px;
     }
+}
+.leaflet-control-locate.leaflet-bar.leaflet-control {
+  .fi-marker {
+    font-size: 130%;
+    line-height: 1.6;
+  }
+}
+.leaflet-container {
+  font: 12px/1.5 "worksans-light","Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 }
 .leaflet-container .leaflet-control-attribution {
     background: #fff;
@@ -84,20 +121,30 @@
     box-shadow: 0;
     border-radius: 0;
 
+    background: rgba(255, 255, 255,0.9);
+    color: #333;
+    box-shadow: 0 0 10px #888;
+    border-radius: 0;
+
     .leaflet-popup-content {
       margin: 0;
       padding: 0;
+      min-width: 300px;
 
-      h4 {
+      h4, h5 {
         margin: 0.5rem 1rem 0.5rem 0.5rem;
         line-height: 1;
         padding-right: 10px;
+        word-wrap: anywhere;
       }
 
       p {
         margin: 0.5rem 1rem 0.5rem 0.5rem;
         padding-right: 10px;
-        font-size: 9pt;
+        font-size: 11pt;
+        @media screen and (max-width: 39.9375em) {
+          font-size: 9pt;
+        }
         a {
           color: black;
           text-decoration: underline;
@@ -105,14 +152,118 @@
         a:hover {
           text-decoration: underline;
         }
+        a.button, a.button:hover {
+          text-decoration: none;
+        }
       }
       img {
         width: 100%;
         margin-top: 0;
 
       }
+      div.leaflet-popup-content-image {
+        max-height: 450px;
+        overflow: hidden;
+
+        @media screen and (max-height: 49.9375em) {
+          max-height: 250px;
+        }        
+        @media screen and (max-height: 39.9375em) {
+          max-height: 200px;
+        }
+        @media screen and (max-width: 39.9375em) {
+          max-height: 250px;
+        }
+      }
     }
 }
+
+/* ............................. */
+
+.spiderfied-places {
+    filter: saturate(0.8);
+    transition: 0.25s filter;
+}
+.spiderfied-places:hover {
+    filter: saturate(3);
+    transition: 0.5s filter;
+}
+.leaflet-zoom-animated.leaflet-interactiveXX {
+    background-color: rgba(25,25,25,0);
+    border-radius: 23px;
+    padding: 2px;
+    box-shadow: 0 0 5px #333;
+}
+/* another try: colorize the helpingCircles by the Leaflet.MarkerCluster.PlacementStrategies sub-plugin; */
+/*
+.leaflet-marker-icon.leaflet-interactive, .leaflet-image-layer.leaflet-interactive, .leaflet-pane > svg path.leaflet-interactive, svg.leaflet-image-layer.leaflet-interactive path {
+    stroke: red;
+    stroke-width: 60px;
+    opacity: 0.5;
+}
+/* ............................. */
+#map.darken-icons img.leaflet-marker-icon {
+  filter: saturate(200%) drop-shadow(0 0 1px #888);
+}
+#map.darken-icons.gradient-icons img.leaflet-marker-icon {
+  filter: saturate(200%);
+}
+#map.darken-icons .marker-cluster svg path {
+  filter: saturate(200%) drop-shadow(0 0 1px #888) brightness(90%);
+}
+#map.darken-icons .text_inner {
+    color: #333;
+    text-shadow: 0 0 7px #888;
+    background-color: rgba(250,250,250,0.8);
+    max-width: 250px;
+    max-width: none;
+    width: auto;
+    margin-left: 10px;
+    margin-top: -10px;
+    padding-bottom: 4px;    
+}
+#map.darken-icons.darken-label .text_inner {
+  color: #ccc;
+  text-shadow: 0 0 7px #888;
+  background-color: rgba(50,50,50,0.8);   
+}
+.leaflet-marker-icon svg circle {
+  transform: scale(0.9);
+  /* fill: #cc0000; */
+  opacity: 0.55;
+}
+.leaflet-marker-icon svg circle:hover,
+.leaflet-marker-icon:hover svg circle {
+  /* fill: #cc0000; */
+  opacity: 1;
+  transition: all 1s linear;
+  transform: scale(1);
+}
+.leaflet-data-outside-marker.leaflet-marker-icon svg circle {
+  /*  fill: #555; */
+  opacity: 0.85;
+}
+
+.spiderfied-places {
+
+}
+.cluster_expanded {
+   color: #999;
+}
+
+.curve_normalX {
+   stroke-width: 3;
+   opacity: 0.85;
+   /* stroke: rgba(25,25,25,0.1); */
+   transition: all 1s linear;
+}
+.curve_normalX:hover,
+.curve_hover {
+    stroke-width: 7;
+    transition: all 1s linear;
+}
+
+/* ............................. */
 
 /* iconset settings */
 

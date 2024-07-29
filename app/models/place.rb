@@ -12,28 +12,116 @@ class Place < ApplicationRecord
 
   has_one_attached :audio, dependent: :destroy
 
+  has_many :relations_tos, foreign_key: 'relation_to_id',
+                           class_name: 'Relation',
+                           dependent: :destroy
+  has_many :relations_froms, foreign_key: 'relation_from_id',
+                             class_name: 'Relation',
+                             dependent: :destroy
+  accepts_nested_attributes_for :relations_tos, allow_destroy: true
+  accepts_nested_attributes_for :relations_froms, allow_destroy: true
+
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
+  has_many :annotations
+  accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
   validates :title, presence: true
   validate :check_audio_format
+  validates :lat, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid latitude value' }
+  validates :lon, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid longitude value' }
+  validates :lat, presence: true, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }
+  validates :lon, presence: true, numericality: { greater_than_or_equal_to: -180, less_than_or_equal_to: 180 }
+
+  scope :sorted_by_startdate, -> { order(startdate: :asc) }
+  scope :sorted_by_title, -> { order(title: :asc) }
 
   scope :published, -> { where(published: true) }
 
   attr_accessor :startdate_date, :startdate_time, :enddate_date, :enddate_time
+
+  after_initialize :sensitive_location
+  attribute :public_lat
+  attribute :public_lon
 
   before_save do
     if startdate_date.present? && startdate_time.present?
       self.startdate = "#{startdate_date} #{startdate_time}"
     elsif startdate_date.present?
       self.startdate = "#{startdate_date} 00:00:00"
+    # nil from factories, blank from post request
+    elsif startdate_date.nil? || startdate_date.blank?
+      self.startdate = nil
     end
     if enddate_date.present? && enddate_time.present?
       self.enddate = "#{enddate_date} #{enddate_time}"
     elsif enddate_date.present?
       self.enddate = "#{enddate_date} 00:00:00"
+    elsif enddate_date.nil? || startdate_date.blank?
+      self.enddate = nil
     end
+  end
+
+  def title_and_location
+    if !location.blank?
+      "#{title} (#{location})"
+    else
+      title
+    end
+  end
+
+  def title_subtitle_and_location
+    if !location.blank?
+      if !subtitle.blank?
+        "#{title} — #{subtitle} (#{location})"
+      else
+        "#{title} (#{location})"
+      end
+    else
+      title
+    end
+  end
+
+  def sensitive_location
+    if sensitive
+      locs = random_loc(long: read_attribute(:lon), lat: read_attribute(:lat), radius_meters: read_attribute(:sensitive_radius))
+      self.public_lon = locs[0].to_s
+      self.public_lat = locs[1].to_s
+    else
+      self.public_lat = read_attribute(:lat)
+      self.public_lon = read_attribute(:lon)
+    end
+  end
+
+  def random_loc(long:, lat:, radius_meters:)
+    u = SecureRandom.random_number(1.0)
+    v = SecureRandom.random_number(1.0)
+    w = radius_meters / 111_300.0 * Math.sqrt(u)
+    t = 2 * Math::PI * v
+    x = w * Math.cos(t)
+    y = w * Math.sin(t)
+    [x + long.to_f, y + lat.to_f]
+  end
+
+  def layer_id
+    layer.id
+  end
+
+  def layer_title
+    layer.title
+  end
+
+  def layer_slug
+    layer.title.parameterize
+  end
+
+  def layer_type
+    layer.ltype
+  end
+
+  def color
+    layer.color
   end
 
   def date
@@ -48,21 +136,25 @@ class Place < ApplicationRecord
     ApplicationController.helpers.edit_link(layer.map.id, layer.id, id)
   end
 
+  def layer_color
+    layer.color
+  end
+
   def icon_name
-    ApplicationController.helpers.icon_name(icon.title) if icon
+    icon ? ApplicationController.helpers.icon_name(icon.title) : ''
   end
 
   def icon_link
-    ApplicationController.helpers.icon_link(icon.file) if icon&.file&.attached?
+    icon&.file&.attached? ? ApplicationController.helpers.icon_link(icon.file) : ''
   end
 
   def icon_class
-    ApplicationController.helpers.icon_class(icon.iconset.class_name, icon.title) if icon&.iconset&.class_name
+    icon&.iconset&.class_name ? ApplicationController.helpers.icon_class(icon.iconset.class_name, icon.title) : ''
   end
 
   def imagelink2
     i = Image.preview(id)
-    ApplicationController.helpers.image_link(i.first) if i.count.positive?
+    i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 
   def audiolink
@@ -89,6 +181,19 @@ class Place < ApplicationRecord
     "#{full_address}#{c}"
   end
 
+  def annotations_as_text
+    t = ''
+    return unless annotations&.count&.positive?
+
+    annotations.each do |a|
+      t = "#{t}#{a.person.name}:\n" if a.person
+      t = "#{t}#{a.title}\n" if a.title
+      t = "#{t}#{a.text.html_safe}\n"
+      t += "---------------\n"
+    end
+    t.to_s
+  end
+
   def teaser_as_text
     require 'nokogiri'
     Nokogiri::HTML(teaser).text
@@ -100,12 +205,12 @@ class Place < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w[id title teaser_as_text text_as_text startdate enddate lat lon location address zip city country]
-    headers = %w[id title teaser text startdate enddate lat lon location address zip city country]
+    attributes = %w[id title teaser_as_text text_as_text annotations_as_text startdate enddate public_lat public_lon location address zip city country]
+    headers = %w[id title teaser text annotations startdate enddate lat lon location address zip city country]
     CSV.generate(headers: false, force_quotes: false, strip: true) do |csv|
       csv << headers
-      all.each do |user|
-        csv << attributes.map { |attr| user.send(attr) }
+      all.each do |place|
+        csv << attributes.map { |attr| place.send(attr) }
       end
     end
   end

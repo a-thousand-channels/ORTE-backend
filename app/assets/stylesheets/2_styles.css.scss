@@ -19,8 +19,8 @@ main {
   a {
     color: darken(#c6c600,10%);
   }
-
 }
+main.action-bar-padding { margin-top: 100px }
 @media screen and (max-width: 63.9375em) {
   main {
   }
@@ -51,6 +51,19 @@ body#start main {
 
 #layers #table-wrapper {
     max-width: unset;
+    max-width: min-content;
+    min-width: 500px;
+    @media screen and (max-width: 39.9375em) {
+      min-width: 300px;
+    }
+}
+#layers #table-wrapper {
+    min-width: 500px;
+    width: 85vw;
+    max-width:  1000px;
+    @media screen and (max-width: 39.9375em) {
+      min-width: 300px;
+    }
 }
 #layers .grid-x.grid-images {
 
@@ -83,13 +96,19 @@ input#addresslookup_address.hide {
 }
 
 /* -------------------- */
+
+/* --
 #layers main,
 #layers main .grid-x,
 #layers main .cell,
-#layers main #selection {
-  /* avoid 100% width for a nav elements  */
+#layers main #selection
+{
   width: max-content;
+  min-width: 250px;
 }
+-- */
+
+
 
 #selection {
 }
@@ -101,6 +120,11 @@ input#addresslookup_address.hide {
   max-width: 310px;
   display: block;
   font-size: 11pt;
+
+  a {
+    color: #555;
+    text-decoration: underline;
+  }
 }
 @media screen and (max-width: 43.9375em) {
   #selection #selection-hint {
@@ -147,10 +171,12 @@ input#addresslookup_address.hide {
   padding: 10px 20px;
   min-width: 450px;
   max-width: 90%;
+  max-width: 60em;
   @media screen and (max-width: 39.9375em) {
     padding: 10px;
     min-width: none;
-    margin-top: 10px;
+    margin-top: 35px;
+    margin-right: 5px;
     max-width: 97%;
     max-width: unset;
 
@@ -230,14 +256,15 @@ p.close_link_wrapper {
 .text_inner {
     color: white;
     background-color: rgba(200,200,200,0);
-    line-height: 0.6;
-    font-size: 14px;
+    line-height: 1;
+    font-size: 18px;
     font-weight: bold;
     padding: 2px 8px;
     border: none;
     text-shadow: 0 0 7px #333;
     transform: rotate(-45deg);
-    width: 200px;
+    transform-origin: left;
+    width: 250px;
 }
 
 /* image-marker */

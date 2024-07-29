@@ -1,11 +1,15 @@
 Rails.application.routes.draw do
 
+  resources :build_logs
+  resources :annotations
   resources :submission_configs
   devise_for :users
 
   root 'start#index'
 
-  get 'info', to: 'start#info'
+  get 'info',      to: 'start#info'
+  get 'notfound',  to: 'start#notfound'
+
 
   match 'preferences' => 'preferences#edit', :as => :preferences, via: [:get, :patch]
 
@@ -13,22 +17,35 @@ Rails.application.routes.draw do
   post 'report_csp', to: 'application#report_csp'
 
   # settings
-  get   'settings',    to: 'start#settings'
+  get   'settings',  to: 'start#settings'
+
   # profile
   get   'edit_profile',    to: 'start#edit_profile'
   patch 'update_profile',  to: 'start#update_profile'
+
+  # Serve websocket cable requests in-process
+  mount ActionCable.server => '/cable'
 
   resources :iconsets do
     resources :icons, only: [:edit, :destroy, :update]
   end
   resources :maps do
     resources :tags, only: [:index, :show]
+    resources :relations
+    resources :people
     resources :layers do
       collection do
         post :search
       end
       member do
-        get :images, only: [:index]
+        get :pack
+        patch :build
+        get :annotations
+        get :relations
+        get :images
+        get :import
+        post :import_preview
+        post :importing
       end
       resources :places do
         resources :images
@@ -36,6 +53,9 @@ Rails.application.routes.draw do
         member do
           delete :delete_image_attachment
           post :sort
+          get :clone
+          get :edit_clone
+          patch :update_clone
         end
       end
     end
@@ -63,9 +83,11 @@ Rails.application.routes.draw do
   end
 
   namespace :public do
-    resources :maps, only: [:show, :index], :defaults => { :format => :json } do
+    resources :maps, only: [:show, :allplaces, :index], :defaults => { :format => :json } do
       resources :layers, only: [:show], :defaults => { :format => :json }
+      member do
+        get :allplaces
+      end
     end
   end
-
 end

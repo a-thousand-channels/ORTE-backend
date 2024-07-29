@@ -4,52 +4,68 @@ require 'capybara'
 require 'capybara/rspec'
 require 'webdrivers/chromedriver'
 require 'webmock/rspec'
+require 'active_support/testing/time_helpers'
 
 WebMock.disable_net_connect!(allow: [
                                'localhost',
                                '0.0.0.0',
                                '127.0.0.1',
-                               'chromedriver.storage.googleapis.com'
+                               'chromedriver.storage.googleapis.com',
+                               'storage.googleapis.com',
+                               'googlechromelabs.github.io',
+                               'storage.googleapis.com',
+                               'edgedl.me.gvt1.com'
                              ])
-
-Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
+# special setup to make feature tests run on ubuntu 20.4 LTS
+if ENV['UBUNTU']
+  puts 'Running Rspecs on Ubuntu'
+  # Webdrivers.logger.level = :debug
+  # On Ubuntu >= 20 Chrome is installed via snap, so provide the path here
+  ::Selenium::WebDriver::Chrome.path = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
+  # Webdrivers::Chromedriver.required_version = '114.0.5735.90'
+else
+  puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true")'
 end
 
 Capybara.register_driver :headless_chrome do |app|
   options = ::Selenium::WebDriver::Chrome::Options.new
+
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
   options.add_argument('--disable-dev-shm-usage')
   options.add_argument('--window-size=1400,1400')
   options.add_argument('--disable-features=VizDisplayCompositor')
-
+  options.add_argument('--enable-logging') # Enables logging
+  options.add_argument('--log-level=0') # Enables all logging
   Capybara::Selenium::Driver.new app,
                                  browser: :chrome,
-                                 capabilities: options
+                                 options: options
 end
 
-# switch to :chrome for watching the tests in browser
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
-
 Capybara.configure do |config|
-  config.default_max_wait_time = 4 # seconds
+  config.default_max_wait_time = 5 # seconds
   config.default_driver        = :headless_chrome
 end
 
-Capybara::Chromedriver::Logger::TestHooks.for_rspec!
-
 RSpec.configure do |config|
   config.color = true
+  config.warnings = false
+  config.include ActiveSupport::Testing::TimeHelpers
 
   config.include Capybara::DSL
   Capybara.server = :puma, { Silent: true }
   Capybara.javascript_driver = :headless_chrome
   Capybara.server_host = '0.0.0.0' # universal IP
+  # Capybara.asset_host = '0.0.0.0:3000' # will not work in github actions
 
   config.before(:each) do
     stub_request(:get, /server.arcgisonline.com/)
+      .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
+      .to_return(status: 200, body: 'stubbed response', headers: {})
+    stub_request(:get, /api.mapbox.com/)
+      .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
+      .to_return(status: 200, body: 'stubbed response', headers: {})
+    stub_request(:get, /nominatim.openstreetmap.org/)
       .with(headers: { 'Accept' => '*/*', 'User-Agent' => 'Ruby' })
       .to_return(status: 200, body: 'stubbed response', headers: {})
   end

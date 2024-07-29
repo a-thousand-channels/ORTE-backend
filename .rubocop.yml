@@ -1,5 +1,11 @@
 #inherit_from: ../.rubocop.yml
 
+AllCops:
+  NewCops: enable
+
+require: 
+  # - rubocop-rspec
+
 Style/AsciiComments:
   Enabled: false
 
@@ -26,11 +32,12 @@ Metrics/ClassLength:
   Max: 280
 
 Metrics/CyclomaticComplexity:
+  Max: 9
   Exclude:
     - app/helpers/application_helper.rb
-    - app/services/statistic_field_calculator.rb
-    - app/helpers/cases_helper.rb
-    - app/controllers/statistics_controller.rb
+    - app/controllers/layers_controller.rb
+    - app/controllers/maps_controller.rb
+    
 
 Metrics/MethodLength:
   Enabled: false
@@ -53,6 +60,12 @@ Style/ClassAndModuleChildren:
 Style/Documentation:
   Enabled: false
 
+Style/FloatDivision:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either  
+  
 Style/IdenticalConditionalBranches:
   Exclude:
     - app/helpers/application_helper.rb
@@ -70,18 +83,16 @@ Style/RegexpLiteral:
 
 Style/SymbolProc:
   Exclude:
-    - app/services/statistic_field_calculator.rb
 
 Style/ClassVars:
   Exclude:
-    - app/controllers/statistics_controller.rb
 
 AllCops:
   Exclude:
-    - 'bin/**/*'
-    - 'db/**/*'
-    - 'config/**/*'
-    - 'script/**/*'
-    - 'contrib/**/*'
-    - 'app/views/cases/_case.json.jbuilder'
-    - 'scaffolding.rb'
+    - "bin/**/*"
+    - "db/**/*"
+    - "config/**/*"
+    - "script/**/*"
+    - "contrib/**/*"
+    - "scaffolding.rb"
+    - vendor/**/*

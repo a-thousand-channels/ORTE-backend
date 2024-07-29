@@ -5,64 +5,149 @@
   .grid-x
     .large-12.cell
       .form-inputs
-
         .grid-x.grid-padding-x
-          .large-8.medium-6.small-6.cell
+          .large-8.medium-7.small-6.cell
             = f.input :title
             = f.input :subtitle
-          .large-4.medium-6.small-6.cell
-            %h6 Status
-            - if @map && @map.created_at
-              %p
-                Created:
-                = l(@map.created_at)
-                %br
-                Layers:
-                = @map.layers.count
+          .large-4.medium-5.small-6.cell
             %p
-              = f.input :published, :label => 'Publish'
+              = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
         .grid-x.grid-padding-x
           .large-12.medium-12.small-12.cell
             = tinymce
             = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
-        .grid-x.grid-padding-x
-          .large-6.medium-6.small-6.cell
-            %p
-              - if admin?
+        - if admin?
+          %hr
+          .grid-x.grid-padding-x
+            .large-12.cell
+              %label Settings for Admins only
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-6.cell
+              %p
                 = f.association :group, collection: Group.by_user(current_user), include_blank: false
-              - else
-                = f.association :group, as: :hidden, :input_html => {:value => current_user.group.id}
-                %i.fi-torsos-all.fi-21
-                = current_user.group.title
-            %p.shy User group, that has access to this map
-          .large-6.medium-6.small-6.cell
-            %p
-              = f.association :iconset
-            %p.shy
-              Set of icons for this map
-              %i.fi.fi-info{"data-tooltip"=>true, :title=>"You can select one of these iconsets, which will be used to display your places on the map. If none is selected, coloured circles are used as the default icons."}
+              %p.hint User group, that has access to edit this map and its layers
+              %p
+                = f.input :preview_url, input_html: { placeholder: 'https://' }
+              %p.hint URL to a frontend app for live preview.
+              %p.hint The app should understand the JSON from this backend. Its URL will be provided as a POST param (?layer=)
+            .large-6.medium-6.small-12.cell
+              %p
+                = f.input :enable_privacy_features, :input_html => { :class => '' }, label: 'Enable privacy features'
+              %p.hint This option allows the privacy features to be activated (but this does not activate them)
+              %p
+                = f.input :enable_map_to_go, :input_html => { :class => '' }, label: 'Enable the Map to go feature'
+              %p.hint This option enables that a user can use the Map to go function and the live preview
+              %p
+                = f.input :enable_time_slider, :input_html => { :class => '' }, label: 'Enable a Timeslider (NEW)'
+              %p.hint This option enables a timeslider on the map. Please consider that only places with a date will be displayed on this timeslider!
+
+        - else
+          %i.fi-torsos-all.fi-21
+            = current_user.group.title
+          = f.association :group, as: :hidden, :input_html => {:value => current_user.group.id}
         %hr
         .grid-x.grid-padding-x
-          .large-6.medium-6.small-12.cell
-
+          .large-4.medium-4.small-6.cell
             %p
+              = f.input :popup_display_mode, :collection => popup_display_mode_for_select, :input_html => { :class => '' }, label: 'Popup display mode'
+            %p.hint
+              Choose, which event triggers the display of the popup of a place. (Click is default)
+            %p
+              = f.input :marker_display_mode, :collection => marker_display_mode_for_select, :input_html => { :class => '' }, label: 'Marker display mode'
+            %p.hint
+              Choose, if near-by or overlapping markers should displayed as a marker cluster (default) or as single markers. NEW: You can choose also a colorized version of marker cluster :)
+
+          .large-4.medium-4.small-6.cell
+            %p
+              = f.association :iconset
+            %p.hint
+              Select a predefined set of icons for this map
+              %i.fi.fi-info{"data-tooltip"=>true, :title=>"You can select one of these iconsets, which will be used to display your places on the map. If none is selected, coloured circles are used as the default icons."}
+          .large-4.medium-4.small-12.cell
+            %p
+              = f.input :show_annotations_on_map, :input_html => { :class => '' }, label: 'Show annotations'
+            %p.hint
+              Annotations are additional texts added to a place, like a quote, describing the place.
+
+        %hr
+        %div.compact
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell
+              %label Default basemap
+              %p.shy
+                Please select one of the predefined basemaps as new default
+              %select#basemaps
+                %option{value: '', "data-url": '', "data-backgroundcolor": '', "data-attribution": '' }
+                - basemaps.each_value do |b|
+                  %option{value: b['id'], "data-url": b['url'], "data-backgroundcolor": b['backgroundcolor'], "data-attribution": b['attribution'] }
+                    = b['title']
+        %hr
+        .grid-x.grid-padding-x
+          .large-12.medium-12.small-12.cell
+            %label Add a basemap as default 
+            %p  
               = f.input :basemap_url, :input_html => {:placeholder => 'https://server/directory/{z}/{y}/{x}'}
-            %p.shy
-              URL for an alternative basemap
+            %p.hint
+              URL for a custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Default are Esri satellite images. Here you can efine a basemap for this map. It must have the following syntax: 'https://server/directory/{z}/{y}/{x}"}
-          .large-6.medium-6.small-12.cell
             %p
               = f.input :basemap_attribution, :input_html => {:placeholder => ''}
-            %p.shy
-              Attribution for this basemap
+            %p.hint
+              Attribution for the custom basemap
               %i.fi.fi-info{"data-tooltip"=>true, :title=>"Basemap are made by someone, you should credit them here. Licences of most providers like Openstreetmap require to mention them properly."}
+        %hr
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell         
+              %label Special: Enable historical maps of Hamburg
+              %p
+                = f.input :enable_historical_maps
+        %hr
+        .grid-x.grid-padding-x
+          .medium-12.small-12.cell
+            %p
+              %label Background color
+            .grid-x.grid-padding-x
+              .medium-2.cell
+                %p.shy Pick a color:
+                .grid-x
+                  .medium-5.cell
+                    %input{type: "color", id: "background_color_preselector", value: @map.background_color}
+              .medium-5.cell
+                %p.shy Or paste a color definition:
+                = f.input :background_color, value: @map.background_color, label: false
+                %p.hint
+                  Color in HEX, RGB or a gradient definition :)
+                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"Here you can define a fullcolor in HEX or RGB format, or a gradient definition, all according to the CSS definitions of 'background-color'"}
+              .medium-5.cell
+                %p
+                  %label Preview
+                  %div#background_color_preview{style: "background: #{@map.background_color}" }
+                    &nbsp;
 
+                %p.hint
+                  The background of the map will be filled with this color.
+                  %i.fi.fi-info{"data-tooltip"=>true, :title=>"Most basemap layers (tile layer) will cover the background, so this background color will only be visible while loading and in cases of errors. Exception: The 3plusx tiles don't have a background, so this background color will be visible."}
+
+        %hr
+        .grid-x.grid-padding-x
+          .large-6.medium-10.cell#mapcenter
+            %h5 Default map center
+            %p.hint.text-left Set these geocoordinates if you want a to override the automatic map center (calculated by the extent of all places of this map and its layers)
+          .large-6.medium-2.cell
+            \&nbsp;
+        .grid-x.grid-padding-x
+          .medium-5.cell
+            = f.input :mapcenter_lat, label: "Latitude", input_html: { placeholder: '53.0000'}
+          .medium-5.cell
+            = f.input :mapcenter_lon, label: "Longitude", input_html: { placeholder: '10.0000'}
+          .medium-2.cell
+            = f.input :zoom, label: "Zoom", input_html: { placeholder: '12'}
+            %p.hint 1-18
         - if admin? && params[:action] == 'edit'
           %hr
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
-
-              %p
+              %h5
                 Map extend
               .grid-x.grid-padding-x
                 .large-6.medium-6.small-6.cell

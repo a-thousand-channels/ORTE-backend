@@ -5,18 +5,19 @@
     %meta{ name: 'robots', content: 'noindex, nofollow' }
     %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
 
-    - title = content_for?(:title) ? "#{yield(:title)} — #{Settings.app_name}" : "#{Settings.app_name}"
+    - title = content_for?(:title) ? "#{yield(:title)} — #{Rails.application.config_for(:settings).app_name}" : "#{Rails.application.config_for(:settings).app_name}"
     %title= title
 
     %meta{property:"og:type", content:"website"}
     %meta{property:"og:title", content:"#{title}"}
-    %meta{property:"og:description", content:"#{Settings.app_tagline}"}
-    %meta{property:"og:image", content:"#{Settings.app_url}#{asset_path('apple-touch-icon.png')}"}
+    %meta{property:"og:description", content:"#{Rails.application.config_for(:settings).app_tagline}"}
+    %meta{property:"og:image", content:"#{Rails.application.config_for(:settings).app_url}#{asset_path('apple-touch-icon.png')}"}
 
 
     = stylesheet_link_tag "application"
     = javascript_include_tag "application", "data-turbolinks-track" => true
     = csrf_meta_tag
+    = action_cable_meta_tag
 
     = favicon_link_tag asset_path('apple-touch-icon.png'), rel: 'apple-touch-icon', type: 'image/png', sizes: '180x180'
     = favicon_link_tag asset_path('favicon-32x32.png'), rel: 'icon', type: 'image/png', sizes: '32x32'
@@ -27,18 +28,18 @@
     %meta{name: 'msapplication-config', content: '/assets/favicon/browserconfig.xml'}
     %meta{name: 'theme-color', content: '#ffffff' }
 
-
-
   - klass = "lang-" + I18n.locale.to_s
   - if current_user
-    - klass = klass + " logged_in "
-  - if Rails.env == 'staging' || Rails.env == 'developement'
-    - klass = klass + "#{Rails.env.parameterize}"
+    - klass = klass + " logged_in"
+  - if Rails.env == 'staging' || Rails.env == 'development'
+    - klass = klass + " #{Rails.env.parameterize}"
   - id = ''
   - if controller_name
     - id = "#{controller_name.parameterize}"
+  - if params[:action]
+    - klass = klass + " #{params[:action]}"
 
-  %body{:id=>"#{id}", :class=>"#{klass}"}
+  %body{:id=>"#{id}", :class=>"#{klass}", "data-app-shortname"=>"#{Rails.application.config_for(:settings).app_shortname}"}
     %header
       = render 'layouts/navigation'
 
@@ -46,34 +47,40 @@
       &nbsp;
     %main{role: "main"}
       .grid-x
-        .cell.medium-12
+        .cell.medium-12#flash_wrapper
           = render 'layouts/messages'
       .grid-x
-        .cell.medium-12
+        .cell.medium-12#nav_wrapper
           = yield
     %footer.footer
       .grid-x
-        .cell.large-8.medium-8.small-6
+        .cell.large-6.medium-6.small-12
           = render partial: "layouts/version"
           = render partial: "layouts/credits"
-        .cell.large-4.medium-4.small-6.text-right
+          - if user_signed_in?
+            %span.show-for-small-only
+              &nbsp;
+              %a{:href => settings_path, :title => 'Your Settings'}
+                %i.fi-widget.fi-18
+
+
+        .cell.large-6.medium-6.small-12.text-right
           - if controller_name == 'layers' && params[:action] == 'show' && @map && @layer
-            Export:
+            %span.show-for-medium
+              Export:
             = link_to map_layer_path(@map,@layer,:format => :csv), :title => "Export this layer as CSV", class: 'small' do
               CSV
             \::
             = link_to public_map_layer_path(@map,@layer,:format => :json ), :title => "Export this layer as JSON", class: 'small' do
               JSON
             \::
+            = link_to public_map_layer_path(@map,@layer,:format => :zip), :title => "Export this layer as ZIP archive (JSON & images)", class: 'small' do
+              JSON & Images
+            \::
             = link_to public_map_layer_path(@map,@layer,:format => :geojson ), :title => "Export this layer as GeoJSON", class: 'small' do
               GeoJSON
           - if controller_name == 'maps' && params[:action] == 'show' && @map
+            Export map:
             = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON", class: 'small' do
-              Public JSON
-          &nbsp;|&nbsp;
-          - if user_signed_in?
-            %span.show-for-small-only
-              %a{:href => settings_path, :title => 'Your Settings'}
-                %i.fi-widget.fi-21
-
+              JSON
 

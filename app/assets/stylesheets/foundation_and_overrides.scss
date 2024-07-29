@@ -35,10 +35,10 @@
 @include foundation-label;
 @include foundation-media-object;
 // @include foundation-off-canvas;
-// @include foundation-orbit;
+@include foundation-orbit;
 // @include foundation-pagination;
 // @include foundation-progress-bar;
-// @include foundation-slider;
+@include foundation-slider;
 @include foundation-sticky;
 @include foundation-reveal;
 @include foundation-switch;
@@ -55,3 +55,13 @@
 //
 @include motion-ui-transitions;
 @include motion-ui-animations;
+
+
+$primary-color: null;
+$secondary-color: null;
+$success-color: null;
+$warning-color: null;
+$alert-color: null;
+$-zf-size: null;
+$-zf-bp-value: null;
+

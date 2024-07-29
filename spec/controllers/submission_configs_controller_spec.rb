@@ -92,7 +92,7 @@ RSpec.describe SubmissionConfigsController, type: :controller do
 
         it 'redirects to the related map' do
           post :create, params: { submission_config: valid_attributes, layer_id: @layer.id }, session: valid_session
-          expect(response).to redirect_to(edit_map_layer_url(@layer.map.id,@layer.id))
+          expect(response).to redirect_to(edit_map_layer_url(@layer.map.id, @layer.id))
         end
       end
 
@@ -123,7 +123,7 @@ RSpec.describe SubmissionConfigsController, type: :controller do
         it 'redirects to the submission_config' do
           submission_config = SubmissionConfig.create! valid_attributes
           put :update, params: { id: submission_config.to_param, submission_config: valid_attributes, layer_id: @layer.friendly_id }, session: valid_session
-          expect(response).to redirect_to(edit_map_layer_url(@layer.map.id,@layer.id))
+          expect(response).to redirect_to(edit_map_layer_url(@layer.map.id, @layer.id))
         end
       end
 

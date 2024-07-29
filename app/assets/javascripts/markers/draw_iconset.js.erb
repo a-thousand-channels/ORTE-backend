@@ -1,4 +1,4 @@
-function DrawIconset(map,layer_id,marker_layers,params,iconset,places) {
+function drawIconset(map,layer_id,marker_layers,params,iconset,places) {
     var c = 0;
     console.log("places: "+places.length);
 
@@ -91,12 +91,12 @@ function DrawIconset(map,layer_id,marker_layers,params,iconset,places) {
         if ( $('#addresslookup_address').hasClass('hide') ) {
           // ShowLookUpField();
         } else {
-          ClearLookUpField();
+          clearLookUpField();
         }
       });
       c++;
     });
-    console.log(c+" Marker added to map!");
+    // console.log(c+" Marker added to map!");
 
     // thanks to https://github.com/louh - Allow for offset on center of map
     L.Map.prototype.panToOffset = function (latlng, offset, options) {

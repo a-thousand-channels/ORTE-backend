@@ -1,0 +1,15 @@
+/*global jQuery, window, L */
+
+jQuery(function ($) {
+    'use strict';
+    $('#image_itype').on('change', function () {
+        console.log(this.value);
+        if (this.value === 'graphics') {
+            $('.show_for_itype_graphics').removeClass('hide');
+            $('.show_for_itype_image').addClass('hide');
+        } else {
+            $('.show_for_itype_image').removeClass('hide');
+            $('.show_for_itype_graphics').addClass('hide');
+        }
+    });
+});

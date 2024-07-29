@@ -12,19 +12,20 @@
             %i.fi-eye
           = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "button button-right button-edit tiny", title: 'Edit/change image'  do
             %i.fi-pencil
-
-        - if img.file.attached?
+        - if img.file.attached? && ActiveStorage::Blob.service.exist?(img.file.blob.key)
+          - klass = 'thumbnail'
           - if img.preview.present?
-            = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail thumbnail-preview" do
-              = image_tag url_for(img.file)
-          - else
-            = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
-              = image_tag url_for(img.file)
+            - klass = 'thumbnail thumbnail-preview'
+          = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "#{klass}" do
+            - if img.place.layer.rasterize_images  && img.itype == 'image'
+              = image_tag img.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
+            - else
+              = image_tag img.variant(resize: "400x400").processed
         - else
           = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "thumbnail" do
             %p
-              Oups, image file is missing.
+              Oups, image file is missing!
               %br
-              Please click here and upload an image file.
+              Please click here to upload a new file.
         %small
           = img.title      

@@ -1,8 +1,8 @@
 defaults: &defaults
   app_name:          "ORTE Backend"
   app_shortname:     "ORTE"
-  app_tagline:       "Putting places (and events) on a map"
-  app_version:       0.5
+  app_tagline:       "Putting places (and events) on a map!"
+  app_version:       '0.72'
   app_credits:       ""
   app_host:          "127.0.0.1:3000"
   app_host_protocol: 'http'
@@ -24,21 +24,18 @@ development:
 test:
   <<: *defaults
 
-localtest:
-  <<: *defaults
-
 staging:
   <<: *defaults
-  app_host:          'staging.orte.link'
+  app_host:          'staging.example.com'
   app_host_protocol: 'https'
-  app_url:           'https://staging.orte.link'
+  app_url:           'https://staging.example.com'
   relative_url_root:  ""
   secure:             'true'
 
 production:
   <<: *defaults
-  app_host:          'orte.link'
+  app_host:          'www.example.com'
   app_host_protocol: 'https'
-  app_url:           'https://orte.link'
+  app_url:           'https://www.example.com'
   relative_url_root:  ""
   secure:             'true'

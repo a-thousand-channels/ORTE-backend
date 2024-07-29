@@ -1,528 +1,811 @@
 {
-  "definitions": {},
-  "type": "object",
-  "title": "The Root Schema",
-  "required": [
-    "map"
-  ],
-  "properties": {
-    "map": {
-      "$id": "#/properties/map",
-      "type": "object",
-      "title": "The Map Schema",
-      "required": [
-        "id",
-        "title",
-        "text",
-        "created_at",
-        "updated_at",
-        "published",
-        "owner",
-        "layer"
-      ],
-      "properties": {
-        "id": {
-          "$id": "#/properties/map/properties/id",
-          "type": "integer",
-          "title": "The Id Schema",
-          "default": 0,
-          "examples": [
-            2
-          ]
-        },
-        "title": {
-          "$id": "#/properties/map/properties/title",
-          "type": "string",
-          "title": "The Title Schema",
-          "default": "",
-          "examples": [
-            "Treffen Total 2018"
-          ],
-          "pattern": "^(.*)$"
-        },
-        "text": {
-          "$id": "#/properties/map/properties/text",
-          "type": "string",
-          "title": "The Text Schema",
-          "default": "",
-          "examples": [
-            ""
-          ],
-          "pattern": "^(.*)$"
-        },
-        "created_at": {
-          "$id": "#/properties/map/properties/created_at",
-          "type": "string",
-          "title": "The Created_at Schema",
-          "default": "",
-          "examples": [
-            "2018-05-08T12:01:56.192Z"
-          ],
-          "pattern": "^(.*)$"
-        },
-        "updated_at": {
-          "$id": "#/properties/map/properties/updated_at",
-          "type": "string",
-          "title": "The Updated_at Schema",
-          "default": "",
-          "examples": [
-            "2018-06-09T17:45:05.990Z"
-          ],
-          "pattern": "^(.*)$"
-        },
-        "published": {
-          "$id": "#/properties/map/properties/published",
-          "type": "boolean",
-          "title": "The Published Schema",
-          "default": false,
-          "examples": [
-            true
-          ]
-        },
-        "owner": {
-          "$id": "#/properties/map/properties/owner",
-          "type": "string",
-          "title": "The Owner Schema",
-          "default": "",
-          "examples": [
-            "Treffen Total"
-          ],
-          "pattern": "^(.*)$"
-        },
-        "layer": {
-          "$id": "#/properties/map/properties/layer",
-          "type": "array",
-          "title": "The Layer Schema",
-          "items": {
-            "$id": "#/properties/map/properties/layer/items",
-            "type": "object",
-            "title": "The Items Schema",
-            "required": [
-              "id",
-              "title",
-              "text",
-              "created_at",
-              "updated_at",
-              "published",
-              "places"
-            ],
-            "properties": {
-              "id": {
-                "$id": "#/properties/map/properties/layer/items/properties/id",
-                "type": "integer",
-                "title": "The Id Schema",
-                "default": 0,
-                "examples": [
-                  3
-                ]
-              },
-              "title": {
-                "$id": "#/properties/map/properties/layer/items/properties/title",
-                "type": "string",
-                "title": "The Title Schema",
-                "default": "",
-                "examples": [
+   "definitions":{
+
+   },
+   "type":"object",
+   "title":"The Root Schema",
+   "required":[
+      "map"
+   ],
+   "properties":{
+      "map":{
+         "$id":"#/properties/map",
+         "type":"object",
+         "title":"The Map Schema",
+         "required":[
+            "id",
+            "title",
+            "subtitle",
+            "text",
+            "credits",
+            "image_link",
+            "created_at",
+            "updated_at",
+            "published",
+            "owner",
+            "layer"
+         ],
+         "properties":{
+            "id":{
+               "$id":"#/properties/map/properties/id",
+               "type":"integer",
+               "title":"The Id Schema",
+               "default":0,
+               "examples":[
+                  2
+               ]
+            },
+            "title":{
+               "$id":"#/properties/map/properties/title",
+               "type":"string",
+               "title":"The Title Schema",
+               "default":"",
+               "examples":[
+                  "Treffen Total 2018"
+               ],
+               "pattern":"^(.*)$"
+            },
+            "subtitle":{
+               "$id":"#/properties/map/properties/subtitle",
+               "type":"string",
+               "title":"The Subtitle Schema",
+               "default":"",
+               "examples":[
                   "Events in public space"
-                ],
-                "pattern": "^(.*)$"
-              },
-              "text": {
-                "$id": "#/properties/map/properties/layer/items/properties/text",
-                "type": "string",
-                "title": "The Text Schema",
-                "default": "",
-                "examples": [
-                  ""
-                ],
-                "pattern": "^(.*)$"
-              },
-              "created_at": {
-                "$id": "#/properties/map/properties/layer/items/properties/created_at",
-                "type": "string",
-                "title": "The Created_at Schema",
-                "default": "",
-                "examples": [
-                  "2018-05-08T12:02:18.823Z"
-                ],
-                "pattern": "^(.*)$"
-              },
-              "updated_at": {
-                "$id": "#/properties/map/properties/layer/items/properties/updated_at",
-                "type": "string",
-                "title": "The Updated_at Schema",
-                "default": "",
-                "examples": [
-                  "2018-05-08T12:02:18.823Z"
-                ],
-                "pattern": "^(.*)$"
-              },
-              "published": {
-                "$id": "#/properties/map/properties/layer/items/properties/published",
-                "type": "boolean",
-                "title": "The Published Schema",
-                "default": false,
-                "examples": [
+               ],
+               "pattern":"^(.*)$"
+            },
+            "text":{
+               "$id":"#/properties/map/properties/text",
+               "type":"string",
+               "title":"The Text Schema",
+               "default":"",
+               "examples":[
+                  "Some text in 1 or more phrases"
+               ],
+               "pattern":"^(.*)$"
+            },
+            "credits":{
+               "$id":"#/properties/map/properties/credits",
+               "type":"string",
+               "title":"The Credits Schema",
+               "default":"",
+               "examples":[
+                  "Some credits"
+               ],
+               "pattern":"^(.*)$"
+            },
+            "image_link":{
+               "$id":"#/properties/map/properties/image_link",
+               "pattern":"^(.*)$",
+               "type":"null",
+               "title":"The Imagelink Schema",
+               "default":null,
+               "examples":[
+                  null
+               ]
+            },
+            "created_at":{
+               "$id":"#/properties/map/properties/created_at",
+               "type":"string",
+               "title":"The Created_at Schema",
+               "default":"",
+               "examples":[
+                  "2018-05-08T12:01:56.192Z"
+               ],
+               "pattern":"^(.*)$"
+            },
+            "updated_at":{
+               "$id":"#/properties/map/properties/updated_at",
+               "type":"string",
+               "title":"The Updated_at Schema",
+               "default":"",
+               "examples":[
+                  "2018-06-09T17:45:05.990Z"
+               ],
+               "pattern":"^(.*)$"
+            },
+            "published":{
+               "$id":"#/properties/map/properties/published",
+               "type":"boolean",
+               "title":"The Published Schema",
+               "default":false,
+               "examples":[
                   true
-                ]
-              },
-              "places": {
-                "$id": "#/properties/map/properties/layer/items/properties/places",
-                "type": "array",
-                "title": "The Places Schema",
-                "items": {
-                  "$id": "#/properties/map/properties/layer/items/properties/places/items",
-                  "type": "object",
-                  "title": "The Items Schema",
-                  "required": [
-                    "id",
-                    "title",
-                    "teaser",
-                    "link",
-                    "imagelink",
-                    "imagelink2",
-                    "audiolink",
-                    "published",
-                    "startdate",
-                    "enddate",
-                    "lat",
-                    "lon",
-                    "location",
-                    "address",
-                    "zip",
-                    "city",
-                    "country",
-                    "featured",
-                    "layer_id"
+               ]
+            },
+            "owner":{
+               "$id":"#/properties/map/properties/owner",
+               "type":"string",
+               "title":"The Owner Schema",
+               "default":"",
+               "examples":[
+                  "Treffen Total"
+               ],
+               "pattern":"^(.*)$"
+            },
+            "layer":{
+               "$id":"#/properties/map/properties/layer",
+               "type":"array",
+               "title":"The Layer Schema",
+               "items":{
+                  "$id":"#/properties/map/properties/layer/items",
+                  "type":"object",
+                  "title":"The Items Schema",
+                  "required":[
+                     "id",
+                     "title",
+                     "created_at",
+                     "updated_at",
+                     "published",
+                     "places"
                   ],
-                  "properties": {
-                    "id": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/id",
-                      "type": "integer",
-                      "title": "The Id Schema",
-                      "default": 0,
-                      "examples": [
-                        4
-                      ]
-                    },
-                    "title": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/title",
-                      "type": "string",
-                      "title": "The Title Schema",
-                      "default": "",
-                      "examples": [
-                        "Session am Deich"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "teaser": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/teaser",
-                      "type": "string",
-                      "title": "The Teaser Schema",
-                      "default": "",
-                      "examples": [
-                        ""
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "text": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/text",
-                      "type": "string",
-                      "title": "The Text Schema",
-                      "default": "",
-                      "examples": [
-                        ""
-                      ]
-                    },
-                    "link": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/link",
-                      "type": "string",
-                      "title": "The Link Schema",
-                      "default": "",
-                      "examples": [
-                        ""
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "imagelink": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/imagelink",
-                      "type": "null",
-                      "title": "The Imagelink Schema",
-                      "default": null,
-                      "examples": [
-                        null
-                      ]
-                    },
-                    "imagelink2": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/imagelink2",
-                      "type": "null",
-                      "title": "The Imagelink Schema",
-                      "default": null,
-                      "examples": [
-                        null
-                      ]
-                    },
-                    "audiolink": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/audiolink",
-                      "type": "null",
-                      "title": "The Audiolink Schema",
-                      "default": null,
-                      "examples": [
-                        null
-                      ]
-                    },
-                    "published": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/published",
-                      "type": "boolean",
-                      "title": "The Published Schema",
-                      "default": false,
-                      "examples": [
-                        true
-                      ]
-                    },
-                    "startdate": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/startdate",
-                      "type": "string",
-                      "title": "The Startdate Schema",
-                      "default": "",
-                      "examples": [
-                        "2018-05-18T17:57:00.000Z"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "enddate": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/enddate",
-                      "type": "string",
-                      "title": "The Enddate Schema",
-                      "default": "",
-                      "examples": [
-                        "2018-05-18T17:57:00.000Z"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "lat": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/lat",
-                      "type": "string",
-                      "title": "The Lat Schema",
-                      "default": "",
-                      "examples": [
-                        "53.532969"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "lon": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/lon",
-                      "type": "string",
-                      "title": "The Lon Schema",
-                      "default": "",
-                      "examples": [
-                        "10.0367449"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "location": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/location",
-                      "type": "string",
-                      "title": "The Location Schema",
-                      "default": "",
-                      "examples": [
-                        "Billwerder Neuer Deich"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "address": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/address",
-                      "type": "string",
-                      "title": "The Address Schema",
-                      "default": "",
-                      "examples": [
-                        "Billwerder Neuer Deich undefined"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "zip": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/zip",
-                      "type": "string",
-                      "title": "The Zip Schema",
-                      "default": "",
-                      "examples": [
-                        "20539"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "city": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/city",
-                      "type": "string",
-                      "title": "The City Schema",
-                      "default": "",
-                      "examples": [
-                        "Hamburg"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "country": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/country",
-                      "type": "string",
-                      "title": "The Country Schema",
-                      "default": "",
-                      "examples": [
-                        ""
-                      ]
-                    },
-                    "featured": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/featured",
-                      "type": "null",
-                      "title": "The Featured Schema",
-                      "default": false,
-                      "examples": [
-                        true
-                      ]
-                    },
-                    "layer_id": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/layer_id",
-                      "type": "integer",
-                      "title": "The Layer_id Schema",
-                      "default": 0,
-                      "examples": [
-                        3
-                      ]
-                    },
-                    "icon_link": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/icon_link",
-                      "type": "null",
-                      "title": "The Icon Link Schema",
-                      "default": "",
-                      "examples": [
-                        "http://test.domain/path/to/the/icon/file.png"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "icon_class": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/icon_class",
-                      "type": "null",
-                      "title": "The Icon Class Schema",
-                      "default": "",
-                      "examples": [
-                        "marker-klass"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "icon_name": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/icon_name",
-                      "type": "null",
-                      "title": "The Icon Name Schema",
-                      "default": "",
-                      "examples": [
-                        "Name"
-                      ],
-                      "pattern": "^(.*)$"
-                    },
-                    "images": {
-                      "$id": "#/properties/map/properties/layer/items/properties/places/properties/images",
-                      "type": "array",
-                      "title": "The Images Schema",
-                      "items": {
-                        "$id": "#/properties/map/properties/layer/items/properties/places/items/images/otem",
-                        "type": "object",
-                        "title": "The Items Schema",
-                        "required": [
-                          "id",
-                          "title",
-                          "source",
-                          "creator",
-                          "alt",
-                          "sorting",
-                          "image_linktag",
-                          "image_url"
+                  "properties":{
+                     "id":{
+                        "$id":"#/properties/map/properties/layer/items/properties/id",
+                        "type":"integer",
+                        "title":"The Id Schema",
+                        "default":0,
+                        "examples":[
+                           3
+                        ]
+                     },                   
+                     "title":{
+                        "$id":"#/properties/map/properties/layer/items/properties/title",
+                        "type":"string",
+                        "title":"The Title Schema",
+                        "default":"",
+                        "examples":[
+                           "Events in public space"
                         ],
-                        "properties": {
-                          "id": {
-                            "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/id",
-                            "type": "integer",
-                            "title": "The Id Schema",
-                            "default": 0,
-                            "examples": [
-                              4
-                            ]
-                          },
-                          "title": {
-                            "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/title",
-                            "type": "string",
-                            "title": "The Title Schema",
-                            "default": "",
-                            "examples": [
-                              "Session am Deich"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "source": {
-                            "$id": "#/properties/source/properties/layer/items/properties/places/items/properties/title",
-                            "type": "string",
-                            "title": "The Source Schema",
-                            "default": "",
-                            "examples": [
-                              "The projects archive"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "creator": {
-                            "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/creator",
-                            "type": "string",
-                            "title": "The Creator Schema",
-                            "default": "",
-                            "examples": [
-                              "Photographer"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "alt": {
-                            "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/alt",
-                            "type": "string",
-                            "title": "The Alt Schema",
-                            "default": "",
-                            "examples": [
-                              "Some people at the session"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "sorting": {
-                            "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/sorting",
-                            "type": "string",
-                            "title": "The Sorting Schema",
-                            "default": "",
-                            "examples": [
-                              "5"
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "image_linktag": {
-                            "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/image_linktag",
-                            "type": "string",
-                            "title": "The Image Linktag Schema",
-                            "default": "",
-                            "examples": [
-                              ""
-                            ],
-                            "pattern": "^(.*)$"
-                          },
-                          "image_url": {
-                            "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/image_url",
-                            "type": "null",
-                            "title": "The Image URL Schema",
-                            "default": null,
-                            "examples": [
-                              null
-                            ]
-                          }
+                        "pattern":"^(.*)$"
+                     },
+                     "subtitle":{
+                        "$id":"#/properties/map/properties/layer/items/properties/subtitle",
+                        "type":"string",
+                        "title":"The Subtitle Schema",
+                        "default":"",
+                        "examples":[
+                           "Events in public space"
+                        ],
+                        "pattern":"^(.*)$"
+                     },
+                     "teaser":{
+                        "$id":"#/properties/map/properties/layer/items/properties/teaser",
+                        "type":"string",
+                        "title":"The Teaser Schema",
+                        "default":"",
+                        "examples":[
+                           ""
+                        ],
+                        "pattern":"^(.*)$"
+                     },
+                     "text":{
+                        "$id":"#/properties/map/properties/layer/items/properties/text",
+                        "type":"string",
+                        "title":"The Text Schema",
+                        "default":"Some tex in 1 or more phrases",
+                        "examples":[
+                           ""
+                        ],
+                        "pattern":"^(.*)$"
+                     },
+                     "credits":{
+                        "$id":"#/properties/map/properties/layer/items/properties/credits",
+                        "type":"string",
+                        "title":"The Credits Schema",
+                        "default":"",
+                        "examples":[
+                           "Some credits"
+                        ],
+                        "pattern":"^(.*)$"
+                     },
+                     "image_link":{
+                        "$id":"#/properties/map/properties/layer/items/properties/image_link",
+                        "pattern":"^(.*)$",
+                        "type":"null",
+                        "title":"The Imagelink Schema",
+                        "default":null,
+                        "examples":[
+                           null
+                        ]
+                     },
+                    "color": {
+                      "$id": "#/properties/map/properties/layer/items/properties/color",
+                      "type": "string",
+                      "title": "The Color Schema",
+                      "default": "",
+                      "examples": [
+                        ""
+                      ],
+                      "pattern": "^(.*)$"
+                    },
+                     "created_at":{
+                        "$id":"#/properties/map/properties/layer/items/properties/created_at",
+                        "type":"string",
+                        "title":"The Created_at Schema",
+                        "default":"",
+                        "examples":[
+                           "2018-05-08T12:02:18.823Z"
+                        ],
+                        "pattern":"^(.*)$"
+                     },
+                     "updated_at":{
+                        "$id":"#/properties/map/properties/layer/items/properties/updated_at",
+                        "type":"string",
+                        "title":"The Updated_at Schema",
+                        "default":"",
+                        "examples":[
+                           "2018-05-08T12:02:18.823Z"
+                        ],
+                        "pattern":"^(.*)$"
+                     },
+                     "published":{
+                        "$id":"#/properties/map/properties/layer/items/properties/published",
+                        "type":"boolean",
+                        "title":"The Published Schema",
+                        "default":false,
+                        "examples":[
+                           true
+                        ]
+                     },
+                     "places":{
+                        "$id":"#/properties/map/properties/layer/items/properties/places",
+                        "type":"array",
+                        "title":"The Places Schema",
+                        "items":{
+                           "$id":"#/properties/map/properties/layer/items/properties/places/items",
+                           "type":"object",
+                           "title":"The Items Schema",
+                           "required":[
+                              "id",
+                              "uid",
+                              "title",
+                              "subtitle",
+                              "teaser",
+                              "text",
+                              "link",
+                              "imagelink",
+                              "imagelink2",
+                              "audiolink",
+                              "published",
+                              "startdate",
+                              "enddate",
+                              "lat",
+                              "lon",
+                              "location",
+                              "address",
+                              "zip",
+                              "city",
+                              "country",
+                              "featured",
+                              "layer_id",
+                              "shy",
+                              "images",
+                              "annotations"
+                           ],
+                           "properties":{
+                              "id":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/id",
+                                 "type":"integer",
+                                 "title":"The Id Schema",
+                                 "default":0,
+                                 "examples":[
+                                    4
+                                 ]
+                              },
+                              "uid": {
+                                "$id": "#/properties/map/properties/layer/items/properties/places/items/properties/uid",
+                                "type": "string",
+                                "title": "The Id Schema",
+                                "default": "",
+                                "examples": [
+                                  "UID"
+                                ]
+                              },                                
+                              "title":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/title",
+                                 "type":"string",
+                                 "title":"The Title Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "Session am Deich"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "subtitle":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/subtitle",
+                                 "type":"string",
+                                 "title":"The Sub Title Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "Eine dramatische Szene"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "teaser":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/teaser",
+                                 "type":"string",
+                                 "title":"The Teaser Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "text":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/text",
+                                 "type":"string",
+                                 "title":"The Text Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ]
+                              },
+                              "link":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/link",
+                                 "type":"string",
+                                 "title":"The Link Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "imagelink":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/imagelink",
+                                 "type":"string",
+                                 "title":"The Imagelink Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ]
+                              },
+                              "imagelink2":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/imagelink2",
+                                 "type":"string",
+                                 "title":"The Imagelink Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ]
+                              },
+                              "audiolink":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/audiolink",
+                                 "type":"string",
+                                 "title":"The Audiolink Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ]
+                              },
+                              "published":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/published",
+                                 "type":"boolean",
+                                 "title":"The Published Schema",
+                                 "default":false,
+                                 "examples":[
+                                    true
+                                 ]
+                              },
+                              "startdate":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/startdate",
+                                 "type":["string", "null"],
+                                 "title":"The Startdate Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "2018-05-18T17:57:00.000Z"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "enddate":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/enddate",
+                                 "type":["string", "null"],
+                                 "title":"The Enddate Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "2018-05-18T17:57:00.000Z"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "lat":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/lat",
+                                 "type":"string",
+                                 "title":"The Lat Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "53.532969"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "lon":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/lon",
+                                 "type":"string",
+                                 "title":"The Lon Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "10.0367449"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "location":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/location",
+                                 "type":"string",
+                                 "title":"The Location Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "Billwerder Neuer Deich"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "address":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/address",
+                                 "type":"string",
+                                 "title":"The Address Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "Billwerder Neuer Deich undefined"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "zip":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/zip",
+                                 "type":"string",
+                                 "title":"The Zip Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "20539"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "city":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/city",
+                                 "type":"string",
+                                 "title":"The City Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "Hamburg"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "country":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/country",
+                                 "type":"string",
+                                 "title":"The Country Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ]
+                              },
+                              "featured":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/featured",
+                                 "type":"boolean",
+                                 "title":"The Featured Schema",
+                                 "default":false,
+                                 "examples":[
+                                    true
+                                 ]
+                              },
+                              "layer_id":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/layer_id",
+                                 "type":"integer",
+                                 "title":"The Layer_id Schema",
+                                 "default":0,
+                                 "examples":[
+                                    3
+                                 ]
+                              },
+                              "icon_link":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/icon_link",
+                                 "type":"string",
+                                 "title":"The Icon Link Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "http://test.domain/path/to/the/icon/file.png"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "icon_class":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/icon_class",
+                                 "type":"string",
+                                 "title":"The Icon Class Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "marker-klass"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "icon_name":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/icon_name",
+                                 "type":"string",
+                                 "title":"The Icon Name Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "Name"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },
+                              "shy":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/shy",
+                                 "type":"boolean",
+                                 "title":"The Published Schema",
+                                 "default":false,
+                                 "examples":[
+                                    true
+                                 ]
+                              },
+                              "images":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/properties/images",
+                                 "type":"array",
+                                 "title":"The Images Schema",
+                                 "items":{
+                                    "$id":"#/properties/map/properties/layer/items/properties/places/items/images/otem",
+                                    "type":"object",
+                                    "title":"The Items Schema",
+                                    "required":[
+                                       "id",
+                                       "title",
+                                       "source",
+                                       "creator",
+                                       "alt",
+                                       "sorting",
+                                       "image_linktag",
+                                       "image_url"
+                                    ],
+                                    "properties":{
+                                       "id":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/id",
+                                          "type":"integer",
+                                          "title":"The Id Schema",
+                                          "default":0,
+                                          "examples":[
+                                             4
+                                          ]
+                                       },
+                                       "title":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/title",
+                                          "type":"string",
+                                          "title":"The Title Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "Session am Deich"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "source":{
+                                          "$id":"#/properties/source/properties/layer/items/properties/places/items/properties/title",
+                                          "type":"string",
+                                          "title":"The Source Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "The projects archive"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "creator":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/creator",
+                                          "type":"string",
+                                          "title":"The Creator Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "Photographer"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "alt":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/alt",
+                                          "type":"string",
+                                          "title":"The Alt Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "Some people at the session"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "sorting":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/sorting",
+                                          "type":"string",
+                                          "title":"The Sorting Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "5"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "image_linktag":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/image_linktag",
+                                          "type":"string",
+                                          "title":"The Image Linktag Schema",
+                                          "default":"",
+                                          "examples":[
+                                             ""
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "image_url":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/image_url",
+                                          "type":"string",
+                                          "title":"The Image URL Schema",
+                                          "default":"",
+                                          "examples":[
+                                             ""
+                                          ]
+                                       }
+                                    }
+                                 }
+                              },
+                              "annotations":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/properties/annotations",
+                                 "type":"array",
+                                 "title":"The Annotations Schema",
+                                 "items":{
+                                    "$id":"#/properties/map/properties/layer/items/properties/places/items/annotations/item",
+                                    "type":"object",
+                                    "title":"The Items Schema",
+                                    "required":[
+                                       "id",
+                                       "title",
+                                       "text",
+                                       "person"
+                                    ],
+                                    "properties":{
+                                       "id":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/annotations/properties/id",
+                                          "type":"integer",
+                                          "title":"The Id Schema",
+                                          "default":0,
+                                          "examples":[
+                                             4
+                                          ]
+                                       },
+                                       "title":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/annotations/properties/title",
+                                          "type":"string",
+                                          "title":"The Title Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "Session am Deich"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "text":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/annotations/properties/text",
+                                          "type":"string",
+                                          "title":"The Text Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "Viel Text zur Session am Deich"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       }
+                                    }
+                                 }
+                              }
+                           }
                         }
-                      }
-                    }
+                     },
+                     "places_with_relations":{
+                        "$id":"#/properties/map/properties/layer/items/properties/places_with_relations",
+                        "type":"array",
+                        "title":"The Places Schema",
+                        "items":{
+                           "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items",
+                           "type":"object",
+                           "title":"The Items Schema",
+                           "required":[
+                              "id",
+                              "from",
+                              "to"
+                           ],
+                           "properties":{
+                              "id":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/id",
+                                 "type":"integer",
+                                 "title":"The Id Schema",
+                                 "default":0,
+                                 "examples":[
+                                    4
+                                 ]
+                              },
+                              "from":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/properties/from",
+                                 "type":"array",
+                                 "title":"The From Schema",
+                                 "items":{
+                                    "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items/images/item",
+                                    "type":"object",
+                                    "title":"The Items Schema",
+                                    "required":[
+                                       "id",
+                                       "lat",
+                                       "lon"
+                                    ],
+                                    "properties":{
+                                       "id":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/id",
+                                          "type":"integer",
+                                          "title":"The Id Schema",
+                                          "default":0,
+                                          "examples":[
+                                             4
+                                          ]
+                                       },
+                                       "lat":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/lat",
+                                          "type":"string",
+                                          "title":"The Lat Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "10.0"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "source":{
+                                          "$id":"#/properties/source/properties/layer/items/properties/places_with_relations/items/properties/lon",
+                                          "type":"string",
+                                          "title":"The Lon Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "0.0"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       }
+                                    }
+                                 }
+                              },
+                              "to":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/properties/to",
+                                 "type":"array",
+                                 "title":"The to Schema",
+                                 "items":{
+                                    "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items/images/item",
+                                    "type":"object",
+                                    "title":"The Items Schema",
+                                    "required":[
+                                       "id",
+                                       "lat",
+                                       "lon"
+                                    ],
+                                    "properties":{
+                                       "id":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/id",
+                                          "type":"integer",
+                                          "title":"The Id Schema",
+                                          "default":0,
+                                          "examples":[
+                                             4
+                                          ]
+                                       },
+                                       "lat":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places_with_relations/items/properties/lat",
+                                          "type":"string",
+                                          "title":"The Lat Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "10.0"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "source":{
+                                          "$id":"#/properties/source/properties/layer/items/properties/places_with_relations/items/properties/lon",
+                                          "type":"string",
+                                          "title":"The Lon Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "0.0"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       }
+                                    }
+                                 }
+                              }
+                           }
+                        }
+                     }
                   }
-                }
-              }
+               }
             }
-          }
-        }
+         }
       }
-    }
-  }
+   }
 }

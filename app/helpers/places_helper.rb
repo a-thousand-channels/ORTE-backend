@@ -10,7 +10,11 @@ module PlacesHelper
 
 
   def default_url_options
-    { host: Settings.app_host, protocol: Settings.app_host_protocol }
+    { host: Rails.application.config_for(:settings).app_host, protocol: Rails.application.config_for(:settings).app_host_protocol }
+  end
+
+  def qualifier_for_select
+    [['Exact date', 'exact'], ['Approx. date', 'circa']]
   end
 
   def show_link(title, map_id, layer_id, id)
@@ -22,7 +26,7 @@ module PlacesHelper
   end
 
   def add_new_entry_link(place)
-    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{@place.location}&address=#{@place.address}&zip=#{@place.zip}&city=#{@place.city}&lat=#{@place.lat}&lon=#{@place.lon}"
+    "/maps/#{place.layer.map.id}/layers/#{place.layer.id}/places/new?location=#{place.location}&address=#{place.address}&zip=#{place.zip}&city=#{place.city}&lat=#{place.lat}&lon=#{place.lon}"
   end
 
   def icon_link(file)
@@ -38,16 +42,24 @@ module PlacesHelper
   end
 
   def image_link(image)
-    return unless image.file.attached?
+    return unless image.file&.attached?
 
-    # polymorphic_url(image.file)
-    polymorphic_url(image.file.variant(resize: '800x800').processed)
+    begin
+      if image.place.layer.rasterize_images && image.itype == 'image'
+        polymorphic_url(image.file.variant(resize: '800x800', "ordered-dither": 'h8x8a').processed)
+      else
+        polymorphic_url(image.file.variant(resize: '800x800').processed)
+      end
+    rescue Errno::ENOENT => e
+      ''
+    rescue ActiveStorage::FileNotFoundError => e
+      ''
+    end
   end
 
   def audio_link(audio)
-    return unless audio.attached?
+    return '' unless audio.attached?
 
-    # polymorphic_url(image.file)
-    audio_tag rails_blob_url(audio), autoplay: true, controls: true
+    audio_tag rails_blob_url(audio), autoplay: false, controls: true
   end
 end

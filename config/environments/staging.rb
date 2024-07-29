@@ -31,14 +31,14 @@ Rails.application.configure do
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  config.assets.compile = true
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
-  config.action_controller.default_url_options = { host: Rails.application.credentials.dig(:deploy, :staging, :server), :protocol => Settings.app_host_protocol }
-
-  # config.action_controller.asset_host = Rails.application.credentials.dig(:deploy, :staging, :server)
-
+  config.action_controller.default_url_options = { host: config_for(:settings).app_host.to_s, :protocol => config_for(:settings).app_host_protocol.to_s }
+  # config.action_controller.asset_host = Rails.application.config_for(:settings).app_host
+  # rails5?
+  config.action_mailer.default_url_options = { host: config_for(:settings).app_host.to_s, :protocol => config_for(:settings).app_host_protocol.to_s }
 
   # Prevent host header injection
   # TODO: fill in host name of production server

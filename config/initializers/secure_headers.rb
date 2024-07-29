@@ -26,7 +26,7 @@ SecureHeaders::Configuration.default do |config|
     base_uri: %w('self' https://staging.orte.link https://orte.link),
     block_all_mixed_content: true, # see http://www.w3.org/TR/mixed-content/
     child_src: %w('self' 'unsafe-inline' https://player.vimeo.com https://www.youtube.com https://www.facebook.com), # if child-src isn't supported, the value for frame-src will be set.
-    connect_src: %w('self' https://nominatim.openstreetmap.org/search https://nominatim.openstreetmap.org/reverse),
+    connect_src: %w('self' https://nominatim.openstreetmap.org/search https://nominatim.openstreetmap.org/reverse https://staging.orte.link ws://staging.orte.link wss://staging.orte.link https://orte.link ws://orte.link wss://orte.link),
     font_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
     form_action: %w('self'),
     frame_ancestors: %w('none'),
@@ -43,7 +43,7 @@ SecureHeaders::Configuration.default do |config|
     report_uri: %w()
   }
 
-  if Rails.env.development? || Rails.env.test? || Rails.env.localtest? || Rails.env.staging?  || Rails.env.production?
+  if Rails.env.development? || Rails.env.test? || Rails.env.staging?  || Rails.env.production?
     config.csp = default_csp_config.merge({
         default_src: %w('self' https://staging.orte.link https://orte.link),
         font_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
