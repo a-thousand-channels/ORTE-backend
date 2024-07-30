@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_15_143133) do
+ActiveRecord::Schema.define(version: 2024_07_30_200352) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -287,7 +287,7 @@ ActiveRecord::Schema.define(version: 2024_07_15_143133) do
 
   create_table "sessions", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "session_id", null: false
-    t.text "data"
+    t.text "data", size: :long
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["session_id"], name: "index_sessions_on_session_id", unique: true

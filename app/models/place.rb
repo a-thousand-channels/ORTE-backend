@@ -61,6 +61,8 @@ class Place < ApplicationRecord
     elsif enddate_date.nil? || startdate_date.blank?
       self.enddate = nil
     end
+
+    clean_text_fields
   end
 
   def title_and_location
@@ -219,5 +221,15 @@ class Place < ApplicationRecord
 
   def check_audio_format
     errors.add(:audio, 'format must be MP3.') if audio.attached? && !audio.content_type.in?(%w[audio/mpeg])
+  end
+
+  private
+
+  def clean_text_fields
+    self.text = remove_4byte_characters(text) if text
+  end
+
+  def remove_4byte_characters(string)
+    string.each_char.select { |char| char.bytesize < 4 }.join
   end
 end
