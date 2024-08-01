@@ -17,7 +17,7 @@ namespace :json_to_csv do
     # Write to CSV
     CSV.open(csv_file, 'wb') do |csv|
       # Write headers
-      csv << 'title,link,full_address,category,published,text,date_published,address,city,state,zip,lat,lon'.split(',')
+      csv << 'title,link,full_address,tag_list,published,text,date_published,address,city,state,zip,lat,lon'.split(',')
       # Write data rows
       flattened_data.each do |row|
         if row['address.geocoded.formatted_address']

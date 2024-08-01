@@ -99,9 +99,10 @@
       - if @place.subtitle.present?
         %p
           = @place.subtitle
-      %div
-        %strong
-          =h @place.teaser.html_safe
+      - if @place.teaser.present?
+        %div
+          %strong
+            =h @place.teaser.html_safe
       - if @place.text.present?
         %div
           =h @place.text.html_safe

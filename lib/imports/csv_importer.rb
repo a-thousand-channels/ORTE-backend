@@ -9,7 +9,7 @@ class Imports::CsvImporter
 
   REQUIRED_FIELDS = %w[title lat lon].freeze
 
-  ALLOWED_FIELDS = %w[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms].freeze
+  ALLOWED_FIELDS = %w[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms tag_list].freeze
 
   PREVIEW_FIELDS = %w[title lat lon location address zip city country].freeze
 
@@ -37,6 +37,8 @@ class Imports::CsvImporter
         @invalid_rows << processed_row
         next
       end
+
+      processed_row['tag_list'] = processed_row['tag_list'].split(',').map(&:strip) if processed_row['tag_list'].present?
 
       # dupe handling
       title = do_sanitize(processed_row['title'])
