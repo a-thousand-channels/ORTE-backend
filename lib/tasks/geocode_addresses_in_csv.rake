@@ -16,7 +16,7 @@ namespace :geocode do
         # wait 2 sec, to avoid hitting rate limit
         sleep(2)
         # sleep even longer every 99 iterations
-        sleep(240) if read_counter % 99 == 0
+        sleep(240) if (read_counter % 99).zero?
 
         full_address = row['address']
         lookup_address = full_address.gsub(/,[^,]*$/, '')
