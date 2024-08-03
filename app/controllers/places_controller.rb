@@ -8,7 +8,7 @@ class PlacesController < ApplicationController
   def index
     @layer = Layer.friendly.find(params[:layer_id])
     @map = @layer.map
-    @places = @layer.places
+    @places = @layer.places.page params[:page]
   end
 
   # GET /places/1
