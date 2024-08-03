@@ -125,6 +125,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
 
     var request = $.getJSON(layer_json_url, function(data) {
 
+      $('.loader_wrapper').hide(300);
       console.log("-----------------------------");
       console.log("Data from layer_json_url",data);
 
