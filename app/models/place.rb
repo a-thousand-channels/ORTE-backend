@@ -223,8 +223,6 @@ class Place < ApplicationRecord
     errors.add(:audio, 'format must be MP3.') if audio.attached? && !audio.content_type.in?(%w[audio/mpeg])
   end
 
-  private
-
   def clean_text_fields
     self.text = remove_4byte_characters(text) if text
   end
