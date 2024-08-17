@@ -23,7 +23,7 @@ function setupTimeline(places_by_year) {
  
     let timelineInfoBox = document.createElement('div');
     timelineInfoBox.setAttribute('id', 'timeline-infobox');    
-    timelineInfoBox.innerHTML = '<div id="timeline-info-status"></div><div id="timeline-function">(<a href="">Show all places</a>)</div> <div id="timeline-switch">(<a href="">Switch to slider</a>)</div>';
+    timelineInfoBox.innerHTML = '<div id="timeline-info-status"></div><div id="timeline-function">(<a href="">Show all places</a>)</div> <div id="timeline-switch">(<a href="">Switch to timeline axis</a>)</div>';
     timelineWrapper.appendChild(timelineInfoBox);
 
     // TimeSlider
@@ -38,7 +38,6 @@ function setupTimeslider(places_by_year,timelineWrapper,minYear,maxYear,diff) {
   
   let timelineSlider = document.createElement('div');
   timelineSlider.setAttribute('id', 'timeline-slider');    
-  timelineSlider.classList.add('hidden');
   timelineSlider.innerHTML = `\
     <div class="slider radius" data-slider data-initial-start="${minYear}" data-start="${minYear}" data-end="${maxYear}" data-step="1">\
         <div class="slider-handle" data-slider-handle role=slider tabindex="1"></div>\
@@ -64,6 +63,7 @@ function setupTimelineAxis(places_by_year,timelineWrapper,minYear,maxYear,diff) 
 
     let timelineAxis = document.createElement('div');
     timelineAxis.setAttribute('id', 'timeline-axis');
+    timelineAxis.classList.add('hidden');
     timelineAxis.appendChild(scrollLeft);
     timelineAxis.appendChild(scrollRight);
     let timelineContent = document.createElement('div');
@@ -146,7 +146,7 @@ function setupTimelineAxisEvents(places_by_year) {
       });
       console.log("Timeline: setupTimesliderEvents","Prep eventListeners done");
       
-    }
+      }
    
 }
 
@@ -194,10 +194,7 @@ function filterMarkers(selectedYear,places) {
       console.log("X Future", marker.data.fromYear,selectedYear,marker.data.endYear,marker.data.color, marker.data.title, marker.data.layer_id);        
       // window.map.removeLayer(marker);  
       window.marker_layers.removeLayer(marker);
-      
-      
     }    
-    
   });
   window.marker_layers.refreshClusters();
 }
@@ -255,11 +252,11 @@ $(document).on('click', '#timeline-switch a', function(event) {
   if ( timelineSlider.classList.contains("hidden") ) {
     timelineSlider.classList.remove("hidden");
     timelineAxis.classList.add("hidden");
-    timelineSwitch.innerHTML = "(<a href=''>Switch to axis</a>)";
+    timelineSwitch.innerHTML = " (<a href=''>Switch to timeline axis</a>)";
   } else {
     timelineSlider.classList.add("hidden");
     timelineAxis.classList.remove("hidden");
-    timelineSwitch.innerHTML = "(<a href=''>Switch to slider</a>)";
+    timelineSwitch.innerHTML = " (<a href=''>Switch to slider</a>)";
   }
 });
 
@@ -268,7 +265,7 @@ $(document).on('click', '#timeline-switch a', function(event) {
 $(document).on('changed.zf.slider', '[data-slider]', function(event) {
   var $slider = $(event.currentTarget);
   var $numberInput = $slider.children('input');
-  console.log($numberInput.val())
+  console.log("Selected year",$numberInput.val())
   $('#slider-selection').html($numberInput.val())
   const selectedYear = $numberInput.val();
 
@@ -277,8 +274,13 @@ $(document).on('changed.zf.slider', '[data-slider]', function(event) {
     const placeDivs = document.querySelectorAll(".place");
     placeDivs.forEach(function(div) {
       div.classList.add("hidden");
-      console.log(selectedYear, div,div.dataset.startyear,div.dataset.endyear)
-      if (div.dataset.startyear <= selectedYear && div.dataset.endyear >= selectedYear) {
+      if ( div.dataset.endyear === undefined || div.dataset.endyear === "" ) {
+        div.dataset.endyear = div.dataset.startyear;
+      }
+      console.log("Place",div.dataset,div.dataset.startyear,div.dataset.endyear);
+
+      if ( (div.dataset.startyear <= selectedYear && div.dataset.endyear >= selectedYear) 
+        || ( div.dataset.startyear === undefined || div.dataset.startyear === "" ) ) {
         div.classList.remove("hidden");
       }
     });

@@ -84,10 +84,11 @@
                 Timeline
               from
               = minyear
-              \—
-              = maxyear
-              - timespan = maxyear-minyear
-              (#{timespan} years)
+              - if minyear != maxyear
+                \—
+                = maxyear
+              - timespan = maxyear-minyear+1
+              (#{timespan} #{timespan > 1 ? 'years' : 'year'})
             %p
               %label.small
                 Dates in brackets are the new fuzzy dates with qualifiers (this will replace the old date format!)
@@ -120,7 +121,7 @@
                   %span.time.time-on>‒
                 - else
                   %span.time.time-off>‒
-  - if @map.enable_time_slider
+  - if @map.enable_time_slider && timespan > 1 
     %table
       %thead
         %tr  
@@ -147,7 +148,7 @@
           &nbsp;
 
     %tbody
-      - @places.sort_by{ |e| e.startdate.nil? ? Date.new : e.startdate }.each do |place|
+      - @places.sort_by{ |e| e.startdate.nil? ? Date.new(9999) : e.startdate }.each do |place|
         %tr.place{"data-startyear":(place.startdate ? place.startdate.year : ''),"data-endyear":(place.enddate ? place.enddate.year : '')}
           %td
             = smart_date_display(place.startdate, place.enddate)
