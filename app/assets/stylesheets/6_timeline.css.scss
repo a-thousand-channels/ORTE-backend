@@ -52,9 +52,16 @@ table#timeline-list {
   }
 }
 #timeline-wrapper.light {
-  background-color: white;
+  background-color: transparent;
+  color: #333;
   box-shadow: 0 0 10px #ccc;
   padding: 0 5px;
+  text-shadow: 0 0 12px white;
+  font-weight: bold;
+  .slider, .slider-fill {
+    background-color: white;
+  }
+  
 }
 #timeline-wrapper.dark {
   border: 0px solid #444;
@@ -64,6 +71,7 @@ table#timeline-list {
 }
 #timeline-infobox {
   display: flex;
+  justify-content: space-between;
   font-size: 0.8em;
   padding: 10px 12px 0;
   color: white;
@@ -75,6 +83,12 @@ table#timeline-list {
 }
 #timeline-function {
   margin-left: 10px;
+  display: flex;
+  #timeline-switch {
+    padding-left: 10px;
+  }
+
+
 }
 #timeline-innerwrapper {
   position: relative;
