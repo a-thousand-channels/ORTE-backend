@@ -1,7 +1,6 @@
 function setupTimeline(places_by_year) {
   let body = document.querySelector("body");
   console.log('Timeline: setupTimeline');
-
   let minYear = $('#selection').data('map-timeline-minyear');
   let maxYear = $('#selection').data('map-timeline-maxyear');
   let diff = maxYear - minYear;
@@ -23,7 +22,7 @@ function setupTimeline(places_by_year) {
  
     let timelineInfoBox = document.createElement('div');
     timelineInfoBox.setAttribute('id', 'timeline-infobox');    
-    timelineInfoBox.innerHTML = '<div id="timeline-info-status"></div><div id="timeline-function">(<a href="">Show all places</a>)</div> <div id="timeline-switch">(<a href="">Switch to timeline axis</a>)</div>';
+    timelineInfoBox.innerHTML = '<div id="timeline-info-status"></div><div id="timeline-function"><div id="timeline-show-all">(<a href="">Show all places</a>)</div> <div id="timeline-switch">(<a href="">Switch to  axis view</a>)</div>';
     timelineWrapper.appendChild(timelineInfoBox);
 
     // TimeSlider
@@ -83,7 +82,7 @@ function setupTimelineAxis(places_by_year,timelineWrapper,minYear,maxYear,diff) 
       }
       return null; // oder ein leerer Array [], falls es keine Orte gibt
     }
-    console.log("Timeline: ",2010, getPlacesByYear(2010));
+  
 
     for (var i = minYear; i <= maxYear; i += step) {
     // for (var i = 0; i <= diff; i += step) {
@@ -142,6 +141,7 @@ function setupTimelineAxisEvents(places_by_year) {
           var selectedYearPlaces = this.getAttribute('data-places');
           $('#selection').data('map-selected-year',selectedYear);
           SelectAndFilterByYear(this,yearDivs,selectedYear,selectedYearPlaces);
+          
         });
       });
       console.log("Timeline: setupTimesliderEvents","Prep eventListeners done");
@@ -152,13 +152,16 @@ function setupTimelineAxisEvents(places_by_year) {
 
 let current_selected_year = 1900;
 function filterMarkers(selectedYear,places) {
+  let minYear = $('#selection').data('map-timeline-minyear');
+  let maxYear = $('#selection').data('map-timeline-maxyear');
 
   console.log("Timeline: filterMarkers **************",selectedYear,places,document.getElementById('timeline-wrapper').classList);
 
   current_selected_year = ( selectedYear > current_selected_year ) ? selectedYear : current_selected_year;
 
   const status = document.getElementById("timeline-info-status");
-  status.innerHTML = "Showing <strong>"+places+"</strong> "+( places == 1 ? 'place' : 'places' )+" in <strong>"+selectedYear+"</strong>";
+  status.innerHTML = "<b>Timeline from " + minYear + " — " + maxYear + " (" +"Showing <b>"+places+"</strong> "+( places == 1 ? 'place' : 'places' )+" in <strong>"+selectedYear+"</strong>)";
+  $('#timeline-show-all').removeClass("hidden");
   
   window.markers.forEach(function(marker) {
     if (!marker.data) {
@@ -218,6 +221,7 @@ function resetMarkers() {
 function SelectAndFilterByYear(el,yearDivs,year,places) {
   console.log("Timeline: SelectAndFilterByYear",el,yearDivs,year,places)
   let active = false;
+  
   if ( el.classList.contains("active") ) {
 
     // reset disabled for now
@@ -239,9 +243,10 @@ function SelectAndFilterByYear(el,yearDivs,year,places) {
 }
 
 
-$(document).on('click', '#timeline-function a', function(event) {
+$(document).on('click', '#timeline-show-all a', function(event) {
   event.preventDefault();
   resetMarkers();
+  $('#timeline-show-all').addClass("hidden");
 });
 
 $(document).on('click', '#timeline-switch a', function(event) {
@@ -252,11 +257,11 @@ $(document).on('click', '#timeline-switch a', function(event) {
   if ( timelineSlider.classList.contains("hidden") ) {
     timelineSlider.classList.remove("hidden");
     timelineAxis.classList.add("hidden");
-    timelineSwitch.innerHTML = " (<a href=''>Switch to timeline axis</a>)";
+    timelineSwitch.innerHTML = " (<a href=''>Switch to axis view</a>)";
   } else {
     timelineSlider.classList.add("hidden");
     timelineAxis.classList.remove("hidden");
-    timelineSwitch.innerHTML = " (<a href=''>Switch to slider</a>)";
+    timelineSwitch.innerHTML = " (<a href=''>Switch to slider view</a>)";
   }
 });
 
