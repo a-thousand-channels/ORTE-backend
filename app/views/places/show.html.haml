@@ -114,9 +114,24 @@
         %p
           = audio_tag rails_blob_url(@place.audio), autoplay: true, controls: true
           = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
+
+      - if @place.tag_list
+        %hr.small
+        %p
+          - @place.tags.each do |tag|
+            %span.label.secondary.tag
+              = link_to map_tag_path(@map,tag) do
+                %i.fi-price-tag
+                = tag
+
+   
       %p
         %i.fi-marker.fi-21 
         #{@place.location} #{@place.address}, #{@place.zip} #{@place.city}
+      - if @place.sources.present?
+        %label Sources
+        %hr.small
+        =h @place.sources.html_safe               
       %label Annotations
       %hr.small
       = render 'places/list/annotations'
@@ -145,15 +160,6 @@
           %i.fi.fi-plus
           Add a relation to another place
 
-
-      - if @place.tag_list
-        %hr.small
-        %p
-          - @place.tags.each do |tag|
-            %span.label.secondary.tag
-              = link_to map_tag_path(@map,tag) do
-                %i.fi-price-tag
-                = tag
 
       %p.hint.text-left
         %b Coordinates:
