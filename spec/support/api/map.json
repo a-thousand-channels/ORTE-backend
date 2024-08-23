@@ -264,6 +264,7 @@
                               "subtitle",
                               "teaser",
                               "text",
+                              "sources",
                               "link",
                               "imagelink",
                               "imagelink2",
@@ -337,6 +338,15 @@
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/text",
                                  "type":"string",
                                  "title":"The Text Schema",
+                                 "default":"",
+                                 "examples":[
+                                    ""
+                                 ]
+                              },
+                              "sources":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/sources",
+                                 "type":"string",
+                                 "title":"The Sources Schema",
                                  "default":"",
                                  "examples":[
                                     ""

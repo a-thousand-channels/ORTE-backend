@@ -165,6 +165,10 @@
             = @map.iconset.title
           = f.association :icon, :collection => @map.iconset.icons, :label_method => lambda { |icon| ("#{icon.title}".html_safe) if icon.title }, :value_method => :id, label: false, include_blank: true
           %p.hint Select one item from list
+        %hr
+        = f.input :sources, :label => 'Sources', :input_html => {:rows => 8, class: 'large-text tinymce'}        
+        %p.hint.text-left
+          Add sources and references to your entry if applicable. 
         - if @place.submissions.count > 0
           = render 'places/list/submissions'
           %hr
