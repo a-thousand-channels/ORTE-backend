@@ -5,6 +5,7 @@ class Layer < ApplicationRecord
   belongs_to :map
   has_many :places, dependent: :destroy
   has_one :submission_config
+  has_many :build_logs, dependent: :destroy
 
   has_one_attached :image, dependent: :destroy
   has_one_attached :backgroundimage, dependent: :destroy
