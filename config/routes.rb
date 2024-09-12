@@ -84,10 +84,13 @@ Rails.application.routes.draw do
 
   namespace :public do
     resources :maps, only: [:show, :allplaces, :index], :defaults => { :format => :json } do
-      resources :layers, only: [:show], :defaults => { :format => :json }
+      resources :layers, only: [:show], :defaults => { :format => :json } do
+        resources :places, only: [:show], :defaults => { :format => :json }
+      end
       member do
         get :allplaces
       end
+
     end
   end
 end
