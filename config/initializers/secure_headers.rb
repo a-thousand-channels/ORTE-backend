@@ -47,7 +47,7 @@ SecureHeaders::Configuration.default do |config|
     config.csp = default_csp_config.merge({
         default_src: %w('self' https://staging.orte.link https://orte.link),
         font_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
-        script_src: %w('self' 'unsafe-inline' https://staging.orte.link https://orte.link),
+        script_src: %w('self' 'unsafe-inline' 'unsafe-eval' https://staging.orte.link https://orte.link),
         block_all_mixed_content: false,
         upgrade_insecure_requests: false,
         sandbox: false
