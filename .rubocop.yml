@@ -12,6 +12,9 @@ Style/AsciiComments:
 Layout/LineLength:
   Enabled: false
 
+Lint/SafeNavigationConsistency:
+  Enabled: false
+
 Lint/UnusedBlockArgument:
   Enabled: false
 

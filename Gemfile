@@ -27,7 +27,7 @@ gem 'cancancan'
 gem 'devise'
 gem 'exception_notification'
 gem 'foundation-icons-sass-rails'
-gem 'foundation-rails', '~> 6'
+gem 'foundation-rails', '6.6.2.0'
 gem 'geocoder'
 gem 'haml-rails'
 gem 'i18n-js', '~> 3' # breaking changes with v4
@@ -44,7 +44,7 @@ gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 
-gem 'image_processing'
+gem 'image_processing', '~> 1.2'
 gem 'mini_racer', platforms: :ruby
 gem 'nokogiri'
 

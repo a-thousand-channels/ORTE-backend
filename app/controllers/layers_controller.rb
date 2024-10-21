@@ -247,7 +247,7 @@ class LayersController < ApplicationController
   end
 
   def validate_images_format
-    return unless layer_params && layer_params[:images_files] && layer_params[:images_files].any?
+    return unless layer_params && layer_params[:images_files]&.any?
 
     layer_params[:images_files].each do |file|
       unless ['image/jpeg', 'image/png', 'image/gif'].include?(file.content_type)

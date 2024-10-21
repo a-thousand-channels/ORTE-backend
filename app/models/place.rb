@@ -130,6 +130,14 @@ class Place < ApplicationRecord
     ApplicationController.helpers.smart_date_display(startdate, enddate)
   end
 
+  def date_with_qualifier
+    if (startdate_qualifier && enddate_qualifier) && (startdate_qualifier != '' || enddate_qualifier != '')
+      ApplicationController.helpers.smart_date_display_with_qualifier(startdate, enddate, startdate_qualifier, enddate_qualifier)
+    else
+      date
+    end
+  end
+
   def show_link
     ApplicationController.helpers.show_link(title, layer.map.id, layer.id, id)
   end
