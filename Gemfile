@@ -44,7 +44,7 @@ gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
 
-gem 'image_processing'
+gem 'image_processing', '~> 1.2'
 gem 'mini_racer', platforms: :ruby
 gem 'nokogiri'
 
