@@ -108,7 +108,7 @@
           =h @place.text.html_safe
       %p
         - if @place.link
-          =link_to @place.link do
+          = link_to @place.link, target: '_blank' do
             = @place.link
       - if @place.audio.attached?
         %p
