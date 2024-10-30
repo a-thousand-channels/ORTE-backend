@@ -270,6 +270,7 @@
                               "imagelink2",
                               "audiolink",
                               "published",
+                              "date_with_qualifier",
                               "startdate",
                               "enddate",
                               "lat",
@@ -398,6 +399,16 @@
                                     true
                                  ]
                               },
+                              "date_with_qualifier":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/date_with_qualifier",
+                                 "type":["string", "null"],
+                                 "title":"The date_with_qualifier Schema",
+                                 "default":"",
+                                 "examples":[
+                                    "ca. 1980 - 2000"
+                                 ],
+                                 "pattern":"^(.*)$"
+                              },                              
                               "startdate":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/startdate",
                                  "type":["string", "null"],
