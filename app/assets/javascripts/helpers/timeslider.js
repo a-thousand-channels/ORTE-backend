@@ -274,28 +274,12 @@ $(document).on('changed.zf.slider', '[data-slider]', function(event) {
   $('#slider-selection').html($numberInput.val())
   const selectedYear = $numberInput.val();
 
-  if ( $('body').attr('id') === 'places' ) {
-    // maps > layers > places > index
-    const placeDivs = document.querySelectorAll(".place");
-    placeDivs.forEach(function(div) {
-      div.classList.add("hidden");
-      if ( div.dataset.endyear === undefined || div.dataset.endyear === "" ) {
-        div.dataset.endyear = div.dataset.startyear;
-      }
-      console.log("Place",div.dataset,div.dataset.startyear,div.dataset.endyear);
 
-      if ( (div.dataset.startyear <= selectedYear && div.dataset.endyear >= selectedYear) 
-        || ( div.dataset.startyear === undefined || div.dataset.startyear === "" ) ) {
-        div.classList.remove("hidden");
-      }
-    });
-  } else {
-    // maps > index
-    let el = document.getElementById('year'+selectedYear); 
-    var selectedYearPlaces = el.getAttribute('data-places');
-    $('#selection').data('map-selected-year',selectedYear);
-    console.log("Slider: changed.zf.slider",selectedYear,selectedYearPlaces)
-    filterMarkers(selectedYear,selectedYearPlaces);
-  }
+  // maps > index
+  let el = document.getElementById('year'+selectedYear); 
+  var selectedYearPlaces = el.getAttribute('data-places');
+  $('#selection').data('map-selected-year',selectedYear);
+  console.log("Slider: changed.zf.slider",selectedYear,selectedYearPlaces)
+  filterMarkers(selectedYear,selectedYearPlaces);
 
 });
