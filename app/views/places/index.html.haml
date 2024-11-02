@@ -76,12 +76,12 @@
     %table#timeline-list
       %thead
         %tr
-          %th 
+          %th#timeline-list-header{colspan:2}
             %p
               - minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
               - maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
               %b
-                Timeline
+                Timeline coverage
               from
               = minyear
               - if minyear != maxyear
@@ -89,13 +89,14 @@
                 = maxyear
               - timespan = maxyear-minyear+1
               (#{timespan} #{timespan > 1 ? 'years' : 'year'})
+              >>
+        %tr
+          %th#timeline-list-info{colspan:2}            
             %p
               %label.small
-                Dates in brackets are the new fuzzy dates with qualifiers (this will replace the old date format!)
+                Displays the "coverage" of all start/enddates in this layer. Dates in brackets are the new fuzzy dates with qualifiers (this replaces the fixed date format)
                 %i.fi.fi-info{"data-tooltip"=>true, :title=>"This is a new feature to allow to define fuzzy dates, where either the start or end is not exactly known. You have to set a qualifier in the edit form of each place to use this feature."}
-          %th
-            &nbsp;
-      %tbody          
+      %tbody#timeline-list-body      
         - @places.sort_by{ |e| e.startdate.nil? ? Date.new : e.startdate }.each do |place|
           %tr 
             %td
@@ -121,20 +122,7 @@
                   %span.time.time-on>‒
                 - else
                   %span.time.time-off>‒
-  - if @map.enable_time_slider && timespan > 1 
-    %table
-      %thead
-        %tr  
-          %th{colspan:2}
-            Slider
-            %p.float-right#slider-selection
-              %strong
-                = minyear
-            .slider.radius{"data-slider":true,"data-initial-start":minyear,"data-start":minyear,"data-end":maxyear,"data-step":1}
-              .slider-handle{"data-slider-handle":true,"role":"slider","tabindex":1}
-              .slider-fill{"data-slider-fill":true}
-              %input{"type":"hidden"}
-
+  
 
   
   %p.text-right.small

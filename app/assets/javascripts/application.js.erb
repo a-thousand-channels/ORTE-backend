@@ -208,6 +208,14 @@ jQuery(function ($) {
       }
   });
 
+  // places > index: toggle timeline-list
+  $('#timeline-list-info').hide();
+  $('#timeline-list-body').hide();
+  $('#timeline-list-header').click(function(e){
+      e.preventDefault();
+      $('#timeline-list-info').toggle();
+      $('#timeline-list-body').toggle();
+  });
 
   // places > form: toggle layer dropdown
   $('#move_to_layer').click(function(e){
