@@ -111,10 +111,16 @@ class LayersController < ApplicationController
     generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
     @layer.color = "##{generator.create_hex}"
     @layer.ltype = 'image' if params[:ltype] == 'image'
+    @layer.ltype = 'geojson' if params[:ltype] == 'geojson'
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @colors_selectable = []
     6.times do
       @colors_selectable << "##{generator.create_hex}"
+    end
+    if @layer.ltype == 'geojson'
+      respond_to do |format|
+        format.html { render :new_geojson }
+      end
     end
   end
 
@@ -243,7 +249,7 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :ltype, :images_creator, :images_licence, :images_source, images_files: [])
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :ltype, :images_creator, :images_licence, :images_source, images_files: [], :geojson)
   end
 
   def validate_images_format
