@@ -30,12 +30,19 @@ Basic steps for a local installation on your machine:
 
 ### Requirements
 
-* Webserver (e.g. Apache or NGINX)
-* Passenger stand-alone
-* Ruby 2.7+, RVM, Rubygems
+#### Development
+
+* Ruby 3.3+, RVM, Rubygems
 * MySQL/Maria DB
 * ffmpeg (for the video feature), ImageMagick (for the image feature)
 * Redis
+
+#### Production
+
+Additional requirements for production
+
+* Webserver (e.g. Apache or NGINX)
+* Passenger stand-alone
 
 ### Get repository
 
@@ -53,8 +60,8 @@ $ bundle install
 
 ```bash
 $ sudo mysql -u root
-> CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
-> GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost';
+> CREATE USER 'orte'@'localhost' IDENTIFIED BY 'orte00';
+> GRANT ALL PRIVILEGES ON *.* TO 'orte'@'localhost';
 > CREATE DATABASE orte CHARACTER SET utf8 COLLATE utf8_general_ci;
 > CREATE DATABASE orte_test CHARACTER SET utf8 COLLATE utf8_general_ci;
 > exit;
