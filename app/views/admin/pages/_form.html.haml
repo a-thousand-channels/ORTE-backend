@@ -1,0 +1,28 @@
+= simple_form_for([:admin, @page]) do |f|
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x.grid-padding-x
+    .large-12.cell
+      .form-inputs
+        %hr
+        .grid-x.grid-padding-x
+          .large-4.small-12.cell
+            = f.input :is_published, label: 'Publish'
+            = f.input :in_menu, label: 'In Menu'
+          .large-4.small-12.cell
+            %label Type
+            = f.input :ptype, :collection => ptype_for_select, include_blank: false, label: false, :selected => @page.ptype
+          .large-4.small-12.cell
+            &nbsp;
+        %hr
+        = f.input :title
+        = tinymce
+        = f.input :teasertext, label: 'Teasertext', :input_html => {:rows => 6, class: 'large-text tinymce' }
+        = f.input :fulltext, label: 'Fulltext', :input_html => {:rows => 18, class: 'large-text tinymce' }
+        = f.input :footertext, label: 'Footnotes', :input_html => {:rows => 6, class: 'large-text tinymce' }
+  .grid-x
+    .large-12.cell
+      %hr
+      .form-actions
+        = f.button :submit, :class => "button"
