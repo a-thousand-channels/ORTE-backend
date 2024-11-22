@@ -60,12 +60,12 @@ RSpec.describe Place, type: :model do
   describe 'Dates for UI' do
     it 'returns date range' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', enddate_date: '2018-01-02')
-      expect(p.date).to eq('01.01.18 ‒ 02.01.18')
+      expect(p.date).to eq('01.01.2018 ‒ 02.01.2018')
     end
 
     it 'returns full startdate' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '20:30', enddate: '')
-      expect(p.date).to eq('01.01.18, 20:30')
+      expect(p.date).to eq('01.01.2018, 20:30')
     end
 
     it 'returns year (with only startdate given)' do
@@ -78,12 +78,12 @@ RSpec.describe Place, type: :model do
     end
     it 'returns full date range with time' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '12:00', enddate_date: '2018-01-01', enddate_time: '18:00')
-      expect(p.date).to eq('01.01.18, 12:00 ‒ 18:00')
+      expect(p.date).to eq('01.01.2018, 12:00 ‒ 18:00')
     end
 
     it 'returns full date range without time' do
       p = FactoryBot.create(:place, startdate_date: '2018-01-01', startdate_time: '', enddate_date: '2018-10-15')
-      expect(p.date).to eq('01.01.18 ‒ 15.10.18')
+      expect(p.date).to eq('01.01.2018 ‒ 15.10.2018')
     end
 
     it 'returns year range' do
