@@ -108,15 +108,10 @@ class LayersController < ApplicationController
   # GET /layers/new
   def new
     @layer = Layer.new
-    generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
-    @layer.color = "##{generator.create_hex}"
     @layer.ltype = 'image' if params[:ltype] == 'image'
     @layer.ltype = 'geojson' if params[:ltype] == 'geojson'
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @colors_selectable = []
-    6.times do
-      @colors_selectable << "##{generator.create_hex}"
-    end
+    generate_colors
     if @layer.ltype == 'geojson'
       respond_to do |format|
         format.html { render :new_geojson }
@@ -126,16 +121,7 @@ class LayersController < ApplicationController
 
   # GET /layers/1/edit
   def edit
-    generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
-    if !@layer.color || params[:recolor]
-      @layer.color = "##{generator.create_hex}"
-    elsif @layer.color && !@layer.color.include?('#')
-      @layer.color = "##{@layer.color}"
-    end
-    @colors_selectable = []
-    6.times do
-      @colors_selectable << "##{generator.create_hex}"
-    end
+    generate_colors(params[:recolor])
 
     @layer.use_background_from_parent_map = false unless @layer.map.basemap_url && @layer.map.basemap_attribution && @layer.map.background_color
 
@@ -326,5 +312,18 @@ class LayersController < ApplicationController
       end
     end
     [created_places, skipped_images]
+  end
+
+  def generate_colors(recolor: false)
+    generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
+    if !@layer.color || recolor
+      @layer.color = "##{generator.create_hex}"
+    elsif @layer.color && !@layer.color.include?('#')
+      @layer.color = "##{@layer.color}"
+    end
+    @colors_selectable = []
+    6.times do
+      @colors_selectable << "##{generator.create_hex}"
+    end
   end
 end
