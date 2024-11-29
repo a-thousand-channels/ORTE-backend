@@ -138,6 +138,12 @@ class LayersController < ApplicationController
     @layer.mapcenter_lat = @layer.map.mapcenter_lat
     @layer.mapcenter_lon = @layer.map.mapcenter_lon
     @layer.zoom = @layer.map.zoom
+
+    if @layer.ltype == 'geojson'
+      respond_to do |format|
+        format.html { render :edit_geojson }
+      end
+    end
   end
 
   # POST /layers
@@ -314,7 +320,7 @@ class LayersController < ApplicationController
     [created_places, skipped_images]
   end
 
-  def generate_colors(recolor: false)
+  def generate_colors(recolor = false)
     generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
     if !@layer.color || recolor
       @layer.color = "##{generator.create_hex}"
