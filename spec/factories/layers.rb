@@ -89,8 +89,13 @@ FactoryBot.define do
     trait :invalid do
       title { nil }
     end
+
     trait :changed do
       title { 'OtherTitle' }
+    end
+
+    trait :geojson do
+      ltype { 'geojson' }
     end
   end
 end

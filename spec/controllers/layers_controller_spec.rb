@@ -228,6 +228,13 @@ RSpec.describe LayersController, type: :controller do
       it 'returns a success response' do
         get :new, params: { map_id: @map.id }, session: valid_session
         expect(response).to have_http_status(200)
+        expect(response).to render_template(:new)
+      end
+
+      it 'returns new_geojson view if ltype is geojson' do
+        get :new, params: { map_id: @map.id, ltype: 'geojson' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(response).to render_template(:new_geojson)
       end
     end
 
@@ -236,6 +243,13 @@ RSpec.describe LayersController, type: :controller do
         layer = Layer.create! valid_attributes
         get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
+      end
+
+      it 'returns edit_geojson view if ltype is geojson', focus: true do
+        layer = FactoryBot.create(:layer, :geojson, map: @map)
+        get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(response).to render_template(:edit_geojson)
       end
 
       it 'returns a success response with no color set' do
