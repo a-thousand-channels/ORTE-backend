@@ -26,6 +26,10 @@
             = tinymce
             = f.input :text, :label => 'Description', :input_html => {:rows => 8, class: 'large-text tinymce' }
         %hr
+        .grid-x.grid-padding-x
+          .large-12.medium-12.small-12.cell
+            = f.input :geojson, :label => 'GeoJSON', :input_html => {:rows => 20, class: 'large-text', style: 'resize: none' }
+        %hr
       .form-actions
         %p
           = f.button :submit, :class => "button"
