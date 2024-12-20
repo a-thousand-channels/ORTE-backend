@@ -82,7 +82,6 @@ class Layer < ApplicationRecord
 
     return unless image.attached? && image.changed? && attachment_changes['image']
 
-    filename = image.filename.to_s
     attachment_path = "#{Dir.tmpdir}/#{image.filename}"
     tmp_new_image = File.read(attachment_changes['image'].attachable[:io])
     File.open(attachment_path, 'wb') do |tmp_file|
