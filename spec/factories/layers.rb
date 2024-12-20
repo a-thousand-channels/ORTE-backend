@@ -28,6 +28,7 @@ FactoryBot.define do
     image_creator { 'The creator of the image' }
     image_caption { 'A caption for this image' }
     ltype { 'standard' }
+    geojson { '{ "type": "FeatureCollection" }' }
     map
 
     trait :with_ltype_image do
@@ -88,8 +89,13 @@ FactoryBot.define do
     trait :invalid do
       title { nil }
     end
+
     trait :changed do
       title { 'OtherTitle' }
+    end
+
+    trait :geojson do
+      ltype { 'geojson' }
     end
   end
 end

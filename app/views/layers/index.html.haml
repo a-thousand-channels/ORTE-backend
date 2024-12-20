@@ -29,7 +29,7 @@
             %i.fi-pricetag-multiple
             List of all tags
     .cell.medium-6
-      = render 'searchform', object: @map
+      = render 'layers/partials/searchform', object: @map
     .cell.medium-3
       %p.text-right.hint
         = link_to map_people_path(@map) do
@@ -96,3 +96,9 @@
           %i.fi-plus.fi-18
           New Image Layer
       %p.shy Import a batch of images and create a new layer
+    .cell.medium-3 
+      %p         
+        = link_to new_map_layer_path(@map, :ltype => 'geojson'), :class=>'button small' do
+          %i.fi-plus.fi-18
+          New GeoJSON Layer
+      %p.shy Import a GeoJSON

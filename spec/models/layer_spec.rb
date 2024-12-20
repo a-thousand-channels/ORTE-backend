@@ -88,7 +88,7 @@ RSpec.describe Layer, type: :model do
       l.image.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       l.save!
       l.reload
-      expect(l.get_exif_data['GPSLatitude']).to match('10/1, 0/1, 0/1')
+      expect(l.get_exif_data['GPSLatitude']).to match('10/1,0/1,0/1')
     end
 
     it 'should remove EXIF data' do
