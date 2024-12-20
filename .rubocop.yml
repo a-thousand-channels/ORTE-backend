@@ -91,6 +91,9 @@ Style/SymbolProc:
 Style/ClassVars:
   Exclude:
 
+Style/OptionalBooleanParameter:
+  Enabled: false
+
 AllCops:
   Exclude:
     - "bin/**/*"
