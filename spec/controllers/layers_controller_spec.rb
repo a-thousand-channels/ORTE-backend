@@ -245,7 +245,7 @@ RSpec.describe LayersController, type: :controller do
         expect(response).to have_http_status(200)
       end
 
-      it 'returns edit_geojson view if ltype is geojson', focus: true do
+      it 'returns edit_geojson view if ltype is geojson' do
         layer = FactoryBot.create(:layer, :geojson, map: @map)
         get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
