@@ -474,7 +474,14 @@ jQuery(function ($) {
 
   // layers: show all places
   if ( $('body').attr('id') === 'layers' )  {
-    ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
+    const layer_json_url = $('#selection').data('url')
+    if ( $('#selection').data('ltype') === 'geojson' ) {
+      $.getJSON(layer_json_url, function(data) {
+        L.geoJSON(JSON.parse(data.geojson)).addTo(map)
+      })
+    } else {
+      ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
+    }
   }
   if ( $('body').attr('id') === 'places' )  {
     ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'places');

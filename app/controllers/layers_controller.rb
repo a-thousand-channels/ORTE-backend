@@ -97,7 +97,11 @@ class LayersController < ApplicationController
       @place = Place.find(params[:place_id]) if params[:remap]
       respond_to do |format|
         format.html { render :show }
-        format.json { render :show }
+        if @layer.ltype == 'geojson'
+          format.json { render :show_geojson }
+        else
+          format.json { render :show }
+        end
         format.csv { send_data @places.to_csv, filename: "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.csv" }
       end
     else
