@@ -112,9 +112,12 @@ class LayersController < ApplicationController
     @layer.ltype = 'geojson' if params[:ltype] == 'geojson'
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     generate_colors
-    if @layer.ltype == 'geojson'
-      respond_to do |format|
+
+    respond_to do |format|
+      if @layer.ltype == 'geojson'
         format.html { render :new_geojson }
+      else
+        format.html { render :new }
       end
     end
   end
@@ -139,9 +142,11 @@ class LayersController < ApplicationController
     @layer.mapcenter_lon = @layer.map.mapcenter_lon
     @layer.zoom = @layer.map.zoom
 
-    if @layer.ltype == 'geojson'
-      respond_to do |format|
+    respond_to do |format|
+      if @layer.ltype == 'geojson'
         format.html { render :edit_geojson }
+      else
+        format.html { render :edit }
       end
     end
   end
