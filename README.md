@@ -1,4 +1,4 @@
-![Release](https://badgen.net/github/release/a-thousand-channels/ORTE-backend) ![Last commit](https://badgen.net/github/last-commit/a-thousand-channels/ORTE-backend/main) 
+![Release](https://badgen.net/github/release/a-thousand-channels/ORTE-backend/main) ![Last commit](https://badgen.net/github/last-commit/a-thousand-channels/ORTE-backend/main) 
 ![GitHub contributors](https://img.shields.io/github/contributors-anon/a-thousand-channels/ORTE-backend)
 ![Code Coverage w/SimpleCov](https://img.shields.io/badge/code_coverage-95%25-green) [![Linters + RSpec](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml/badge.svg)](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
 
