@@ -39,7 +39,7 @@
           #{@old_place.lat[0..4]}/#{@old_place.lon[0..4]}
           \-->
         - if @place.lat && @place.lon
-          #{@place.lat[0..4]}/#{@place.lon[0..4]}
+          #{@place.lat[0..9]}, #{@place.lon[0..9]}
           %a{href: '', title: 'Edit coordinates', id: 'edit_coordinates'}
             %i.fi.fi-pencil.fi-13
           %a{href: '', title: 'Edit coordinates', id: 'edit_coordinates_cancel'}
@@ -121,10 +121,10 @@
           .large-5.medium-4.small-4.cell
             %p.small.compact#startdate_qualifier_label
               %a{href: '', title: 'Define date quality', id: 'define_startdate_qualifier'}
-                Startdate quality
+                Startdate qualifier
                 %i.fi.fi-pencil.fi-13                
               %a{href: '', title: 'Define date quality', id: 'define_startdate_qualifier_cancel'}
-                Startdate quality
+                Startdate qualifier
                 %i.fi.fi-x.fi-13
               %span#startdate_qualifier_preview
             = f.input :startdate_qualifier, :label => false, :collection => qualifier_for_select, include_blank: ' ', :selected => @place.startdate_qualifier         
