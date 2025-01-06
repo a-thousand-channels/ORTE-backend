@@ -39,6 +39,8 @@ function PopupFullContent(place) {
         content += "<img src='" + place.imagelink + "' />";
     }
     content += '<div class="leaflet-popup-content-text">';
+
+    content += "<p class='label' style='background-color: "+place.color+"; color: #444;'>" + place.layer_title + "</p>";
     if (place.date_with_qualifier) {
         content += "<p>" + place.date_with_qualifier;
         if (place.address) {

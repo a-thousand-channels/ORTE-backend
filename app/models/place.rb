@@ -3,8 +3,6 @@
 require 'csv'
 
 class Place < ApplicationRecord
-  # self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
-
   belongs_to :layer
   belongs_to :icon, optional: true
 
@@ -18,17 +16,17 @@ class Place < ApplicationRecord
   has_many :relations_froms, foreign_key: 'relation_from_id',
                              class_name: 'Relation',
                              dependent: :destroy
+  has_many :annotations
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
+  accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
-  has_many :annotations
-  accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
-  validates :title, presence: true
   validate :check_audio_format
+  validates :title, presence: true
   validates :lat, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid latitude value' }
   validates :lon, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid longitude value' }
   validates :lat, presence: true, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }
