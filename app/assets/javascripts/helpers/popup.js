@@ -41,7 +41,7 @@ function PopupFullContent(place) {
     content += '<div class="leaflet-popup-content-text">';
 
     var layer_title = place.layer_title;
-    if (layer_title.length > 30) {
+    if ( layer_title && ( layer_title.length > 30)) {
         layer_title = layer_title.substring(0, 30) + "...";
     }
     content += "<p class='label' style='background-color: "+place.layer_color+"; color: #444;'>" + layer_title + "</p>";
