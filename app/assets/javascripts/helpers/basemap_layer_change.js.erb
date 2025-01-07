@@ -135,15 +135,17 @@ function BaseMapLayerChange(map,action) {
         $('#map').removeClass('darken-label');
     }
 
-    if ( action !== 'setup') {
+    if (( action !== 'setup') && ( $('#selection').data('data-map-enable-time-slider') == 'true' ) ) {
         // refresh markers
         let startyear = $('#selection').data('map-selected-year');
         if ( startyear !== undefined ) {
           console.log("BaseMapLayerChange: startyear",startyear);
           const yearDivs = document.querySelectorAll(".year");
           let el = document.getElementById('year'+startyear); 
-          console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
-          SelectAndFilterByYear(el, yearDivs, startyear, el.getAttribute('data-places'));  
+          if ( el && el.getAttribute('data-places') ) {
+            console.log("Timeline: Year with places",startyear, el.getAttribute('data-places'))
+            SelectAndFilterByYear(el, yearDivs, startyear, el.getAttribute('data-places'));  
+          }
         }
     }
       
