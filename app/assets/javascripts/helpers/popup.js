@@ -40,7 +40,11 @@ function PopupFullContent(place) {
     }
     content += '<div class="leaflet-popup-content-text">';
 
-    content += "<p class='label' style='background-color: "+place.layer_color+"; color: #444;'>" + place.layer_title + "</p>";
+    var layer_title = place.layer_title;
+    if (layer_title.length > 30) {
+        layer_title = layer_title.substring(0, 30) + "...";
+    }
+    content += "<p class='label' style='background-color: "+place.layer_color+"; color: #444;'>" + layer_title + "</p>";
     if (place.date_with_qualifier) {
         content += "<p>" + place.date_with_qualifier;
         if (place.address) {
