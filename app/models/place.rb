@@ -124,6 +124,10 @@ class Place < ApplicationRecord
     layer.color
   end
 
+  def layer_color
+    layer.color
+  end
+
   def date
     ApplicationController.helpers.smart_date_display(startdate, enddate)
   end
@@ -136,16 +140,16 @@ class Place < ApplicationRecord
     end
   end
 
+  def url
+    ApplicationController.helpers.url(layer.map.id, layer.id, id)
+  end
+
   def show_link
     ApplicationController.helpers.show_link(title, layer.map.id, layer.id, id)
   end
 
   def edit_link
     ApplicationController.helpers.edit_link(layer.map.id, layer.id, id)
-  end
-
-  def layer_color
-    layer.color
   end
 
   def icon_name

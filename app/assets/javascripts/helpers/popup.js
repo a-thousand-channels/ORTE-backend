@@ -40,7 +40,7 @@ function PopupFullContent(place) {
     }
     content += '<div class="leaflet-popup-content-text">';
 
-    content += "<p class='label' style='background-color: "+place.color+"; color: #444;'>" + place.layer_title + "</p>";
+    content += "<p class='label' style='background-color: "+place.layer_color+"; color: #444;'>" + place.layer_title + "</p>";
     if (place.date_with_qualifier) {
         content += "<p>" + place.date_with_qualifier;
         if (place.address) {
@@ -73,6 +73,9 @@ function PopupFullContent(place) {
         }
         content += "<p>" + teaser + "</p>";
     }
+    if (place.url) {
+        content += "<p><a href='" + place.url + "'>Read more</a></p>";
+    }    
     if (place.edit_link) {
         content += "<p class='text-right'>" + place.edit_link + "</p>";
     }
