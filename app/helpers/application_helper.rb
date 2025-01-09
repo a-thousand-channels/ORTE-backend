@@ -95,7 +95,7 @@ module ApplicationHelper
               # ca. 1980s
               "ca. #{startdate.strftime('%Y')}s ‒ #{enddate.strftime('%Y')}s"
             end
-          elsif startdate.strftime('%Y').to_i == enddate.strftime('%Y')
+          elsif startdate.strftime('%Y').to_i == enddate.strftime('%Y').to_i
             if startdate.strftime('%d.%m') == '01.01' && enddate.strftime('%d.%m') == '31.12'
               # ca. 1981
               "ca. #{startdate.strftime('%Y')}"

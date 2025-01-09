@@ -122,6 +122,16 @@ RSpec.describe ApplicationHelper, type: :helper do
       enddate = '2017-01-01 00:00:00'.to_time
       expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', 'circa')).to eq('ca. 2015 ‒ 2017')
     end
+    it 'returns ca. %Y ‒ %Y with qualifier/2' do
+      startdate = '2015-01-01 00:00:00'.to_time
+      enddate = '2016-01-01 00:00:00'.to_time
+      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', 'circa')).to eq('ca. 2015 ‒ 2016')
+    end
+    it 'returns ca. %Y with qualifier' do
+      startdate = '2015-01-01 00:00:00'.to_time
+      enddate = '2015-12-31 00:00:00'.to_time
+      expect(helper.smart_date_display_with_qualifier(startdate, enddate, 'circa', 'circa')).to eq('ca. 2015')
+    end
     it 'returns ca. %Ys with qualifier' do
       startdate = '2010-01-01 00:00:00'.to_time
       enddate = '2020-01-01 00:00:00'.to_time
