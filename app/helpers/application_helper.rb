@@ -74,7 +74,13 @@ module ApplicationHelper
       startdate.strftime('%-d.%-m.%Y, %H:%M').to_s
     elsif startdate == enddate
       if startdate.strftime('%H:%M') == '00:00'
-        startdate.strftime('%-d.%-m.%Y').to_s
+        if startdate_qualifier == 'circa' && enddate_qualifier == 'circa'
+          # ca. 1980s
+          "ca. #{startdate.strftime('%Y')}"
+        else
+          # 1.1.1980
+          startdate.strftime('%-d.%-m.%Y').to_s
+        end
       else
         startdate.strftime('%-d.%-m.%Y, %H:%M').to_s
       end
