@@ -78,7 +78,7 @@ function PopupFullContent(place) {
         content += "<p>" + teaser + "</p>";
     }
     if (place.url) {
-        content += "<p><a href='" + place.url + "'>Read more</a></p>";
+        content += "<p><a href='" + place.url + "'>&gt;&gt;</a></p>";
     }    
     if (place.edit_link) {
         content += "<p class='text-right'>" + place.edit_link + "</p>";
