@@ -479,6 +479,7 @@ jQuery(function ($) {
       $.getJSON(layer_json_url, function(data) {
         const geoJsonLayer = L.geoJSON(JSON.parse(data.geojson)).addTo(map);
         map.fitBounds(geoJsonLayer.getBounds().pad(0.35));
+        $('.loader_wrapper').hide(300);
       })
     } else {
       ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
