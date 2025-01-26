@@ -474,10 +474,11 @@ jQuery(function ($) {
 
   // layers: show all places
   if ( $('body').attr('id') === 'layers' )  {
-    const layer_json_url = $('#selection').data('url')
     if ( $('#selection').data('ltype') === 'geojson' ) {
+      const layer_json_url = $('#selection').data('url')
       $.getJSON(layer_json_url, function(data) {
-        L.geoJSON(JSON.parse(data.geojson)).addTo(map)
+        const geoJsonLayer = L.geoJSON(JSON.parse(data.geojson)).addTo(map);
+        map.fitBounds(geoJsonLayer.getBounds().pad(0.35));
       })
     } else {
       ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curve_layers,'layers');
@@ -544,4 +545,3 @@ function scrollToAnchor(aid){
   var aTag = $("a[name='"+ aid +"']");
   $('html,body').animate({scrollTop: aTag.offset().top},'slow');
 }
-
