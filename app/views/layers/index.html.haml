@@ -57,7 +57,10 @@
                     %circle{cx:"15",cy:"15",r:"15",fill:"#{layer.color}"}
               = link_to map_layer_url(layer.map,layer) do
                 = layer.title
-                (#{layer.places.count})
+                - if layer.ltype == 'geojson'
+                  %small (GeoJSON)
+                - else
+                  %small (#{layer.places.count})
               - if layer.published
                 %i.fi-eye.fi-24{title: 'Layer is published'}
               - else
