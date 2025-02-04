@@ -1,4 +1,7 @@
-![Release](https://badgen.net/github/release/a-thousand-channels/ORTE-backend) ![Last commit](https://badgen.net/github/last-commit/a-thousand-channels/ORTE-backend/main) ![Code Coverage w/SimpleCov](https://img.shields.io/badge/code_coverage-95%25-green) [![Linters + RSpec](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml/badge.svg)](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
+![GitHub Release](https://img.shields.io/github/v/release/a-thousand-channels/ORTE-backend?display_name=release)
+![main](https://img.shields.io/github/last-commit/a-thousand-channels/ORTE-backend/main)
+![GitHub contributors](https://img.shields.io/github/contributors-anon/a-thousand-channels/ORTE-backend)
+![Code Coverage w/SimpleCov](https://img.shields.io/badge/code_coverage-95%25-green) [![Linters + RSpec](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml/badge.svg)](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
 
 
 # ORTE-backend
@@ -30,12 +33,19 @@ Basic steps for a local installation on your machine:
 
 ### Requirements
 
-* Webserver (e.g. Apache or NGINX)
-* Passenger stand-alone
-* Ruby 2.7+, RVM, Rubygems
+#### Development
+
+* Ruby 3.3+, RVM, Rubygems
 * MySQL/Maria DB
 * ffmpeg (for the video feature), ImageMagick (for the image feature)
 * Redis
+
+#### Production
+
+Additional requirements for production
+
+* Webserver (e.g. Apache or NGINX)
+* Passenger stand-alone
 
 ### Get repository
 
@@ -53,8 +63,8 @@ $ bundle install
 
 ```bash
 $ sudo mysql -u root
-> CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
-> GRANT ALL PRIVILEGES ON *.* TO 'user'@'localhost';
+> CREATE USER 'orte'@'localhost' IDENTIFIED BY 'orte00';
+> GRANT ALL PRIVILEGES ON *.* TO 'orte'@'localhost';
 > CREATE DATABASE orte CHARACTER SET utf8 COLLATE utf8_general_ci;
 > CREATE DATABASE orte_test CHARACTER SET utf8 COLLATE utf8_general_ci;
 > exit;

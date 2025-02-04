@@ -63,8 +63,17 @@
     margin-right: 5px;
 }
 #map.leaflet-container a {
-    color: darken(#c6c600,10%);
+  color: darken(#c6c600,10%);
+}
 
+/* this is not design guide conform, needs adapation for all UI links and buttons */
+/*
+#map.leaflet-container h4 a {
+  text-decoration: underline;
+}
+  */
+#map.leaflet-container a:hover {
+  color: darken(#c6c600,20%);
 }
 .leaflet-bar a, .leaflet-bar a:hover {
   background-color: #333;

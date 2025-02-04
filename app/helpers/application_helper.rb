@@ -22,21 +22,21 @@ module ApplicationHelper
         if startdate.strftime('%d.%m') == '01.01'
           startdate.strftime('%Y').to_s
         else
-          startdate.strftime('%d.%m.%y').to_s
+          startdate.strftime('%d.%m.%Y').to_s
         end
       else
-        startdate.strftime('%d.%m.%y, %H:%M').to_s
+        startdate.strftime('%d.%m.%Y, %H:%M').to_s
       end
     elsif startdate > enddate
-      startdate.strftime('%d.%m.%y, %H:%M').to_s
+      startdate.strftime('%d.%m.%Y, %H:%M').to_s
     elsif startdate == enddate
       if startdate.strftime('%H:%M') == '00:00'
-        startdate.strftime('%d.%m.%y').to_s
+        startdate.strftime('%d.%m.%Y').to_s
       else
-        startdate.strftime('%d.%m.%y, %H:%M').to_s
+        startdate.strftime('%d.%m.%Y, %H:%M').to_s
       end
     elsif startdate.to_date == enddate.to_date
-      "#{startdate.strftime('%d.%m.%y, %H:%M')} ‒ #{enddate.strftime('%H:%M')}"
+      "#{startdate.strftime('%d.%m.%Y, %H:%M')} ‒ #{enddate.strftime('%H:%M')}"
     else
       if startdate.strftime('%H:%M') == '00:00'
         if startdate.strftime('%d.%m') == '01.01' && enddate.strftime('%d.%m') == '01.01'
@@ -44,10 +44,10 @@ module ApplicationHelper
         elsif (startdate.strftime('%d.%m') == '01.01' && enddate.strftime('%d.%m') == '31.12') && (startdate.strftime('%Y') == enddate.strftime('%Y'))
           startdate.strftime('%Y').to_s
         else
-          "#{startdate.strftime('%d.%m.%y')} ‒ #{enddate.strftime('%d.%m.%y')}"
+          "#{startdate.strftime('%d.%m.%Y')} ‒ #{enddate.strftime('%d.%m.%Y')}"
         end
       else
-        "#{startdate.strftime('%d.%m.%y, %H:%M')} ‒ #{enddate.strftime('%d.%m.%y, %H:%M')}"
+        "#{startdate.strftime('%d.%m.%Y, %H:%M')} ‒ #{enddate.strftime('%d.%m.%Y, %H:%M')}"
       end
     end
   end
@@ -64,22 +64,28 @@ module ApplicationHelper
           if startdate.strftime('%d.%m') == '01.01'
             startdate.strftime('%Y').to_s
           else
-            startdate.strftime('%-d.%-m.%y').to_s
+            startdate.strftime('%-d.%-m.%Y').to_s
           end
         else
-          startdate.strftime('%-d.%-m.%y, %H:%M').to_s
+          startdate.strftime('%-d.%-m.%Y, %H:%M').to_s
         end
       end
     elsif startdate > enddate
-      startdate.strftime('%-d.%-m.%y, %H:%M').to_s
+      startdate.strftime('%-d.%-m.%Y, %H:%M').to_s
     elsif startdate == enddate
       if startdate.strftime('%H:%M') == '00:00'
-        startdate.strftime('%-d.%-m.%y').to_s
+        if startdate_qualifier == 'circa' && enddate_qualifier == 'circa'
+          # ca. 1980s
+          "ca. #{startdate.strftime('%Y')}"
+        else
+          # 1.1.1980
+          startdate.strftime('%-d.%-m.%Y').to_s
+        end
       else
-        startdate.strftime('%-d.%-m.%y, %H:%M').to_s
+        startdate.strftime('%-d.%-m.%Y, %H:%M').to_s
       end
     elsif startdate.to_date == enddate.to_date
-      "#{startdate.strftime('%-d.%-m.%y, %H:%M')} ‒ #{enddate.strftime('%H:%M')}"
+      "#{startdate.strftime('%-d.%-m.%Y, %H:%M')} ‒ #{enddate.strftime('%H:%M')}"
     else
       if startdate_qualifier == 'circa'
         if enddate_qualifier == 'circa'
@@ -95,8 +101,19 @@ module ApplicationHelper
               # ca. 1980s
               "ca. #{startdate.strftime('%Y')}s ‒ #{enddate.strftime('%Y')}s"
             end
+          elsif startdate.strftime('%Y').to_i == enddate.strftime('%Y').to_i
+            if startdate.strftime('%d.%m') == '01.01' && enddate.strftime('%d.%m') == '31.12'
+              # ca. 1981
+              "ca. #{startdate.strftime('%Y')}"
+            elsif startdate.strftime('%d.%m') == '01.01' && enddate.strftime('%d.%m') == '01.01'
+              # ca. 1981
+              "ca. #{startdate.strftime('%Y')}"
+            else
+              # ca. 15.11. ‒ 30.11.2020
+              "ca. #{startdate.strftime('%-d.%-m')} ‒ #{enddate.strftime('%-d.%-m.%Y')}"
+            end
           else
-            # ca. 1980 ‒ 2020
+            # ca. 1981 ‒ 2025
             "ca. #{startdate.strftime('%Y')} ‒ #{enddate.strftime('%Y')}"
           end
         elsif enddate_qualifier == 'exact'
@@ -136,12 +153,13 @@ module ApplicationHelper
           if startdate.strftime('%d.%m') == '01.01' && enddate.strftime('%d.%m') == '01.01'
             "#{startdate.strftime('%Y')} ‒ #{enddate.strftime('%Y')}"
           elsif (startdate.strftime('%d.%m') == '01.01' && enddate.strftime('%d.%m') == '31.12') && (startdate.strftime('%Y') == enddate.strftime('%Y'))
+            # 01.01.2020 ‒ 31.12.2020
             startdate.strftime('%Y').to_s
           else
-            "#{startdate.strftime('%-d.%-m.%y')} ‒ #{enddate.strftime('%-d.%-m.%y')}"
+            "#{startdate.strftime('%-d.%-m.%Y')} ‒ #{enddate.strftime('%-d.%-m.%Y')}"
           end
         else
-          "#{startdate.strftime('%-d.%-m.%y, %H:%M')} ‒ #{enddate.strftime('%-d.%-m.%y, %H:%M')}"
+          "#{startdate.strftime('%-d.%-m.%Y, %H:%M')} ‒ #{enddate.strftime('%-d.%-m.%Y, %H:%M')}"
         end
       end
     end

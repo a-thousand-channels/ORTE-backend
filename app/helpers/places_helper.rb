@@ -11,6 +11,12 @@ module PlacesHelper
     [['Exact date', 'exact'], ['Approx. date', 'circa']]
   end
 
+  def url(map_id, layer_id, id)
+    map = Map.friendly.find(map_id)
+    layer = Layer.friendly.find(layer_id)
+    "#{Rails.application.config_for(:settings).app_host_protocol}://#{Rails.application.config_for(:settings).app_host}/maps/#{map.slug}/layers/#{layer.slug}/places/#{id}"
+  end
+
   def show_link(title, map_id, layer_id, id)
     " <a href=\"/maps/#{map_id}/layers/#{layer_id}/places/#{id}\">#{title}</a>"
   end

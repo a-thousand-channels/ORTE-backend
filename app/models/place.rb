@@ -3,8 +3,6 @@
 require 'csv'
 
 class Place < ApplicationRecord
-  # self.skip_time_zone_conversion_for_attributes = [:startdate,:startdate_date,:startdate_time]
-
   belongs_to :layer
   belongs_to :icon, optional: true
 
@@ -18,17 +16,17 @@ class Place < ApplicationRecord
   has_many :relations_froms, foreign_key: 'relation_from_id',
                              class_name: 'Relation',
                              dependent: :destroy
+  has_many :annotations
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
+  accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
   has_many :images, dependent: :destroy
   has_many :videos, dependent: :destroy
   has_many :submissions, dependent: :destroy
-  has_many :annotations
-  accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
-  validates :title, presence: true
   validate :check_audio_format
+  validates :title, presence: true
   validates :lat, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid latitude value' }
   validates :lon, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid longitude value' }
   validates :lat, presence: true, numericality: { greater_than_or_equal_to: -90, less_than_or_equal_to: 90 }
@@ -126,6 +124,10 @@ class Place < ApplicationRecord
     layer.color
   end
 
+  def layer_color
+    layer.color
+  end
+
   def date
     ApplicationController.helpers.smart_date_display(startdate, enddate)
   end
@@ -138,16 +140,16 @@ class Place < ApplicationRecord
     end
   end
 
+  def url
+    ApplicationController.helpers.url(layer.map.id, layer.id, id)
+  end
+
   def show_link
     ApplicationController.helpers.show_link(title, layer.map.id, layer.id, id)
   end
 
   def edit_link
     ApplicationController.helpers.edit_link(layer.map.id, layer.id, id)
-  end
-
-  def layer_color
-    layer.color
   end
 
   def icon_name
