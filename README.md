@@ -35,7 +35,7 @@ Basic steps for a local installation on your machine:
 
 #### Development
 
-* Ruby 3.3+, RVM, Rubygems
+* Ruby 3.2+, RVM, Rubygems
 * MySQL/Maria DB
 * ffmpeg (for the video feature), ImageMagick (for the image feature)
 * Redis
@@ -108,7 +108,7 @@ You can define your mapbox token in the credentials (token[:mapbox])
 $ bundle exec rails s
 ```
 
-### Test applocation locally
+### Test application locally
 
 
 ```bash
