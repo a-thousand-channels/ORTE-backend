@@ -97,7 +97,11 @@ class LayersController < ApplicationController
       @place = Place.find(params[:place_id]) if params[:remap]
       respond_to do |format|
         format.html { render :show }
-        format.json { render :show }
+        if @layer.ltype == 'geojson'
+          format.json { render :show_geojson }
+        else
+          format.json { render :show }
+        end
         format.csv { send_data @places.to_csv, filename: "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.csv" }
       end
     else
@@ -108,28 +112,23 @@ class LayersController < ApplicationController
   # GET /layers/new
   def new
     @layer = Layer.new
-    generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
-    @layer.color = "##{generator.create_hex}"
     @layer.ltype = 'image' if params[:ltype] == 'image'
+    @layer.ltype = 'geojson' if params[:ltype] == 'geojson'
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @colors_selectable = []
-    6.times do
-      @colors_selectable << "##{generator.create_hex}"
+    generate_colors
+
+    respond_to do |format|
+      if @layer.ltype == 'geojson'
+        format.html { render :new_geojson }
+      else
+        format.html { render :new }
+      end
     end
   end
 
   # GET /layers/1/edit
   def edit
-    generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
-    if !@layer.color || params[:recolor]
-      @layer.color = "##{generator.create_hex}"
-    elsif @layer.color && !@layer.color.include?('#')
-      @layer.color = "##{@layer.color}"
-    end
-    @colors_selectable = []
-    6.times do
-      @colors_selectable << "##{generator.create_hex}"
-    end
+    generate_colors(params[:recolor])
 
     @layer.use_background_from_parent_map = false unless @layer.map.basemap_url && @layer.map.basemap_attribution && @layer.map.background_color
 
@@ -146,6 +145,14 @@ class LayersController < ApplicationController
     @layer.mapcenter_lat = @layer.map.mapcenter_lat
     @layer.mapcenter_lon = @layer.map.mapcenter_lon
     @layer.zoom = @layer.map.zoom
+
+    respond_to do |format|
+      if @layer.ltype == 'geojson'
+        format.html { render :edit_geojson }
+      else
+        format.html { render :edit }
+      end
+    end
   end
 
   # POST /layers
@@ -243,7 +250,7 @@ class LayersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def layer_params
-    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :ltype, :images_creator, :images_licence, :images_source, images_files: [])
+    params.require(:layer).permit(:title, :subtitle, :teaser, :text, :credits, :published, :public_submission, :map_id, :color, :background_color, :tooltip_display_mode, :places_sort_order, :basemap_url, :basemap_attribution, :mapcenter_lat, :mapcenter_lon, :zoom, :use_mapcenter_from_parent_map, :image, :backgroundimage, :use_background_from_parent_map, :favicon, :exif_remove, :rasterize_images, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :ltype, :images_creator, :images_licence, :images_source, :geojson, images_files: [])
   end
 
   def validate_images_format
@@ -320,5 +327,18 @@ class LayersController < ApplicationController
       end
     end
     [created_places, skipped_images]
+  end
+
+  def generate_colors(recolor = false)
+    generator = ColorGenerator.new saturation: 0.8, lightness: 0.7
+    if !@layer.color || recolor
+      @layer.color = "##{generator.create_hex}"
+    elsif @layer.color && !@layer.color.include?('#')
+      @layer.color = "##{@layer.color}"
+    end
+    @colors_selectable = []
+    6.times do
+      @colors_selectable << "##{generator.create_hex}"
+    end
   end
 end

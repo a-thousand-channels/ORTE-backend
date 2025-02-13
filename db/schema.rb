@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_08_23_171654) do
+ActiveRecord::Schema.define(version: 2024_11_15_171956) do
 
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
@@ -154,8 +154,10 @@ ActiveRecord::Schema.define(version: 2024_08_23_171654) do
     t.string "image_caption"
     t.boolean "use_background_from_parent_map", default: true
     t.string "ltype", default: "standard"
+    t.text "geojson", size: :long, collation: "utf8mb4_bin"
     t.index ["map_id"], name: "index_layers_on_map_id"
     t.index ["slug"], name: "index_layers_on_slug", unique: true
+    t.check_constraint "json_valid(`geojson`)", name: "geojson"
   end
 
   create_table "maps", charset: "utf8mb3", force: :cascade do |t|
@@ -203,9 +205,9 @@ ActiveRecord::Schema.define(version: 2024_08_23_171654) do
     t.bigint "translatable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
+    t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translate_translatable_attribute"
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_string_translations_on_keys", unique: true
-    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
+    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translate_query_keys"
   end
 
   create_table "mobility_text_translations", charset: "utf8mb3", force: :cascade do |t|
@@ -264,7 +266,6 @@ ActiveRecord::Schema.define(version: 2024_08_23_171654) do
     t.string "imagelink"
     t.integer "icon_id"
     t.boolean "featured", default: false
-    t.string "ptype", default: "info"
     t.boolean "shy", default: false
     t.boolean "sensitive", default: false
     t.integer "sensitive_radius", default: 100
@@ -333,7 +334,6 @@ ActiveRecord::Schema.define(version: 2024_08_23_171654) do
     t.string "context", limit: 128
     t.datetime "created_at"
     t.index ["context"], name: "index_taggings_on_context"
-    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true
     t.index ["tag_id"], name: "index_taggings_on_tag_id"
     t.index ["taggable_id", "taggable_type", "context"], name: "taggings_taggable_context_idx"
     t.index ["taggable_id", "taggable_type", "tagger_id", "context"], name: "taggings_idy"
@@ -348,7 +348,6 @@ ActiveRecord::Schema.define(version: 2024_08_23_171654) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "taggings_count", default: 0
-    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", charset: "utf8mb3", force: :cascade do |t|
@@ -364,8 +363,8 @@ ActiveRecord::Schema.define(version: 2024_08_23_171654) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.bigint "group_id"
-    t.datetime "created_at", default: "2021-09-03 18:29:24", null: false
-    t.datetime "updated_at", default: "2021-09-03 18:29:24", null: false
+    t.datetime "created_at", default: "2024-11-06 16:24:00", null: false
+    t.datetime "updated_at", default: "2024-11-06 16:24:00", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -386,6 +385,7 @@ ActiveRecord::Schema.define(version: 2024_08_23_171654) do
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
