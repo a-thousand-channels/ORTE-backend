@@ -29,7 +29,7 @@
             %i.fi-pricetag-multiple
             List of all tags
     .cell.medium-6
-      = render 'searchform', object: @map
+      = render 'layers/partials/searchform', object: @map
     .cell.medium-3
       %p.text-right.hint
         = link_to map_people_path(@map) do
@@ -57,7 +57,10 @@
                     %circle{cx:"15",cy:"15",r:"15",fill:"#{layer.color}"}
               = link_to map_layer_url(layer.map,layer) do
                 = layer.title
-                (#{layer.places.count})
+                - if layer.ltype == 'geojson'
+                  %small (GeoJSON)
+                - else
+                  %small (#{layer.places.count})
               - if layer.published
                 %i.fi-eye.fi-24{title: 'Layer is published'}
               - else
@@ -96,3 +99,9 @@
           %i.fi-plus.fi-18
           New Image Layer
       %p.shy Import a batch of images and create a new layer
+    .cell.medium-3 
+      %p         
+        = link_to new_map_layer_path(@map, :ltype => 'geojson'), :class=>'button small' do
+          %i.fi-plus.fi-18
+          New GeoJSON Layer
+      %p.shy Import a GeoJSON
