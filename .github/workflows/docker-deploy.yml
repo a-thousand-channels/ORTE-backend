@@ -9,7 +9,7 @@ on:
     - v*
 
 env:
-  IMAGE_NAME: a-thousand-channels/orte-backend
+  IMAGE_NAME: a1000c/orte-backend
 
 jobs:
   build:
@@ -37,7 +37,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
         with:
-          username: ????
+          username: a1000c
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       # Build and push Docker image with Buildx (don't push on PR)
