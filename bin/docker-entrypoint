@@ -3,7 +3,10 @@
 # If running the rails server then create or migrate existing database
 # and ensure that all flippers are known
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-    ./bin/rails db:prepare
+    # See https://stackoverflow.com/a/40019538/431715
+    # `db:prepare` since Rails 7.1 will not call `db:migrate` anymore, we need to emulate
+    # this while we are not on 7.1
+    (./bin/rails db:migrate:status 2>/dev/null || ./bin/rails db:setup) && ./bin/rails db:migrate
     ./bin/rails db:seed
 fi
 

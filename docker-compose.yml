@@ -24,6 +24,7 @@ services:
       RAILS_DB_HOST: db
       RAILS_DB_PASSWORD: orte00
       RAILS_SERVE_STATIC_FILES: true
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     depends_on:
       db:
         condition: service_healthy

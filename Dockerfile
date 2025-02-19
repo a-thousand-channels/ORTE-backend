@@ -9,13 +9,14 @@ WORKDIR /rails
 ARG RAILS_MASTER_KEY
 # Set production environment
 ENV RAILS_ENV="production" \
-    RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
     BUNDLE_DEPLOYMENT="1" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
 # Throw-away build stage to reduce size of final image
 FROM base AS build
+
+ENV RAILS_MASTER_KEY=$RAILS_MASTER_KEY
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
@@ -53,6 +54,7 @@ COPY --from=build /rails /rails
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd rails && \
     useradd rails -g rails --create-home --shell /bin/bash && \
+    mkdir -p db log storage tmp && \
     chown -R rails:rails db log storage tmp
 USER rails:rails
 
