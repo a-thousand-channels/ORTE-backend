@@ -3,7 +3,7 @@
 require 'csv'
 
 class Place < ApplicationRecord
-  belongs_to :layer, touch: true
+  belongs_to :layer
   belongs_to :icon, optional: true
 
   acts_as_taggable_on :tags
@@ -102,10 +102,6 @@ class Place < ApplicationRecord
     [x + long.to_f, y + lat.to_f]
   end
 
-  def layer_id
-    layer.id
-  end
-
   def layer_title
     layer.title
   end
@@ -143,7 +139,7 @@ class Place < ApplicationRecord
   end
 
   def show_link
-    ApplicationController.helpers.show_link(title, layer.map.id, layer.id, id)
+    ApplicationController.helpers.show_link(title, layer.map_id, layer.id, id)
   end
 
   def edit_link
@@ -163,7 +159,7 @@ class Place < ApplicationRecord
   end
 
   def imagelink2
-    i = Image.preview(id)
+    i = images.filter { |image| image.place_id == id && image.preview }
     i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 
