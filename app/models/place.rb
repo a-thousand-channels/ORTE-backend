@@ -3,7 +3,7 @@
 require 'csv'
 
 class Place < ApplicationRecord
-  belongs_to :layer
+  belongs_to :layer, touch: true
   belongs_to :icon, optional: true
 
   acts_as_taggable_on :tags

@@ -2,7 +2,7 @@
 
 include ActionView::Helpers::NumberHelper
 class Layer < ApplicationRecord
-  belongs_to :map
+  belongs_to :map, touch: true
   has_many :places, dependent: :destroy
   has_one :submission_config
   has_many :build_logs, dependent: :destroy
