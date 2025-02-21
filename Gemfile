@@ -17,7 +17,7 @@ gem 'friendly_id'
 
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
-gem 'redis', '~> 4'
+gem 'redis', '~> 5'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
 gem 'deep_cloneable', '~> 3'
@@ -48,13 +48,13 @@ gem 'image_processing', '~> 1.2'
 gem 'mini_racer', platforms: :ruby
 gem 'nokogiri'
 
-gem 'acts-as-taggable-on', '~> 9'
+gem 'acts-as-taggable-on'
 gem 'color-generator'
 gem 'mini_exiftool'
 gem 'mini_magick'
-gem 'mobility', '~> 1.2'
+gem 'mobility'
 gem 'rubyzip'
-gem 'tinymce-rails', '~> 5'
+gem 'tinymce-rails'
 gem 'turnout'
 
 gem 'net-smtp'
