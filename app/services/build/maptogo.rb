@@ -62,7 +62,7 @@ class Build::Maptogo
             index: index,
             status: 'pre-command',
             duration: time_ago_in_words(build_start, include_seconds: true),
-            content: (command['label']).to_s,
+            content: command['label'].to_s,
             step_count: step_count
           }
         )
@@ -77,7 +77,7 @@ class Build::Maptogo
               index: index,
               status: 'command',
               duration: time_ago_in_words(build_start, include_seconds: true),
-              content: (command['label']).to_s,
+              content: command['label'].to_s,
               step_count: step_count,
               command: cmd,
               detail: stdout.read,
@@ -119,7 +119,7 @@ class Build::Maptogo
   end
 
   def generate_layer_json(layer, image_path = '/images/')
-    json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => layer.map, :@layer => layer, :@places => layer.places.published })
+    json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { map: layer.map, layer: layer, places: layer.places.published })
 
     layer = JSON.parse(json_data, { symbolize_names: true })
     places = layer[:layer][:places]
@@ -127,8 +127,8 @@ class Build::Maptogo
     places.each do |place|
       images = place[:images]
       images.each do |image|
-        image[:image_url] = image_path + (image[:image_filename]).to_s
-        images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + (image[:image_on_disk]) } unless image[:image_on_disk].nil?
+        image[:image_url] = image_path + image[:image_filename].to_s
+        images_on_disc << { 'filename' => image[:image_filename], 'disk' => Rails.root.to_s + image[:image_on_disk] } unless image[:image_on_disk].nil?
       end
     end
     [layer, images_on_disc]

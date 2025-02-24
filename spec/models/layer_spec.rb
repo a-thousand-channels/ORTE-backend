@@ -81,7 +81,7 @@ RSpec.describe Layer, type: :model do
   end
 
   describe 'EXIF' do
-    it 'should retain EXIF data', focus: true do
+    it 'should retain EXIF data' do
       m = FactoryBot.create(:map)
       l = FactoryBot.build(:layer, map: m)
       l.exif_remove = false

@@ -31,7 +31,7 @@ class Public::LayersController < ActionController::Base
 
     respond_to do |format|
       if @layer.present?
-        format.json { render :show }
+        format.json { render :show, locals: { map: @layer.map, layer: @layer, places: @layer.places.published } }
         format.geojson { render :show, mime_type: Mime::Type.lookup('application/geo+json') }
         format.zip do
           zip_file = "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.zip"

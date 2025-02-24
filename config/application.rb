@@ -8,9 +8,13 @@ Bundler.require(*Rails.groups)
 
 module OrteBackend
   class Application < Rails::Application
+    
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.1
+    config.load_defaults 6.1
+    config.active_support.cache_format_version = 7.0
    
+    config.autoload_lib(ignore: %w(assets tasks))
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -25,8 +29,6 @@ module OrteBackend
     config.autoload_paths += %W(#{config.root}/lib)
     
     config.action_cable.mount_path = '/cable'
-
-    config.active_storage.replace_on_assign_to_many = false
 
     config.middleware.use Rack::Attack
 
