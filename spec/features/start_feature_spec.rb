@@ -9,6 +9,7 @@ RSpec.feature 'Visitors view startpage and ' do
 
   scenario 'will use the specific js driver', js: true do
     visit root_path
+    save_and_open_page
     expect(page).to have_content('Javascript enabled')
   end
 end

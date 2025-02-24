@@ -9,7 +9,6 @@ end
 
 gem 'puma', '~> 6'
 gem 'rails', '~> 6.1'
-gem 'sassc', '~> 2.4'
 gem 'sassc-rails'
 gem 'uglifier'
 
@@ -43,6 +42,7 @@ gem 'select2-rails'
 gem 'simple_form'
 gem 'sprockets', '~> 4'
 gem 'sprockets-es6'
+gem 'sprockets-rails', require: 'sprockets/railtie'
 
 gem 'image_processing', '~> 1.2'
 gem 'mini_racer', platforms: :ruby
