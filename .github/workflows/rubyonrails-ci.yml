@@ -69,6 +69,9 @@ jobs:
       - name: Install Graphicsmagick
         run: |
           sudo apt update && sudo apt install graphicsmagick graphicsmagick-imagemagick-compat libpng-dev libjpeg-dev libtiff-dev -y
+      - name: Install Exiftool
+        run: |
+          sudo apt install exiftool -y
       - name: Run tests
         env:
           RAILS_ENV: test
