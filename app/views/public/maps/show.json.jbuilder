@@ -7,12 +7,12 @@ json.map do
   json.owner @map.group.title
   json.iconset @map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if @map.iconset
   json.layer do
-    json.array! @map_layers.published do |layer|
+    json.array! @map_layers do |layer|
       next unless layer.published
 
       json.call(layer, :id, :title, :subtitle, :text, :teaser, :credits, :image_link, :color, :created_at, :updated_at, :published)
       json.places do
-        json.array! layer.places.published.with_attached_audio.with_icon.with_annotations.with_images do |place|
+        json.array! layer.places do |place|
           next unless place.published
 
           json.call(place, :id, :uid, :title, :subtitle, :teaser, :text, :sources, :link, :imagelink, :imagelink2, :audiolink, :published, :date_with_qualifier, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
@@ -28,7 +28,7 @@ json.map do
           end
         end
       end
-      json.places_with_relations layer.places.published.with_relations do |place|
+      json.places_with_relations layer.places do |place|
         next unless place.published
 
         if place.relations_froms.size.positive?
