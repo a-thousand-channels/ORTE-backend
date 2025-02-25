@@ -93,6 +93,41 @@ RSpec.describe Public::LayersController, type: :controller do
         expect(response).to have_http_status(403)
         expect(JSON.parse(response.body)['error']).to match(/Layer not accessible/)
       end
+
+      context 'with measured performance to prevent n+1 queries' do
+        before do
+          @map = FactoryBot.create(:map, published: true)
+          @layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
+          # Create 6 places with relations between them
+          3.times do
+            place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
+            place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
+            FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
+          end
+        end
+
+        def trigger
+          get :show, params: { id: @layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
+        end
+
+        it 'makes the same number of queries, no matter how many records are delivered' do
+          # Measure queries before adding additional records
+          x = count_queries { trigger }
+
+          # Create 200 additional places with relations between them
+          100.times do
+            place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
+            place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
+            FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
+          end
+
+          # Measure queries after adding records
+          y = count_queries { trigger }
+
+          # Ensure query count remains the same
+          expect(x).to eq(y)
+        end
+      end
     end
 
     describe 'GET #show w/GeoJSON format' do
