@@ -28,6 +28,7 @@ class Public::MapsController < ActionController::Base
     respond_to do |format|
       @map_layers = @map.layers if @map&.layers
       if @map_layers.present?
+        @map_layers = @map_layers.includes(:image_attachment)
         format.json { render :show, location: @map }
       elsif @map.present?
         format.json { render :show, location: @map }

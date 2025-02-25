@@ -37,6 +37,12 @@ class Place < ApplicationRecord
 
   scope :published, -> { where(published: true) }
 
+  scope :with_attached_audio, -> { includes(audio_attachment: :blob) }
+  scope :with_icon, -> { includes(:icon) }
+  scope :with_annotations, -> { includes(:annotations) }
+  scope :with_images, -> { includes(images: {file_attachment: :blob}) }
+  scope :with_relations, -> { includes(relations_froms: [:relation_from, :relation_to] ) }
+
   attr_accessor :startdate_date, :startdate_time, :enddate_date, :enddate_time
 
   after_initialize :sensitive_location
