@@ -513,7 +513,7 @@ GEM
     tins (1.38.0)
       bigdecimal
       sync
-    tinymce-rails (7.7.0)
+    tinymce-rails (5.10.9)
       railties (>= 3.1.1)
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
@@ -628,9 +628,8 @@ DEPENDENCIES
   simplecov-small-badge
   spring
   sprockets
-  sprockets-es6
   sprockets-rails
-  tinymce-rails
+  tinymce-rails (~> 5)
   turnout
   uglifier
   web-console (~> 4)
