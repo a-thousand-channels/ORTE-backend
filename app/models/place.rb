@@ -64,22 +64,20 @@ class Place < ApplicationRecord
   end
 
   def title_and_location
-    if !location.blank?
-      "#{title} (#{location})"
-    else
+    if location.blank?
       title
+    else
+      "#{title} (#{location})"
     end
   end
 
   def title_subtitle_and_location
-    if !location.blank?
-      if !subtitle.blank?
-        "#{title} — #{subtitle} (#{location})"
-      else
-        "#{title} (#{location})"
-      end
-    else
+    if location.blank?
       title
+    elsif !subtitle.blank?
+      "#{title} — #{subtitle} (#{location})"
+    else
+      "#{title} (#{location})"
     end
   end
 
