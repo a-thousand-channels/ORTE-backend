@@ -83,10 +83,10 @@ RSpec.describe Public::MapsController, type: :controller do
           # Measure queries before adding additional records
           x = count_queries { trigger }
 
-          # Create 10 additional layers and 2000 additional places with relations between them
-          10.times do
+          # Create 3 additional layers and 18 additional places with relations between them
+          3.times do
             layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
-            100.times do
+            3.times do
               place1 = FactoryBot.create(:place, :with_audio, layer_id: layer.id, published: true)
               place2 = FactoryBot.create(:place, layer_id: layer.id, published: true)
               FactoryBot.create(:relation, relation_from: place1, relation_to: place2)

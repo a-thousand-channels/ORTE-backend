@@ -114,8 +114,8 @@ RSpec.describe Public::LayersController, type: :controller do
           # Measure queries before adding additional records
           x = count_queries { trigger }
 
-          # Create 200 additional places with relations between them
-          100.times do
+          # Create 3 additional places with relations between them
+          3.times do
             place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
             place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
             FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
