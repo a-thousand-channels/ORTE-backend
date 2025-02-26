@@ -55,7 +55,7 @@ class Layer < ApplicationRecord
     layer, images_on_disc = Build::Maptogo.new(nil, nil, self).generate_layer_json(self, '')
 
     FileUtils.mkdir_p images_tmp_folder
-    File.open(tmp_file, 'w') { |file| file.write(JSON.generate(layer)) }
+    File.write(tmp_file, JSON.generate(layer))
     images_on_disc.each do |file_hash|
       dest_folder = "#{images_tmp_folder}/#{file_hash['filename']}"
       FileUtils.cp(file_hash['disk'], dest_folder)

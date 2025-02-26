@@ -46,7 +46,7 @@ module PlacesHelper
 
     begin
       if image.place.layer.rasterize_images && image.itype == 'image'
-        polymorphic_url(image.file.variant(resize: '800x800', "ordered-dither": 'h8x8a').processed)
+        polymorphic_url(image.file.variant(resize: '800x800', 'ordered-dither': 'h8x8a').processed)
       else
         polymorphic_url(image.file.variant(resize: '800x800').processed)
       end

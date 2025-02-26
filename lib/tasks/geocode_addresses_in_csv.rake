@@ -29,7 +29,7 @@ namespace :geocode do
           error_counter += 1
           next
         end
-        state_zip = address_parts[2].split(' ')
+        state_zip = address_parts[2].split
         state = state_zip[0]
         zip = state_zip[1]
 
@@ -54,7 +54,7 @@ namespace :geocode do
           lon = ''
         end
 
-        csv_out << row.fields + [address, city, state, zip, lat, lon]
+        csv_out << (row.fields + [address, city, state, zip, lat, lon])
         puts "#{read_counter} // Processed: #{lookup_address}"
       end
     end

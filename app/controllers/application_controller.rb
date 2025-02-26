@@ -10,10 +10,6 @@ class ApplicationController < ActionController::Base
   end
 
   def default_checkbox(param)
-    if %w[on true].include?(param)
-      true
-    else
-      false
-    end
+    %w[on true].include?(param)
   end
 end
