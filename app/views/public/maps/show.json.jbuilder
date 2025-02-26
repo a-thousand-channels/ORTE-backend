@@ -50,4 +50,3 @@ json.map do
     end
   end
 end
-
