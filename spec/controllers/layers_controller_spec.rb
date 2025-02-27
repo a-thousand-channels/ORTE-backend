@@ -221,6 +221,7 @@ RSpec.describe LayersController, type: :controller do
       end
 
       xit 'a layer with published places and some attached images' do
+        # skipped --> image factory is not working
       end
     end
 

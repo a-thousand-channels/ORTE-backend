@@ -64,22 +64,20 @@ class Place < ApplicationRecord
   end
 
   def title_and_location
-    if !location.blank?
-      "#{title} (#{location})"
-    else
+    if location.blank?
       title
+    else
+      "#{title} (#{location})"
     end
   end
 
   def title_subtitle_and_location
-    if !location.blank?
-      if !subtitle.blank?
-        "#{title} — #{subtitle} (#{location})"
-      else
-        "#{title} (#{location})"
-      end
-    else
+    if location.blank?
       title
+    elsif !subtitle.blank?
+      "#{title} — #{subtitle} (#{location})"
+    else
+      "#{title} (#{location})"
     end
   end
 
@@ -102,10 +100,6 @@ class Place < ApplicationRecord
     x = w * Math.cos(t)
     y = w * Math.sin(t)
     [x + long.to_f, y + lat.to_f]
-  end
-
-  def layer_id
-    layer.id
   end
 
   def layer_title
@@ -145,7 +139,7 @@ class Place < ApplicationRecord
   end
 
   def show_link
-    ApplicationController.helpers.show_link(title, layer.map.id, layer.id, id)
+    ApplicationController.helpers.show_link(title, layer.map_id, layer.id, id)
   end
 
   def edit_link
@@ -165,7 +159,7 @@ class Place < ApplicationRecord
   end
 
   def imagelink2
-    i = Image.preview(id)
+    i = images.filter { |image| image.place_id == id && image.preview }
     i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 
