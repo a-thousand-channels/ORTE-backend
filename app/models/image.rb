@@ -15,8 +15,8 @@ class Image < ApplicationRecord
   validate :check_file_format
 
   scope :sorted, -> { order(sorting: :asc) }
-  scope :sorted_by_place, ->(place_id) { where('place_id': place_id).order(sorting: :asc) }
-  scope :preview, ->(place_id) { where('place_id': place_id, 'preview': true) }
+  scope :sorted_by_place, ->(place_id) { where(place_id: place_id).order(sorting: :asc) }
+  scope :preview, ->(place_id) { where(place_id: place_id, preview: true) }
   scope :without_attached_file, -> { left_joins(:file_attachment).where('active_storage_attachments.id IS NULL') }
 
   def image_filename

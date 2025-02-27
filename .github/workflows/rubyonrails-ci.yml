@@ -27,17 +27,16 @@ jobs:
         with:
           bundler: default
           bundler-cache: true
-      - name: Install rubocop/brakeman
+      - name: Bundle install
         run: |
-          gem install rubocop
-          gem install brakeman
+          bundle install
       - name: Run security checks
         run: |
           bundle exec bundle audit --update
-          brakeman -q -w2
+          bundle exec brakeman -q -w2
       - name: Run linters
         run: |
-          rubocop --parallel
+          bundle exec rubocop --parallel
   run-rspec:
     name: RSpec
     needs: run-lint

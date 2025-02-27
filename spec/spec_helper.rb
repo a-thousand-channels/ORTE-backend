@@ -21,14 +21,14 @@ if ENV['UBUNTU']
   puts 'Running Rspecs on Ubuntu'
   # Webdrivers.logger.level = :debug
   # On Ubuntu >= 20 Chrome is installed via snap, so provide the path here
-  ::Selenium::WebDriver::Chrome.path = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
+  Selenium::WebDriver::Chrome.path = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
   # Webdrivers::Chromedriver.required_version = '114.0.5735.90'
 else
   puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true")'
 end
 
 Capybara.register_driver :headless_chrome do |app|
-  options = ::Selenium::WebDriver::Chrome::Options.new
+  options = Selenium::WebDriver::Chrome::Options.new
 
   options.add_argument('--headless')
   options.add_argument('--no-sandbox')
