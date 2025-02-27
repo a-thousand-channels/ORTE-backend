@@ -35,7 +35,7 @@ RSpec.describe 'submission_configs/index', type: :view do
   it 'renders a list of submission_configs' do
     render
 
-    assert_select 'tr>td', text: 'Title Intro'.to_s, count: 2
+    assert_select 'tr>td', text: 'Title Intro', count: 2
     assert_select 'tr>td', text: 'Subtitle Intro', count: 2
     assert_select 'tr>td', text: 'MyIntro', count: 2
     assert_select 'tr>td', text: 'Title Outro', count: 2
