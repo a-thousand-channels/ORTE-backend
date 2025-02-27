@@ -44,7 +44,7 @@ class Public::MapsController < ActionController::Base
   def allplaces
     @map = Map.published.find_by_slug(params[:id]) || Map.published.find_by_id(params[:id])
     respond_to do |format|
-      @map_layers = @map.layers if @map&.layers
+      @map_layers = @map.layers.includes(places: [:icon, :annotations, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }]) if @map&.layers
       @allplaces = []
 
       if @map_layers.present?

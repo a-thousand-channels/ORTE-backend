@@ -62,44 +62,6 @@ RSpec.describe Public::MapsController, type: :controller do
         expect(response).to have_http_status(403)
         expect(JSON.parse(response.body)['error']).to match(/Map not accessible/)
       end
-
-      context 'with measured performance to prevent n+1 queries' do
-        before do
-          @map = FactoryBot.create(:map, published: true)
-          @layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
-          # Create 6 places with relations between them
-          3.times do
-            place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
-            place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
-            FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
-          end
-        end
-
-        def trigger
-          get :show, params: { id: @map.id, format: 'json' }, session: valid_session
-        end
-
-        it 'makes the same number of queries, no matter how many records are delivered' do
-          # Measure queries before adding additional records
-          x = count_queries { trigger }
-
-          # Create 3 additional layers and 18 additional places with relations between them
-          3.times do
-            layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
-            3.times do
-              place1 = FactoryBot.create(:place, :with_audio, layer_id: layer.id, published: true)
-              place2 = FactoryBot.create(:place, layer_id: layer.id, published: true)
-              FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
-            end
-          end
-
-          # Measure queries after adding records
-          y = count_queries { trigger }
-
-          # Ensure query count remains the same
-          expect(x).to eq(y)
-        end
-      end
     end
 
     describe 'GET #allplaces' do
@@ -136,6 +98,51 @@ RSpec.describe Public::MapsController, type: :controller do
         get :allplaces, params: { id: map.friendly_id, format: 'json' }, session: valid_session
         expect(response).to have_http_status(403)
         expect(JSON.parse(response.body)['error']).to match(/Map not accessible/)
+      end
+    end
+
+    describe 'preventing n+1 queries for GET #show GET #allplaces format' do
+      before do
+        @map = FactoryBot.create(:map, published: true)
+        @layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
+        # Create 6 places with relations between them
+        3.times do
+          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
+          place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
+          FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
+        end
+      end
+
+      def trigger_show
+        get :show, params: { id: @map.id, format: 'json' }, session: valid_session
+      end
+
+      def trigger_allplaces
+        get :allplaces, params: { id: @map.id, format: 'json' }, session: valid_session
+      end
+
+      it 'makes the same number of queries, no matter how many records are delivered' do
+        # Measure queries before adding additional records
+        x_show = count_queries { trigger_show }
+        x_all = count_queries { trigger_allplaces }
+
+        # Create 3 additional layers and 18 additional places with relations between them
+        3.times do
+          layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
+          3.times do
+            place1 = FactoryBot.create(:place, :with_audio, layer_id: layer.id, published: true)
+            place2 = FactoryBot.create(:place, layer_id: layer.id, published: true)
+            FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
+          end
+        end
+
+        # Measure queries after adding records
+        y_show = count_queries { trigger_show }
+        y_all = count_queries { trigger_allplaces }
+
+        # Ensure query count remains the same
+        expect(x_show).to eq(y_show)
+        expect(x_all).to eq(y_all)
       end
     end
   end

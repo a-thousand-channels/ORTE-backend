@@ -18,11 +18,11 @@ json.map do
         json.extract! annotation, :id, :title, :text, :person_name, :audiolink
       end
       json.images do
-        json.array! place.images.order('sorting ASC') do |image|
+        json.array! place.images.sort_by(&:sorting) do |image|
           json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
         end
       end
-      if place.relations_froms.count.positive?
+      if place.relations_froms.size.positive?
         json.relations place.relations_froms do |relation|
           json.id relation.id
           json.from do
