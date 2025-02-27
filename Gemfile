@@ -42,13 +42,12 @@ gem 'simple_form'
 gem 'sprockets'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 
-gem 'image_processing', '~> 1.2'
+gem 'image_processing' # , '~> 1.2'
 gem 'mini_racer', platforms: :ruby
 gem 'nokogiri'
 
 gem 'acts-as-taggable-on'
 gem 'color-generator'
-gem 'mini_exiftool'
 gem 'mini_magick', '~> 4'
 gem 'mobility', '~> 1.2'
 gem 'rubyzip'
