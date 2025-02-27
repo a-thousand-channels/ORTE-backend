@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma', '~> 6'
-gem 'rails', '~> 7'
+gem 'rails', '7.1'
 gem 'sassc-rails'
 gem 'uglifier'
 
@@ -73,7 +73,7 @@ group :development, :test do
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara', '~> 3'
+  gem 'capybara'
   gem 'capybara-chromedriver-logger'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
