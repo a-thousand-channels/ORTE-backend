@@ -15,7 +15,7 @@ json.layer do
         json.extract! annotation, :id, :title, :text, :person_name, :audiolink
       end
       json.images do
-        json.array!(place.images.sort_by(&:sorting)) do |image|
+        json.array!(place.images.sort_by { |image| [image.sorting ? 0 : 1, image.sorting] }) do |image|
           json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename, :image_on_disk)
         end
       end
