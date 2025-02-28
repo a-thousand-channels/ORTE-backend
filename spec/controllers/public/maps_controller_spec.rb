@@ -62,6 +62,17 @@ RSpec.describe Public::MapsController, type: :controller do
         expect(response).to have_http_status(403)
         expect(JSON.parse(response.body)['error']).to match(/Map not accessible/)
       end
+
+      it 'can handle images with and without sorting values' do
+        map = Map.create! valid_attributes
+        layer = FactoryBot.create(:layer, map_id: map.id, published: true)
+        place = FactoryBot.create(:place, layer_id: layer.id, published: true)
+        FactoryBot.create(:image, place: place, sorting: nil)
+        FactoryBot.create(:image, place: place, sorting: 1)
+        get :show, params: { id: map.friendly_id, format: 'json' }, session: valid_session
+        expect(response.status).to eq 200
+        expect(response.content_type).to eq('application/json; charset=utf-8')
+      end
     end
 
     describe 'GET #allplaces' do
@@ -98,6 +109,17 @@ RSpec.describe Public::MapsController, type: :controller do
         get :allplaces, params: { id: map.friendly_id, format: 'json' }, session: valid_session
         expect(response).to have_http_status(403)
         expect(JSON.parse(response.body)['error']).to match(/Map not accessible/)
+      end
+
+      it 'can handle images with and without sorting values' do
+        map = Map.create! valid_attributes
+        layer = FactoryBot.create(:layer, map_id: map.id, published: true)
+        place = FactoryBot.create(:place, layer_id: layer.id, published: true)
+        FactoryBot.create(:image, place: place, sorting: nil)
+        FactoryBot.create(:image, place: place, sorting: 1)
+        get :allplaces, params: { id: map.friendly_id, format: 'json' }, session: valid_session
+        expect(response.status).to eq 200
+        expect(response.content_type).to eq('application/json; charset=utf-8')
       end
     end
 
