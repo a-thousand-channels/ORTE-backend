@@ -2,42 +2,42 @@
 
 FactoryBot.define do
   factory :place do
-    uid { 'UID1' }
-    title { 'MyTitle' }
-    subtitle { 'MySubTitle' }
-    teaser { 'MyText' }
-    text { 'MyText' }
-    sources { 'MyText' }
-    link { 'http://domain.com' }
-    startdate { '2018-04-27 19:48:51' }
-    enddate { '2019-04-27 19:48:51' }
-    lat { '0' }
-    lon { '0' }
-    direction { '320' }
-    location { 'Location' }
-    address { 'Address' }
-    zip { 'Zip' }
-    city { 'City' }
-    state { 'State' }
-    country { 'Country' }
+    uid { Faker::Internet.password(min_length: 3, max_length: 20, special_characters: true) }
+    title { Faker::TvShows::Simpsons.location }
+    subtitle { Faker::TvShows::Simpsons.quote }
+    teaser { Faker::Lorem.sentence }
+    text { Faker::Lorem.paragraph }
+    sources { Faker::Artist.name }
+    link { Faker::Internet.url }
+    startdate { Faker::Time.between(from: DateTime.now - 100.years, to: DateTime.now) }
+    enddate { Faker::Time.between(from: DateTime.now - 100.years, to: DateTime.now) }
+    lat { Faker::Address.latitude }
+    lon { Faker::Address.longitude }
+    direction { Faker::Alphanumeric.alphanumeric(number: 3) }
+    location { Faker::Games::Pokemon.location }
+    address { Faker::Address.street_address }
+    zip { Faker::Address.zip }
+    city { Faker::Address.city }
+    state { Faker::Address.state }
+    country { Faker::Address.country }
     published { false }
-    imagelink { 'Some link' }
+    imagelink { Faker::Internet.url(path: '/image.png') }
     layer
     trait :published do
       published { true }
     end
     trait :date_and_time do
-      startdate_date { '2018-04-30' }
+      startdate_date { Faker::Date.between(from: 100.years.ago, to: Date.today) }
       startdate_time { '11:45' }
-      enddate_date { '2022-05-30' }
+      enddate_date { Faker::Date.between(from: 100.years.ago, to: Date.today) }
       enddate_time { '16:45' }
     end
     trait :start_date_and_time do
-      startdate_date { '2018-04-30' }
+      startdate_date { Faker::Date.between(from: 100.years.ago, to: Date.today) }
       startdate_time { '11:45' }
     end
     trait :end_date_and_time do
-      enddate_date { '2022-05-30' }
+      enddate_date { Faker::Date.between(from: 100.years.ago, to: Date.today) }
       enddate_time { '16:45' }
     end
     trait :invalid do

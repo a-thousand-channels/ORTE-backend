@@ -66,6 +66,12 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = false
 
+  config.before(:each, type: :view) do
+    allow(view).to receive(:render).and_wrap_original do |method, *args|
+      CGI.unescapeHTML(method.call(*args))
+    end
+  end
+
   config.before(:suite) do
     # only if compiled assets are really needed:
     # Rails.application.load_tasks
