@@ -72,6 +72,18 @@ RSpec.describe Public::LayersController, type: :controller do
         expect(assigns(:places)).to eq([place2, place3, place1])
       end
 
+      it 'returns only accordingly tagged places when filtered by tag' do
+        layer = Layer.create! valid_attributes
+        place1 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[aaa bbb ccc])
+        place2 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[ddd eee])
+        place3 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[fff])
+
+        get :show, params: { id: layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([place1, place3])
+        expect(assigns(:places)).not_to include(place2)
+      end
+
       it 'can handle images with and without sorting values' do
         layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
@@ -149,8 +161,8 @@ RSpec.describe Public::LayersController, type: :controller do
         @layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         # Create 6 places with relations between them
         3.times do
-          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
-          place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
+          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+          place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[bbb ccc ddd], published: true)
           FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
         end
       end
@@ -170,8 +182,8 @@ RSpec.describe Public::LayersController, type: :controller do
 
         # Create 3 additional places with relations between them
         3.times do
-          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
-          place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
+          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+          place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[bbb ccc ddd], published: true)
           FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
         end
 
