@@ -27,7 +27,11 @@ class Public::LayersController < ActionController::Base
                 else
                   @layer.places.published
                 end
-      @places = @places.includes(:images, :annotations, :icon, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
+      @places = @places.includes(:images, :annotations, :tags, :icon, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
+      if params[:filter_by_tags]
+        @tags = params[:filter_by_tags]
+        @places = @places.tagged_with(@tags, any: true)
+      end
     end
 
     respond_to do |format|
