@@ -155,6 +155,45 @@ RSpec.describe Public::LayersController, type: :controller do
       end
     end
 
+    describe 'filtering by tags' do
+      before do
+        @layer = Layer.create! valid_attributes
+        @place1 = FactoryBot.create(:place, layer: @layer, published: true, tag_list: %w[aaa bbb ccc])
+        @place2 = FactoryBot.create(:place, layer: @layer, published: true, tag_list: %w[ddd eee])
+        @place3 = FactoryBot.create(:place, layer: @layer, published: true, tag_list: %w[fff])
+      end
+
+      it 'returns json with only accordingly tagged places when filtered by tag' do
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([@place1, @place3])
+        expect(assigns(:places)).not_to include(@place2)
+      end
+
+      it 'returns geojson with only accordingly tagged places when filtered by tag' do
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,eee', format: 'geojson' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([@place1, @place2])
+        expect(assigns(:places)).not_to include(@place3)
+      end
+
+      it 'returns zip file with only accordingly tagged places when filtered by tag' do
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'eee', format: 'zip' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([@place2])
+        expect(assigns(:places)).not_to include(@place1)
+        expect(assigns(:places)).not_to include(@place3)
+      end
+    end
+
+    describe 'GET #show w/ZIP format' do
+      it 'returns a success response for a published layer' do
+        layer = Layer.create! valid_attributes
+        get :show, params: { id: layer.to_param, map_id: @map.id, format: 'zip' }, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+    end
+
     describe 'preventing n+1 queries for GET #show w/JSON and w/GeoJSON format' do
       before do
         @map = FactoryBot.create(:map, published: true)
