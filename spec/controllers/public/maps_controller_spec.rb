@@ -186,6 +186,10 @@ RSpec.describe Public::MapsController, type: :controller do
         get :show, params: { id: @map.id, format: 'json' }, session: valid_session
       end
 
+      def trigger_tag_filter
+        get :show, params: { id: @map.id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+      end
+
       def trigger_allplaces
         get :allplaces, params: { id: @map.id, format: 'json' }, session: valid_session
       end
@@ -212,6 +216,29 @@ RSpec.describe Public::MapsController, type: :controller do
         # Ensure query count remains the same
         expect(x_show).to eq(y_show)
         expect(x_all).to eq(y_all)
+      end
+
+      context 'when filtered by tag' do
+        it 'makes the same number of queries, no matter how many records are delivered' do
+          # Measure queries before adding additional records
+          x_tags = count_queries { trigger_tag_filter }
+
+          # Create 3 additional layers and 18 additional places with relations between them
+          3.times do
+            layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
+            3.times do
+              place1 = FactoryBot.create(:place, :with_audio, layer_id: layer.id, tag_list: %w[aaa bbb], published: true)
+              place2 = FactoryBot.create(:place, layer_id: layer.id, tag_list: %w[ccc], published: true)
+              FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
+            end
+          end
+
+          # Measure queries after adding records
+          y_tags = count_queries { trigger_tag_filter }
+
+          # Ensure query count remains the same
+          expect(x_tags).to eq(y_tags)
+        end
       end
     end
   end

@@ -12,13 +12,13 @@ json.map do
 
       json.call(layer, :id, :title, :subtitle, :text, :teaser, :credits, :image_link, :color, :created_at, :updated_at, :published)
       json.places do
-        json.array! @tags ? layer.places.tagged_with(@tags, any: true) : layer.places do |place|
+        json.array! layer.places do |place|
           next unless place.published
 
           json.call(place, :id, :uid, :title, :subtitle, :teaser, :text, :sources, :link, :imagelink, :imagelink2, :audiolink, :published, :date_with_qualifier, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
           json.lat place.public_lat
           json.lon place.public_lon
-          json.tags place.tags.map(&:name)
+          json.tags place.tags.map(&:name).sort
           json.annotations place.annotations do |annotation|
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
