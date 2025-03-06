@@ -86,9 +86,11 @@ RSpec.describe Public::MapsController, type: :controller do
         get :show, params: { id: map.friendly_id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
         expect(response).to have_http_status(200)
         json = JSON.parse(response.body)
-        expect(json['map']['layer'][0]['places'][0]['title']).to eq place1.title
-        expect(json['map']['layer'][0]['places'][0]['tags']).to eq %w[aaa bbb ccc]
         expect(json['map']['layer'][0]['places'].length).to eq 2
+        expect(json['map']['layer'][0]['places'][0]['title']).to eq place1.title
+        expect(json['map']['layer'][0]['places'][1]['title']).to eq place3.title
+        expect(json['map']['layer'][0]['places'][0]['tags']).to eq %w[aaa bbb ccc]
+        expect(json['map']['layer'][0]['places'][1]['tags']).to eq %w[fff]
       end
 
       it 'can handle images with and without sorting values' do
@@ -128,6 +130,23 @@ RSpec.describe Public::MapsController, type: :controller do
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
         get :allplaces, params: { id: map.friendly_id, format: 'json' }, session: valid_session
         expect(response).to match_response_schema('map_allplaces', 'json')
+      end
+
+      it 'returns only accordingly tagged places when filtered by tag' do
+        map = Map.create! valid_attributes
+        layer = FactoryBot.create(:layer, map_id: map.id, published: true)
+        place1 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[aaa bbb ccc])
+        place2 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[ddd eee])
+        place3 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[fff])
+
+        get :allplaces, params: { id: map.friendly_id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+        expect(response).to have_http_status(200)
+        json = JSON.parse(response.body)
+        expect(json['map']['places'].length).to eq 2
+        expect(json['map']['places'][0]['title']).to eq place1.title
+        expect(json['map']['places'][1]['title']).to eq place3.title
+        expect(json['map']['places'][0]['tags']).to eq %w[aaa bbb ccc]
+        expect(json['map']['places'][1]['tags']).to eq %w[fff]
       end
 
       it 'returns an 403 + error response for unpublished resources' do

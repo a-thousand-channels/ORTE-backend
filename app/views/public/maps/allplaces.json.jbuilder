@@ -14,6 +14,7 @@ json.map do
       json.call(place, :id, :title, :subtitle, :teaser, :link, :imagelink, :imagelink2, :audiolink, :published, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :icon_link, :icon_class, :icon_name, :layer_id, :layer_title, :layer_slug, :color)
       json.lat place.public_lat
       json.lon place.public_lon
+      json.tags place.tags.map(&:name)
       json.annotations place.annotations do |annotation|
         json.extract! annotation, :id, :title, :text, :person_name, :audiolink
       end
