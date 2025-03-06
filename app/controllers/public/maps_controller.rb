@@ -31,7 +31,11 @@ class Public::MapsController < ActionController::Base
         @map_layers = @map_layers
                       .includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
                       .where(places: { published: true })
-        @tags = params[:filter_by_tags] if params[:filter_by_tags]
+        if params[:filter_by_tags]
+          tags = params[:filter_by_tags].split(',')
+          accordingly_tagged_place_ids = Place.includes(:tags, :layer).where(tags: { name: tags }, layer: { map: @map }).pluck(:id)
+          @map_layers = @map_layers.where(places: { id: accordingly_tagged_place_ids })
+        end
         format.json { render :show, location: @map }
       elsif @map.present?
         format.json { render :show, location: @map }
