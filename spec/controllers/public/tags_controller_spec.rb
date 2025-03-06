@@ -29,7 +29,7 @@ RSpec.describe Public::TagsController, type: :controller do
           get :index, params: { map_id: @map.id, format: 'json' }, session: valid_session
 
           expect(response).to have_http_status(200)
-          json = JSON.parse(response.body)
+          json = response.parsed_body
           expect(json[0]['name']).to eq 'bbb'
           expect(json[0]['taggings_count']).to eq 1
           expect(json[1]['name']).to eq 'ddd'
