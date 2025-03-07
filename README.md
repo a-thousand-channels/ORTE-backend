@@ -37,8 +37,10 @@ Basic steps for a local installation on your machine:
 
 * Ruby 3.2+, RVM, Rubygems
 * MySQL/Maria DB
-* ffmpeg (for the video feature), ImageMagick (for the image feature)
+* ffmpeg (for the video feature)
+* ImageMagick or graphicsmagick (for image features)
 * Redis
+* Node.js (v18++)
 
 #### Production
 
@@ -71,6 +73,11 @@ $ sudo mysql -u root
 $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
 ```
+
+Note: With Mariadb locally, you might not need a user root, just
+
+```sudo mysql``
+
 
 ### Settings for server setup
 
@@ -118,13 +125,16 @@ $ RAILS_ENV=test COVERAGE=true bundle exec rspec spec
 
 ## Credits
 
-Project by A thousand channels, initiated by [Ulf Treger](https://github.com/ut) with kind support by and in collaboration with:
+A project by [A Thousand Channels](https://a-thousand-channels.xyz)
+
+Initial code and UI by [Ulf Treger](https://github.com/ut) with kind support by and in collaboration with:
 
 * [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for initial code donation,
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
 * Participants of workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
-* Members of the working group "Queer narratives, mappped" 💖 for acceptance testing, ideas and requests for improving the user interface and the maps.
+* Members of the working group "Queer narratives, mappped" 💖 for testing, bringing up ideas and feature requests for improving the user interface and the maps and thinking the tool more inclusive.
 * [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface and to [Sefux](https://github.com/Sefux) for coding it.
+* [Prototype Fund](https://prototypefund.de/en/) for funding the development in 2021-2022, especially the MapToGo feature.
 * There is a fork by [Leerstandsmeldungen](https://gitlab.com/leerstandsmelder/lsm-orte) with PostgreSQL and Pundit Gem for a more sophisticated model of  authorization and roles.
 
 ## Feedback & Contributions
