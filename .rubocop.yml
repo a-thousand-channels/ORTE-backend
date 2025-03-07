@@ -396,6 +396,9 @@ Style/RedundantArgument:
 Style/RedundantArrayConstructor:
   Enabled: true
 
+Style/RedundantCondition:
+  Enabled: false
+
 Style/RedundantConstantBase:
   Enabled: true
 
