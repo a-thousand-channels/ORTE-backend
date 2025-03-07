@@ -74,7 +74,7 @@ class Layer < ApplicationRecord
 
     full_path = ActiveStorage::Blob.service.path_for(image.key)
     exif_data = MiniMagick::Image.open(full_path.to_s)
-    exif_data.exif
+    exif_data.exif if exif_data
   end
 
   def strip_exif_data
