@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma', '~> 6'
-gem 'rails', '7.1.5.1'
+gem 'rails', '~> 7.2'
 gem 'sassc-rails'
 gem 'uglifier'
 
@@ -46,7 +46,7 @@ gem 'image_processing' # , '~> 1.2'
 gem 'mini_racer', platforms: :ruby
 gem 'nokogiri'
 
-gem 'acts-as-taggable-on', '~> 10'
+gem 'acts-as-taggable-on', '~> 11'
 gem 'color-generator'
 gem 'mini_magick', '~> 4'
 gem 'mobility', '~> 1.2'
