@@ -54,7 +54,7 @@ class Image < ApplicationRecord
 
     full_path = ActiveStorage::Blob.service.path_for(file.key)
     exif_data = MiniMagick::Image.open(full_path.to_s)
-    exif_data.exif if exif_data
+    exif_data&.exif
   end
 
   private
