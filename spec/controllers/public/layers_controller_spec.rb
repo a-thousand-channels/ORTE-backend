@@ -72,6 +72,18 @@ RSpec.describe Public::LayersController, type: :controller do
         expect(assigns(:places)).to eq([place2, place3, place1])
       end
 
+      it 'returns only accordingly tagged places when filtered by tag' do
+        layer = Layer.create! valid_attributes
+        place1 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[aaa bbb ccc])
+        place2 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[ddd eee])
+        place3 = FactoryBot.create(:place, layer: layer, published: true, tag_list: %w[fff])
+
+        get :show, params: { id: layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([place1, place3])
+        expect(assigns(:places)).not_to include(place2)
+      end
+
       it 'can handle images with and without sorting values' do
         layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
@@ -143,14 +155,53 @@ RSpec.describe Public::LayersController, type: :controller do
       end
     end
 
+    describe 'filtering by tags' do
+      before do
+        @layer = Layer.create! valid_attributes
+        @place1 = FactoryBot.create(:place, layer: @layer, published: true, tag_list: %w[aaa bbb ccc])
+        @place2 = FactoryBot.create(:place, layer: @layer, published: true, tag_list: %w[ddd eee])
+        @place3 = FactoryBot.create(:place, layer: @layer, published: true, tag_list: %w[fff])
+      end
+
+      it 'returns json with only accordingly tagged places when filtered by tag' do
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([@place1, @place3])
+        expect(assigns(:places)).not_to include(@place2)
+      end
+
+      it 'returns geojson with only accordingly tagged places when filtered by tag' do
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,eee', format: 'geojson' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([@place1, @place2])
+        expect(assigns(:places)).not_to include(@place3)
+      end
+
+      it 'returns zip file with only accordingly tagged places when filtered by tag' do
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'eee', format: 'zip' }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(assigns(:places)).to eq([@place2])
+        expect(assigns(:places)).not_to include(@place1)
+        expect(assigns(:places)).not_to include(@place3)
+      end
+    end
+
+    describe 'GET #show w/ZIP format' do
+      it 'returns a success response for a published layer' do
+        layer = Layer.create! valid_attributes
+        get :show, params: { id: layer.to_param, map_id: @map.id, format: 'zip' }, session: valid_session
+        expect(response).to have_http_status(200)
+      end
+    end
+
     describe 'preventing n+1 queries for GET #show w/JSON and w/GeoJSON format' do
       before do
         @map = FactoryBot.create(:map, published: true)
         @layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         # Create 6 places with relations between them
         3.times do
-          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
-          place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
+          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+          place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[bbb ccc ddd], published: true)
           FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
         end
       end
@@ -163,6 +214,14 @@ RSpec.describe Public::LayersController, type: :controller do
         get :show, params: { id: @layer.to_param, map_id: @map.id, format: 'geojson' }, session: valid_session
       end
 
+      def trigger_show_json_tags
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+      end
+
+      def trigger_show_geomap_tags
+        get :show, params: { id: @layer.to_param, map_id: @map.id, filter_by_tags: 'bbb,fff', format: 'geojson' }, session: valid_session
+      end
+
       it 'makes the same number of queries, no matter how many records are delivered' do
         # Measure queries before adding additional records
         x_json = count_queries { trigger_show_json }
@@ -170,8 +229,8 @@ RSpec.describe Public::LayersController, type: :controller do
 
         # Create 3 additional places with relations between them
         3.times do
-          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, published: true)
-          place2 = FactoryBot.create(:place, layer_id: @layer.id, published: true)
+          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+          place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[ccc ddd], published: true)
           FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
         end
 
@@ -182,6 +241,29 @@ RSpec.describe Public::LayersController, type: :controller do
         # Ensure query count remains the same
         expect(x_json).to eq(y_json)
         expect(x_geo).to eq(y_geo)
+      end
+
+      context 'when filtered by tag' do
+        it 'makes the same number of queries, no matter how many records are delivered' do
+          # Measure queries before adding additional records
+          x_json_tags = count_queries { trigger_show_json_tags }
+          x_geo_tags = count_queries { trigger_show_geomap_tags }
+
+          # Create 3 additional places with relations between them
+          3.times do
+            place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+            place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[ccc ddd], published: true)
+            FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
+          end
+
+          # Measure queries after adding records
+          y_json_tags = count_queries { trigger_show_json_tags }
+          y_geo_tags = count_queries { trigger_show_geomap_tags }
+
+          # Ensure query count remains the same
+          expect(x_json_tags).to eq(y_json_tags)
+          expect(x_geo_tags).to eq(y_geo_tags)
+        end
       end
     end
   end
