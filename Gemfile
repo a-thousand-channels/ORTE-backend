@@ -79,6 +79,7 @@ group :development, :test do
   gem 'capybara-chromedriver-logger'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'json-schema'
   gem 'rails-controller-testing'
   gem 'rspec'

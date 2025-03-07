@@ -187,7 +187,7 @@ RSpec.describe LayersController, type: :controller do
         get :show, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
         expect(assigns(:layer)['use_background_from_parent_map']).to be_truthy
-        expect(assigns(:layer)['basemap_url']).to eq('MyMapBasemapUrl')
+        expect(assigns(:layer)['basemap_url']).to eq(@map.basemap_url)
       end
     end
 
@@ -271,7 +271,7 @@ RSpec.describe LayersController, type: :controller do
         get :edit, params: { map_id: @map.friendly_id, id: layer.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
         expect(assigns(:layer)['use_background_from_parent_map']).to be_truthy
-        expect(assigns(:layer)['basemap_url']).to eq('MyMapBasemapUrl')
+        expect(assigns(:layer)['basemap_url']).to eq(@map.basemap_url)
       end
     end
 
@@ -365,7 +365,7 @@ RSpec.describe LayersController, type: :controller do
           put :update, params: { map_id: @map.id, id: layer.id, layer: new_attributes }, session: valid_session
           layer.reload
           expect(layer.title).to eq('OtherTitle')
-          expect(layer.image_alt).to eq('An alternative text')
+          expect(layer.image_alt).to eq(new_attributes['image_alt'])
         end
 
         it 'redirects to the layer' do
