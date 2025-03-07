@@ -140,6 +140,7 @@ RSpec.describe Public::LayersController, type: :controller do
         layer = Layer.create! valid_attributes
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'zip' }, session: valid_session
         expect(response).to have_http_status(200)
+        expect(response.content_type).to eq('application/zip')
       end
     end
 
