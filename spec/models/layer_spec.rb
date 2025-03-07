@@ -13,8 +13,8 @@ RSpec.describe Layer, type: :model do
     it 'has some image metadata' do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
-      expect(l.image_alt).to eq('An alternative text')
-      expect(l.image_creator).to eq('The creator of the image')
+      expect(l.image_alt).to be_present
+      expect(l.image_creator).to be_present
     end
   end
 

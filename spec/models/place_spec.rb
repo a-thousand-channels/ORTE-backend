@@ -249,14 +249,14 @@ RSpec.describe Place, type: :model do
     it 'is valid  ' do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
-      p1 = FactoryBot.create(:place, layer: l, address: 'An address1', location: 'A location', zip: '12345', city: 'City')
-      p2 = FactoryBot.create(:place, layer: l, address: 'An address2', location: 'A location', zip: '12345', city: 'City')
+      p1 = FactoryBot.create(:place, layer: l, address: 'An address1', location: 'A location', zip: '12345', city: 'City', country: 'Country')
+      p2 = FactoryBot.create(:place, layer: l, address: 'An address2', location: 'A location', zip: '12345', city: 'City', country: 'Country')
       a1 = FactoryBot.create(:annotation, place: p1, title: 'Annotation 1')
       a2 = FactoryBot.create(:annotation, place: p2, title: 'Annotation 2')
 
       other_map = FactoryBot.create(:map)
       other_layer = FactoryBot.create(:layer, map: other_map)
-      p3 = FactoryBot.create(:place, layer: other_layer, address: 'An address3', location: 'A location', zip: '12345', city: 'City')
+      p3 = FactoryBot.create(:place, layer: other_layer, address: 'An address3', location: 'A location', zip: '12345', city: 'City', country: 'Country')
       a3 = FactoryBot.create(:annotation, place: p3, title: 'Annotation 3')
       places = l.places
       csv_header = 'id,title,teaser,text,annotations,startdate,enddate,lat,lon,location,address,zip,city,country'
