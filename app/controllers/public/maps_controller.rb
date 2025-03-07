@@ -33,7 +33,15 @@ class Public::MapsController < ActionController::Base
                       .where(places: { published: true })
         if params[:filter_by_tags]
           tags = params[:filter_by_tags].split(',')
-          accordingly_tagged_place_ids = Place.includes(:tags, :layer).where(tags: { name: tags }, layer: { map: @map }).pluck(:id)
+          accordingly_tagged_place_ids = if params[:match_all].present? && params[:match_all] == 'true'
+                                           Place.includes(:tags, :layer)
+                                                .where(tags: { name: tags }, layer: { map: @map })
+                                                .group('places.id, layer.id')
+                                                .having('COUNT(DISTINCT tags.id) = ?', tags.length)
+                                                .pluck(:id)
+                                         else
+                                           Place.includes(:tags, :layer).where(tags: { name: tags }, layer: { map: @map }).pluck(:id)
+                                         end
           @map_layers = @map_layers.where(places: { id: accordingly_tagged_place_ids })
         end
         format.json { render :show, location: @map }
