@@ -164,6 +164,38 @@ RSpec.describe Public::MapsController, type: :controller do
         expect(json['map']['places'][0]['tags']).to eq %w[aaa bbb ccc]
         expect(json['map']['places'][1]['tags']).to eq %w[fff]
       end
+      context 'when filtering by tags' do
+        let!(:map) { create(:map, valid_attributes) }
+        let!(:layer) { create(:layer, map_id: map.id, published: true) }
+        let!(:place1) { create(:place, layer: layer, published: true, tag_list: %w[aaa bbb ccc]) }
+        let!(:place2) { create(:place, layer: layer, published: true, tag_list: %w[ddd eee]) }
+        let!(:place3) { create(:place, layer: layer, published: true, tag_list: %w[bbb fff]) }
+        let!(:place4) { create(:place, layer: layer, published: true, tag_list: %w[fff aaa bbb]) }
+
+        it 'returns only accordingly tagged places with any tag when filtered by tag' do
+          get :allplaces, params: { id: map.friendly_id, filter_by_tags: 'bbb,fff', format: 'json' }, session: valid_session
+          expect(response).to have_http_status(200)
+          json = JSON.parse(response.body)
+          expect(json['map']['places'].length).to eq 3
+          expect(json['map']['places'][0]['title']).to eq place1.title
+          expect(json['map']['places'][1]['title']).to eq place3.title
+          expect(json['map']['places'][2]['title']).to eq place4.title
+          expect(json['map']['places'][0]['tags']).to eq %w[aaa bbb ccc]
+          expect(json['map']['places'][1]['tags']).to eq %w[bbb fff]
+          expect(json['map']['places'][2]['tags']).to eq %w[aaa bbb fff]
+        end
+
+        it 'returns only accordingly tagged places with all tags when filtered by tag with match all param' do
+          get :allplaces, params: { id: map.friendly_id, filter_by_tags: 'bbb,fff', match_all: true, format: 'json' }, session: valid_session
+          expect(response).to have_http_status(200)
+          json = JSON.parse(response.body)
+          expect(json['map']['places'].length).to eq 2
+          expect(json['map']['places'][0]['title']).to eq place3.title
+          expect(json['map']['places'][1]['title']).to eq place4.title
+          expect(json['map']['places'][0]['tags']).to eq %w[bbb fff]
+          expect(json['map']['places'][1]['tags']).to eq %w[aaa bbb fff]
+        end
+      end
 
       it 'returns an 403 + error response for unpublished resources' do
         map = Map.create! invalid_attributes

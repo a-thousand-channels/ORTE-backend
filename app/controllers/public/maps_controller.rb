@@ -57,19 +57,42 @@ class Public::MapsController < ActionController::Base
   def allplaces
     @map = Map.published.find_by_slug(params[:id]) || Map.published.find_by_id(params[:id])
     respond_to do |format|
-      @map_layers = @map.layers.includes(places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }]) if @map&.layers
+      @map_layers = @map.layers if @map&.layers
       @allplaces = []
 
       if @map_layers.present?
-        @map_layers.each do |l|
-          next unless l.published
+        if params[:filter_by_tags]
+          tags = params[:filter_by_tags].split(',')
+          filtered_place_ids = if params[:match_all].present? && params[:match_all] == 'true'
+                                 Place.joins(:tags, :layer)
+                                      .where(layers: { map_id: @map.id, published: true })
+                                      .where(places: { published: true })
+                                      .where(tags: { name: tags })
+                                      .group('places.id')
+                                      .having('COUNT(DISTINCT tags.id) = ?', tags.length)
+                                      .pluck(:id)
+                               else
+                                 Place.joins(:tags, :layer)
+                                      .where(layers: { map_id: @map.id, published: true })
+                                      .where(places: { published: true })
+                                      .where(tags: { name: tags })
+                                      .distinct
+                                      .pluck(:id)
+                               end
 
-          places = l.places
-          if params[:filter_by_tags]
-            tags = params[:filter_by_tags]
-            places = places.tagged_with(tags, any: true)
-          end
-          (@allplaces << places).flatten!
+          @allplaces = Place.includes(:icon, :annotations, :tags, :layer,
+                                      images: { file_attachment: :blob },
+                                      audio_attachment: :blob,
+                                      relations_froms: %i[relation_from relation_to])
+                            .where(id: filtered_place_ids)
+        else
+          @allplaces = Place.includes(:icon, :annotations, :tags, :layer,
+                                      images: { file_attachment: :blob },
+                                      audio_attachment: :blob,
+                                      relations_froms: %i[relation_from relation_to])
+                            .joins(:layer)
+                            .where(layers: { map_id: @map.id, published: true })
+                            .where(published: true)
         end
         format.json { render :allplaces, location: @map }
       else
