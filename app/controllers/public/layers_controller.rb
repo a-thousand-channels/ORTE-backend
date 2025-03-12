@@ -27,11 +27,25 @@ class Public::LayersController < ActionController::Base
                 else
                   @layer.places.published
                 end
-      @places = @places.includes(:images, :annotations, :tags, :icon, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
+
       if params[:filter_by_tags]
-        tags = params[:filter_by_tags]
-        @places = @places.tagged_with(tags, any: true)
+        tags = params[:filter_by_tags].split(',')
+        filtered_place_ids = if params[:match_all].present? && params[:match_all] == 'true'
+                               Place.joins(:tags)
+                                    .where(id: @places)
+                                    .where(tags: { name: tags })
+                                    .group('places.id')
+                                    .having('COUNT(DISTINCT tags.id) = ?', tags.length)
+                                    .pluck(:id)
+                             else
+                               @places.tagged_with(tags, any: true).pluck(:id)
+                             end
+        @places = Place.where(id: filtered_place_ids)
       end
+
+      @places = @places.includes(:images, :annotations, :tags, :icon,
+                                 audio_attachment: :blob,
+                                 relations_froms: { relation_from: [:layer], relation_to: [:layer] })
     end
 
     respond_to do |format|
