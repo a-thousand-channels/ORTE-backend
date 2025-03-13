@@ -299,7 +299,7 @@ class LayersController < ApplicationController
       # TODO: use MiniExiftool instead of MiniMagick
       # exif = MiniExiftool.new(file.tempfile.path)
       i = MiniMagick::Image.open(file.tempfile.path)
-      exif = i.exif
+      exif = i.exif if i.exif
       place.title = exif['ImageDescription'] || "##{index + pindex + 1}"
       place.subtitle = file.original_filename
       place.teaser = ''
