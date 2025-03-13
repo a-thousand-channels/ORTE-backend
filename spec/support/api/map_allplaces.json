@@ -190,6 +190,13 @@
                                     "boolean"
                                 ]
                             },
+                            "tags":{
+                                "title": "The tags Schema",
+                                "type":"array",
+                                "items":{
+                                    "type":"string"
+                                }
+                            },
                             "shy": {
                                 "title": "The shy Schema",
                                 "type": "boolean"
