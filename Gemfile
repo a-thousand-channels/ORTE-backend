@@ -42,7 +42,7 @@ gem 'simple_form'
 gem 'sprockets'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 
-gem 'image_processing' # , '~> 1.2'
+gem 'image_processing'
 gem 'mini_racer', platforms: :ruby
 gem 'nokogiri'
 
