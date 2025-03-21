@@ -169,6 +169,8 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
+    faker (3.5.1)
+      i18n (>= 1.8.11, < 2)
     ffi (1.17.1-arm64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     foundation-icons-sass-rails (3.0.0)
@@ -212,7 +214,7 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    json (2.10.1)
+    json (2.10.2)
     json-schema (5.1.1)
       addressable (~> 2.8)
       bigdecimal (~> 3.1)
@@ -300,7 +302,7 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.11)
+    rack (2.2.13)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (6.7.0)
@@ -539,6 +541,7 @@ DEPENDENCIES
   devise
   exception_notification
   factory_bot_rails
+  faker
   foundation-icons-sass-rails
   foundation-rails (= 6.6.2.0)
   friendly_id
