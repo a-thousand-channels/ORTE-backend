@@ -119,7 +119,7 @@ class Build::Maptogo
   end
 
   def generate_layer_json(layer, image_path = '/images/')
-    json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { :map => layer.map, :@layer => layer, :@places => layer.places.published })
+    json_data = ApplicationController.new.render_to_string(template: 'public/layers/show', formats: :json, locals: { map: layer.map, layer: layer, places: layer.places.published })
 
     layer = JSON.parse(json_data, { symbolize_names: true })
     places = layer[:layer][:places]

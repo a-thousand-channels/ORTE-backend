@@ -60,13 +60,24 @@ FactoryBot.define do
       end
     end
     trait :with_images do
-      # deprecated
-      after(:build) do |place|
-        place.file.attach(
-          io: File.open(Rails.root.join('spec/support/files/test.jpg')),
-          filename: 'test.jpg',
-          content_type: 'image/jpeg'
-        )
+      published { true }
+
+      transient do
+        images_count { 3 }
+      end
+
+      after(:build) do |place, evaluator|
+        evaluator.images_count.times do |i|
+          file_path = Rails.root.join('spec', 'support', 'files', 'test.jpg')
+          file = File.open(file_path)
+          preview_value = i == 0
+          place.images.build(attributes_for(:image, preview: preview_value)).file.attach(
+            io: file,
+            filename: "sample_image_#{i + 1}.jpg",
+            content_type: 'image/jpeg'
+          )
+          file.close
+        end
       end
     end
   end

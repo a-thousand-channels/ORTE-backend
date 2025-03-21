@@ -67,7 +67,10 @@ jobs:
           mysql -uroot -h127.0.0.1 -proot -e "GRANT ALL PRIVILEGES ON orte_test.* TO 'orte'@'localhost';"
       - name: Install Graphicsmagick
         run: |
-          sudo apt update && sudo apt install graphicsmagick -y
+          sudo apt update && sudo apt install graphicsmagick graphicsmagick-imagemagick-compat libpng-dev libjpeg-dev libtiff-dev -y
+      - name: Install Exiftool
+        run: |
+          sudo apt update && sudo apt install exiftool -y
       - name: Run tests
         env:
           RAILS_ENV: test
