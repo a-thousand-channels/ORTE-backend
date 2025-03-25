@@ -61,7 +61,7 @@ gem 'net-smtp'
 gem 'concurrent-ruby', '1.3.4' # https://github.com/rails/rails/issues/54260, remove after upgrade to 7.2
 
 group :staging, :production do
-  gem 'passenger'
+  gem 'passenger', '6.0.17'
 end
 
 gem 'coveralls_reborn', '~> 0', require: false
