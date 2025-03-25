@@ -10,7 +10,8 @@ end
 gem 'puma', '~> 6'
 gem 'rails', '~> 7'
 gem 'sassc-rails'
-gem 'uglifier'
+# gem 'uglifier'
+gem 'terser', '~> 1.1', '>= 1.1.12'
 
 gem 'friendly_id'
 
