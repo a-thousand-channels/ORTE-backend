@@ -299,29 +299,33 @@ class LayersController < ApplicationController
       # TODO: use MiniExiftool instead of MiniMagick
       # exif = MiniExiftool.new(file.tempfile.path)
       i = MiniMagick::Image.open(file.tempfile.path)
-      exif = i.exif
-      place.title = exif['ImageDescription'] || "##{index + pindex + 1}"
-      place.subtitle = file.original_filename
-      place.teaser = ''
-      place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
-      place.lon = convert_dms_to_decimal(exif['GPSLongitude'], exif['GPSLongitudeRef'])
-      place.direction = exif['GPSImgDirection'] if exif['GPSImgDirection'].present?
-      place.published = true
-      place.teaser = "Place tagged by geo-encoded photo <tt>#{file.original_filename}</tt> at <tt>#{exif['GPSLatitude']}</tt> and <tt>#{exif['GPSLongitude']}</tt>."
-      place.teaser << " and with direction: #{exif['GPSImgDirection']}." if exif['GPSImgDirection'].present?
-      place.teaser << " <br />Geodata converted from DMS to decimal degrees: #{place.lat}/#{place.lon}."
-      place.teaser << " <bv />Photo taken at #{exif['DateTimeOriginal']}." if exif['DateTimeOriginal'].present?
+      if i&.exif
+        exif = i.exif
+        place.title = exif['ImageDescription'] || "##{index + pindex + 1}"
+        place.subtitle = file.original_filename
+        place.teaser = ''
+        place.lat = convert_dms_to_decimal(exif['GPSLatitude'], exif['GPSLatitudeRef'])
+        place.lon = convert_dms_to_decimal(exif['GPSLongitude'], exif['GPSLongitudeRef'])
+        place.direction = exif['GPSImgDirection'] if exif['GPSImgDirection'].present?
+        place.published = true
+        place.teaser = "Place tagged by geo-encoded photo <tt>#{file.original_filename}</tt> at <tt>#{exif['GPSLatitude']}</tt> and <tt>#{exif['GPSLongitude']}</tt>."
+        place.teaser << " and with direction: #{exif['GPSImgDirection']}." if exif['GPSImgDirection'].present?
+        place.teaser << " <br />Geodata converted from DMS to decimal degrees: #{place.lat}/#{place.lon}."
+        place.teaser << " <bv />Photo taken at #{exif['DateTimeOriginal']}." if exif['DateTimeOriginal'].present?
 
-      image = place.images.build
-      image.title = exif['ImageDescription'] || file.original_filename
-      image.creator = exif['Artist'] || layer_params[:images_creator]
-      image.licence = exif['Copyright'] || layer_params[:images_licence]
-      image.source = layer_params[:images_source]
-      image.file = file
-      image.preview = true
-      if exif['GPSLatitude'].present?
-        place.save!
-        created_places << place
+        image = place.images.build
+        image.title = exif['ImageDescription'] || file.original_filename
+        image.creator = exif['Artist'] || layer_params[:images_creator]
+        image.licence = exif['Copyright'] || layer_params[:images_licence]
+        image.source = layer_params[:images_source]
+        image.file = file
+        image.preview = true
+        if exif['GPSLatitude'].present?
+          place.save!
+          created_places << place
+        else
+          skipped_images << file.original_filename
+        end
       else
         skipped_images << file.original_filename
       end
