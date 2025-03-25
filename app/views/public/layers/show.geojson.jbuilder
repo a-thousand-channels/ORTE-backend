@@ -6,7 +6,7 @@ if @layer&.published
   json.text @layer.text
   json.id @layer.id
 
-  json.features @layer.places do |place|
+  json.features @places do |place|
     next unless place.published
 
     json.type 'Feature'

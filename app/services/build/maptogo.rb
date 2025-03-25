@@ -34,7 +34,7 @@ class Build::Maptogo
     images_tmp_folder = "tmp/#{client_directory}_images"
 
     layer, images_on_disc = generate_layer_json(@layer)
-    File.open(tmp_file, 'w') { |file| file.write(JSON.generate(layer)) }
+    File.write(tmp_file, JSON.generate(layer))
 
     FileUtils.mkdir_p images_tmp_folder
 

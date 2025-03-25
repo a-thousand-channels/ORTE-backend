@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma', '~> 6'
-gem 'rails', '~> 7'
+gem 'rails', '~> 7.2'
 gem 'sassc-rails'
 # gem 'uglifier'
 gem 'terser', '~> 1.1', '>= 1.1.12'
@@ -43,15 +43,14 @@ gem 'simple_form'
 gem 'sprockets'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 
-gem 'image_processing', '~> 1.2'
+gem 'image_processing'
 gem 'mini_racer', platforms: :ruby
 gem 'nokogiri'
 
-gem 'acts-as-taggable-on'
+gem 'acts-as-taggable-on', '~> 11'
 gem 'color-generator'
-gem 'mini_exiftool'
-gem 'mini_magick'
-gem 'mobility'
+gem 'mini_magick', '~> 4'
+gem 'mobility', '~> 1.2'
 gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
@@ -74,10 +73,11 @@ group :development, :test do
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara', '~> 3'
+  gem 'capybara'
   gem 'capybara-chromedriver-logger'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'json-schema'
   gem 'rails-controller-testing'
   gem 'rspec'

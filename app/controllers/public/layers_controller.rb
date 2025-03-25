@@ -27,11 +27,12 @@ class Public::LayersController < ActionController::Base
                 else
                   @layer.places.published
                 end
+      @places = @places.includes(:images, :annotations, :icon, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
     end
 
     respond_to do |format|
       if @layer.present?
-        format.json { render :show, locals: { map: @layer.map, layer: @layer, places: @layer.places.published } }
+        format.json { render :show, locals: { map: @layer.map, layer: @layer, places: @places } }
         format.geojson { render :show, mime_type: Mime::Type.lookup('application/geo+json') }
         format.zip do
           zip_file = "orte-map-#{@layer.map.title.parameterize}-layer-#{@layer.title.parameterize}-#{I18n.l Date.today}.zip"

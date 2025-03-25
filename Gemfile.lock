@@ -10,63 +10,58 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    actioncable (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actioncable (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
       zeitwerk (~> 2.6)
-    actionmailbox (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      mail (>= 2.7.1)
-      net-imap
-      net-pop
-      net-smtp
-    actionmailer (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      actionview (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      mail (~> 2.5, >= 2.5.4)
-      net-imap
-      net-pop
-      net-smtp
+    actionmailbox (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activestorage (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
+      mail (>= 2.8.0)
+    actionmailer (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      actionview (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
+      mail (>= 2.8.0)
       rails-dom-testing (~> 2.2)
-    actionpack (7.1.5.1)
-      actionview (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actionpack (7.2.2.1)
+      actionview (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       nokogiri (>= 1.8.5)
       racc
-      rack (>= 2.2.4)
+      rack (>= 2.2.4, < 3.2)
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    actiontext (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+      useragent (~> 0.16)
+    actiontext (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activestorage (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.1.5.1)
-      activesupport (= 7.1.5.1)
+    actionview (7.2.2.1)
+      activesupport (= 7.2.2.1)
       builder (~> 3.1)
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
-    activejob (7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activejob (7.2.2.1)
+      activesupport (= 7.2.2.1)
       globalid (>= 0.3.6)
-    activemodel (7.1.5.1)
-      activesupport (= 7.1.5.1)
-    activerecord (7.1.5.1)
-      activemodel (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activemodel (7.2.2.1)
+      activesupport (= 7.2.2.1)
+    activerecord (7.2.2.1)
+      activemodel (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       timeout (>= 0.4.0)
     activerecord-session_store (2.1.0)
       actionpack (>= 6.1)
@@ -75,27 +70,27 @@ GEM
       multi_json (~> 1.11, >= 1.11.2)
       rack (>= 2.0.8, < 4)
       railties (>= 6.1)
-    activestorage (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    activestorage (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       marcel (~> 1.0)
-    activesupport (7.1.5.1)
+    activesupport (7.2.2.1)
       base64
       benchmark (>= 0.3)
       bigdecimal
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+      concurrent-ruby (~> 1.0, >= 1.3.1)
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
       logger (>= 1.4.2)
       minitest (>= 5.1)
-      mutex_m
       securerandom (>= 0.3)
-      tzinfo (~> 2.0)
-    acts-as-taggable-on (10.0.0)
-      activerecord (>= 6.1, < 7.2)
+      tzinfo (~> 2.0, >= 2.0.5)
+    acts-as-taggable-on (11.0.0)
+      activerecord (>= 7.0, < 8.0)
+      zeitwerk (>= 2.4, < 3.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     airbrussh (1.5.3)
@@ -145,7 +140,7 @@ GEM
     capybara-chromedriver-logger (0.3.0)
       capybara
       colorize
-    cgi (0.4.1)
+    cgi (0.4.2)
     childprocess (5.1.0)
       logger (~> 1.5)
     color-generator (0.0.4)
@@ -190,6 +185,8 @@ GEM
     factory_bot_rails (6.4.4)
       factory_bot (~> 6.5)
       railties (>= 5.0.0)
+    faker (3.5.1)
+      i18n (>= 1.8.11, < 2)
     ffi (1.17.1-arm64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     foundation-icons-sass-rails (3.0.0)
@@ -236,7 +233,7 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    json (2.10.1)
+    json (2.10.2)
     json-schema (5.1.1)
       addressable (~> 2.8)
       bigdecimal (~> 3.1)
@@ -276,12 +273,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    mini_exiftool (2.14.0)
-      ostruct (>= 0.6.0)
-      pstore (>= 0.1.3)
-    mini_magick (5.2.0)
-      benchmark
-      logger
+    mini_magick (4.13.2)
     mini_mime (1.1.5)
     mini_racer (0.16.0)
       libv8-node (~> 18.19.0.0)
@@ -290,7 +282,6 @@ GEM
       i18n (>= 0.6.10, < 2)
       request_store (~> 1.0)
     multi_json (1.15.0)
-    mutex_m (0.3.0)
     mysql2 (0.5.6)
     net-imap (0.5.6)
       date
@@ -324,7 +315,6 @@ GEM
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
-    pstore (0.1.4)
     psych (5.2.3)
       date
       stringio
@@ -332,7 +322,7 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (2.2.11)
+    rack (2.2.13)
     rack-accept (0.4.5)
       rack (>= 0.4)
     rack-attack (6.7.0)
@@ -346,20 +336,20 @@ GEM
     rackup (1.0.1)
       rack (< 3)
       webrick
-    rails (7.1.5.1)
-      actioncable (= 7.1.5.1)
-      actionmailbox (= 7.1.5.1)
-      actionmailer (= 7.1.5.1)
-      actionpack (= 7.1.5.1)
-      actiontext (= 7.1.5.1)
-      actionview (= 7.1.5.1)
-      activejob (= 7.1.5.1)
-      activemodel (= 7.1.5.1)
-      activerecord (= 7.1.5.1)
-      activestorage (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
+    rails (7.2.2.1)
+      actioncable (= 7.2.2.1)
+      actionmailbox (= 7.2.2.1)
+      actionmailer (= 7.2.2.1)
+      actionpack (= 7.2.2.1)
+      actiontext (= 7.2.2.1)
+      actionview (= 7.2.2.1)
+      activejob (= 7.2.2.1)
+      activemodel (= 7.2.2.1)
+      activerecord (= 7.2.2.1)
+      activestorage (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
       bundler (>= 1.15.0)
-      railties (= 7.1.5.1)
+      railties (= 7.2.2.1)
     rails-controller-testing (1.0.5)
       actionpack (>= 5.0.1.rc1)
       actionview (>= 5.0.1.rc1)
@@ -371,10 +361,10 @@ GEM
     rails-html-sanitizer (1.6.2)
       loofah (~> 2.21)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
-    railties (7.1.5.1)
-      actionpack (= 7.1.5.1)
-      activesupport (= 7.1.5.1)
-      irb
+    railties (7.2.2.1)
+      actionpack (= 7.2.2.1)
+      activesupport (= 7.2.2.1)
+      irb (~> 1.13)
       rackup (>= 1.0.0)
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
@@ -424,7 +414,7 @@ GEM
     rspec-support (3.13.2)
     rspec_junit_formatter (0.6.0)
       rspec-core (>= 2, < 4, != 2.12.0)
-    rubocop (1.72.2)
+    rubocop (1.73.1)
       json (~> 2.3)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.1.0)
@@ -435,7 +425,7 @@ GEM
       rubocop-ast (>= 1.38.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 4.0)
-    rubocop-ast (1.38.0)
+    rubocop-ast (1.38.1)
       parser (>= 3.3.1.0)
     rubocop-rspec (3.5.0)
       lint_roller (~> 1.1)
@@ -530,6 +520,7 @@ GEM
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
+    useragent (0.16.11)
     victor (0.3.4)
     warden (1.2.9)
       rack (>= 2.0.9)
@@ -562,7 +553,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store (~> 2.1)
-  acts-as-taggable-on
+  acts-as-taggable-on (~> 11)
   bcrypt
   brakeman
   bundler-audit
@@ -573,7 +564,7 @@ DEPENDENCIES
   capistrano-passenger
   capistrano-rails
   capistrano-rvm
-  capybara (~> 3)
+  capybara
   capybara-chromedriver-logger
   color-generator
   concurrent-ruby (= 1.3.4)
@@ -583,12 +574,13 @@ DEPENDENCIES
   devise
   exception_notification
   factory_bot_rails
+  faker
   foundation-icons-sass-rails
   foundation-rails (= 6.6.2.0)
   friendly_id
   geocoder
   haml-rails
-  image_processing (~> 1.2)
+  image_processing
   jbuilder
   jquery-rails
   jquery-turbolinks
@@ -597,10 +589,9 @@ DEPENDENCIES
   kaminari
   letter_opener
   listen (~> 3)
-  mini_exiftool
-  mini_magick
+  mini_magick (~> 4)
   mini_racer
-  mobility
+  mobility (~> 1.2)
   mysql2
   net-smtp
   nokogiri
@@ -608,7 +599,7 @@ DEPENDENCIES
   puma (~> 6)
   rack-attack
   rack-cors
-  rails (~> 7)
+  rails (~> 7.2)
   rails-controller-testing
   redis (~> 5)
   rspec
