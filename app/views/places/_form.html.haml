@@ -2,6 +2,7 @@
   .grid-x.grid-padding-x
     .large-2.medium-3.cell
       %h1 Place
+      %p= f.input :ptype, :collection => ptype_for_select, :input_html => { :class => '' }, label: 'Type'
     .large-4.medium-4.cell
       %div#layer_change
         - if @place.layer && @place.layer.title && params[:action] == 'new'

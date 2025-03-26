@@ -15,8 +15,8 @@ ActiveRecord::Schema.define(version: 2024_11_15_171956) do
   create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
+    t.integer "record_id", null: false
+    t.integer "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 2024_11_15_171956) do
 
   create_table "icons", charset: "utf8mb3", force: :cascade do |t|
     t.string "title"
-    t.bigint "iconset_id"
+    t.integer "iconset_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["iconset_id"], name: "index_icons_on_iconset_id"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 2024_11_15_171956) do
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
+    t.integer "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
@@ -400,6 +400,5 @@ ActiveRecord::Schema.define(version: 2024_11_15_171956) do
   add_foreign_key "submission_configs", "layers"
   add_foreign_key "submissions", "places"
   add_foreign_key "taggings", "tags"
-  add_foreign_key "users", "groups"
   add_foreign_key "videos", "places"
 end
