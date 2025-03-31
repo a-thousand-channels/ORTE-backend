@@ -20,11 +20,17 @@ class MapsController < ApplicationController
       @map_layers = @map.layers
 
       @places = @map_layers.flat_map(&:places)
-
       puts "places: #{@places.count}"
-      puts "tag_data: #{params[:tag_id]}"
-      puts '------------------------'
-      if params[:tag_id]
+      if params[:map]
+        puts '------------------------'
+        puts "search params: #{params[:map][:search]}"
+        @search = params[:map][:search]
+        @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
+        puts "places: #{@places.count}"
+      end
+      if params[:tag_id] && !params[:tag_id].empty?
+        puts "tag_data: #{params[:tag_id]}"
+        puts '------------------------'
         @tag = ActsAsTaggableOn::Tag.find(params[:tag_id])
         puts "tag: #{@tag.name}"
         @places = Place.tagged_with(@tag.name) if @tag

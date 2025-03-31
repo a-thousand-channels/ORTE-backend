@@ -69,20 +69,33 @@
             %i.fi-plus
             Create a layer for this map
         %p#selection-hint
-    .grid-x#info-wrapper
+    #info-wrapper.grid-x
+    
       .cell.medium-12   
-        = render 'layers/partials/searchform', object: @map         
+        = render 'maps/partials/search', object: @map         
 
       .cell.medium-12 
         - if @map.places.all_tags
           %div.tags
             - @map.places.all_tags.each do |tag|
-              - if @map.places.tagged_with(["#{tag.name}"]).count > 1
-                %span.label.secondary.tag
-                  = link_to map_path(@map, tag_id: tag.id) do
-                    %i.fi-price-tag
-                    = tag.name
-                    (#{@map.places.tagged_with(["#{tag.name}"]).count})      
+              %span.label.secondary.tag{class: "#{tag.id == params[:tag_id].to_i ? 'active' : ""}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
+                - if tag.id == params[:tag_id]
+                  %i.fi-tag
+                  = tag.name
+                  (#{@map.places.tagged_with(["#{tag.name}"]).count})
+
+                = link_to map_path(@map, tag_id: tag.id) do
+                  %i.fi-price-tag
+                  = tag.name
+                  (#{@map.places.tagged_with(["#{tag.name}"]).count}) 
+            - unless params[:tag_id] && params[:tag_id].empty?
+              %span.label.secondary.tag 
+                = link_to map_path(@map, tag_id: ''), {title: 'Show all places'} do
+                  %i.fi-x      
+        - if ( params[:tag_id] && !params[:tag_id].empty? ) || ( @search )
+          %hr
+          = render 'maps/partials/places_list'
+
 
 
 

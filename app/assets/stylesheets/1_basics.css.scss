@@ -266,19 +266,33 @@ select {
   }
 }
 /* -------------------- */
+.card {
+  padding: 0.75rem;
+
+  p {
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+  }
+}
+/* -------------------- */
 .label.secondary.tag {
-    padding: 0.55em 0.75em;
+    padding: 0.45em 0.75em;
     border-radius: 4px;
     background-color: #baa;
+    background-color: #767676;
     font-size: 0.9rem;
+    transition: all 0.3s;
 
     a {
       color: white;
     }
-
 }
+.label.secondary.tag.active,
 .label.secondary.tag:hover {
     background-color: #a99;
+    background-color: #8c7f7f;
+    background-color: #c6c600;
+    transition: all 0.3s;
     a {
       color: white;
     }

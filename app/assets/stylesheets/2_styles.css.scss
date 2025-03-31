@@ -19,6 +19,10 @@ main {
   a {
     color: darken(#c6c600,10%);
   }
+
+  .grid-x {
+    height: 100%;
+  }
 }
 main.action-bar-padding { margin-top: 100px }
 @media screen and (max-width: 63.9375em) {
@@ -165,7 +169,6 @@ input#addresslookup_address.hide {
   background-color: rgba(255,255,255,0.2);
 }
 
-
 #info-wrapper,
 #table-wrapper,
 #form-wrapper {
@@ -188,9 +191,15 @@ input#addresslookup_address.hide {
   }
 }
 #info-wrapper {
-  max-width: 25%;
+  max-width: 45%;
+  padding: 20px;
+  height: 100%;
+  overflow: scroll;  
+  @media screen and (max-width: 63.9375) {
+    max-width: 25% !important;
+  }
   @media screen and (max-width: 39.9375em) {
-    max-width: 25%;
+    max-width: unset;
   }
 }
 #form-wrapper {
@@ -209,6 +218,11 @@ input#addresslookup_address.hide {
   a.button {
     margin: 0.4rem 0 0 0;
   }
+}
+
+#nav_wrapper.cell {
+  height: 100%;
+  padding: 20px;
 }
 
 #table-wrapper.large-wrapper,
@@ -353,6 +367,7 @@ svg.icons {
 .tags {
   max-width: 80vw;
   margin: 15px 30px 15px 0;
+  line-height: 2.1;
 }
 
 
