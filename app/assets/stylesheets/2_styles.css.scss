@@ -164,6 +164,8 @@ input#addresslookup_address.hide {
   display: inline-block;
   background-color: rgba(255,255,255,0.2);
 }
+
+
 #info-wrapper,
 #table-wrapper,
 #form-wrapper {
@@ -186,11 +188,10 @@ input#addresslookup_address.hide {
   }
 }
 #info-wrapper {
-
+  max-width: 25%;
   @media screen and (max-width: 39.9375em) {
-
+    max-width: 25%;
   }
-
 }
 #form-wrapper {
   max-width: unset;

@@ -20,6 +20,17 @@ class MapsController < ApplicationController
       @map_layers = @map.layers
 
       @places = @map_layers.flat_map(&:places)
+
+      puts "places: #{@places.count}"
+      puts "tag_data: #{params[:tag_id]}"
+      puts '------------------------'
+      if params[:tag_id]
+        @tag = ActsAsTaggableOn::Tag.find(params[:tag_id])
+        puts "tag: #{@tag.name}"
+        @places = Place.tagged_with(@tag.name) if @tag
+        puts "places: #{@places.count}"
+      end
+
       @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
 
       # timeline calculation, for now on a yearly basis

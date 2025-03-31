@@ -267,9 +267,10 @@ select {
 }
 /* -------------------- */
 .label.secondary.tag {
-    padding: 0.15em 0.45em 0.25em;
+    padding: 0.55em 0.75em;
     border-radius: 4px;
     background-color: #baa;
+    font-size: 0.9rem;
 
     a {
       color: white;
