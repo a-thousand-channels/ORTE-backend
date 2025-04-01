@@ -10,5 +10,5 @@ class SubmissionConfig < ApplicationRecord
 
   belongs_to :layer, optional: true
 
-  serialize :locales, Array
+  serialize :locales, type: Array
 end
