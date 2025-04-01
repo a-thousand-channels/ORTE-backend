@@ -1,0 +1,20 @@
+#table-wrapper
+  %h1
+    Import-Mapping:
+    = @import_mapping.name
+  %table.table.table-striped
+    %thead
+      %tr
+        %th CSV Column name
+        %th Model Property
+        %th Parser
+    %tbody
+      - JSON.parse(@import_mapping.mapping).each do |mapping|
+        %tr
+          %td= mapping['csv_column_name']
+          %td= mapping['model_property']
+          %td= mapping['parser']
+
+  %p
+    = link_to 'Edit', edit_import_mapping_path(@import_mapping), class: 'btn btn-primary'
+    = link_to 'Back', import_mappings_path, class: 'btn btn-secondary'

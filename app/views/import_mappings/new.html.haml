@@ -1,0 +1,53 @@
+= simple_form_for @import_mapping do |f|
+  #table-wrapper
+    %p.text-right.close_link_wrapper
+      = link_to root_path, class: 'close_link' do
+        %i.fi.fi-x
+
+    .grid-x.grid-padding-x
+      .large-12.medium-12.small-12.cell
+        %hr
+        - if flash[:alert]
+          .alert.alert-danger
+            %p= flash[:alert]
+
+    - if @missing_fields && !@missing_fields.empty?
+      .alert
+        %h3 Invalid entries
+        %p Some rows in the CSV are invalid and cannot be imported. Please map the following fields to the correct model properties.
+
+        %table.table.table-striped
+          %thead
+            %tr
+              %th CSV Column name
+              %th Model Property
+              %th Parser
+          %tbody
+            - @headers&.each_with_index do |header, index|
+              %tr
+                %td= header
+                %td
+                  = f.fields_for :mappings, OpenStruct.new(model_property: nil, parser: nil) do |mapping_form|
+                    = mapping_form.input :model_property, collection: @place_columns, label: false, input_html: { name: nil, class: 'model-property-select' }
+                    %td
+                      = mapping_form.input :parser, label: false, input_html: { name: nil, class: 'parser-input' }
+
+    .large-12.medium-12.small-12.cell
+      = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
+    = f.hidden_field :mapping, id: 'import_mapping_mapping'
+    = f.submit 'Save Mapping', class: 'button'
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+      const mappings = [];
+      document.querySelectorAll('tbody tr').forEach((row, index) => {
+        const header = row.querySelector('td').innerText.trim();
+        const modelProperty = row.querySelector('.model-property-select').value;
+        const parser = row.querySelector('.parser-input').value;
+        mappings.push({ csv_column_name: header, model_property: modelProperty, parser: parser });
+      });
+      document.getElementById('import_mapping_mapping').value = JSON.stringify(mappings);
+    });
+  });
