@@ -34,6 +34,10 @@ class LayersController < ApplicationController
       flash[:notice] = 'CSV read successfully!'
     rescue CSV::MalformedCSVError => e
       flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
+    rescue Imports::MissingFieldsError => e
+      @missing_fields = e.missing_fields
+      @headers = CSV.read(file.path, headers: true).headers
+      redirect_to new_import_mapping_path(missing_fields: e.missing_fields, headers: @headers)
     end
     @valid_rows = importer.valid_rows
     session[:importing_rows] = @valid_rows
