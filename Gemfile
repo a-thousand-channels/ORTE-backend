@@ -10,7 +10,6 @@ end
 gem 'puma', '~> 6'
 gem 'rails', '~> 7.2'
 gem 'sassc-rails'
-# gem 'uglifier'
 gem 'terser', '~> 1.1', '>= 1.1.12'
 
 gem 'friendly_id'
@@ -60,7 +59,7 @@ gem 'net-smtp'
 gem 'concurrent-ruby', '1.3.4' # https://github.com/rails/rails/issues/54260, remove after upgrade to 7.2
 
 group :staging, :production do
-  gem 'passenger', '6.0.17'
+  gem 'passenger', '~> 6'
 end
 
 gem 'coveralls_reborn', '~> 0', require: false

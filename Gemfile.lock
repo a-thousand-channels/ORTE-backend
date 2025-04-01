@@ -594,7 +594,7 @@ DEPENDENCIES
   mysql2
   net-smtp
   nokogiri
-  passenger (= 6.0.17)
+  passenger (~> 6)
   puma (~> 6)
   rack-attack
   rack-cors
