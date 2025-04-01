@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'csv'
+require_relative 'errors'
 
 include ActionView::Helpers::SanitizeHelper
 
@@ -74,7 +75,7 @@ class Imports::CsvImporter
   def validate_header
     headers = CSV.read(@file.path, headers: true).headers
     missing_fields = REQUIRED_FIELDS - headers
-    raise StandardError, "Missing required fields: #{missing_fields.join(', ')}" if missing_fields.any?
+    raise Imports::MissingFieldsError, missing_fields if missing_fields.any?
 
     @unprocessable_fields = headers - ALLOWED_FIELDS
     Rails.logger.error('Not allowed fields found (and skipped)') unless @unprocessable_fields.empty?

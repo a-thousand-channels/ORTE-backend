@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :build_logs
   resources :annotations
   resources :submission_configs
+  resources :import_mappings
   devise_for :users
 
   root 'start#index'
