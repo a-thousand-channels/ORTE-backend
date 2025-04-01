@@ -1,6 +1,8 @@
-= simple_form_for :map, url: map_path(@map), method: "GET", html: { class: 'form-inline' } do |f|
+= simple_form_for :search, url: map_path(@map), method: :get, html: { class: 'form-inline' } do |f|
   .input-group
     .input-group-field
-      = f.input :search, label: false, input_html: { value: "#{@search}", placeholder: 'Search this map'}
+      - if params[:tag] && !params[:tag].empty?
+        = f.input :tag, as: :hidden, input_html: { value: @tag_name } 
+      = f.input :search, label: false, input_html: { name: "search", value: "#{@search}", placeholder: 'Search this map'}
     .input-group-button
       = f.submit "Search", class: "button small button-search"

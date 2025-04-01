@@ -7,14 +7,19 @@ json.layers map.layers do |layer|
   json.iconset layer.map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if layer.map.iconset
 
   places_query = layer.places
+  puts '------------------------'
   puts 'JBUILDER'
   puts "places: #{places_query.count}"
-  puts "tag_data: #{params[:tag_id]}"
-  puts '------------------------'
-  if params[:tag_id].present?
-    tag = ActsAsTaggableOn::Tag.find(params[:tag_id])
-    puts "tag: #{tag.name}"
-    places_query = places_query.tagged_with(tag.name) if tag
+  puts "search: #{@search}"
+
+  if @search.present?
+    puts "search: #{@search}"
+    places_query = places_query.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%")
+    puts "places: #{places_query.count}"
+  end
+  if @tag_name.present?
+    puts "tag_name: #{@tag_name}"
+    places_query = places_query.tagged_with(@tag_name)
     puts "places: #{places_query.count}"
   end
   puts "places: #{places_query.count}"
