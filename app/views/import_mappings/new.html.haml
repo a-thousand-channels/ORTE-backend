@@ -1,44 +1,45 @@
-= simple_form_for @import_mapping do |f|
-  #table-wrapper
-    %p.text-right.close_link_wrapper
-      = link_to root_path, class: 'close_link' do
-        %i.fi.fi-x
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    = link_to root_path, class: 'close_link' do
+      %i.fi.fi-x
 
-    .grid-x.grid-padding-x
-      .large-12.medium-12.small-12.cell
-        %hr
-        - if flash[:alert]
-          .alert.alert-danger
-            %p= flash[:alert]
-
-    - if @missing_fields && !@missing_fields.empty?
-      .alert
-        %h3 Invalid entries
-        %p Some rows in the CSV are invalid and cannot be imported. Please map the following fields to the correct model properties.
-
-        %table.table.table-striped
-          %thead
-            %tr
-              %th CSV Column name
-              %th Model Property
-              %th Parser
-          %tbody
-            - @headers&.each_with_index do |header, index|
-              %tr
-                %td= header
-                %td
-                  = f.fields_for :mappings, OpenStruct.new(model_property: nil, parser: nil) do |mapping_form|
-                    = mapping_form.input :model_property, collection: @place_columns, label: false, input_html: { name: nil, class: 'model-property-select' }
-                    %td
-                      = mapping_form.input :parser, label: false, input_html: { name: nil, class: 'parser-input' }
-
+  .grid-x.grid-padding-x
     .large-12.medium-12.small-12.cell
-      = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
-    = f.hidden_field :mapping, id: 'import_mapping_mapping'
-    = f.submit 'Save Mapping', class: 'button'
+      %hr
+      - if flash[:alert]
+        .alert.alert-danger
+          %p= flash[:alert]
+
+  .alert
+    %h3 Invalid Column Names
+    %p Some headers in the CSV are not matching the required table structure and the file cannot be imported. Please chose an existing mapping or map the following fields to the correct model properties.
+
+  .large-12.medium-12.small-12.cell
+    - if @existing_mappings && !@existing_mappings.empty?
+      %label Choose an existing mapping:
+      %select#existing_mapping
+        %option{ value: '' } Select a mapping
+        - @existing_mappings.each do |mapping|
+          %option{ value: import_mapping_path(mapping) }= mapping.name
+      .button
+        %button#show_mapping_button Use Selected Mapping
+
+    = render 'import_mappings/partials/form'
 
 :javascript
   document.addEventListener('DOMContentLoaded', function() {
+    const showMappingButton = document.getElementById('show_mapping_button');
+    const existingMappingSelect = document.getElementById('existing_mapping');
+
+    showMappingButton.addEventListener('click', function() {
+      const selectedValue = existingMappingSelect.value;
+      if (selectedValue) {
+        window.location.href = selectedValue;
+      } else {
+        alert('Please select a mapping to view.');
+      }
+    });
+
     const form = document.querySelector('form');
     form.addEventListener('submit', function(event) {
       const mappings = [];
