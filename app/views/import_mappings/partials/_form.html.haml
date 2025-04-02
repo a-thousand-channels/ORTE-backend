@@ -1,0 +1,44 @@
+= simple_form_for @import_mapping do |f|
+  - if @import_mapping.errors.any?
+    #error_explanation
+      %p= "#{pluralize(@import_mapping.errors.count, "error")} prohibited this import mapping from being saved:"
+      %ul
+        - @import_mapping.errors.full_messages.each do |message|
+          %li= message
+  = f.hidden_field :headers, value: @headers.to_json
+  %table.table.table-striped
+    %thead
+      %tr
+        %th CSV Column name
+        %th Model Property
+        %th Parser
+    %tbody
+      - @headers&.each_with_index do |header, index|
+        - mapping = JSON.parse(@import_mapping.mapping || '[]')[index] || {}
+        %tr
+          %td= header
+          %td
+            = f.fields_for :mapping, OpenStruct.new(model_property: mapping['model_property'] || '', parser: mapping['parser'] || '') do |mapping_form|
+              = mapping_form.input :model_property, collection: @place_columns, label: false, input_html: { name: nil, class: 'model-property-select' }
+              %td
+                = mapping_form.input :parser, label: false, input_html: { name: nil, class: 'parser-input' }
+
+  .large-12.medium-12.small-12.cell
+    = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
+  = f.hidden_field :mapping, id: 'import_mapping_mapping'
+  = f.submit 'Save Mapping', class: 'button'
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+      const mappings = [];
+      document.querySelectorAll('tbody tr').forEach((row, index) => {
+        const header = row.querySelector('td').innerText.trim();
+        const modelProperty = row.querySelector('.model-property-select').value;
+        const parser = row.querySelector('.parser-input').value;
+        mappings.push({ csv_column_name: header, model_property: modelProperty, parser: parser });
+      });
+      document.getElementById('import_mapping_mapping').value = JSON.stringify(mappings);
+    });
+  });
