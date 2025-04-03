@@ -211,8 +211,10 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
             // drawMarkers(map,data.id,level,false,text_layers,image_layers,marker_layers,params,data.color,clustercolor,data.places);
           }
           */
-          console.log("Places_with_relations: "+data.places_with_relations.length);
-          drawCurves(map,data.id,curve_layers,marker_layers,data.color,data.places_with_relations, data.relations_bending,data.relations_coloring);
+          if ( data.places_with_relations ) {
+            console.log("Places_with_relations: "+data.places_with_relations.length);
+            drawCurves(map,data.id,curve_layers,marker_layers,data.color,data.places_with_relations, data.relations_bending,data.relations_coloring);
+          }
           marker_meta_layers.addLayer(marker_layers);
           
           

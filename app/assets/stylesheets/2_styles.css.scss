@@ -200,7 +200,7 @@ input#addresslookup_address.hide {
 #info-wrapper {
   max-width: 45%;
   padding: 20px;
-  height: 73vh;
+  max-height: 73vh;
   overflow: scroll;  
   @media screen and (max-width: 63.9375) {
     max-width: 25% !important;
