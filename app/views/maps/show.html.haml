@@ -83,10 +83,11 @@
                   %i.fi-price-tag
                   = tag.name
                   (#{@places.tagged_with(["#{tag.name}"]).count}) 
-            - unless params[:tag] && params[:tag].empty?
+            - if ( params[:tag] && !params[:tag].empty? )
               %span.label.secondary.tag 
                 = link_to map_path(@map, tag: '', search: @search), {title: 'Show all places'} do
                   %i.fi-x      
+                  All places
         - if ( params[:tag] && !params[:tag].empty? ) || ( @search )
           %hr
           - if @places && @places.count > 0
@@ -100,6 +101,8 @@
               - elsif params[:tag] && !params[:tag].empty? 
                 Filtering with tag "#{@tag_name}"
               \— #{@places.count}&nbsp;#{@places.count == 1 ? 'place' : 'places'} found
+          - else  
+            No places found
           = render 'maps/partials/places_list'
 
 
