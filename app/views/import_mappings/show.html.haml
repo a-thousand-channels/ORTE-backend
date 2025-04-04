@@ -15,6 +15,41 @@
           %td= mapping['model_property']
           %td= mapping['parser']
 
-  %p
-    = link_to 'Edit', edit_import_mapping_path(@import_mapping), class: 'btn btn-primary'
-    = link_to 'Back', import_mappings_path, class: 'btn btn-secondary'
+  = simple_form_for :import, url: apply_mapping_import_mapping_path(@import_mapping), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
+    %hr
+    %p
+      = f.input :map_id, collection: @maps, prompt: 'Select a Map', label: 'Map', input_html: { class: 'map-select' }
+      %span.hint  Select the map to which the layer belongs.
+    %p
+      = f.input :layer_id, collection: [], prompt: 'Select a Layer', label: 'Layer', input_html: { class: 'layer-select' }
+      %span.hint  Select the layer to which the CSV data will be imported.
+    %hr
+    %p
+      = f.input :file, as: :file, label: 'CSV File'
+      %span.hint  The format of the file must be CSV.
+    %hr
+    %p
+      = f.input :overwrite, as: :boolean, label: 'Overwrite'
+      %span.hint
+        Overwrite existing places with the same title
+    %hr
+    .form-actions
+      %p
+        = f.submit "Import CSV File", class: "button"
+
+:javascript
+  $(document).on('change', '.map-select', function() {
+    var mapId = $(this).val();
+    $.ajax({
+      url: '/maps/' + mapId + '/layers/fetch_layers',
+      dataType: 'json',
+      success: function(data) {
+        var layerSelect = $('.layer-select');
+        layerSelect.empty();
+        layerSelect.append($('<option>').text('Select a Layer').attr('value', ''));
+        $.each(data, function(index, layer) {
+          layerSelect.append($('<option>').text(layer.title).attr('value', layer.id));
+        });
+      }
+    });
+  });
