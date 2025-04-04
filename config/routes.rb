@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   resources :build_logs
   resources :annotations
   resources :submission_configs
-  resources :import_mappings
   devise_for :users
 
   root 'start#index'
@@ -30,6 +29,11 @@ Rails.application.routes.draw do
   resources :iconsets do
     resources :icons, only: [:edit, :destroy, :update]
   end
+
+  resources :import_mappings do
+    post :apply_mapping, on: :member
+  end
+
   resources :maps do
     resources :tags, only: [:index, :show]
     resources :relations
@@ -37,6 +41,7 @@ Rails.application.routes.draw do
     resources :layers do
       collection do
         post :search
+        get :fetch_layers, to: 'layers#fetch_layers'
       end
       member do
         get :pack

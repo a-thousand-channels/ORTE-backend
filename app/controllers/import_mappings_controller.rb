@@ -7,6 +7,7 @@ class ImportMappingsController < ApplicationController
 
   def show
     @import_mapping = ImportMapping.find(params[:id])
+    @maps = Map.all
   end
 
   def new
@@ -35,6 +36,29 @@ class ImportMappingsController < ApplicationController
         format.html { render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers }
         format.json { render json: @import_mapping.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def apply_mapping
+    @import_mapping = ImportMapping.find(params[:id])
+    @map = Map.find(params[:import][:map_id])
+    @layer = @map.layers.find(params[:import][:layer_id])
+    csv_file = params[:import][:file]
+    overwrite = params[:import][:overwrite]
+
+    if csv_file.present?
+      importer = Imports::CsvImporter.new(csv_file, @layer.id, overwrite: overwrite, import_mapping: @import_mapping)
+      importer.import
+      flash[:notice] = 'CSV read successfully!'
+      @valid_rows =  importer.valid_rows
+      session[:importing_rows] = @valid_rows
+      if importer.invalid_rows.any?
+        redirect_to import_mapping_path(@import_mapping), alert: 'Some rows were invalid and were not imported.'
+      else
+        render :apply_mapping
+      end
+    else
+      redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.'
     end
   end
 

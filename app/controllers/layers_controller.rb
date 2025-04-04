@@ -65,6 +65,15 @@ class LayersController < ApplicationController
     @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@query}%")
   end
 
+  def fetch_layers
+    @map = Map.find(params[:map_id])
+    @layers = @map.layers
+
+    respond_to do |format|
+      format.json { render json: @layers }
+    end
+  end
+
   def pack
     @build_logs = BuildLog.where(map_id: @map.id, layer_id: @layer.id).order(created_at: :desc)
     BuildChannel.broadcast_to current_user, content: 'LayersController::pack'
