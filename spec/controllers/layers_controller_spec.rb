@@ -307,7 +307,7 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
-    describe 'POST #create with image layer', skip: 'Fix CI Testing for Exif values' do
+    describe 'POST #create with image layer' do
       let(:image_layer) do
         FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
       end
@@ -364,6 +364,18 @@ RSpec.describe LayersController, type: :controller do
     end
 
     describe 'PUT #update' do
+      let(:image_layer) do
+        FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
+      end
+
+      let(:images_files) do
+        [
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
+          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
+        ]
+      end
+
       context 'with valid params' do
         let(:new_attributes) do
           FactoryBot.build(:layer, :changed, map_id: @map.id).attributes
