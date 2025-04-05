@@ -161,7 +161,7 @@ class Place < ApplicationRecord
   def imagelink2
     # used for on map display of the preview image
     # this call is very costly for larger datasets, maybe a switch in the map settings could be establied?
-    return unless images.exists?
+    # return '' unless images.exists?
 
     i = images.filter { |image| image.place_id == id && image.preview }
     i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
