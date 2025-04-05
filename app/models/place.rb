@@ -135,7 +135,7 @@ class Place < ApplicationRecord
   end
 
   def url
-    ApplicationController.helpers.url(layer.map.id, layer.id, id)
+    ApplicationController.helpers.url(layer.map.slug, layer.slug, id)
   end
 
   def show_link
@@ -159,6 +159,10 @@ class Place < ApplicationRecord
   end
 
   def imagelink2
+    # used for on map display of the preview image
+    # this call is very costly for larger datasets, maybe a switch in the map settings could be establied?
+    return unless images.exists?
+
     i = images.filter { |image| image.place_id == id && image.preview }
     i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
   end
