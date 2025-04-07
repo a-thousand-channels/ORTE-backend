@@ -16,8 +16,8 @@ RSpec.describe 'maps/show', type: :view do
                         ))
     @layer = FactoryBot.create(:layer, map_id: @map.id)
     @map_layers = @map.layers
-    @places = FactoryBot.create_list(:place, 3)
-    @places_with_dates = FactoryBot.create_list(:place, 3)
+    @places = FactoryBot.create_list(:place, 3, layer_id: @layer.id)
+    @places_with_dates = FactoryBot.create_list(:place, 3, layer_id: @layer.id)
   end
 
   it 'renders attributes in <p>' do

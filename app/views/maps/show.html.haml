@@ -75,19 +75,21 @@
         = render 'maps/partials/search', object: @map         
 
       .cell.medium-12 
-        - if @places.all_tags
-          %div.tags
-            - @places.all_tags.each do |tag|
-              %span.label.secondary.tag{class: "#{tag.name == params[:tag] ? 'active' : ""}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
-                = link_to map_path(@map, tag: tag.name, search: @search) do
-                  %i.fi-price-tag
-                  = tag.name
-                  (#{@places.tagged_with(["#{tag.name}"]).count}) 
-            - if ( params[:tag] && !params[:tag].empty? )
-              %span.label.secondary.tag 
-                = link_to map_path(@map, tag: '', search: @search), {title: 'Show all places'} do
-                  %i.fi-x      
-                  All places
+        - if @places.present?
+          - tags = Place.all_unique_tags
+          - if tags.any?      
+            %div.tags
+              - @places.all_tags.each do |tag|
+                %span.label.secondary.tag{class: "#{tag.name == params[:tag] ? 'active' : ""}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
+                  = link_to map_path(@map, tag: tag.name, search: @search) do
+                    %i.fi-price-tag
+                    = tag.name
+                    (#{@places.tagged_with(["#{tag.name}"]).count}) 
+              - if ( params[:tag] && !params[:tag].empty? )
+                %span.label.secondary.tag 
+                  = link_to map_path(@map, tag: '', search: @search), {title: 'Show all places'} do
+                    %i.fi-x      
+                    All places
         - if ( params[:tag] && !params[:tag].empty? ) || ( @search )
           %hr
           - if @places && @places.count > 0

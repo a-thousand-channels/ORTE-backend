@@ -7,22 +7,8 @@ json.layers map.layers do |layer|
   json.iconset layer.map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if layer.map.iconset
 
   places_query = layer.places
-  puts '------------------------'
-  puts 'JBUILDER'
-  puts "places: #{places_query.count}"
-  puts "search: #{@search}"
-
-  if @search.present?
-    puts "search: #{@search}"
-    places_query = places_query.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%")
-    puts "places: #{places_query.count}"
-  end
-  if @tag_name.present?
-    puts "tag_name: #{@tag_name}"
-    places_query = places_query.tagged_with(@tag_name)
-    puts "places: #{places_query.count}"
-  end
-  puts "places: #{places_query.count}"
+  places_query = places_query.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%") if @search.present?
+  places_query = places_query.tagged_with(@tag_name) if @tag_name.present?
   json.places do
     json.array! places_query do |place|
       json.extract! place, :id, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :shy, :layer_id, :layer_title, :layer_color, :layer_type, :created_at, :updated_at, :date, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name, :tags

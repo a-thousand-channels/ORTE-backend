@@ -20,20 +20,13 @@ class MapsController < ApplicationController
       @map_layers = @map.layers
 
       @places = @map.places
-      puts "places: #{@places.count}"
-      if params[:search]
-        puts '------------------------'
-        puts "search params: #{params[:search]}"
+      if params[:search] && !params[:search].empty?
         @search = params[:search]
-        @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
-        puts "places: #{@places.count}"
+        @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
       end
       if params[:tag] && !params[:tag].empty?
-        puts '------------------------'
-        puts "tag_data: #{params[:tag]}"
         @tag_name = params[:tag]
         @places = @places.tagged_with(@tag_name)
-        puts "places: #{@places.count}"
       end
 
       if @map.enable_time_slider

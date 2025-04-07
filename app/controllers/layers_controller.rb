@@ -94,6 +94,15 @@ class LayersController < ApplicationController
         @layer.background_color = @layer.map.background_color
       end
       @places = @layer.places
+      if params[:search] && !params[:search].empty?
+        @search = params[:search]
+        @places = @places.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%")
+      end
+      if params[:tag] && !params[:tag].empty?
+        @tag_name = params[:tag]
+        @places = @places.tagged_with(@tag_name)
+      end
+
       @place = Place.find(params[:place_id]) if params[:remap]
       respond_to do |format|
         format.html { render :show }
