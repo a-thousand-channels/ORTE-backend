@@ -4,11 +4,11 @@
 ![Code Coverage w/SimpleCov](https://img.shields.io/badge/code_coverage-95%25-green) [![Linters + RSpec](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml/badge.svg)](https://github.com/a-thousand-channels/ORTE-backend/actions/workflows/rubyonrails-ci.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/ab3d16e763664a942d72/maintainability)](https://codeclimate.com/github/ut/ORTE-backend/maintainability)
 
 
-# ORTE-backend
+# ORTE-backend, a web-GIS backend
 
 Backend application for creating and managing places/POIs (or in german "Orte"),  formatted text and assets like images, audio and video on a web-based map. Additionally relations between places can be set. Output is a public available API w/JSON or exportable as CSV/JSON/GeoJSON data. It has also some extra features like visualising relations between places and a map to go feature (see below).
 
-Based on Ruby on Rails 6.1, Ruby 3, MySQL/MariaDB, jQuery, Leaflet and Foundation 6.
+Based on Ruby on Rails 7.2, Ruby 3, MySQL/MariaDB, jQuery, Leaflet and Foundation 6.
 
 Contributions to this application are appreciated (see below).
 
@@ -37,8 +37,10 @@ Basic steps for a local installation on your machine:
 
 * Ruby 3.2+, RVM, Rubygems
 * MySQL/Maria DB
-* ffmpeg (for the video feature), ImageMagick (for the image feature)
+* ffmpeg (for the video feature)
+* ImageMagick or graphicsmagick (for image features)
 * Redis
+* Node.js (v18++)
 
 #### Production
 
@@ -71,6 +73,11 @@ $ sudo mysql -u root
 $ bundle exec rails db:schema:load
 $ bundle exec rails db:seed
 ```
+
+Note: With Mariadb locally, you might not need a user root, just
+
+```sudo mysql``
+
 
 ### Settings for server setup
 
@@ -118,13 +125,15 @@ $ RAILS_ENV=test COVERAGE=true bundle exec rspec spec
 
 ## Credits
 
-Project by A thousand channels, initiated by [Ulf Treger](https://github.com/ut) with kind support by and in collaboration with:
+A project by and for [A Thousand Channels](https://a-thousand-channels.xyz)
 
+* Initial code and UI by [Ulf Treger](https://github.com/ut) with kind support by and in collaboration with:
 * [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for initial code donation,
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
-* Participants of workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen,
-* Members of the working group "Queer narratives, mappped" 💖 for acceptance testing, ideas and requests for improving the user interface and the maps.
+* Participants of mapping workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen 2019+
+* Members of the working group "Queer narratives, mappped" 💖 for testing, bringing up ideas and feature requests for improving the user interface and the maps and thinking the tool more inclusive.
 * [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface and to [Sefux](https://github.com/Sefux) for coding it.
+* [Prototype Fund](https://prototypefund.de/en/) for funding the development in 2021-2022, especially the MapToGo feature, mapping of relations plus some enhanced privacy features.
 * There is a fork by [Leerstandsmeldungen](https://gitlab.com/leerstandsmelder/lsm-orte) with PostgreSQL and Pundit Gem for a more sophisticated model of  authorization and roles.
 
 ## Feedback & Contributions
