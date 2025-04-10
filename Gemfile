@@ -48,7 +48,7 @@ gem 'nokogiri'
 
 gem 'acts-as-taggable-on', '~> 11'
 gem 'color-generator'
-gem 'mini_magick', '~> 4'
+gem 'mini_magick'
 gem 'mobility', '~> 1.2'
 gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
