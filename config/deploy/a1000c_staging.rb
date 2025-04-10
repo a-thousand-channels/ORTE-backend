@@ -1,5 +1,5 @@
 
-set :branch, 'main'
+set :branch, 'ut/402-ui-sidebar'
 set :rails_env, 'staging'
 set :stage, 'a1000c_staging'
 set :repo_url, 'git@github.com:a-thousand-channels/ORTE-backend-a1000c.git'
