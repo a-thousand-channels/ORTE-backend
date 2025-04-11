@@ -19,24 +19,35 @@ class MapsController < ApplicationController
     if @map
       @map_layers = @map.layers
 
-      @places = @map_layers.flat_map(&:places)
-      @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
-
-      # timeline calculation, for now on a yearly basis
-      @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
-      @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
-
-      # make a hash, where the key is a single year and it contains all places that are active in that year
-      @places_by_year = {}
-      @places_with_dates.each do |place|
-        startyear = place.startdate.nil? ? @minyear : place.startdate.year
-        endyear = place.enddate.nil? ? startyear : place.enddate.year
-        (startyear..endyear).each do |year|
-          @places_by_year[year.to_i] ||= []
-          @places_by_year[year.to_i] << place
-        end
+      @places = @map.places
+      if params[:search] && !params[:search].empty?
+        @search = params[:search]
+        @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
       end
-      @timespan = @maxyear - @minyear
+      if params[:tag] && !params[:tag].empty?
+        @tag_name = params[:tag]
+        @places = @places.tagged_with(@tag_name)
+      end
+
+      if @map.enable_time_slider
+        @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
+
+        # timeline calculation, for now on a yearly basis
+        @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+        @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
+
+        # make a hash, where the key is a single year and it contains all places that are active in that year
+        @places_by_year = {}
+        @places_with_dates.each do |place|
+          startyear = place.startdate.nil? ? @minyear : place.startdate.year
+          endyear = place.enddate.nil? ? startyear : place.enddate.year
+          (startyear..endyear).each do |year|
+            @places_by_year[year.to_i] ||= []
+            @places_by_year[year.to_i] << place
+          end
+        end
+        @timespan = @maxyear - @minyear
+      end
 
       respond_to do |format|
         format.html { render :show }
