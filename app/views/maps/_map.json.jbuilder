@@ -9,8 +9,10 @@ json.layers map.layers do |layer|
     json.extract! place, :id, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :shy, :layer_id, :layer_title, :layer_color, :layer_type, :created_at, :updated_at, :date, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name
     json.lat place.public_lat
     json.lon place.public_lon
-    json.annotations place.annotations do |annotation|
-      json.extract! annotation, :id, :title, :text, :person_name, :audiolink
+    if map.show_annotations_on_map
+      json.annotations place.annotations do |annotation|
+        json.extract! annotation, :id, :title, :text, :person_name, :audiolink
+      end
     end
   end
   json.places_with_relations layer.places do |place|
