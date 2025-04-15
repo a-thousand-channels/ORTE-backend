@@ -197,6 +197,7 @@ Metrics/CyclomaticComplexity:
   Exclude:
     - app/helpers/application_helper.rb
     - app/controllers/layers_controller.rb
+    - app/controllers/public/layers_controller.rb
     - app/controllers/maps_controller.rb
     - lib/imports/csv_importer.rb
 
