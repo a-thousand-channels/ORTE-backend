@@ -63,6 +63,12 @@ class Place < ApplicationRecord
     clean_text_fields
   end
 
+  def self.all_unique_tags
+    ActsAsTaggableOn::Tag.joins(:taggings)
+                         .where(taggings: { taggable_type: 'Place' })
+                         .distinct
+  end
+
   def title_and_location
     if location.blank?
       title

@@ -43,7 +43,7 @@ gem 'sprockets'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 
 gem 'image_processing'
-gem 'mini_racer', platforms: :ruby
+gem 'mini_racer', '0.16', platforms: :ruby
 gem 'nokogiri'
 
 gem 'acts-as-taggable-on', '~> 11'
