@@ -27,7 +27,8 @@ class Public::LayersController < ActionController::Base
                 else
                   @layer.places.published
                 end
-      @places = @places.includes(:images, :annotations, :icon, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
+      @places = @places.includes(:images, :annotations, :icon, :taggings,
+                                 :tags, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
     end
 
     respond_to do |format|
