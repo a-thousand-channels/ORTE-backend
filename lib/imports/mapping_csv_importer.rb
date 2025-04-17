@@ -20,6 +20,9 @@ class Imports::MappingCsvImporter
   end
 
   def import
+    headers = CSV.read(@file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char, row_sep: @row_sep).headers
+    @unprocessable_fields = @import_mapping.unprocessable_fields(headers)
+
     CSV.foreach(@file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char, row_sep: @row_sep).with_index do |row, index|
       begin
         processed_row = { layer_id: @layer.id }
@@ -31,8 +34,6 @@ class Imports::MappingCsvImporter
           processed_row[model_property] = value
         end
 
-        # TODO: header validieren und Error werfen?!
-        Rails.logger.info('Process row')
         if processed_row["tags"]
           tags = processed_row["tags"]&.split(',')&.map(&:strip)
           place = Place.new(processed_row.except("tags"))
@@ -40,16 +41,17 @@ class Imports::MappingCsvImporter
         else
           place = Place.new(processed_row)
         end
-        if place.valid?
+        identical_fields = @import_mapping.mapping.select { |mapping| mapping['key'] }.map { |mapping| mapping['model_property'] }.to_h {
+          |key| [key, place[key]]
+        }
+        is_duplicate = Place.where(identical_fields).exists?
+        if is_duplicate
+          @duplicate_rows << place
+        elsif place.valid?
           @valid_rows << place
         else
           @invalid_rows << place
         end
-        identical_fields = @import_mapping.mapping.select { |mapping| mapping['key'] }.map { |mapping| mapping['model_property'] }.to_h {
-          |key| [key, place[key]]
-        }
-        @duplicate_rows << place if Place.where(identical_fields).exists? # todo: auf key anpassen, hash der spaltenname aus db auf wert aus csv mappt
-        puts "Identical fields: #{identical_fields}"
       rescue StandardError => e
         @errored_rows << row
       end

@@ -5,6 +5,20 @@ class ImportMapping < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: true
 
+  def self.from_header(header_row)
+    matching_headers = header_row.uniq.filter do |column_name|
+      Place.column_names.include?(column_name)
+    end.map do |column_name|
+      {
+        'csv_column_name' => column_name,
+        'model_property' => column_name,
+        'parsers' => [],
+        'key' => false
+      }
+    end
+    ImportMapping.new(mapping: matching_headers)
+  end
+
   def parse(value, parser_names)
     parsers = parser_names&.map { |parser_name| @@parsers[parser_name] } || []
     parsers.each do |parser|
@@ -15,6 +29,13 @@ class ImportMapping < ApplicationRecord
     puts e.message
     Rails.logger.error("Error parsing value: #{e.message}")
     nil
+  end
+
+  def unprocessable_fields(header_row)
+    mappings = mapping || []
+    mapped_headers = mappings.map { |m| m['csv_column_name'] }
+
+    header_row - mapped_headers
   end
 
   private
@@ -29,6 +50,7 @@ class ImportMapping < ApplicationRecord
     'european_date' => ->(value) { DateTime.strptime(value, '%d.%m.%Y') },
     'american_date' => ->(value) { DateTime.parse(value) }
   }
+
   def validate_required_model_properties
     required_properties = %w[title lat lon]
     mappings = mapping || []
