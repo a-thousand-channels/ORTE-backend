@@ -21,9 +21,9 @@ RSpec.describe Imports::MappingCsvImporter do
 
         importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping)
         importer.import
-        #expect(importer.unprocessable_fields).to contain_exactly('id', 'annotations', 'unknown')
+        expect(importer.unprocessable_fields).to contain_exactly('address', 'annotations', 'city', 'country', 'enddate', 'id', 'location', 'startdate', 'text', 'unknown', 'zip')
         expect(importer.valid_rows.count).to eq(2)
-        #expect(importer.valid_rows.first['teaser']).to match('Ein etwas versteckt gelegenes und ')
+        expect(importer.valid_rows.first['teaser']).to match('Ein etwas versteckt gelegenes und ')
       end
 
       it 'returns valid rows except duplicate and invalid rows' do
@@ -32,8 +32,8 @@ RSpec.describe Imports::MappingCsvImporter do
 
         importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping)
         importer.import
-        # expect(importer.valid_rows.count).to eq(0)
-        # expect(importer.duplicate_rows.count).to eq(1)
+        expect(importer.valid_rows.count).to eq(0)
+        expect(importer.duplicate_rows.count).to eq(1)
         expect(importer.invalid_rows.count).to eq(2)
       end
 
@@ -88,14 +88,14 @@ RSpec.describe Imports::MappingCsvImporter do
       it 'returns valid rows' do
         file = Rack::Test::UploadedFile.new('spec/support/files/places_with_tab_separator.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping, col_sep: "\t", quote_char: "'")
+        importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping, col_sep: "\t")
         importer.import
-        expect(importer.valid_rows.count).to eq(2)
+        expect(importer.valid_rows.count).to eq(1)
+        expect(importer.valid_rows.first.title).to eq('Place with tab separator')
       end
-      # Todo: test with tab-separated CSV will einfach nicht funktionieren
     end
 
-    #todo: weitere Testfälle erstellen mit mapping
+    # todo: weitere Testfälle erstellen mit mapping edge cases
 
     context 'with not matching mapping' do
       it 'detects unmatching of mapping and does not create Place records' do
