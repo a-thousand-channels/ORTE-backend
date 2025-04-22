@@ -423,8 +423,10 @@ jQuery(function ($) {
       }
     }
   });
-  
 
+  if (!$('#selection').data('data-url') ) {
+    $('.loader_wrapper').hide(300);
+  }
   if ( $('#selection').data('layer-id') ) {
     // localStorage.setItem('Layer',$('#selection').data('layer-id'));
   }
