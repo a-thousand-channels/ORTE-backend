@@ -69,15 +69,19 @@
             %i.fi-plus
             Create a layer for this map
         %p#selection-hint
-    #info-wrapper.grid-x
-    
+
+  
+    #info-wrapper.grid-x{"data-closable": true}
+      %button.close-button{"aria-label": "Dismiss alert", type: "button", "data-close": true}
+        %span{"aria-hidden": "true"}
+          &times;  
       .cell.medium-12   
+        %h5 Search & filter
         = render 'maps/partials/search', object: @map         
 
-      .cell.medium-12 
-        - if @places.present?
-          - tags = Place.all_unique_tags
-          - if tags.any?      
+      - if @places.present?
+        - if @map.places.all_tags.count > 0
+          .cell.medium-12 
             %div.tags
               - @places.all_tags.each do |tag|
                 %span.label.secondary.tag{class: "#{tag.name == params[:tag] ? 'active' : ""}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}

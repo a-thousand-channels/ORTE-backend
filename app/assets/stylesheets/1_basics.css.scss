@@ -453,6 +453,9 @@ div.input-group {
       margin: 0;
   }
 }
+form.form-inline div.input-group {
+  margin-bottom: 0rem;
+}
 [type="text"], [type="password"], [type="date"], [type="datetime"], [type="datetime-local"], [type="month"], [type="week"], [type="email"], [type="number"], [type="search"], [type="tel"], [type="time"], [type="url"], [type="color"], textarea {
     margin: 0 0 0.3rem;
     padding: 0.2rem;
