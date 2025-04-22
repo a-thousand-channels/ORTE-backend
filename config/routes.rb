@@ -87,6 +87,7 @@ Rails.application.routes.draw do
       resources :layers, only: [:show], :defaults => { :format => :json } do
         resources :places, only: [:show], :defaults => { :format => :json }
       end
+      resources :tags, only: [:index], :defaults => { :format => :json }
       member do
         get :allplaces
       end

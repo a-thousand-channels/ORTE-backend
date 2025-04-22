@@ -26,6 +26,7 @@ if @layer&.published
       json.teaser place.teaser
       json.text place.text
       json.link place.link
+      json.tags place.tags.map(&:name).sort
       json.images do
         json.array! place.images do |image|
           json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)

@@ -285,7 +285,8 @@
                               "layer_id",
                               "shy",
                               "images",
-                              "annotations"
+                              "annotations",
+                              "tags"
                            ],
                            "properties":{
                               "id":{
@@ -344,6 +345,13 @@
                                  "examples":[
                                     ""
                                  ]
+                              },
+                              "tags":{
+                                 "$id":"#/properties/map/properties/tags",
+                                 "type":"array",
+                                 "items":{
+                                    "type":"string"
+                                 }
                               },
                               "sources":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/sources",
