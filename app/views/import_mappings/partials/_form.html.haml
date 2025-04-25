@@ -11,34 +11,23 @@
       %tr
         %th CSV Column name
         %th Model Property
-        %th Parser
+        %th Parsers
+        %th Key
     %tbody
-      - @headers&.each_with_index do |header, index|
-        - mapping = JSON.parse(@import_mapping.mapping || '[]')[index] || {}
+      - @headers&.each do |header|
         %tr
           %td= header
-          %td
-            = f.fields_for :mapping, OpenStruct.new(model_property: mapping['model_property'] || '', parser: mapping['parser'] || '') do |mapping_form|
-              = mapping_form.input :model_property, collection: @place_columns, label: false, input_html: { name: nil, class: 'model-property-select' }
-              %td
-                = mapping_form.input :parser, label: false, input_html: { name: nil, class: 'parser-input' }
-
-  .large-12.medium-12.small-12.cell
-    = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
+          - mapping = @import_mapping.mapping.find { |m| m['csv_column_name'] == header }
+          - unless mapping
+            - mapping = { 'csv_column_name' => header, 'model_property' => nil, 'parsers' => [], 'key' => false }
+            - @import_mapping.mapping << mapping
+          = f.fields_for :mapping, OpenStruct.new(mapping) do |mapping_form|
+            %td
+              = mapping_form.input :model_property, collection: @place_columns, label: false, input_html: { class: 'model-property-select' }
+            %td
+              = mapping_form.input :parsers, label: false, input_html: { class: 'parsers-input' }
+            %td
+              = mapping_form.input :key, as: :boolean, label: false, input_html: { class: 'key-input' }
+  = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
   = f.hidden_field :mapping, id: 'import_mapping_mapping'
   = f.submit 'Save Mapping', class: 'button'
-
-:javascript
-  document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(event) {
-      const mappings = [];
-      document.querySelectorAll('tbody tr').forEach((row, index) => {
-        const header = row.querySelector('td').innerText.trim();
-        const modelProperty = row.querySelector('.model-property-select').value;
-        const parser = row.querySelector('.parser-input').value;
-        mappings.push({ csv_column_name: header, model_property: modelProperty, parser: parser });
-      });
-      document.getElementById('import_mapping_mapping').value = JSON.stringify(mappings);
-    });
-  });
