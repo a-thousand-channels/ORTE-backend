@@ -7,13 +7,15 @@
       %tr
         %th CSV Column name
         %th Model Property
-        %th Parser
+        %th Parsers
+        %th Key
     %tbody
-      - JSON.parse(@import_mapping.mapping).each do |mapping|
+      -@import_mapping.mapping.each do |mapping|
         %tr
           %td= mapping['csv_column_name']
           %td= mapping['model_property']
-          %td= mapping['parser']
+          %td= mapping['parsers']
+          %td= mapping['key']
 
   = simple_form_for :import, url: apply_mapping_import_mapping_path(@import_mapping), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
     %hr
@@ -25,7 +27,7 @@
       %span.hint  Select the layer to which the CSV data will be imported.
     %hr
     %p
-      = f.input :file, as: :file, label: 'CSV File'
+      = f.input :file, as: :file, label: 'CSV File', input_html: { accept: '.csv' }
       %span.hint  The format of the file must be CSV.
     %hr
     %p
@@ -35,7 +37,7 @@
     %hr
     .form-actions
       %p
-        = f.submit "Import CSV File", class: "button"
+        = f.submit "Generate CSV import preview with this mapping applied", class: "button"
 
 :javascript
   $(document).on('change', '.map-select', function() {
