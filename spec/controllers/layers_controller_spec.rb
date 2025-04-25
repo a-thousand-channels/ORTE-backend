@@ -92,7 +92,7 @@ RSpec.describe LayersController, type: :controller do
       context 'with session data' do
         context 'with valid CSV' do
           before do
-            importing_rows = [build(:place, title: 'Place 1', layer: layer).attributes, build(:place, title: 'Place 2', layer: layer).attributes]
+            importing_rows = [Place.new(title: 'Place 1', layer: layer), Place.new(title: 'Place 2', layer: layer)]
             allow(controller).to receive(:session).and_return(importing_rows: importing_rows)
           end
 

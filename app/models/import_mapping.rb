@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class ImportMapping < ApplicationRecord
-  validate :validate_required_model_properties
+  # validate :validate_required_model_properties #todo: klären, ob notwendig
   validates :name, presence: true
   validates :name, uniqueness: true
 
   def self.from_header(header_row)
     matching_headers = header_row.uniq.filter do |column_name|
-      Place.column_names.include?(column_name)
+      Place.column_names.map(&:downcase).include?(column_name.downcase)
     end.map do |column_name|
       {
         'csv_column_name' => column_name,
-        'model_property' => column_name,
+        'model_property' => Place.column_names.find { |col| col.casecmp(column_name).zero? },
         'parsers' => [],
         'key' => false
       }
@@ -20,15 +20,12 @@ class ImportMapping < ApplicationRecord
   end
 
   def parse(value, parser_names)
+    parser_names = JSON.parse(parser_names)
     parsers = parser_names&.map { |parser_name| @@parsers[parser_name] } || []
     parsers.each do |parser|
       value = parser.call(value) if parser
     end
     value
-  rescue StandardError => e
-    puts e.message
-    Rails.logger.error("Error parsing value: #{e.message}")
-    nil
   end
 
   def unprocessable_fields(header_row)
@@ -41,8 +38,8 @@ class ImportMapping < ApplicationRecord
   private
 
   @@parsers = {
-    'trim' => ->(value) { value.strip },
-    'sanitize' => ->(value) { ActionController::Base.helpers.sanitize(value) }, # was soll genau machen?
+    'trim' => lambda(&:strip),
+    'strip_html_tags' => ->(value) { value&.gsub(/<\/?[^>]*>/, '') },
     'remove_leading_hash' => ->(value) { value&.gsub(/#\b/, '') || '' },
     'spaces_to_commas' => ->(value) { value&.gsub(/\s+/, ',') },
     'split_to_first' => ->(value) { value.split(',').first },
@@ -51,6 +48,7 @@ class ImportMapping < ApplicationRecord
     'american_date' => ->(value) { DateTime.parse(value) }
   }
 
+  # todo: brauchen wir diese Validierung eigentlich? ggf. fixen
   def validate_required_model_properties
     required_properties = %w[title lat lon]
     mappings = mapping || []

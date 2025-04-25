@@ -28,15 +28,16 @@ class LayersController < ApplicationController
     @overwrite = params[:import][:overwrite] == '1'
     return unless file
 
+    @headers = CSV.read(file.path, headers: true).headers
     begin
       importer = Imports::CsvImporter.new(file, @layer.id, overwrite: @overwrite)
       importer.import
       flash[:notice] = 'CSV read successfully!'
+      redirect_to new_import_mapping_path(headers: @headers)
     rescue CSV::MalformedCSVError => e
       flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
     rescue Imports::MissingFieldsError => e
       @missing_fields = e.missing_fields
-      @headers = CSV.read(file.path, headers: true).headers
       redirect_to new_import_mapping_path(missing_fields: e.missing_fields, headers: @headers)
     end
     @valid_rows = importer.valid_rows
@@ -49,7 +50,9 @@ class LayersController < ApplicationController
   def importing
     importing_rows_data = session[:importing_rows]
     if importing_rows_data
-      @importing_rows = importing_rows_data.map { |place_data| Place.new(place_data.merge(layer_id: @layer.id)) }
+      @importing_rows = importing_rows_data.map do |place_data|
+        Place.new(place_data.attributes.merge(layer_id: @layer.id))
+      end
       @importing_rows.each(&:save!)
       session.delete(:importing_rows)
       redirect_to map_layer_path(@map, @layer), notice: "CSV import completed successfully! (#{@importing_rows.count} places has been imported to #{@layer.title})"

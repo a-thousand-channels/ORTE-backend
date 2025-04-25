@@ -28,17 +28,18 @@
 
 :javascript
   document.addEventListener('DOMContentLoaded', function() {
-    const showMappingButton = document.getElementById('show_mapping_button');
-    const existingMappingSelect = document.getElementById('existing_mapping');
-
-    showMappingButton.addEventListener('click', function() {
-      const selectedValue = existingMappingSelect.value;
-      if (selectedValue) {
-        window.location.href = selectedValue;
-      } else {
-        alert('Please select a mapping to view.');
-      }
-    });
+    // TODO: im Controller @existing_mappings fixen, dann hier ausprobieren und ggf. fixen
+    // const showMappingButton = document.getElementById('show_mapping_button');
+    // const existingMappingSelect = document.getElementById('existing_mapping');
+    //
+    // showMappingButton.addEventListener('click', function() {
+    //   const selectedValue = existingMappingSelect.value;
+    //   if (selectedValue) {
+    //     window.location.href = selectedValue;
+    //   } else {
+    //     alert('Please select a mapping to view.');
+    //   }
+    // });
 
     const form = document.querySelector('form');
     form.addEventListener('submit', function(event) {
@@ -46,8 +47,10 @@
       document.querySelectorAll('tbody tr').forEach((row, index) => {
         const header = row.querySelector('td').innerText.trim();
         const modelProperty = row.querySelector('.model-property-select').value;
-        const parser = row.querySelector('.parser-input').value;
-        mappings.push({ csv_column_name: header, model_property: modelProperty, parser: parser });
+        const parsers_input = row.querySelector('.parsers-input').value;
+        const parsers = parsers_input.length > 0 ? parsers_input : "[]";
+        const key = row.querySelector('.key-input').checked;
+        mappings.push({ csv_column_name: header, model_property: modelProperty, parsers: parsers, key: key });
       });
       document.getElementById('import_mapping_mapping').value = JSON.stringify(mappings);
     });

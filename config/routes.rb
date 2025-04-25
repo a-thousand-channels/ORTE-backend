@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   resources :import_mappings do
     post :apply_mapping, on: :member
+    get :import_preview, on: :member
   end
 
   resources :maps do
