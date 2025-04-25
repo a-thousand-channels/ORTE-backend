@@ -8,7 +8,10 @@ json.layers map.layers do |layer|
 
   places_query = layer.places
   places_query = places_query.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%") if @search.present?
-  places_query = places_query.tagged_with(@tag_name) if @tag_name.present?
+  puts '--------------------'
+  puts @tag_names
+  places_query = places_query.tagged_with(@tag_names) if @tag_names.present?
+
   json.places do
     json.array! places_query do |place|
       json.extract! place, :id, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :shy, :layer_id, :layer_title, :layer_color, :layer_type, :created_at, :updated_at, :date, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name, :tags

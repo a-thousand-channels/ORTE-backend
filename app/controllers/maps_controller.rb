@@ -24,9 +24,9 @@ class MapsController < ApplicationController
         @search = params[:search]
         @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
       end
-      if params[:tag] && !params[:tag].empty?
-        @tag_name = params[:tag]
-        @places = @places.tagged_with(@tag_name)
+      if params[:filter].present?
+        @tag_names = params[:filter].split(',')
+        @places = @places.tagged_with(@tag_names)
       end
 
       if @map.enable_time_slider
