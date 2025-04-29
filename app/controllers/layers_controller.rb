@@ -25,12 +25,18 @@ class LayersController < ApplicationController
 
   def import_preview
     file = params[:import][:file]
-    @overwrite = params[:import][:overwrite] == '1'
+    temp_file_path = Rails.root.join('tmp', File.basename(params[:import][:file].original_filename))
+    File.binwrite(temp_file_path, file.read)
+    session[:temp_file_path] = temp_file_path.to_s
+    session[:file_name] = file.original_filename
     return unless file
 
+    @overwrite = params[:import][:overwrite] == '1'
     @headers = CSV.read(file.path, headers: true).headers
+    session[:layer_id] = @layer.id
+
     begin
-      importer = Imports::CsvImporter.new(file, @layer.id, overwrite: @overwrite)
+      importer = Imports::MappingCsvImporter.new(file, @layer.id, ImportMapping.new, overwrite: @overwrite)
       importer.import
       flash[:notice] = 'CSV read successfully!'
       redirect_to new_import_mapping_path(headers: @headers)

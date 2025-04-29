@@ -20,15 +20,21 @@
   = simple_form_for :import, url: apply_mapping_import_mapping_path(@import_mapping), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
     %hr
     %p
-      = f.input :map_id, collection: @maps, prompt: 'Select a Map', label: 'Map', input_html: { class: 'map-select' }
-      %span.hint  Select the map to which the layer belongs.
+      = f.input :map_id, collection: @maps, prompt: 'Select a Map', label: 'Map', input_html: { class: 'map-select' }, selected: @map&.id
+      - unless @map
+        %span.hint  Select the map to which the layer belongs.
     %p
-      = f.input :layer_id, collection: [], prompt: 'Select a Layer', label: 'Layer', input_html: { class: 'layer-select' }
-      %span.hint  Select the layer to which the CSV data will be imported.
+      = f.input :layer_id, collection: @layers , prompt: 'Select a Layer', label: 'Layer', input_html: { class: 'layer-select' }, selected: @layer&.id
+      - unless @layer
+        %span.hint  Select the layer to which the CSV data will be imported.
     %hr
-    %p
-      = f.input :file, as: :file, label: 'CSV File', input_html: { accept: '.csv' }
-      %span.hint  The format of the file must be CSV.
+    - if @temp_file_path
+      = f.hidden_field :temp_file_path, value: @temp_file_path
+      %p File to be imported: #{@file_name}
+    - else
+      %p
+        = f.input :file, as: :file, label: 'CSV File', input_html: { accept: '.csv' }
+        %span.hint  The format of the file must be CSV.
     %hr
     %p
       = f.input :overwrite, as: :boolean, label: 'Overwrite'

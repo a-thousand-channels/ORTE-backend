@@ -22,5 +22,3 @@ FactoryBot.define do
     end
   end
 end
-
-# warum mapping, wenn csv_column_name und model_property gleich sind?
