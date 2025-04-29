@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'csv'
-require_relative 'errors'
 
 include ActionView::Helpers::SanitizeHelper
 
@@ -16,7 +15,7 @@ class Imports::CsvImporter
 
   # TODO: update existing place as an option
 
-  def initialize(file, layer_id, overwrite: false, import_mapping: nil)
+  def initialize(file, layer_id, overwrite: false)
     @file = file
     @layer = Layer.find(layer_id)
     @overwrite = overwrite
@@ -26,19 +25,11 @@ class Imports::CsvImporter
     @errored_rows = []
     @existing_titles = @layer.places ? @layer.places.pluck(:title) : []
     @unprocessable_fields = []
-    @import_mapping = import_mapping
   end
 
   def import
-    if @import_mapping.present?
-      set_headers_from_mapping
-    else
-      validate_header
-    end
-
-    CSV.foreach(@file.path, headers: true).with_index do |row, index|
-      next if index.zero? # Skip the header row
-
+    validate_header
+    CSV.foreach(@file.path, headers: true) do |row|
       processed_row = row.to_hash.slice(*ALLOWED_FIELDS)
       Rails.logger.info('Process row')
 
@@ -83,45 +74,13 @@ class Imports::CsvImporter
   def validate_header
     headers = CSV.read(@file.path, headers: true).headers
     missing_fields = REQUIRED_FIELDS - headers
-    raise Imports::MissingFieldsError, missing_fields if missing_fields.any?
+    raise StandardError, "Missing required fields: #{missing_fields.join(', ')}" if missing_fields.any?
 
     @unprocessable_fields = headers - ALLOWED_FIELDS
     Rails.logger.error('Not allowed fields found (and skipped)') unless @unprocessable_fields.empty?
 
     processable_fields = headers - @unprocessable_fields
     raise StandardError, 'No allowed fields found' if processable_fields.empty?
-  end
-
-  def set_headers_from_mapping
-    # Set headers based on the mapping
-    mapping = JSON.parse(@import_mapping.mapping)
-    @original_headers = mapping.map { |m| m['csv_column_name'] }
-    @mapped_headers = mapping.map { |m| m['model_property'] }
-
-    # Read the CSV file and get the original headers
-    csv_data = CSV.read(@file.path, headers: true)
-    original_headers = csv_data.headers
-
-    # Create a mapping of original headers to the new headers
-    header_mapping = {}
-    @original_headers.each_with_index do |original_header, index|
-      header_mapping[original_header] = @mapped_headers[index]
-    end
-
-    # Replace the headers in the CSV data
-    new_headers = original_headers.map { |header| header_mapping[header] || header }
-
-    # Write the modified CSV data to a temporary file
-    temp_file = Tempfile.new(['import', '.csv'])
-    CSV.open(temp_file.path, 'w', write_headers: true, headers: new_headers) do |csv|
-      csv << new_headers
-      csv_data.each do |row|
-        csv << row
-      end
-    end
-
-    # Update the file path to the temporary file with modified headers
-    @file = temp_file
   end
 
   def valid_row?(row)
