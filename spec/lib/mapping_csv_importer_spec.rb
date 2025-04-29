@@ -38,7 +38,8 @@ RSpec.describe Imports::MappingCsvImporter do
         expect(importer.ambiguous_rows.count).to eq(0)
       end
 
-      it 'sanitizes a title with js and html' do # todo: hier findet überhaupt kein sanitizing statt!
+      it 'sanitizes a title with js and html' do
+        # TODO: hier findet überhaupt kein Sanitizing statt, auch nicht im bestehenden Importer - das JS wird genauso gespeichert, wie es im CSV steht
         file_with_html = Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv')
 
         importer = Imports::MappingCsvImporter.new(file_with_html, layer.id, import_mapping)
@@ -58,7 +59,7 @@ RSpec.describe Imports::MappingCsvImporter do
       end
 
       it 'handles wrong csv header and does not create Place records' do
-        pending("error handling changed, test needs to be adjusted")
+        pending('error handling changed, test needs to be adjusted')
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header.csv', 'text/csv')
 
         importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, import_mapping)
@@ -111,7 +112,6 @@ RSpec.describe Imports::MappingCsvImporter do
         expect(importer.duplicate_rows.count).to eq(1)
         expect(importer.duplicate_rows.first.title).to eq('Place 1')
         expect(importer.ambiguous_rows.count).to eq(0)
-
       end
     end
 
@@ -133,8 +133,7 @@ RSpec.describe Imports::MappingCsvImporter do
       end
     end
 
-
-    # todo: weitere Testfälle erstellen mit mapping edge cases
+    # TODO: weitere Testfälle erstellen mit mapping edge cases
 
     context 'with not matching mapping' do
       it 'detects unmatching of mapping and does not create Place records' do
@@ -145,7 +144,7 @@ RSpec.describe Imports::MappingCsvImporter do
         # expect do
         #   importer.import
         # end.to raise_error(StandardError)
-        # Todo: error werfen, dass mapping nicht passt?!
+        # TODO: error werfen, dass mapping nicht passt?!
         importer.import
         expect(importer.valid_rows.count).to eq(0)
       end
