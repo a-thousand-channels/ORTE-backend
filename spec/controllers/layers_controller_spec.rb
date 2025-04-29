@@ -58,8 +58,7 @@ RSpec.describe LayersController, type: :controller do
       context 'with valid CSV' do
         it 'renders the import preview' do
           post :import_preview, params: { map_id: @map.id, id: layer.friendly_id, import: { file: file } }, session: valid_session
-          expect(response).to render_template(:import_preview)
-          expect(session[:importing_rows]).not_to be_nil
+          expect(response).to be_redirect
         end
       end
 
@@ -69,7 +68,7 @@ RSpec.describe LayersController, type: :controller do
         it 'shows an error message' do
           post :import_preview, params: { map_id: @map.id, id: layer.friendly_id, import: { file: invalid_file } }, session: valid_session
 
-          expect(response).to render_template(:import_preview)
+          expect(response).to be_redirect
           expect(session[:importing_rows]).to eq([])
         end
       end
@@ -92,7 +91,7 @@ RSpec.describe LayersController, type: :controller do
       context 'with session data' do
         context 'with valid CSV' do
           before do
-            importing_rows = [Place.new(title: 'Place 1', layer: layer), Place.new(title: 'Place 2', layer: layer)]
+            importing_rows = [Place.new(title: 'Place 1', lat: 53.95, lon: 9.34, layer: layer), Place.new(title: 'Place 2', lat: 53.85, lon: 9.27, layer: layer)]
             allow(controller).to receive(:session).and_return(importing_rows: importing_rows)
           end
 

@@ -187,7 +187,7 @@ Metrics/BlockNesting:
     - app/helpers/application_helper.rb
 
 Metrics/ClassLength:
-  Max: 280
+  Max: 300
 
 Metrics/CollectionLiteralLength:
   Enabled: true
@@ -200,12 +200,17 @@ Metrics/CyclomaticComplexity:
     - app/controllers/public/layers_controller.rb
     - app/controllers/maps_controller.rb
     - lib/imports/csv_importer.rb
+    - lib/imports/mapping_csv_importer.rb
 
 Metrics/MethodLength:
   Enabled: false
 
 Metrics/ModuleLength:
   Max: 227
+
+Metrics/ParameterLists:
+  Exclude:
+    - lib/imports/mapping_csv_importer.rb
 
 Metrics/PerceivedComplexity:
   Enabled: false
@@ -357,6 +362,9 @@ Style/MinMaxComparison:
 
 Style/MixinUsage:
   Enabled: false
+
+Style/MultilineBlockChain:
+    Enabled: false
 
 Style/MultilineInPatternThen:
   Enabled: true

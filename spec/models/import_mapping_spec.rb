@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/models/import_mapping_spec.rb
 require 'rails_helper'
 
@@ -14,12 +16,12 @@ RSpec.describe ImportMapping, type: :model do
     end
 
     it 'returns headers that are not mapped' do
-      header_row = ['title', 'lat', 'lon', 'extra_column']
+      header_row = %w[title lat lon extra_column]
       expect(import_mapping.unprocessable_fields(header_row)).to eq(['extra_column'])
     end
 
     it 'returns an empty array if all headers are mapped' do
-      header_row = ['title', 'lat', 'lon']
+      header_row = %w[title lat lon]
       expect(import_mapping.unprocessable_fields(header_row)).to eq([])
     end
 
@@ -31,7 +33,7 @@ RSpec.describe ImportMapping, type: :model do
 
   describe '.from_header' do
     it 'creates an ImportMapping with matching headers' do
-      header_row = ['title', 'lat', 'extra_column']
+      header_row = %w[title lat extra_column]
       import_mapping = ImportMapping.from_header(header_row)
 
       expect(import_mapping.mapping).to eq([
@@ -55,7 +57,7 @@ RSpec.describe ImportMapping, type: :model do
     end
 
     it 'ignores duplicate headers in the input' do
-      header_row = ['title', 'title', 'lat']
+      header_row = %w[title title lat]
       import_mapping = ImportMapping.from_header(header_row)
 
       expect(import_mapping.mapping).to eq([
