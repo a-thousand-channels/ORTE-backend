@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ImportMapping < ApplicationRecord
-  # validate :validate_required_model_properties #todo: klären, ob notwendig
+  # validate :validate_required_model_properties # todo: klären, ob notwendig
   validates :name, presence: true
   validates :name, uniqueness: true
 
@@ -21,7 +21,7 @@ class ImportMapping < ApplicationRecord
 
   def parse(value, parser_names)
     parser_names = JSON.parse(parser_names)
-    parsers = parser_names&.map { |parser_name| @@parsers[parser_name] } || []
+    parsers = parser_names&.map { |parser_name| self.class.parsers[parser_name] } || []
     parsers.each do |parser|
       value = parser.call(value) if parser
     end
@@ -37,18 +37,22 @@ class ImportMapping < ApplicationRecord
 
   private
 
-  @@parsers = {
-    'trim' => lambda(&:strip),
-    'strip_html_tags' => ->(value) { value&.gsub(/<\/?[^>]*>/, '') },
-    'remove_leading_hash' => ->(value) { value&.gsub(/#\b/, '') || '' },
-    'spaces_to_commas' => ->(value) { value&.gsub(/\s+/, ',') },
-    'split_to_first' => ->(value) { value.split(',').first },
-    'split_to_last' => ->(value) { value.split(',').last },
-    'european_date' => ->(value) { DateTime.strptime(value, '%d.%m.%Y') },
-    'american_date' => ->(value) { DateTime.parse(value) }
-  }
+  class << self
+    def parsers
+      @parsers ||= {
+        'trim' => lambda(&:strip),
+        'strip_html_tags' => ->(value) { value&.gsub(/<\/?[^>]*>/, '') },
+        'remove_leading_hash' => ->(value) { value&.gsub(/#\b/, '') || '' },
+        'spaces_to_commas' => ->(value) { value&.gsub(/\s+/, ',') },
+        'split_to_first' => ->(value) { value.split(',').first },
+        'split_to_last' => ->(value) { value.split(',').last },
+        'european_date' => ->(value) { DateTime.strptime(value, '%d.%m.%Y') },
+        'american_date' => ->(value) { DateTime.parse(value) }
+      }
+    end
+  end
 
-  # todo: brauchen wir diese Validierung eigentlich? ggf. fixen
+  # TODO: brauchen wir diese Validierung eigentlich? ggf. fixen
   def validate_required_model_properties
     required_properties = %w[title lat lon]
     mappings = mapping || []
