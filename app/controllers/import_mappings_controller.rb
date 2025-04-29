@@ -8,6 +8,11 @@ class ImportMappingsController < ApplicationController
   def show
     @import_mapping = ImportMapping.find(params[:id])
     @maps = Map.all
+    @layers = Layer.all
+    @map = Map.friendly.find(session[:map_id]) if session[:map_id].present?
+    @layer = @map.layers.find(session[:layer_id]) if session[:layer_id].present?
+    @temp_file_path = session[:temp_file_path]
+    @file_name = session[:file_name]
   end
 
   def import_preview
@@ -23,7 +28,7 @@ class ImportMappingsController < ApplicationController
     @headers = params[:headers]
     @place_columns = Place.column_names + ['tag_list']
     @import_mapping = ImportMapping.from_header(@headers)
-    # Todo: fix "no implicit conversion of Array into String"
+    # TODO: fix "no implicit conversion of Array into String"
     # @existing_mappings = ImportMapping.all.select do |mapping|
     #   JSON.parse(mapping.mapping).all? { |m| @headers.include?(m['csv_column_name']) }
     # end
@@ -49,8 +54,14 @@ class ImportMappingsController < ApplicationController
     @import_mapping = ImportMapping.find(params[:id])
     @map = Map.find(params[:import][:map_id])
     @layer = @map.layers.find(params[:import][:layer_id])
-    csv_file = params[:import][:file]
-    overwrite = params[:import][:overwrite] #todo!
+
+    csv_file = if params[:import][:file].present?
+                 params[:import][:file]
+               elsif session[:temp_file_path].present? && File.exist?(session[:temp_file_path])
+                 File.open(session[:temp_file_path])
+               end
+
+    overwrite = params[:import][:overwrite] # Todo!
 
     if csv_file.present?
       importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping)
