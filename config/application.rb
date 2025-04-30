@@ -29,8 +29,6 @@ module OrteBackend
     
     config.tinymce.install = :copy
 
-    config.autoload_paths += %W(#{config.root}/lib)
-    
     config.action_cable.mount_path = '/cable'
 
     config.middleware.use Rack::Attack
