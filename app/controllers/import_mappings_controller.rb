@@ -9,8 +9,8 @@ class ImportMappingsController < ApplicationController
     @import_mapping = ImportMapping.find(params[:id])
     @maps = Map.all
     @layers = Layer.all
-    @map = Map.friendly.find(session[:map_id]) if session[:map_id].present?
-    @layer = @map.layers.find(session[:layer_id]) if session[:layer_id].present?
+    @layer = Layer.find(session[:layer_id]) if session[:layer_id].present?
+    @map = @layer.map
     @temp_file_path = session[:temp_file_path]
     @file_name = session[:file_name]
   end
@@ -28,10 +28,7 @@ class ImportMappingsController < ApplicationController
     @headers = params[:headers]
     @place_columns = Place.column_names + ['tag_list']
     @import_mapping = ImportMapping.from_header(@headers)
-    # TODO: fix "no implicit conversion of Array into String"
-    # @existing_mappings = ImportMapping.all.select do |mapping|
-    #   JSON.parse(mapping.mapping).all? { |m| @headers.include?(m['csv_column_name']) }
-    # end
+    @existing_mappings = matching_import_mappings(@headers)
   end
 
   def create
@@ -98,6 +95,12 @@ class ImportMappingsController < ApplicationController
   end
 
   private
+
+  def matching_import_mappings(headers)
+    ImportMapping.all.select do |mapping|
+      mapping.mapping.all? { |m| headers.include?(m['csv_column_name']) }
+    end
+  end
 
   def import_mapping_params
     params.require(:import_mapping).permit(:name, :mapping)
