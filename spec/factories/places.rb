@@ -50,6 +50,13 @@ FactoryBot.define do
       title { 'OtherTitle' }
       published { true }
     end
+    trait :with_tags do
+      after(:create) do |place|
+        place.tag_list.add('Tag1', 'Tag2', 'Tag3')
+        place.save
+      end
+    end
+
     trait :with_audio do
       after(:build) do |place|
         place.audio.attach(

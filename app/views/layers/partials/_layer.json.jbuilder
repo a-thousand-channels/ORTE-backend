@@ -3,9 +3,11 @@
 json.extract! layer, :id, :title, :subtitle, :text, :credits, :image_link, :published, :map_id, :color, :mapcenter_lat, :mapcenter_lon, :zoom, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :created_at, :updated_at, :ltype
 json.url map_layer_url(layer, format: :json)
 json.iconset layer.map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if layer.map.iconset
+
 places_query = layer.places
 places_query = places_query.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%") if @search.present?
-places_query = places_query.tagged_with(@tag_name) if @tag_name.present?
+places_query = places_query.tagged_with(@tag_names) if @tag_names.present?
+
 json.places do
   json.array! places_query do |place|
     json.extract! place, :id, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :layer_id, :layer_type, :layer_title, :layer_color, :color, :created_at, :updated_at, :date, :date_with_qualifier, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name

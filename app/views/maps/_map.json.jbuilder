@@ -8,8 +8,6 @@ json.layers map.layers do |layer|
 
   places_query = layer.places
   places_query = places_query.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%") if @search.present?
-  puts '--------------------'
-  puts @tag_names
   places_query = places_query.tagged_with(@tag_names) if @tag_names.present?
 
   json.places do

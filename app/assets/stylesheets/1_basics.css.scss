@@ -276,7 +276,7 @@ select {
 }
 /* -------------------- */
 .label.secondary.tag {
-    padding: 0.45em 0.75em;
+    padding: 0.4em 0.6em;
     margin-bottom: 0.25rem;
     border-radius: 4px;
     background-color: #baa;
@@ -287,6 +287,13 @@ select {
     a {
       color: white;
     }
+}
+@media screen and (max-width: 39.9375em) {
+  .label.secondary.tag {
+    padding: 0.35em 0.5em;
+    margin-bottom: 0rem;
+    font-size: 0.8rem;
+  }
 }
 .label.secondary.tag.active,
 .label.secondary.tag:hover {

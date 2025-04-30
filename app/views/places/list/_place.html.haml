@@ -61,7 +61,7 @@
   %p
     - place.tags.each do |tag|
       %span.label.secondary.tag{class: "#{tag.name == params[:tag] ? 'active' : ""}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
-        = link_to map_path(@map, tag_id: tag.id) do
+        = link_to map_path(@map, filter: tag.name) do
           %i.fi-price-tag
           = tag.name
 %p.shy.text-left

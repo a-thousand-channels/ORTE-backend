@@ -98,9 +98,9 @@ class LayersController < ApplicationController
         @search = params[:search]
         @places = @places.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%")
       end
-      if params[:tag] && !params[:tag].empty?
-        @tag_name = params[:tag]
-        @places = @places.tagged_with(@tag_name)
+      if params[:filter].present?
+        @tag_names = params[:filter].split(',')
+        @places = @places.tagged_with(@tag_names)
       end
 
       @place = Place.find(params[:place_id]) if params[:remap]
