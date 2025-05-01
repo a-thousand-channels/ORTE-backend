@@ -66,71 +66,86 @@
         #selection-hint
           %p
             How to map: Search an address with the field above or double-click anywhere on the map to create a place.
-    #info-wrapper.grid-x
+  .grid-x
+    .cell.medium-12
+      #info-wrapper.grid-x
+        .cell.medium-12   
+          %button.button.secondary.small#info-wrapper-button{type: "button", "data-toggle": "info-wrapper-content"}
+            %i.fi-magnifying-glass.fi-18
+            %i.fi-italic.fi-24
+            %i.fi-filter.fi-18  
+ 
+          %div#info-wrapper-content.grid-x{"data-toggler": ".expanded"}
+            %button.close-button{type: "button", "data-toggle": "info-wrapper-content"}
+              %span{"aria-hidden": "true"}
+                &times;            
+            .cell.medium-12
+              .header
+                %h5 
+                  Search 
+                  - if @layer.places.all_tags.count > 0
+                    \& filter
+              = render 'layers/partials/search', object: @map      
 
-      .cell.medium-12   
-        %h5 Search & filter
-        = render 'layers/partials/search', object: @map         
+            .cell.medium-12 
+              - if @layer.places.all_tags.count > 0
+                .cell.medium-12 
+                  %div.tags
+                    %h5.hide Tags
 
-      .cell.medium-12 
-        - if @layer.places.all_tags.count > 0
-          .cell.medium-12 
-            %div.tags
-              %h5 Tags
+                    - all_tags_count = 0
+                    - @places.all_tags.each do |tag|
+                      - all_tags_count = @places.all_tags.count
+                      
+                      - count = @places.tagged_with(["#{tag.name}"]).count
+                      - max_count = @places.all_tags.map { |tag| @places.tagged_with(tag.name).count }.max
+                      - count_threshold = 1
+                      - count_threshold = (max_count * 0.1).ceil
+                      - next if all_tags_count > 5 && count <= count_threshold && params[:show_tags] != 'all'
+                      %span.label.secondary.tag{class: "#{params[:filter]&.split(',')&.include?(tag.name) ? 'active' : ''}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
+                        = link_to map_layer_path(@map, @layer, filter: (params[:filter] ? (params[:filter].split(',').include?(tag.name) ? (params[:filter].split(',') - [tag.name]).join(',') : "#{params[:filter]},#{tag.name}") : tag.name), search: @search) do
+                          %i.fi-price-tag
+                          = tag.name
+                          (#{count})
+                      
 
-              - all_tags_count = 0
-              - @places.all_tags.each do |tag|
-                - all_tags_count = @places.all_tags.count
-                
-                - count = @places.tagged_with(["#{tag.name}"]).count
-                - max_count = @places.all_tags.map { |tag| @places.tagged_with(tag.name).count }.max
-                - count_threshold = 1
-                - count_threshold = (max_count * 0.1).ceil
-                - next if all_tags_count > 5 && count <= count_threshold && params[:show_tags] != 'all'
-                %span.label.secondary.tag{class: "#{params[:filter]&.split(',')&.include?(tag.name) ? 'active' : ''}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
-                  = link_to map_path(@map, filter: (params[:filter] ? (params[:filter].split(',').include?(tag.name) ? (params[:filter].split(',') - [tag.name]).join(',') : "#{params[:filter]},#{tag.name}") : tag.name), search: @search) do
-                    %i.fi-price-tag
-                    = tag.name
-                    (#{count})
-                
+                    - if ( params[:filter] && !params[:filter].empty? )
+                      %span.label.secondary.tag 
+                        = link_to map_layer_path(@map, @layer, search: @search), {title: 'Show all places'} do
+                          %i.fi-x      
+                          All places
+                    - if all_tags_count > 5
+                      - if params[:show_tags] != 'all'
+                        = link_to map_layer_path(@map, @layer, filter: params[:filter], search: @search, show_tags: 'all'), {title: 'Show all tags'} do
+                          %strong{style: 'font-size: 23px; line-height: 1; padding-left: 3px'}
+                            \»
+                      - else
+                        = link_to map_layer_path(@map, @layer, filter: params[:filter], search: @search, show_tags: ''), {title: 'Show all tags'} do
+                          %strong{style: 'font-size: 23px; line-height: 1; padding-left: 3px'}
+                            \« 
+              - if ( params[:filter] && !params[:filter].empty? ) || ( @search )
+                %hr
+                - if @places && @places.count > 0          
+                  %p
+                    - if @search
+                      - if params[:filter] && !params[:filter].empty? 
+                        Searching places with #{@tag_names.count > 0 ? 'tags' : 'tag'} <tt>"#{@tag_names.join(', ')}"</tt>
+                      - else
+                        Searching all places 
+                      for <tt>"#{@search}"</tt>
+                    - elsif params[:filter] && !params[:filter].empty? 
+                      Filtering with #{@tag_names.count > 0 ? 'tags' : 'tag'} "#{@tag_names.join(', ')}"
 
-              - if ( params[:filter] && !params[:filter].empty? )
-                %span.label.secondary.tag 
-                  = link_to map_path(@map, search: @search), {title: 'Show all places'} do
-                    %i.fi-x      
-                    All places
-              - if all_tags_count > 5
-                - if params[:show_tags] != 'all'
-                  = link_to map_path(@map, filter: params[:filter], search: @search, show_tags: 'all'), {title: 'Show all tags'} do
-                    %strong{style: 'font-size: 23px; line-height: 1; padding-left: 3px'}
-                      \»
-                - else
-                  = link_to map_path(@map, filter: params[:filter], search: @search, show_tags: ''), {title: 'Show all tags'} do
-                    %strong{style: 'font-size: 23px; line-height: 1; padding-left: 3px'}
-                      \« 
-        - if ( params[:filter] && !params[:filter].empty? ) || ( @search )
-          %hr
-          - if @places && @places.count > 0          
-            %p
-              - if @search
-                - if params[:filter] && !params[:filter].empty? 
-                  Searching places with #{@tag_names.count > 0 ? 'tags' : 'tag'} <tt>"#{@tag_names.join(', ')}"</tt>
-                - else
-                  Searching all places 
-                for <tt>"#{@search}"</tt>
-              - elsif params[:filter] && !params[:filter].empty? 
-                Filtering with #{@tag_names.count > 0 ? 'tags' : 'tag'} "#{@tag_names.join(', ')}"
-
-              \— #{@places.count}&nbsp;#{@places.count == 1 ? 'place' : 'places'} found
-          - else  
-            No places found
-          = render 'maps/partials/places_list'
-          - if @places && @places.count > 0
-            %hr
-            %p
-              = link_to map_path(@map, tag: @tag_name, search: @search), class: 'button small' do
-                %i.fi-magnifying-glass.fi-21
-                Search/filter in all layers of this map
-              %br
+                    \— #{@places.count}&nbsp;#{@places.count == 1 ? 'place' : 'places'} found
+                - else  
+                  No places found
+                = render 'maps/partials/places_list'
+                - if @places && @places.count > 0
+                  %hr
+                  %p
+                    = link_to map_path(@map, tag: @tag_name, search: @search), class: 'button small' do
+                      %i.fi-magnifying-glass.fi-21
+                      Search/filter in all layers of this map
+                    %br
 
 

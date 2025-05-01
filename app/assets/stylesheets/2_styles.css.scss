@@ -176,7 +176,7 @@ input#addresslookup_address.hide {
   background-color: rgba(255,255,255,0.2);
 }
 
-#info-wrapper,
+#info-wrapper-content,
 #table-wrapper,
 #form-wrapper {
   background-color: rgba(255,255,255,0.8);
@@ -199,8 +199,12 @@ input#addresslookup_address.hide {
 }
 #info-wrapper {
   position: relative;
+}
+#info-wrapper-content {
+  display: none;
+  position: relative;
   max-width: 45%;
-  padding: 15px 20px 20px;
+  padding: 5px 20px 20px;
   max-height: 73vh;
   overflow: scroll;  
   @media screen and (max-width: 63.9375) {
@@ -208,8 +212,28 @@ input#addresslookup_address.hide {
   }
   @media screen and (max-width: 39.9375em) {
     max-width: unset;
+  }  
+
+  .header {
+    margin: 2px 0 25px 50px;
   }
 }
+#info-wrapper-content.expanded {
+  display: block;
+}
+#info-wrapper-button {
+  position: absolute;
+  z-index: 999;
+  padding: 0.55em 0.75em;
+}
+body#layers #selection-hint {
+  margin-bottom: 10px;
+}
+#info-wrapper-button[aria-expanded="true"] {
+  background-color: transparent;
+  color:#333;
+}
+
 #form-wrapper {
   max-width: unset;
 }
