@@ -224,13 +224,13 @@
             Please upload one video and describe its content and metadata. You can repeat this to add multiple videos to this place.
         = render 'places/form/videos'
         %label Audio
-        - if @place.audio && @place.audio.attached?
+        - if @place.audio.attached? && @place.persisted?
           %p
             = link_to rails_blob_path(@place.audio, disposition: 'attachment') do
               = @place.audio.filename
           %p.shy Upload a new file:
-        = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg'
-        %p.hint Please upload in MP3 format only
+        = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg,audio/x-m4a,audio/mp4'
+        %p.hint Please upload only MP3 or M4A files
         %hr
         - if admin?
           = f.input :shy, label: "Hide on map level (w/all layers)"

@@ -224,7 +224,10 @@ class Place < ApplicationRecord
   private
 
   def check_audio_format
-    errors.add(:audio, 'format must be MP3.') if audio.attached? && !audio.content_type.in?(%w[audio/mpeg])
+    return unless audio.attached? && !audio.content_type.in?(%w[audio/mpeg audio/x-m4a audio/mp4])
+
+    errors.add(:audio, 'Format must be MP3 or M4A')
+    audio.purge
   end
 
   def clean_text_fields
