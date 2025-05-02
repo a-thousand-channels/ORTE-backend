@@ -21,8 +21,10 @@
         %select{name: 'mapping', id: 'mapping_select'}
           %option{ value: '' } Select a mapping
           - @existing_mappings.each do |mapping|
-            %option{ value: import_mapping_path(mapping) }= mapping.name
-        = f.submit 'Use Selected Mapping', class: 'button'
+            %option{ value: mapping.id }= mapping.name
+        = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id'
+        = f.hidden_field :file_name, value: @file_name, name: 'file_name'
+        = f.submit 'Use Selected Mapping', class: 'button', name: nil
 
     = render 'import_mappings/partials/form'
 
