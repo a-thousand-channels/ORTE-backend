@@ -27,8 +27,7 @@ class LayersController < ApplicationController
     file = params[:import][:file]
     temp_file_path = Rails.root.join('tmp', File.basename(params[:import][:file].original_filename))
     File.binwrite(temp_file_path, file.read)
-    session[:temp_file_path] = temp_file_path.to_s
-    session[:file_name] = file.original_filename
+    ImportContextHelper.write_tempfile_path(file, temp_file_path)
     return unless file
 
     @overwrite = params[:import][:overwrite] == '1'
@@ -39,12 +38,12 @@ class LayersController < ApplicationController
       importer = Imports::MappingCsvImporter.new(file, @layer.id, ImportMapping.new, overwrite: @overwrite)
       importer.import
       flash[:notice] = 'CSV read successfully!'
-      redirect_to new_import_mapping_path(headers: @headers)
+      redirect_to new_import_mapping_path(headers: @headers, layer_id: @layer.id, file_name: file.original_filename)
     rescue CSV::MalformedCSVError => e
       flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
     rescue Imports::MissingFieldsError => e
       @missing_fields = e.missing_fields
-      redirect_to new_import_mapping_path(missing_fields: e.missing_fields, headers: @headers)
+      redirect_to new_import_mapping_path(missing_fields: e.missing_fields, headers: @headers, layer_id: @layer.id, file_name: file.original_filename)
     end
     @valid_rows = importer.valid_rows
     session[:importing_rows] = @valid_rows

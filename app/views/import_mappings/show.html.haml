@@ -28,8 +28,7 @@
       - unless @layer
         %span.hint  Select the layer to which the CSV data will be imported.
     %hr
-    - if @temp_file_path
-      = f.hidden_field :temp_file_path, value: @temp_file_path
+    - if @file_name
       %p File to be imported: #{@file_name}
     - else
       %p
@@ -43,6 +42,7 @@
     %hr
     .form-actions
       %p
+        = f.hidden_field :file_name, value: @file_name, name: 'file_name'
         = f.submit "Generate CSV import preview with this mapping applied", class: "button"
 
 :javascript

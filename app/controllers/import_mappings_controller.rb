@@ -9,10 +9,10 @@ class ImportMappingsController < ApplicationController
     @import_mapping = ImportMapping.find(params[:id])
     @maps = Map.all
     @layers = Layer.all
-    @layer = Layer.find(session[:layer_id]) if session[:layer_id].present?
-    @map = @layer.map
-    @temp_file_path = session[:temp_file_path]
-    @file_name = session[:file_name]
+    @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
+    @map = @layer&.map
+    @file_name = params[:file_name]
+    ImportContextHelper.read_tempfile_path(@file_name)
   end
 
   def import_preview
@@ -26,19 +26,23 @@ class ImportMappingsController < ApplicationController
   def new
     @missing_fields = params[:missing_fields]
     @headers = params[:headers]
+    @layer = Layer.find(params[:layer_id])
     @place_columns = Place.column_names + ['tag_list']
     @import_mapping = ImportMapping.from_header(@headers)
     @existing_mappings = matching_import_mappings(@headers)
+    @file_name = params[:file_name]
   end
 
   def create
     mapping = JSON.parse(params[:import_mapping][:mapping])
     @import_mapping = ImportMapping.new(name: params[:import_mapping][:name], mapping: mapping)
-    @headers = JSON.parse(params[:import_mapping][:headers])
+    @headers = JSON.parse(params[:headers])
+    @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
+    @file_name = params[:file_name]
 
     respond_to do |format|
       if @import_mapping.save
-        format.html { redirect_to @import_mapping, notice: 'Import mapping was successfully created.' }
+        format.html { redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id, file_name: @file_name), notice: 'Import mapping was successfully created.' }
         format.json { render :show, status: :created, location: @import_mapping }
       else
         format.html { render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers }
@@ -51,12 +55,9 @@ class ImportMappingsController < ApplicationController
     @import_mapping = ImportMapping.find(params[:id])
     @map = Map.find(params[:import][:map_id])
     @layer = @map.layers.find(params[:import][:layer_id])
-
-    csv_file = if params[:import][:file].present?
-                 params[:import][:file]
-               elsif session[:temp_file_path].present? && File.exist?(session[:temp_file_path])
-                 File.open(session[:temp_file_path])
-               end
+    @file_name = params[:file_name]
+    file_path = ImportContextHelper.read_tempfile_path(@file_name)
+    csv_file = File.open(file_path)
 
     overwrite = params[:import][:overwrite] # Todo!
 

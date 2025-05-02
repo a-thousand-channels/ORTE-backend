@@ -53,6 +53,7 @@ module Imports
             parsing_errors[model_property] = e.message
           end
         end
+        processed_row = processed_row.reject { |key, _| key.to_s.strip.empty? }
         place = Place.new(processed_row)
         place.validate
         parsing_errors.each do |key, error|
