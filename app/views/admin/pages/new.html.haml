@@ -1,0 +1,19 @@
+#form-wrapper.large-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to admin_groups_path, :class=>'close_link' do
+      %i.fi.fi-x
+  %p.small
+    %a{:href => settings_path, :title => 'Settings'}
+      %i.fi-widget.fi-21
+      Settings
+    \&mdash;
+    %a{:href => admin_pages_path, :title => 'Pages'}
+      %i.fi-marker.fi-21
+      Page
+
+  %h1 New Page
+
+  = render 'form'
+
+  %hr
+  = link_to 'All pages', admin_pages_path, :class => 'button'
