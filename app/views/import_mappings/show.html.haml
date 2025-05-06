@@ -30,6 +30,8 @@
     %hr
     - if @file_name
       %p File to be imported: #{@file_name}
+      %p col_sep: #{@col_sep}
+      %p quote_char: #{@quote_char}
     - else
       %p
         = f.input :file, as: :file, label: 'CSV File', input_html: { accept: '.csv' }
@@ -43,6 +45,8 @@
     .form-actions
       %p
         = f.hidden_field :file_name, value: @file_name, name: 'file_name'
+        = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
+        = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
         = f.submit "Generate CSV import preview with this mapping applied", class: "button"
 
 :javascript
