@@ -12,6 +12,8 @@ class ImportMappingsController < ApplicationController
     @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
     @map = @layer&.map
     @file_name = params[:file_name]
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
     ImportContextHelper.read_tempfile_path(@file_name)
   end
 
@@ -21,6 +23,8 @@ class ImportMappingsController < ApplicationController
     @invalid_rows = params[:invalid_rows]
     @layer = Layer.find(params[:layer_id])
     @map = Map.find(params[:map_id])
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
   end
 
   def new
@@ -31,6 +35,8 @@ class ImportMappingsController < ApplicationController
     @import_mapping = ImportMapping.from_header(@headers)
     @existing_mappings = matching_import_mappings(@headers)
     @file_name = params[:file_name]
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
   end
 
   def create
@@ -39,10 +45,12 @@ class ImportMappingsController < ApplicationController
     @headers = JSON.parse(params[:headers])
     @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
     @file_name = params[:file_name]
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
 
     respond_to do |format|
       if @import_mapping.save
-        format.html { redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id, file_name: @file_name), notice: 'Import mapping was successfully created.' }
+        format.html { redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.' }
         format.json { render :show, status: :created, location: @import_mapping }
       else
         format.html { render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers }
@@ -56,13 +64,15 @@ class ImportMappingsController < ApplicationController
     @map = Map.find(params[:import][:map_id])
     @layer = @map.layers.find(params[:import][:layer_id])
     @file_name = params[:file_name]
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
     file_path = ImportContextHelper.read_tempfile_path(@file_name)
     csv_file = File.open(file_path)
 
     overwrite = params[:import][:overwrite] # Todo!
 
     if csv_file.present?
-      importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping)
+      importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
       importer.import
       flash[:notice] = 'CSV read successfully!'
       @valid_rows = importer.valid_rows

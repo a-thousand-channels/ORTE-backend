@@ -31,19 +31,32 @@ class LayersController < ApplicationController
     return unless file
 
     @overwrite = params[:import][:overwrite] == '1'
-    @headers = CSV.read(file.path, headers: true).headers
     session[:layer_id] = @layer.id
+    column_separator = params[:import][:column_separator] || ','
+    @col_sep = case column_separator
+               when 'Comma'
+                 ','
+               when 'Semicolon'
+                 ';'
+               when 'Tab'
+                 "\t"
+               else
+                 ','
+               end
+    @quote_char = params[:import][:quote_char] || '"'
+
+    @headers = CSV.read(file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
 
     begin
-      importer = Imports::MappingCsvImporter.new(file, @layer.id, ImportMapping.new, overwrite: @overwrite)
+      importer = Imports::MappingCsvImporter.new(file, @layer.id, ImportMapping.new, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
       importer.import
       flash[:notice] = 'CSV read successfully!'
-      redirect_to new_import_mapping_path(headers: @headers, layer_id: @layer.id, file_name: file.original_filename)
+      redirect_to new_import_mapping_path(headers: @headers, layer_id: @layer.id, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char)
     rescue CSV::MalformedCSVError => e
       flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
     rescue Imports::MissingFieldsError => e
       @missing_fields = e.missing_fields
-      redirect_to new_import_mapping_path(missing_fields: e.missing_fields, headers: @headers, layer_id: @layer.id, file_name: file.original_filename)
+      redirect_to new_import_mapping_path(missing_fields: e.missing_fields, headers: @headers, layer_id: @layer.id, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char)
     end
     @valid_rows = importer.valid_rows
     session[:importing_rows] = @valid_rows
