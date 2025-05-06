@@ -24,6 +24,10 @@ class LayersController < ApplicationController
   def import; end
 
   def import_preview
+    if params[:import].blank? || params[:import][:file].blank?
+      flash[:alert] = 'Please select a file before proceeding.'
+      redirect_to import_map_layer_path(@map, @layer) and return
+    end
     file = params[:import][:file]
     temp_file_path = Rails.root.join('tmp', File.basename(params[:import][:file].original_filename))
     File.binwrite(temp_file_path, file.read)
