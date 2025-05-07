@@ -4,7 +4,7 @@ require 'csv'
 
 module Imports
   class MappingCsvImporter
-    attr_reader :valid_rows, :invalid_rows, :duplicate_rows, :errored_rows, :ambiguous_rows, :unprocessable_fields, :error
+    attr_reader :valid_rows, :duplicate_rows, :errored_rows, :ambiguous_rows, :unprocessable_fields, :error
 
     REQUIRED_FIELDS = %w[title lat lon].freeze
 
@@ -17,7 +17,6 @@ module Imports
       @layer = Layer.find(layer_id)
       @import_mapping = import_mapping
       @overwrite = overwrite
-      @invalid_rows = []
       @duplicate_rows = []
       @valid_rows = []
       @errored_rows = []
@@ -34,7 +33,6 @@ module Imports
       csv = CSV.parse(csv_content, headers: true, col_sep: @col_sep, quote_char: @quote_char, row_sep: @row_sep)
       headers = csv.headers
       @unprocessable_fields = @import_mapping.unprocessable_fields(headers)
-
       csv.each do |row|
         processed_row = { layer_id: @layer.id }
         mappings = @import_mapping.mapping
@@ -61,16 +59,23 @@ module Imports
         end
         duplicate_count = duplicate_key_values(place) && Place.where(duplicate_key_values(place)).count
         if duplicate_count == 1
-          @duplicate_rows << place # TODO: im ui markieren, ob valid oder nicht, Zahl der validen kalkulieren
+          duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(place)).first.id }
+          @duplicate_rows << duplicate_hash # TODO: im ui markieren, ob valid oder nicht, Zahl der validen kalkulieren
         elsif duplicate_count && duplicate_count > 1
-          @ambiguous_rows << place # TODO: Testfälle
+          ambiguous_hash = { data: row, duplicate_count: duplicate_count }
+          @ambiguous_rows << ambiguous_hash # TODO: Testfälle
+        elsif place.errors.any?
+          error_hash = { data: row, messages: [place.errors.full_messages] }
+          @errored_rows << error_hash
         elsif place.valid?
           @valid_rows << place # TODO: --> Zahl kalkulieren für UI/import-Vorschau
         else
-          @invalid_rows << row
+          error_hash = { data: row, messages: ['unknown error'] }
+          @errored_rows << error_hash
         end
       rescue StandardError => e
-        @errored_rows << row
+        error_hash = { data: row, messages: [e.message] }
+        @errored_rows << error_hash
       end
     end
 
