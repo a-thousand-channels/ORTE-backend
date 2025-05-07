@@ -44,6 +44,14 @@ jQuery(function ($) {
       map_resize();
   }).trigger("resize");
 
+  if ( $('#selection').length === 0 )  {
+    $('.loader_wrapper').hide(0);
+  }
+  if (!$('#selection').data('url') ) {
+    $('.loader_wrapper').hide(0);
+  }
+
+
   setTimeout(function(){
       $('#flash').slideUp(2000);
   }, 4500);
@@ -424,9 +432,6 @@ jQuery(function ($) {
     }
   });
 
-  if (!$('#selection').data('data-url') ) {
-    $('.loader_wrapper').hide(300);
-  }
   if ( $('#selection').data('layer-id') ) {
     // localStorage.setItem('Layer',$('#selection').data('layer-id'));
   }

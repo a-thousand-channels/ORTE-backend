@@ -176,7 +176,8 @@ input#addresslookup_address.hide {
   background-color: rgba(255,255,255,0.2);
 }
 
-#info-wrapper-content,
+#filter-wrapper-content,
+#info-wrapper,
 #table-wrapper,
 #form-wrapper {
   background-color: rgba(255,255,255,0.8);
@@ -200,7 +201,7 @@ input#addresslookup_address.hide {
 #info-wrapper {
   position: relative;
 }
-#info-wrapper-content {
+#filter-wrapper-content {
   display: none;
   position: relative;
   max-width: 45%;
@@ -218,7 +219,7 @@ input#addresslookup_address.hide {
     margin: 2px 0 25px 50px;
   }
 }
-#info-wrapper-content.expanded {
+#filter-wrapper-content.expanded {
   display: block;
 }
 #info-wrapper-button {
