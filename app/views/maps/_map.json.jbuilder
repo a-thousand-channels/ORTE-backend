@@ -15,28 +15,26 @@ json.layers map.layers do |layer|
       json.extract! place, :id, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :shy, :layer_id, :layer_title, :layer_color, :layer_type, :created_at, :updated_at, :date, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name, :tags
       json.lat place.public_lat
       json.lon place.public_lon
-      json.annotations do
-        json.array! place.annotations do |annotation|
+      if map.show_annotations_on_map
+        json.annotations place.annotations do |annotation|
           json.extract! annotation, :id, :title, :text, :person_name, :audiolink
         end
       end
     end
   end
-  json.places_with_relations do
-    json.array! layer.places do |place|
-      if place.relations_froms.count.positive?
-        json.relations place.relations_froms do |relation|
-          json.id relation.id
-          json.from do
-            json.extract! relation.relation_from, :id
-            json.lat relation.relation_from.public_lat
-            json.lon relation.relation_from.public_lon
-          end
-          json.to do
-            json.extract! relation.relation_to, :id
-            json.lat relation.relation_to.public_lat
-            json.lon relation.relation_to.public_lon
-          end
+  json.places_with_relations layer.places do |place|
+    if place.relations_froms.count.positive?
+      json.relations place.relations_froms do |relation|
+        json.id relation.id
+        json.from do
+          json.extract! relation.relation_from, :id
+          json.lat relation.relation_from.public_lat
+          json.lon relation.relation_from.public_lon
+        end
+        json.to do
+          json.extract! relation.relation_to, :id
+          json.lat relation.relation_to.public_lat
+          json.lon relation.relation_to.public_lon
         end
       end
     end
