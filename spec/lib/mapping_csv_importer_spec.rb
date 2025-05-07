@@ -34,7 +34,7 @@ RSpec.describe Imports::MappingCsvImporter do
         importer.import
         expect(importer.valid_rows.count).to eq(0)
         expect(importer.duplicate_rows.count).to eq(1)
-        expect(importer.invalid_rows.count).to eq(2)
+        expect(importer.errored_rows.count).to eq(2)
         expect(importer.ambiguous_rows.count).to eq(0)
       end
 
@@ -55,7 +55,7 @@ RSpec.describe Imports::MappingCsvImporter do
 
         importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, import_mapping)
         importer.import
-        expect(importer.invalid_rows.count).to eq(1)
+        expect(importer.errored_rows.count).to eq(1)
       end
 
       it 'handles wrong csv header and does not create Place records' do
@@ -73,7 +73,7 @@ RSpec.describe Imports::MappingCsvImporter do
 
         importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, import_mapping)
         importer.import
-        expect(importer.invalid_rows.count).to eq(2)
+        expect(importer.errored_rows.count).to eq(2)
       end
     end
 
@@ -104,13 +104,13 @@ RSpec.describe Imports::MappingCsvImporter do
         file = Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv')
 
         # Create 1 existing records with the same title as one place in the file
-        create(:place, title: 'Place 1', teaser: 'some text', layer: layer)
+        existing_place = create(:place, title: 'Place 1', teaser: 'some text', layer: layer)
 
         importer = Imports::MappingCsvImporter.new(file, layer.id, mapping)
         importer.import
 
         expect(importer.duplicate_rows.count).to eq(1)
-        expect(importer.duplicate_rows.first.title).to eq('Place 1')
+        expect(importer.duplicate_rows.first[:duplicate_id]).to eq(existing_place.id)
         expect(importer.ambiguous_rows.count).to eq(0)
       end
     end
@@ -128,7 +128,7 @@ RSpec.describe Imports::MappingCsvImporter do
         importer.import
 
         expect(importer.ambiguous_rows.count).to eq(1)
-        expect(importer.ambiguous_rows.first.title).to eq('Place 1')
+        expect(importer.ambiguous_rows.first[:duplicate_count]).to eq(2)
         expect(importer.duplicate_rows.count).to eq(0)
       end
     end
