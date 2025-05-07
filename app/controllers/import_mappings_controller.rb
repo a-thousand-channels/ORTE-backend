@@ -20,7 +20,9 @@ class ImportMappingsController < ApplicationController
   def import_preview
     @import_mapping = ImportMapping.find(params[:id])
     @valid_rows = session.delete(:valid_rows) # Retrieve and clear from session
-    @invalid_rows = params[:invalid_rows]
+    @duplicate_rows = params[:duplicate_rows]
+    @ambiguous_rows = params[:ambiguous_rows]
+    @errored_rows = params[:errored_rows]
     @layer = Layer.find(params[:layer_id])
     @map = Map.find(params[:map_id])
     @quote_char = params[:quote_char]
@@ -76,9 +78,12 @@ class ImportMappingsController < ApplicationController
       importer.import
       flash[:notice] = 'CSV read successfully!'
       @valid_rows = importer.valid_rows
+      @errored_rows = importer.errored_rows
+      @duplicate_rows = importer.duplicate_rows
+      @ambiguous_rows = importer.ambiguous_rows
       session[:importing_rows] = @valid_rows
       session[:valid_rows] = @valid_rows
-      redirect_to import_preview_import_mapping_path(@import_mapping, invalid_rows: importer.invalid_rows, layer_id: @layer.id, map_id: @map.id)
+      redirect_to import_preview_import_mapping_path(@import_mapping, errored_rows: @errored_rows, duplicate_rows: @duplicate_rows, ambiguous_rows: @ambiguous_rows, layer_id: @layer.id, map_id: @map.id)
     else
       redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.'
     end

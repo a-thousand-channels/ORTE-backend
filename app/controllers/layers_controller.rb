@@ -64,7 +64,6 @@ class LayersController < ApplicationController
     end
     @valid_rows = importer.valid_rows
     session[:importing_rows] = @valid_rows
-    @invalid_rows = importer.invalid_rows
     @duplicate_rows = importer.duplicate_rows
     @errored_rows = importer.errored_rows
   end
