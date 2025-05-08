@@ -38,11 +38,6 @@
             .cell.medium-3
               = f.input :quote_char, as: :string, label: 'Quote Char', input_html: { value: '"' }
         %hr
-        %p
-          = f.input :overwrite, :as => :boolean, :label => 'Overwrite'
-          %span.hint
-            Overwrite existing places with the same title
-        %hr
         .form-actions
           %p
             = f.submit "Import CSV File", class: "button"

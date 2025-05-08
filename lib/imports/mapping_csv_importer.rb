@@ -4,7 +4,7 @@ require 'csv'
 
 module Imports
   class MappingCsvImporter
-    attr_reader :valid_rows, :duplicate_rows, :errored_rows, :ambiguous_rows, :unprocessable_fields, :error
+    attr_reader :valid_rows, :duplicate_rows, :invalid_duplicate_rows, :errored_rows, :ambiguous_rows, :unprocessable_fields, :error
 
     REQUIRED_FIELDS = %w[title lat lon].freeze
 
@@ -19,6 +19,7 @@ module Imports
       @overwrite = overwrite
       @duplicate_rows = []
       @valid_rows = []
+      @invalid_duplicate_rows = []
       @errored_rows = []
       @ambiguous_rows = []
       @unprocessable_fields = []
@@ -59,8 +60,13 @@ module Imports
         end
         duplicate_count = duplicate_key_values(place) && Place.where(duplicate_key_values(place)).count
         if duplicate_count == 1
-          duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(place)).first.id }
-          @duplicate_rows << duplicate_hash # TODO: im ui markieren, ob valid oder nicht, Zahl der validen kalkulieren
+          if place.valid?
+            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(place)).first.id, place: place }
+            @duplicate_rows << duplicate_hash
+          else
+            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(place)).first.id, messages: [place.errors.full_messages] }
+            @invalid_duplicate_rows << duplicate_hash
+          end
         elsif duplicate_count && duplicate_count > 1
           ambiguous_hash = { data: row, duplicate_count: duplicate_count }
           @ambiguous_rows << ambiguous_hash # TODO: Testfälle
