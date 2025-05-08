@@ -1,34 +1,6 @@
 # frozen_string_literal: true
 
 class ImportMappingsController < ApplicationController
-  def index
-    @import_mappings = ImportMapping.all
-  end
-
-  def show
-    @import_mapping = ImportMapping.find(params[:id])
-    @maps = Map.all
-    @layers = Layer.all
-    @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
-    @map = @layer&.map
-    @file_name = params[:file_name]
-    @quote_char = params[:quote_char]
-    @col_sep = params[:col_sep]
-    ImportContextHelper.read_tempfile_path(@file_name)
-  end
-
-  def import_preview
-    @import_mapping = ImportMapping.find(params[:id])
-    @valid_rows = session.delete(:valid_rows) # Retrieve and clear from session
-    @duplicate_rows = params[:duplicate_rows]
-    @ambiguous_rows = params[:ambiguous_rows]
-    @errored_rows = params[:errored_rows]
-    @layer = Layer.find(params[:layer_id])
-    @map = Map.find(params[:map_id])
-    @quote_char = params[:quote_char]
-    @col_sep = params[:col_sep]
-  end
-
   def new
     @missing_fields = params[:missing_fields]
     @headers = params[:headers]
@@ -61,6 +33,18 @@ class ImportMappingsController < ApplicationController
     end
   end
 
+  def show
+    @import_mapping = ImportMapping.find(params[:id])
+    @maps = Map.all
+    @layers = Layer.all
+    @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
+    @map = @layer&.map
+    @file_name = params[:file_name]
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
+    ImportContextHelper.read_tempfile_path(@file_name)
+  end
+
   def apply_mapping
     @import_mapping = ImportMapping.find(params[:id])
     @map = Map.find(params[:import][:map_id])
@@ -70,8 +54,7 @@ class ImportMappingsController < ApplicationController
     @col_sep = params[:col_sep]
     file_path = ImportContextHelper.read_tempfile_path(@file_name)
     csv_file = File.open(file_path)
-
-    overwrite = params[:import][:overwrite] # Todo!
+    @overwrite = params[:import][:overwrite]
 
     if csv_file.present?
       importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
@@ -80,34 +63,27 @@ class ImportMappingsController < ApplicationController
       @valid_rows = importer.valid_rows
       @errored_rows = importer.errored_rows
       @duplicate_rows = importer.duplicate_rows
+      @invalid_duplicate_rows = importer.invalid_duplicate_rows
       @ambiguous_rows = importer.ambiguous_rows
       session[:importing_rows] = @valid_rows
       session[:valid_rows] = @valid_rows
-      redirect_to import_preview_import_mapping_path(@import_mapping, errored_rows: @errored_rows, duplicate_rows: @duplicate_rows, ambiguous_rows: @ambiguous_rows, layer_id: @layer.id, map_id: @map.id)
+      redirect_to import_preview_import_mapping_path(@import_mapping, overwrite: @overwrite, errored_rows: @errored_rows, duplicate_rows: @duplicate_rows, ambiguous_rows: @ambiguous_rows, layer_id: @layer.id, map_id: @map.id)
     else
       redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.'
     end
   end
 
-  def edit
+  def import_preview
     @import_mapping = ImportMapping.find(params[:id])
-  end
-
-  def update
-    @import_mapping = ImportMapping.find(params[:id])
-
-    if @import_mapping.update(import_mapping_params)
-      redirect_to @import_mapping
-    else
-      render :edit
-    end
-  end
-
-  def destroy
-    @import_mapping = ImportMapping.find(params[:id])
-    @import_mapping.destroy
-
-    redirect_to import_mappings_path
+    @valid_rows = session.delete(:valid_rows) # Retrieve and clear from session -> todo: gibt es da keine bessere Lösung? wird bei reload überschrieben
+    @duplicate_rows = params[:duplicate_rows]
+    @ambiguous_rows = params[:ambiguous_rows]
+    @errored_rows = params[:errored_rows]
+    @layer = Layer.find(params[:layer_id])
+    @map = Map.find(params[:map_id])
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
+    @overwrite = params[:overwrite] == '1'
   end
 
   private
