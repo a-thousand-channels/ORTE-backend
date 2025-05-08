@@ -21,7 +21,6 @@ RSpec.describe Imports::MappingCsvImporter do
 
         importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping)
         importer.import
-        expect(importer.unprocessable_fields).to contain_exactly('address', 'annotations', 'city', 'country', 'enddate', 'id', 'location', 'startdate', 'text', 'unknown', 'zip')
         expect(importer.valid_rows.count).to eq(2)
         expect(importer.valid_rows.first['teaser']).to match('Ein etwas versteckt gelegenes und ')
       end

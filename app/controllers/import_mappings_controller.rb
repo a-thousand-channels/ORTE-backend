@@ -42,7 +42,6 @@ class ImportMappingsController < ApplicationController
     @file_name = params[:file_name]
     @quote_char = params[:quote_char]
     @col_sep = params[:col_sep]
-    ImportContextHelper.read_tempfile_path(@file_name)
   end
 
   def apply_mapping
