@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     resources :icons, only: [:edit, :destroy, :update]
   end
 
-  resources :import_mappings do
+  resources :import_mappings, only: [:new, :create, :show] do
     post :apply_mapping, on: :member
     get :import_preview, on: :member
   end
