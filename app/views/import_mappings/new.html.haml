@@ -10,9 +10,17 @@
         .alert.alert-danger
           %p= flash[:alert]
 
-  .alert
-    %h3 Invalid Column Names
-    %p Some headers in the CSV are not matching the required table structure and the file cannot be imported. Please chose an existing mapping or map the following fields to the correct model properties.
+  - if @missing_fields && !@missing_fields.empty?
+    .alert
+      %h3 Missing Column Names
+      %p Some headers in the CSV are not matching the required table structure and the file cannot be imported. Please chose an existing mapping or map the following fields to the correct model properties.
+      %p Missing required fields are:
+      %ul
+        - @missing_fields.each do |field|
+          %li= field
+  - else
+    %h3 Column Name Mapping
+    %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below.
 
   .large-12.medium-12.small-12.cell
     - if @existing_mappings && !@existing_mappings.empty?
