@@ -65,20 +65,29 @@ class ImportMappingsController < ApplicationController
       @duplicate_rows = importer.duplicate_rows
       @invalid_duplicate_rows = importer.invalid_duplicate_rows
       @ambiguous_rows = importer.ambiguous_rows
-      session[:importing_rows] = @valid_rows
-      session[:valid_rows] = @valid_rows
-      redirect_to import_preview_import_mapping_path(@import_mapping, overwrite: @overwrite, errored_rows: @errored_rows, duplicate_rows: @duplicate_rows, ambiguous_rows: @ambiguous_rows, layer_id: @layer.id, map_id: @map.id)
+      @importing_duplicate_rows = []
+      if @overwrite == '1'
+        @duplicate_rows.each do |row|
+          @importing_duplicate_rows << row[:place]
+        end
+      end
+      ImportContextHelper.write_importing_rows(@file_name, @valid_rows)
+      ImportContextHelper.write_importing_duplicate_rows(@file_name, @importing_duplicate_rows)
+      redirect_to import_preview_import_mapping_path(@import_mapping, overwrite: @overwrite, errored_rows: @errored_rows, duplicate_rows: @duplicate_rows, ambiguous_rows: @ambiguous_rows, invalid_duplicate_rows: @invalid_duplicate_rows, file_name: @file_name, layer_id: @layer.id, map_id: @map.id)
     else
       redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.'
     end
   end
 
   def import_preview
+    @file_name = params[:file_name]
     @import_mapping = ImportMapping.find(params[:id])
-    @valid_rows = session.delete(:valid_rows) # Retrieve and clear from session -> todo: gibt es da keine bessere Lösung? wird bei reload überschrieben
+    @valid_rows = ImportContextHelper.read_importing_rows(@file_name)
     @duplicate_rows = params[:duplicate_rows]
+    @importing_duplicate_rows = ImportContextHelper.read_importing_duplicate_rows(@file_name)
     @ambiguous_rows = params[:ambiguous_rows]
     @errored_rows = params[:errored_rows]
+    @invalid_duplicate_rows = params[:invalid_duplicate_rows]
     @layer = Layer.find(params[:layer_id])
     @map = Map.find(params[:map_id])
     @quote_char = params[:quote_char]
