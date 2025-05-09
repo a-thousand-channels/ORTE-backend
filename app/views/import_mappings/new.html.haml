@@ -41,6 +41,23 @@
         = f.submit 'Use Selected Mapping', class: 'button', name: nil, data: { disable_with: false }
 
     = render 'import_mappings/partials/form'
+    %h3 Available parsers
+    %p
+      The following parsers are available for the mapping. If you want the values from your csv file to be modified before
+      inserting them to the database, add them with the quotation mark inside the sqare brackets. You can add multiple
+      parsers to a single model property, separated by comma and in the order they shall be executed, i.e.
+      ["remove_leading_hash", "spaces_to_commas"].
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Name
+          %th Description
+      %tbody
+        - ImportMapping.parsers.each do |name, parser|
+          %tr
+            %td "#{name}"
+            %td= parser[:description]
+
 
 :javascript
   document.addEventListener('DOMContentLoaded', function() {
@@ -48,7 +65,7 @@
     const new_import_mapping = document.getElementById('new_import_mapping');
     new_import_mapping.addEventListener('submit', function() {
       const mappings = [];
-        document.querySelectorAll('tbody tr').forEach((row) => {
+        document.querySelectorAll('tbody#mapping tr').forEach((row) => {
           const header = row.querySelector('td').innerText.trim();
           const modelProperty = row.querySelector('.model-property-select').value;
           const parsers_input = row.querySelector('.parsers-input').value;

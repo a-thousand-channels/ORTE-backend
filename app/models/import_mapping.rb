@@ -21,7 +21,7 @@ class ImportMapping < ApplicationRecord
 
   def parse(value, parser_names)
     parser_names = JSON.parse(parser_names)
-    parsers = parser_names&.map { |parser_name| self.class.parsers[parser_name] } || []
+    parsers = parser_names&.map { |parser_name| self.class.parsers[parser_name][:lambda] } || []
     parsers.each do |parser|
       value = parser.call(value) if parser
     end
@@ -40,14 +40,14 @@ class ImportMapping < ApplicationRecord
   class << self
     def parsers
       @parsers ||= {
-        'trim' => lambda(&:strip),
-        'strip_html_tags' => ->(value) { value&.gsub(/<\/?[^>]*>/, '') },
-        'remove_leading_hash' => ->(value) { value&.gsub(/#\b/, '') || '' },
-        'spaces_to_commas' => ->(value) { value&.gsub(/\s+/, ',') },
-        'split_to_first' => ->(value) { value.split(',').first },
-        'split_to_last' => ->(value) { value.split(',').last },
-        'european_date' => ->(value) { DateTime.strptime(value, '%d.%m.%Y') },
-        'american_date' => ->(value) { DateTime.parse(value) }
+        'trim' => { lambda: lambda(&:strip), description: 'Removes leading and trailing whitespace.' },
+        'strip_html_tags' => { lambda: ->(value) { value&.gsub(/<\/?[^>]*>/, '') }, description: 'Removes HTML tags from the text.' },
+        'remove_leading_hash' => { lambda: ->(value) { value&.gsub(/#\b/, '') || '' }, description: 'Removes leading hash symbols (#).' },
+        'spaces_to_commas' => { lambda: ->(value) { value&.gsub(/\s+/, ',') }, description: 'Replaces spaces with commas.' },
+        'split_to_first' => { lambda: ->(value) { value.split(',').first }, description: 'Takes the first value from a comma-separated list.' },
+        'split_to_last' => { lambda: ->(value) { value.split(',').last }, description: 'Takes the last value from a comma-separated list.' },
+        'european_date' => { lambda: ->(value) { DateTime.strptime(value, '%d.%m.%Y') }, description: 'Parses a date in European format (DD.MM.YYYY).' },
+        'american_date' => { lambda: ->(value) { DateTime.parse(value) }, description: 'Parses a date in American format (MM/DD/YYYY).' }
       }
     end
   end
