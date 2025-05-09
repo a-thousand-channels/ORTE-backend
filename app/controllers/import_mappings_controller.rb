@@ -22,6 +22,7 @@ class ImportMappingsController < ApplicationController
         format.html { redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.' }
         format.json { render :show, status: :created, location: @import_mapping }
       else
+        @place_columns = Place.column_names + ['tag_list']
         format.html { render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers }
         format.json { render json: @import_mapping.errors, status: :unprocessable_entity }
       end

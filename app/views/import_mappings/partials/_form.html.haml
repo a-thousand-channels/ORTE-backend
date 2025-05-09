@@ -11,9 +11,9 @@
       %tr
         %th CSV Column name
         %th Model Property
-        %th Parsers
+        %th Parsers (see explanation below)
         %th Key
-    %tbody
+    %tbody#mapping
       - @headers&.each do |header|
         %tr
           %td= header
@@ -25,7 +25,7 @@
             %td
               = mapping_form.input :model_property, collection: @place_columns, label: false, input_html: { class: 'model-property-select' }
             %td
-              = mapping_form.input :parsers, label: false, input_html: { class: 'parsers-input' }
+              = mapping_form.input :parsers, label: false, input_html: { class: 'parsers-input', value: "[]" }
             %td
               = mapping_form.input :key, as: :boolean, label: false, input_html: { class: 'key-input' }
   = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
