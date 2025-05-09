@@ -1,26 +1,21 @@
 # frozen_string_literal: true
 
 class ImportMappingsController < ApplicationController
+  before_action :assign_from_params, only: %i[new create show apply_mapping import_preview]
+  before_action :set_import_mapping, only: %i[show apply_mapping import_preview]
+
   def new
     @missing_fields = params[:missing_fields]
     @headers = params[:headers]
-    @layer = Layer.find(params[:layer_id])
     @place_columns = Place.column_names + ['tag_list']
     @import_mapping = ImportMapping.from_header(@headers)
     @existing_mappings = matching_import_mappings(@headers)
-    @file_name = params[:file_name]
-    @quote_char = params[:quote_char]
-    @col_sep = params[:col_sep]
   end
 
   def create
     mapping = JSON.parse(params[:import_mapping][:mapping])
     @import_mapping = ImportMapping.new(name: params[:import_mapping][:name], mapping: mapping)
     @headers = JSON.parse(params[:headers])
-    @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
-    @file_name = params[:file_name]
-    @quote_char = params[:quote_char]
-    @col_sep = params[:col_sep]
 
     respond_to do |format|
       if @import_mapping.save
@@ -37,20 +32,9 @@ class ImportMappingsController < ApplicationController
     @import_mapping = ImportMapping.find(params[:id])
     @maps = Map.all
     @layers = Layer.all
-    @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
-    @map = @layer&.map
-    @file_name = params[:file_name]
-    @quote_char = params[:quote_char]
-    @col_sep = params[:col_sep]
   end
 
   def apply_mapping
-    @import_mapping = ImportMapping.find(params[:id])
-    @map = Map.find(params[:import][:map_id])
-    @layer = @map.layers.find(params[:import][:layer_id])
-    @file_name = params[:file_name]
-    @quote_char = params[:quote_char]
-    @col_sep = params[:col_sep]
     file_path = ImportContextHelper.read_tempfile_path(@file_name)
     csv_file = File.open(file_path)
     @overwrite = params[:import][:overwrite]
@@ -79,18 +63,12 @@ class ImportMappingsController < ApplicationController
   end
 
   def import_preview
-    @file_name = params[:file_name]
-    @import_mapping = ImportMapping.find(params[:id])
     @valid_rows = ImportContextHelper.read_importing_rows(@file_name)
     @duplicate_rows = params[:duplicate_rows]
     @importing_duplicate_rows = ImportContextHelper.read_importing_duplicate_rows(@file_name)
     @ambiguous_rows = params[:ambiguous_rows]
     @errored_rows = params[:errored_rows]
     @invalid_duplicate_rows = params[:invalid_duplicate_rows]
-    @layer = Layer.find(params[:layer_id])
-    @map = Map.find(params[:map_id])
-    @quote_char = params[:quote_char]
-    @col_sep = params[:col_sep]
     @overwrite = params[:overwrite] == '1'
   end
 
@@ -104,5 +82,17 @@ class ImportMappingsController < ApplicationController
 
   def import_mapping_params
     params.require(:import_mapping).permit(:name, :mapping)
+  end
+
+  def assign_from_params
+    @file_name = params[:file_name]
+    @quote_char = params[:quote_char]
+    @col_sep = params[:col_sep]
+    @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
+    @map = @layer&.map || Map.find(params[:map_id])
+  end
+
+  def set_import_mapping
+    @import_mapping = ImportMapping.find(params[:id])
   end
 end
