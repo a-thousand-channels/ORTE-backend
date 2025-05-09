@@ -1,0 +1,90 @@
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    = link_to root_path, class: 'close_link' do
+      %i.fi.fi-x
+
+  .grid-x.grid-padding-x
+    .large-12.medium-12.small-12.cell
+      %hr
+      - if flash[:alert]
+        .alert.alert-danger
+          %p= flash[:alert]
+
+  - if @missing_fields && !@missing_fields.empty?
+    .alert
+      %h3 Missing column names
+      %p Some headers in the CSV are not matching the required table structure and the file cannot be imported. Please chose an existing mapping or map the following fields to the correct model properties.
+      %p Missing required fields are:
+      %ul
+        - @missing_fields.each do |field|
+          %li= field
+  - elsif @import_mapping.errors[:mapping]
+    .alert
+      %h3 Import mapping has missing column names
+      %p Please map the csv columns to the required fields.
+  - else
+    %h3 Column name mapping
+    %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below.
+
+  .large-12.medium-12.small-12.cell
+    - if @existing_mappings && !@existing_mappings.empty?
+      %label Choose an existing mapping:
+      = form_with url: '', method: :get, local: true, id: 'existing_mappings_form' do |f|
+        %select{name: 'mapping', id: 'mapping_select'}
+          %option{ value: '' } Select a mapping
+          - @existing_mappings.each do |mapping|
+            %option{ value: mapping.id }= mapping.name
+        = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id'
+        = f.hidden_field :file_name, value: @file_name, name: 'file_name'
+        = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
+        = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
+        = f.submit 'Use Selected Mapping', class: 'button', name: nil, data: { disable_with: false }
+
+    = render 'import_mappings/partials/form'
+    %h3 Available parsers
+    %p
+      The following parsers are available for the mapping. If you want the values from your csv file to be modified before
+      inserting them to the database, add them with the quotation mark inside the sqare brackets. You can add multiple
+      parsers to a single model property, separated by comma and in the order they shall be executed, i.e.
+      ["remove_leading_hash", "spaces_to_commas"].
+    %table.table.table-striped
+      %thead
+        %tr
+          %th Name
+          %th Description
+      %tbody
+        - ImportMapping.parsers.each do |name, parser|
+          %tr
+            %td "#{name}"
+            %td= parser[:description]
+
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+
+    const new_import_mapping = document.getElementById('new_import_mapping');
+    new_import_mapping.addEventListener('submit', function() {
+      const mappings = [];
+        document.querySelectorAll('tbody#mapping tr').forEach((row) => {
+          const header = row.querySelector('td').innerText.trim();
+          const modelProperty = row.querySelector('.model-property-select').value;
+          const parsers_input = row.querySelector('.parsers-input').value;
+          const parsers = parsers_input.length > 0 ? parsers_input : "[]";
+          const key = row.querySelector('.key-input').checked;
+          mappings.push({ csv_column_name: header, model_property: modelProperty, parsers: parsers, key: key });
+        });
+        document.getElementById('import_mapping_mapping').value = JSON.stringify(mappings);
+      });
+
+    const existing_mappings_form = document.getElementById('existing_mappings_form');
+    const select = document.getElementById('mapping_select');
+    existing_mappings_form.addEventListener('submit', function(event) {
+      const selectedValue = select.value;
+      if (selectedValue) {
+        existing_mappings_form.action = selectedValue;
+      } else {
+        event.preventDefault();
+        alert('Please select a mapping to proceed.');
+      }
+    });
+  });
