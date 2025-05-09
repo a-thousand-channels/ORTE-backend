@@ -14,6 +14,7 @@ FactoryBot.define do
     lat { Faker::Address.latitude }
     lon { Faker::Address.longitude }
     direction { Faker::Alphanumeric.alphanumeric(number: 3) }
+    tag_list { Faker::Lorem.words(number: 3).join(', ') }
     location { Faker::Games::Pokemon.location }
     address { Faker::Address.street_address }
     zip { Faker::Address.zip }
