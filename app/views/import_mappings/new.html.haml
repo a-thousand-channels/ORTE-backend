@@ -12,14 +12,18 @@
 
   - if @missing_fields && !@missing_fields.empty?
     .alert
-      %h3 Missing Column Names
+      %h3 Missing column names
       %p Some headers in the CSV are not matching the required table structure and the file cannot be imported. Please chose an existing mapping or map the following fields to the correct model properties.
       %p Missing required fields are:
       %ul
         - @missing_fields.each do |field|
           %li= field
+  - elsif @import_mapping.errors[:mapping]
+    .alert
+      %h3 Import mapping has missing column names
+      %p Please map the csv columns to the required fields.
   - else
-    %h3 Column Name Mapping
+    %h3 Column name mapping
     %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below.
 
   .large-12.medium-12.small-12.cell

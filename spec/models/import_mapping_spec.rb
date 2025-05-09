@@ -4,6 +4,57 @@
 require 'rails_helper'
 
 RSpec.describe ImportMapping, type: :model do
+  describe 'validations' do
+    let(:valid_mapping) do
+      [
+        { 'csv_column_name' => 'title', 'model_property' => 'title' },
+        { 'csv_column_name' => 'lat', 'model_property' => 'lat' },
+        { 'csv_column_name' => 'lon', 'model_property' => 'lon' }
+      ]
+    end
+
+    it 'is valid if all required properties are present' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: valid_mapping
+      )
+      expect(import_mapping).to be_valid
+    end
+
+    it 'is invalid without a name' do
+      import_mapping = ImportMapping.new(name: nil, mapping: valid_mapping)
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:name]).to include("can't be blank")
+    end
+
+    it 'is invalid with a duplicate name' do
+      ImportMapping.create!(name: 'Duplicate Name', mapping: valid_mapping)
+      duplicate_mapping = ImportMapping.new(
+        name: 'Duplicate Name',
+        mapping: valid_mapping
+      )
+      expect(duplicate_mapping).not_to be_valid
+      expect(duplicate_mapping.errors[:name]).to include('has already been taken')
+    end
+
+    it 'is invalid if required properties are missing' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title' }
+        ]
+      )
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('is missing required properties: lat, lon')
+    end
+
+    it 'is invalid if mapping is empty' do
+      import_mapping = ImportMapping.new(name: 'Test Mapping', mapping: [])
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('is missing required properties: title, lat, lon')
+    end
+  end
+
   describe '#unprocessable_fields' do
     let(:import_mapping) do
       ImportMapping.new(
