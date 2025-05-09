@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ImportMapping < ApplicationRecord
-  # validate :validate_required_model_properties # todo: klären, ob notwendig
+  validate :validate_required_model_properties
   validates :name, presence: true
   validates :name, uniqueness: true
 
@@ -52,7 +52,6 @@ class ImportMapping < ApplicationRecord
     end
   end
 
-  # TODO: brauchen wir diese Validierung eigentlich? ggf. fixen
   def validate_required_model_properties
     required_properties = %w[title lat lon]
     mappings = mapping || []

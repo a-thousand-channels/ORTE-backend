@@ -85,13 +85,13 @@ module Imports
       end
     end
 
-    # todo: methode wird nicht aufgerufen, kann weg?
+    # TODO: methode wird nicht aufgerufen, kann weg?
     def save_records
       @valid_rows.each(&:save)
 
       return unless @overwrite
 
-      #TODO: filter auf valid rows
+      # TODO: filter auf valid rows
       @duplicate_rows.each do |place|
         existing_place = Place.find_by(duplicate_key_values(place))
         existing_place&.update(place.attributes)

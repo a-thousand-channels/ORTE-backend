@@ -1,10 +1,11 @@
 = simple_form_for @import_mapping do |f|
   - if @import_mapping.errors.any?
-    #error_explanation
-      %p= "#{pluralize(@import_mapping.errors.count, "error")} prohibited this import mapping from being saved:"
-      %ul
-        - @import_mapping.errors.full_messages.each do |message|
-          %li= message
+    .alert
+      #error_explanation
+        %p= "#{pluralize(@import_mapping.errors.count, "error")} prohibited this import mapping from being saved:"
+        %ul
+          - @import_mapping.errors.full_messages.each do |message|
+            %li= message
   %table.table.table-striped
     %thead
       %tr
