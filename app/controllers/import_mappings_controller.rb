@@ -70,7 +70,14 @@ class ImportMappingsController < ApplicationController
     @ambiguous_rows = params[:ambiguous_rows]
     @errored_rows = params[:errored_rows]
     @invalid_duplicate_rows = params[:invalid_duplicate_rows]
+    @places_to_be_overwritten = []
     @overwrite = params[:overwrite] == '1'
+    return unless @overwrite
+
+    @duplicate_rows.each do |row|
+      existing_place = Place.find(row[:duplicate_id])
+      @places_to_be_overwritten << existing_place if existing_place
+    end
   end
 
   private

@@ -78,10 +78,11 @@ RSpec.describe LayersController, type: :controller do
       let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
       let(:invalid_file) { Rack::Test::UploadedFile.new('spec/support/files/places_invalid_lat.csv', 'text/csv') }
       let(:layer) { create(:layer) }
+      let(:import_mapping) { create(:import_mapping) }
 
       context 'without session data' do
         it 'redirects to map_layer_path and flashes error message' do
-          post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file }, session: valid_session
+          post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file, import_mapping_id: import_mapping.id }, session: valid_session
           expect(session[:importing_rows]).to be_nil
           expect(response).to redirect_to(import_map_layer_path(@map, layer))
           expect(flash[:notice]).to eq('No data provided to import!')
@@ -92,21 +93,19 @@ RSpec.describe LayersController, type: :controller do
         context 'with valid CSV' do
           before do
             importing_rows = [Place.new(title: 'Place 1', lat: 53.95, lon: 9.34, layer: layer), Place.new(title: 'Place 2', lat: 53.85, lon: 9.27, layer: layer)]
-            allow(controller).to receive(:session).and_return(importing_rows: importing_rows)
+            allow(ImportContextHelper).to receive(:read_importing_rows).and_return(importing_rows)
           end
 
           it 'imports the CSV and redirects to map_layer_path' do
-            post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file }, session: valid_session
+            post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file, import_mapping_id: import_mapping.id }, session: valid_session
 
-            # session gets cleared
-            expect(session[:importing_rows]).to eq(nil)
             expect(response).to redirect_to(map_layer_path(@map, layer))
-            expect(flash[:notice]).to match('CSV import completed successfully!')
+            expect(flash[:notice]).to match("CSV import to #{layer.title} completed successfully!")
           end
 
           it 'creates new place records from the CSV' do
             expect do
-              post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file }, session: valid_session
+              post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: file, import_mapping_id: import_mapping.id }, session: valid_session
             end.to change(Place, :count).by(2)
 
             expect(Place.pluck(:title)).to contain_exactly('Place 1', 'Place 2')
@@ -115,7 +114,7 @@ RSpec.describe LayersController, type: :controller do
 
         context 'with invalid CSV' do
           it 'does not import the CSV and shows an error message' do
-            post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: invalid_file }, session: valid_session
+            post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: invalid_file, import_mapping_id: import_mapping.id }, session: valid_session
 
             expect(response).to redirect_to(import_map_layer_path(@map, layer))
             expect(flash[:notice]).to include('No data provided')
@@ -123,7 +122,7 @@ RSpec.describe LayersController, type: :controller do
 
           it 'does not create book records from the invalid CSV' do
             expect do
-              post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: invalid_file }, session: valid_session
+              post :importing, params: { map_id: @map.id, id: layer.friendly_id, file: invalid_file, import_mapping_id: import_mapping.id }, session: valid_session
             end.not_to change(Place, :count)
           end
         end

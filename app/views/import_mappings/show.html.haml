@@ -20,11 +20,11 @@
   = simple_form_for :import, url: apply_mapping_import_mapping_path(@import_mapping), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
     %hr
     %p
-      = f.input :map_id, collection: @maps, prompt: 'Select a Map', label: 'Map', input_html: { class: 'map-select' }, selected: @map&.id
+      = f.input :map_id, collection: @maps, prompt: 'Select a Map', label: 'Map', input_html: { class: 'map-select', name: 'map_id' }, selected: @map&.id
       - unless @map
         %span.hint  Select the map to which the layer belongs.
     %p
-      = f.input :layer_id, collection: @layers , prompt: 'Select a Layer', label: 'Layer', input_html: { class: 'layer-select' }, selected: @layer&.id
+      = f.input :layer_id, collection: @layers , prompt: 'Select a Layer', label: 'Layer', input_html: { class: 'layer-select', name: 'layer_id' }, selected: @layer&.id
       - unless @layer
         %span.hint  Select the layer to which the CSV data will be imported.
     %hr

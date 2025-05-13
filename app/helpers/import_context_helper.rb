@@ -6,7 +6,7 @@ module ImportContextHelper
   end
 
   def self.read_tempfile_path(file_name)
-    Rails.cache.read("import_context/#{file_name}")[:file_path]
+    Rails.cache.read("import_context/#{file_name}")&.[](:file_path)
   end
 
   def self.write_importing_rows(file_name, rows)
@@ -14,7 +14,7 @@ module ImportContextHelper
   end
 
   def self.read_importing_rows(file_name)
-    Rails.cache.read("import_context/#{file_name}/importing_rows")[:rows]
+    Rails.cache.read("import_context/#{file_name}/importing_rows")&.[](:rows)
   end
 
   def self.write_importing_duplicate_rows(file_name, rows)
@@ -22,10 +22,19 @@ module ImportContextHelper
   end
 
   def self.read_importing_duplicate_rows(file_name)
-    Rails.cache.read("import_context/#{file_name}/importing_duplicate_rows")[:rows]
+    Rails.cache.read("import_context/#{file_name}/importing_duplicate_rows")&.[](:rows)
   end
 
   def self.delete_tempfile_path(file_name)
     Rails.cache.delete("import_context/#{file_name}")
+  end
+
+  def duplicate_key_values(import_mapping, place)
+    key_mappings = import_mapping.mapping.select { |mapping| mapping['key'] }
+    return nil if key_mappings.empty?
+
+    key_mappings.to_h do |mapping|
+      [mapping['model_property'], place[mapping['model_property']]]
+    end
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
+  include ImportContextHelper
+
   before_action :set_layer, only: %i[images import import_preview importing show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
@@ -66,14 +68,25 @@ class LayersController < ApplicationController
   end
 
   def importing
-    importing_rows_data = session[:importing_rows]
+    file_name = params[:file_name]
+    import_mapping = ImportMapping.find(params[:import_mapping_id])
+    importing_rows_data = ImportContextHelper.read_importing_rows(file_name)
+
     if importing_rows_data
-      @importing_rows = importing_rows_data.map do |place_data|
+      importing_rows = importing_rows_data.map do |place_data|
         Place.new(place_data.attributes.merge(layer_id: @layer.id))
       end
-      @importing_rows.each(&:save!)
-      session.delete(:importing_rows)
-      redirect_to map_layer_path(@map, @layer), notice: "CSV import completed successfully! (#{@importing_rows.count} places has been imported to #{@layer.title})"
+    end
+
+    importing_duplicate_rows_data = ImportContextHelper.read_importing_duplicate_rows(file_name)
+    importing_duplicate_rows_data&.each do |place|
+      existing_place = Place.find_by(duplicate_key_values(import_mapping, place))
+      existing_place&.update(place.attributes.except('id', 'created_at', 'updated_at'))
+    end
+    importing_rows&.each(&:save!)
+    ImportContextHelper.delete_tempfile_path(file_name)
+    if (importing_rows && !importing_rows.empty?) || (importing_duplicate_rows_data && !importing_duplicate_rows_data.empty?)
+      redirect_to map_layer_path(@map, @layer), notice: "CSV import to #{@layer.title} completed successfully! (#{importing_rows&.count || 0} places have been created and #{importing_duplicate_rows_data&.count || 0} places have been updated.)"
     else
       redirect_to import_map_layer_path(@map, @layer), notice: 'No data provided to import!'
     end

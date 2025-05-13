@@ -85,7 +85,6 @@
                   %td= row[:data]
                   %td= row[:duplicate_id]
           - if @overwrite
-            %p.small These duplicates will be overwritten when importing. If you don't want to overwrite them, go back, uncheck the "Overwrite?" option and try again.
             .feedback
               %h3 Entries to be imported with overwriting duplicates
               %p These #{@importing_duplicate_rows.count} rows are validated and will be imported with overwrite:
@@ -105,8 +104,33 @@
                                 = row[field]
                             - elsif ['lat', 'lon'].include?(field)
                               = row[field].to_s[0..5]
+                            - elsif field == 'teaser'
+                              = truncate(row[field], length: 100, omission: '(...)')
                             - elsif row[field]
                               = row[field]
+              %h3 Existing entries to be overwritten with overwriting duplicates
+              %p These #{@places_to_be_overwritten.count} will be overwritten with overwrite:
+              .table-wrapper
+                %table.table.table-striped
+                  %thead
+                    %tr
+                      - Imports::MappingCsvImporter::PREVIEW_FIELDS.each do |field|
+                        %th= field.capitalize
+                  %tbody
+                    - @places_to_be_overwritten.each do |place|
+                      %tr
+                        - Imports::MappingCsvImporter::PREVIEW_FIELDS.each do |field|
+                          %td
+                            - if field == 'title'
+                              %span.nobr
+                                = place.send(field)
+                            - elsif ['lat', 'lon'].include?(field)
+                              = place.send(field).to_s[0..5]
+                            - elsif field == 'teaser'
+                              = truncate(place.send(field), length: 100, omission: '(...)')
+                            - elsif place.send(field)
+                              = place.send(field)
+            %p.small These duplicates will be overwritten when importing. If you don't want to overwrite them, go back, uncheck the "Overwrite?" option and try again.
           - else
             %p.small If you want to replace duplicates, go back, tick the "Overwrite?" option and try again.
             %p.small Otherwise edit your CSV file and remove those rows.
@@ -131,10 +155,13 @@
                             = row[field]
                         - elsif ['lat', 'lon'].include?(field)
                           = row[field].to_s[0..5]
+                        - elsif field == 'teaser'
+                          = truncate(row[field], length: 100, omission: '(...)')
                         - elsif row[field]
                           = row[field]
 
-        = simple_form_for :import, url: importing_map_layer_path(@map.id, @layer.id, file_name: @file_name), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
+      - if @valid_rows.any? || @overwrite && @importing_duplicate_rows.any?
+        = simple_form_for :import, url: importing_map_layer_path(@map.id, @layer.id, file_name: @file_name, import_mapping_id: @import_mapping.id), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
           = hidden_field_tag :dry_run, false # todo: weg damit?
           = link_to 'Back', :back, class: 'button secondary'
           = button_tag(type: 'submit', class: 'button') do
