@@ -53,6 +53,91 @@ RSpec.describe ImportMapping, type: :model do
       expect(import_mapping).not_to be_valid
       expect(import_mapping.errors[:mapping]).to include('is missing required properties: title, lat, lon')
     end
+
+    it 'is invalid if it includes non-existing parser names' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => '["non_existing_parser"]' },
+          { 'csv_column_name' => 'lat', 'model_property' => 'lat', 'parsers' => '[]' },
+          { 'csv_column_name' => 'lon', 'model_property' => 'lon', 'parsers' => '[]' }
+        ]
+      )
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('contains undefined parsers: non_existing_parser')
+    end
+
+    it 'is invalid if parser names are passed in wrong format' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => '[trim]' },
+          { 'csv_column_name' => 'lat', 'model_property' => 'lat', 'parsers' => '{trim}' },
+          { 'csv_column_name' => 'lon', 'model_property' => 'lon', 'parsers' => '"trim"' }
+        ]
+      )
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('contains invalid parser format: [trim]')
+      expect(import_mapping.errors[:mapping]).to include('contains invalid parser format: {trim}')
+      expect(import_mapping.errors[:mapping]).to include('contains invalid parser format: trim')
+    end
+
+    it 'is valid if parsers is a valid JSON array of strings with existing parser_names' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => '["trim"]' },
+          { 'csv_column_name' => 'lat', 'model_property' => 'lat', 'parsers' => '["strip_html_tags"]' },
+          { 'csv_column_name' => 'lon', 'model_property' => 'lon', 'parsers' => '["remove_leading_hash"]' }
+        ]
+      )
+      expect(import_mapping).to be_valid
+    end
+
+    it 'is valid if parsers is an empty JSON array' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => '[]' },
+          { 'csv_column_name' => 'lat', 'model_property' => 'lat', 'parsers' => '[]' },
+          { 'csv_column_name' => 'lon', 'model_property' => 'lon', 'parsers' => '[]' }
+        ]
+      )
+      expect(import_mapping).to be_valid
+    end
+
+    it 'is invalid if parsers is not a JSON array' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => 'trim' }
+        ]
+      )
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('contains invalid parser format: trim')
+    end
+
+    it 'is invalid if parsers contains non-string elements' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => '[1, "trim"]' }
+        ]
+      )
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('contains invalid parser format: [1, "trim"]')
+    end
+
+    it 'is invalid if parsers contains undefined parser names' do
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: [
+          { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => '["non_existing_parser"]' }
+        ]
+      )
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('contains undefined parsers: non_existing_parser')
+    end
   end
 
   describe '#unprocessable_fields' do

@@ -36,7 +36,6 @@ class LayersController < ApplicationController
     ImportContextHelper.write_tempfile_path(file, temp_file_path)
     return unless file
 
-    session[:layer_id] = @layer.id
     column_separator = params[:import][:column_separator] || ','
     @col_sep = case column_separator
                when 'Comma'
@@ -61,10 +60,6 @@ class LayersController < ApplicationController
     rescue CSV::MalformedCSVError => e
       flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
     end
-    @valid_rows = importer.valid_rows
-    session[:importing_rows] = @valid_rows
-    @duplicate_rows = importer.duplicate_rows
-    @errored_rows = importer.errored_rows
   end
 
   def importing

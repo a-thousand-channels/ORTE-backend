@@ -69,7 +69,6 @@ RSpec.describe LayersController, type: :controller do
           post :import_preview, params: { map_id: @map.id, id: layer.friendly_id, import: { file: invalid_file } }, session: valid_session
 
           expect(response).to be_redirect
-          expect(session[:importing_rows]).to eq([])
         end
       end
     end
