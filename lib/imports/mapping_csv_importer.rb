@@ -4,13 +4,14 @@ require 'csv'
 
 module Imports
   class MappingCsvImporter
+    include ImportContextHelper
     attr_reader :valid_rows, :duplicate_rows, :invalid_duplicate_rows, :errored_rows, :ambiguous_rows, :missing_fields, :error
 
     REQUIRED_FIELDS = %w[title lat lon].freeze
 
     ALLOWED_FIELDS = %w[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms tag_list].freeze
 
-    PREVIEW_FIELDS = %w[uid title lat lon location address zip city country tag_list].freeze
+    PREVIEW_FIELDS = %w[uid title teaser lat lon location address zip city country tag_list].freeze
 
     def initialize(file, layer_id, import_mapping, overwrite: false, col_sep: ',', quote_char: '"', row_sep: "\n")
       @file = file
@@ -28,7 +29,6 @@ module Imports
       @quote_char = quote_char
     end
 
-    # TODO: rename to preview_import? (analog with other importer)?
     def import
       headers = CSV.read(@file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
       @missing_fields = REQUIRED_FIELDS - headers
@@ -58,13 +58,13 @@ module Imports
         parsing_errors.each do |key, error|
           place.errors.add(key, error)
         end
-        duplicate_count = duplicate_key_values(place) && Place.where(duplicate_key_values(place)).count
+        duplicate_count = duplicate_key_values(@import_mapping, place) && Place.where(duplicate_key_values(@import_mapping, place)).count
         if duplicate_count == 1
           if place.valid?
-            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(place)).first.id, place: place }
+            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(@import_mapping, place)).first.id, place: place }
             @duplicate_rows << duplicate_hash
           else
-            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(place)).first.id, messages: [place.errors.full_messages] }
+            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(@import_mapping, place)).first.id, messages: [place.errors.full_messages] }
             @invalid_duplicate_rows << duplicate_hash
           end
         elsif duplicate_count && duplicate_count > 1
@@ -82,30 +82,6 @@ module Imports
       rescue StandardError => e
         error_hash = { data: row, messages: [e.message] }
         @errored_rows << error_hash
-      end
-    end
-
-    # TODO: methode wird nicht aufgerufen, kann weg?
-    def save_records
-      @valid_rows.each(&:save)
-
-      return unless @overwrite
-
-      # TODO: filter auf valid rows
-      @duplicate_rows.each do |place|
-        existing_place = Place.find_by(duplicate_key_values(place))
-        existing_place&.update(place.attributes)
-      end
-    end
-
-    private
-
-    def duplicate_key_values(place)
-      key_mappings = @import_mapping.mapping.select { |mapping| mapping['key'] }
-      return nil if key_mappings.empty?
-
-      key_mappings.to_h do |mapping|
-        [mapping['model_property'], place[mapping['model_property']]]
       end
     end
   end
