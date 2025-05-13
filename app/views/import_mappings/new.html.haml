@@ -10,7 +10,7 @@
         .alert.alert-danger
           %p= flash[:alert]
 
-  - if @missing_fields && !@missing_fields.empty?
+  - if @missing_fields&.present?
     .alert
       %h3 Missing column names
       %p Some headers in the CSV are not matching the required table structure and the file cannot be imported. Please chose an existing mapping or map the following fields to the correct model properties.

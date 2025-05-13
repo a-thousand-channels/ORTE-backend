@@ -2,6 +2,7 @@
 
 class ImportMapping < ApplicationRecord
   validate :validate_required_model_properties
+  validate :validate_parsers
   validates :name, presence: true
   validates :name, uniqueness: true
 
@@ -11,7 +12,7 @@ class ImportMapping < ApplicationRecord
     end.map do |column_name|
       {
         'csv_column_name' => column_name,
-        'model_property' => Place.column_names.find { |col| col.casecmp(column_name).zero? },
+        'model_property' => Place.column_names.find { |col| col.casecmp?(column_name) },
         'parsers' => [],
         'key' => false
       }
@@ -21,7 +22,11 @@ class ImportMapping < ApplicationRecord
 
   def parse(value, parser_names)
     parser_names = JSON.parse(parser_names)
-    parsers = parser_names&.map { |parser_name| self.class.parsers[parser_name][:lambda] } || []
+    parsers = parser_names&.map do |parser_name|
+      raise ArgumentError, "Parser '#{parser_name}' is not defined." unless self.class.parsers.key?(parser_name)
+
+      self.class.parsers[parser_name][:lambda]
+    end || []
     parsers.each do |parser|
       value = parser.call(value) if parser
     end
@@ -60,5 +65,34 @@ class ImportMapping < ApplicationRecord
     return unless missing_properties.any?
 
     errors.add(:mapping, "is missing required properties: #{missing_properties.join(', ')}")
+  end
+
+  def validate_parsers
+    return unless mapping.present?
+
+    invalid_parsers = mapping.flat_map { |m| process_parsers(m['parsers']) }.compact
+
+    errors.add(:mapping, "contains undefined parsers: #{invalid_parsers.uniq.join(', ')}") if invalid_parsers.any?
+  end
+
+  def process_parsers(parsers)
+    return [] if parsers.nil?
+
+    parsed_parsers = parse_and_validate_format(parsers)
+    return [] unless parsed_parsers
+
+    parsed_parsers.reject { |parser| self.class.parsers.key?(parser) }
+  end
+
+  def parse_and_validate_format(parsers)
+    parsers = JSON.parse(parsers) if parsers.is_a?(String)
+    unless parsers.is_a?(Array) && parsers.all? { |p| p.is_a?(String) }
+      errors.add(:mapping, "contains invalid parser format: #{parsers}")
+      return nil
+    end
+    parsers
+  rescue JSON::ParserError
+    errors.add(:mapping, "contains invalid parser format: #{parsers}")
+    nil
   end
 end
