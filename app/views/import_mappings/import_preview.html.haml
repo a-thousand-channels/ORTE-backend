@@ -162,7 +162,6 @@
 
       - if @valid_rows.any? || @overwrite && @importing_duplicate_rows.any?
         = simple_form_for :import, url: importing_map_layer_path(@map.id, @layer.id, file_name: @file_name, import_mapping_id: @import_mapping.id), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
-          = hidden_field_tag :dry_run, false # todo: weg damit?
           = link_to 'Back', :back, class: 'button secondary'
           = button_tag(type: 'submit', class: 'button') do
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24" style="vertical-align: -7px"><path d="M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z"></path></svg>

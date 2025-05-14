@@ -29,7 +29,7 @@
       = simple_form_for :import, url: import_preview_map_layer_path(@map), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
         %hr
         %p
-          = f.input :file, :as => "file", :label => 'CSV File'
+          = f.input :file, :as => "file", :label => 'CSV File', input_html: { accept: '.csv' }
           %span.hint  The format of the file must be CSV.
         %p
           .grid-x.grid-padding-x

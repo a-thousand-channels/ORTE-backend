@@ -48,17 +48,16 @@ class LayersController < ApplicationController
                  ','
                end
     @quote_char = params[:import][:quote_char] || '"'
-
-    @headers = CSV.read(file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
-
     begin
+      @headers = CSV.read(file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
       importer = Imports::MappingCsvImporter.new(file, @layer.id, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
       importer.import
       @missing_fields = importer.missing_fields
       flash[:notice] = 'CSV read successfully!'
       redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer.id, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char)
     rescue CSV::MalformedCSVError => e
-      flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
+      flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV?)"
+      render :import
     end
   end
 
