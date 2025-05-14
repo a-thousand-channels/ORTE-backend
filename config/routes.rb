@@ -32,7 +32,7 @@ Rails.application.routes.draw do
   resources :maps do
     resources :tags, only: [:index, :show]
     resources :relations
-    resources :people
+    resources :people    
     resources :layers do
       collection do
         post :search
@@ -83,7 +83,7 @@ Rails.application.routes.draw do
   end
 
   namespace :public do
-    resources :maps, only: [:show, :allplaces, :index], :defaults => { :format => :json } do
+    resources :maps, only: [:show, :index], :defaults => { :format => :json } do
       resources :layers, only: [:show], :defaults => { :format => :json } do
         resources :places, only: [:show], :defaults => { :format => :json }
       end

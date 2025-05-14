@@ -23,17 +23,17 @@ module OrteBackend
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
-
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     
-    config.tinymce.install = :copy
-
-    config.autoload_paths += %W(#{config.root}/lib)
     
-    config.action_cable.mount_path = '/cable'
 
-    config.middleware.use Rack::Attack
+    
+    # check after upgrade to rails 8
+    # config.tinymce.install = :copy
+    # config.autoload_paths += %W(#{config.root}/lib)
+    # config.action_cable.mount_path = '/cable'
+    # config.middleware.use Rack::Attack
 
     config.active_storage.content_types_to_serve_as_binary -= ['image/svg+xml']
   end
