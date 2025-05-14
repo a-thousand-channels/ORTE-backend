@@ -17,15 +17,11 @@ class ImportMappingsController < ApplicationController
     @import_mapping = ImportMapping.new(name: params[:import_mapping][:name], mapping: mapping)
     @headers = JSON.parse(params[:headers])
 
-    respond_to do |format|
-      if @import_mapping.save
-        format.html { redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.' }
-        format.json { render :show, status: :created, location: @import_mapping }
-      else
-        @place_columns = Place.column_names + ['tag_list']
-        format.html { render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers }
-        format.json { render json: @import_mapping.errors, status: :unprocessable_entity }
-      end
+    if @import_mapping.save
+      redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.'
+    else
+      @place_columns = Place.column_names + ['tag_list']
+      render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers
     end
   end
 
@@ -74,7 +70,7 @@ class ImportMappingsController < ApplicationController
     @overwrite = params[:overwrite] == '1'
     return unless @overwrite
 
-    @duplicate_rows.each do |row|
+    @duplicate_rows&.each do |row|
       existing_place = Place.find(row[:duplicate_id])
       @places_to_be_overwritten << existing_place if existing_place
     end

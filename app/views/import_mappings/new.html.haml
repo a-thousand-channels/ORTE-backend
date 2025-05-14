@@ -18,7 +18,7 @@
       %ul
         - @missing_fields.each do |field|
           %li= field
-  - elsif @import_mapping.errors[:mapping]
+  - elsif @import_mapping.errors[:mapping] && @import_mapping.errors[:mapping].any?
     .alert
       %h3 Import mapping has missing column names
       %p Please map the csv columns to the required fields.
