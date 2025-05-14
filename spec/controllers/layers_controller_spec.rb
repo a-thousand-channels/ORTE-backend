@@ -63,12 +63,13 @@ RSpec.describe LayersController, type: :controller do
       end
 
       context 'with invalid CSV' do
-        let(:invalid_file) { Rack::Test::UploadedFile.new('spec/support/files/places_nodata.csv', 'text/csv') }
+        let(:invalid_file) { Rack::Test::UploadedFile.new('spec/support/files/malformed.csv', 'text/csv') }
 
         it 'shows an error message' do
           post :import_preview, params: { map_id: @map.id, id: layer.friendly_id, import: { file: invalid_file } }, session: valid_session
 
-          expect(response).to be_redirect
+          expect(flash[:error]).to eq('Malformed CSV: Illegal quoting in line 2. (Maybe the file does not contain CSV?)')
+          expect(response).to render_template(:import)
         end
       end
     end
