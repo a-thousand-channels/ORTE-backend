@@ -71,13 +71,52 @@
 
     const existing_mappings_form = document.getElementById('existing_mappings_form');
     const select = document.getElementById('mapping_select');
-    existing_mappings_form.addEventListener('submit', function(event) {
-      const selectedValue = select.value;
-      if (selectedValue) {
-        existing_mappings_form.action = selectedValue;
-      } else {
-        event.preventDefault();
-        alert('Please select a mapping to proceed.');
-      }
-    });
+    if (existing_mappings_form && select) {
+      existing_mappings_form.addEventListener('submit', function(event) {
+        const selectedValue = select.value;
+        if (selectedValue) {
+          existing_mappings_form.action = selectedValue;
+        } else {
+          event.preventDefault();
+          alert('Please select a mapping to proceed.');
+        }
+      });
+     }
+     });
+  // handle row duplication
+  document.querySelector('#mapping').addEventListener('click', function(event) {
+    if (event.target.classList.contains('duplicate-row')) {
+      const row = event.target.closest('tr');
+      const clone = row.cloneNode(true);
+
+      //
+      clone.querySelectorAll('input, select').forEach((input) => {
+        const name = input.getAttribute('name');
+        if (name) {
+          const newName = name.replace(/\[\d+\]/, (match) => {
+            const index = parseInt(match.replace(/\[|\]/g, ''), 10) + 1;
+            return `[${index}]`;
+          });
+          input.setAttribute('name', newName);
+        }
+
+        const id = input.getAttribute('id');
+        if (id) {
+          const newId = id.replace(/_\d+_/, (match) => {
+            const index = parseInt(match.replace(/_/g, ''), 10) + 1;
+            return `_${index}_`;
+          });
+          input.setAttribute('id', newId);
+        }
+
+        if (input.type !== 'checkbox') {
+          input.value = input.classList.contains('parsers-input') ? '[]' : '';
+        } else {
+          input.checked = false;
+        }
+      });
+
+      row.parentNode.insertBefore(clone, row.nextSibling);
+    }
   });
+});
