@@ -36,6 +36,7 @@ class ImportMappingsController < ApplicationController
   def apply_mapping
     csv_file = handle_file_upload
     return redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.' unless csv_file
+    return redirect_to import_mapping_path(@import_mapping), alert: 'Please select a layer' unless @layer
 
     unless mapping_matches_file?
       flash[:error] = 'CSV is not matching mapping. Please select or create another mapping.'
@@ -67,6 +68,9 @@ class ImportMappingsController < ApplicationController
       layer_id: @layer.id,
       map_id: @map.id
     )
+  rescue CSV::MalformedCSVError => e
+    flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
+    redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id)
   end
 
   def import_preview
