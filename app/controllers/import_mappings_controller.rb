@@ -32,31 +32,34 @@ class ImportMappingsController < ApplicationController
   end
 
   def apply_mapping
-    file_path = ImportContextHelper.read_tempfile_path(@file_name)
-    csv_file = File.open(file_path)
-    @overwrite = params[:import][:overwrite]
+    csv_file = handle_file_upload
+    return redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.' unless csv_file
 
-    if csv_file.present?
-      importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
-      importer.import
-      flash[:notice] = 'CSV read successfully!'
-      @valid_rows = importer.valid_rows
-      @errored_rows = importer.errored_rows
-      @duplicate_rows = importer.duplicate_rows
-      @invalid_duplicate_rows = importer.invalid_duplicate_rows
-      @ambiguous_rows = importer.ambiguous_rows
-      @importing_duplicate_rows = []
-      if @overwrite == '1'
-        @duplicate_rows.each do |row|
-          @importing_duplicate_rows << row[:place]
-        end
-      end
-      ImportContextHelper.write_importing_rows(@file_name, @valid_rows)
-      ImportContextHelper.write_importing_duplicate_rows(@file_name, @importing_duplicate_rows)
-      redirect_to import_preview_import_mapping_path(@import_mapping, overwrite: @overwrite, errored_rows: @errored_rows, duplicate_rows: @duplicate_rows, ambiguous_rows: @ambiguous_rows, invalid_duplicate_rows: @invalid_duplicate_rows, file_name: @file_name, layer_id: @layer.id, map_id: @map.id)
-    else
-      redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.'
-    end
+    @overwrite = params[:import][:overwrite]
+    importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
+    importer.import
+
+    @valid_rows = importer.valid_rows
+    @errored_rows = importer.errored_rows
+    @duplicate_rows = importer.duplicate_rows
+    @invalid_duplicate_rows = importer.invalid_duplicate_rows
+    @ambiguous_rows = importer.ambiguous_rows
+    @importing_duplicate_rows = @overwrite == '1' ? @duplicate_rows.map { |row| row[:place] } : []
+
+    ImportContextHelper.write_importing_rows(@file_name, @valid_rows)
+    ImportContextHelper.write_importing_duplicate_rows(@file_name, @importing_duplicate_rows)
+    flash[:notice] = 'CSV read successfully!'
+    redirect_to import_preview_import_mapping_path(
+      @import_mapping,
+      overwrite: @overwrite,
+      errored_rows: @errored_rows,
+      duplicate_rows: @duplicate_rows,
+      ambiguous_rows: @ambiguous_rows,
+      invalid_duplicate_rows: @invalid_duplicate_rows,
+      file_name: @file_name,
+      layer_id: @layer.id,
+      map_id: @map.id
+    )
   end
 
   def import_preview
@@ -93,10 +96,39 @@ class ImportMappingsController < ApplicationController
     @quote_char = params[:quote_char]
     @col_sep = params[:col_sep]
     @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
-    @map = @layer&.map || Map.find(params[:map_id])
+    @map = @layer&.map || Map.find_by(id: params[:map_id])
   end
 
   def set_import_mapping
     @import_mapping = ImportMapping.find(params[:id])
+  end
+
+  def handle_file_upload
+    if @file_name.present?
+      file_path = ImportContextHelper.read_tempfile_path(@file_name)
+      return File.open(file_path)
+    end
+
+    file = params[:import][:file]
+    return unless file
+
+    temp_file_path = Rails.root.join('tmp', File.basename(file.original_filename))
+    File.binwrite(temp_file_path, file.read)
+    ImportContextHelper.write_tempfile_path(file, temp_file_path)
+    @file_name = File.basename(file.original_filename)
+
+    set_csv_options
+    File.open(ImportContextHelper.read_tempfile_path(@file_name))
+  end
+
+  def set_csv_options
+    column_separator = params[:import][:column_separator] || ','
+    @col_sep = case column_separator
+               when 'Comma' then ','
+               when 'Semicolon' then ';'
+               when 'Tab' then "\t"
+               else ','
+               end
+    @quote_char = params[:import][:quote_char] || '"'
   end
 end
