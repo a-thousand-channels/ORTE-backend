@@ -91,7 +91,7 @@ RSpec.describe ImportMappingsController, type: :controller do
       ImportContextHelper.write_tempfile_path(file, temp_file_path)
     end
 
-    context 'with only valid entries' do
+    context 'with only valid entries from previously uploaded file' do
       let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
 
       it 'applies the mapping and redirects to the import preview page' do
@@ -109,7 +109,7 @@ RSpec.describe ImportMappingsController, type: :controller do
       end
     end
 
-    context 'with duplicate and invalid entries' do
+    context 'with duplicate and invalid entries from previously uploaded file' do
       let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_with_valid_invalid_and_duplicate_rows.csv', 'text/csv') }
       let!(:place1) { create(:place, title: 'Place 1') }
       let!(:place2) { create(:place, title: 'title2') }
@@ -129,6 +129,28 @@ RSpec.describe ImportMappingsController, type: :controller do
         expect(assigns(:importing_duplicate_rows).first.title).to eq('Place 1')
         expect(assigns(:valid_rows)).not_to be_empty
         expect(assigns(:valid_rows).first.title).to eq('Place 2')
+      end
+    end
+
+    context 'when file is newly uploaded and matches the mapping' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv') }
+
+      it 'applies the mapping and redirects to import_preview' do
+        post :apply_mapping, params: { id: import_mapping.id, layer_id: @layer.id, file_name: nil, col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
+
+        expect(response).to redirect_to(import_preview_import_mapping_path(assigns(:import_mapping), file_name: 'places_with_html.csv', layer_id: @layer.id, map_id: @map.id, overwrite: '1'))
+        expect(assigns(:valid_rows).first.title).to eq('Place 1 HTML')
+      end
+    end
+
+    context 'when file newly uploaded and does not match the mapping' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header_valid_rows.csv', 'text/csv') }
+
+      it 'redirects to the new mapping page with an error message' do
+        post :apply_mapping, params: { id: import_mapping.id, layer_id: @layer.id, file_name: nil, col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
+
+        expect(response).to redirect_to(new_import_mapping_path(col_sep: ',', file_name: 'places_invalid_header_valid_rows.csv', headers: %w[id titleX latX lonX], layer_id: @layer.id, missing_fields: %w[title lat lon], quote_char: '"'))
+        expect(flash[:error]).to eq('CSV is not matching mapping. Please select or create another mapping.')
       end
     end
   end

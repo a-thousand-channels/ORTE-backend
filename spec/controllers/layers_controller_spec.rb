@@ -68,7 +68,7 @@ RSpec.describe LayersController, type: :controller do
         it 'shows an error message' do
           post :import_preview, params: { map_id: @map.id, id: layer.friendly_id, import: { file: invalid_file } }, session: valid_session
 
-          expect(flash[:error]).to eq('Malformed CSV: Illegal quoting in line 2. (Maybe the file does not contain CSV?)')
+          expect(flash[:error]).to eq('Malformed CSV: Illegal quoting in line 2. (Maybe the file does not contain CSV or has another column separator?)')
           expect(response).to render_template(:import)
         end
       end
