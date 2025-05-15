@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 class ImportMappingsController < ApplicationController
   before_action :assign_from_params, only: %i[new create show apply_mapping import_preview]
   before_action :set_import_mapping, only: %i[show apply_mapping import_preview]
@@ -34,6 +36,11 @@ class ImportMappingsController < ApplicationController
   def apply_mapping
     csv_file = handle_file_upload
     return redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.' unless csv_file
+
+    unless mapping_matches_file?
+      flash[:error] = 'CSV is not matching mapping. Please select or create another mapping.'
+      return redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer.id, file_name: @original_filename, col_sep: @col_sep, quote_char: @quote_char)
+    end
 
     @overwrite = params[:import][:overwrite]
     importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
@@ -109,16 +116,28 @@ class ImportMappingsController < ApplicationController
       return File.open(file_path)
     end
 
-    file = params[:import][:file]
-    return unless file
+    @file = params[:import][:file]
+    return unless @file
 
-    temp_file_path = Rails.root.join('tmp', File.basename(file.original_filename))
-    File.binwrite(temp_file_path, file.read)
-    ImportContextHelper.write_tempfile_path(file, temp_file_path)
-    @file_name = File.basename(file.original_filename)
+    @original_filename = @file.original_filename
+    temp_file_path = Rails.root.join('tmp', File.basename(@original_filename))
+    File.binwrite(temp_file_path, @file.read)
+    ImportContextHelper.write_tempfile_path(@file, temp_file_path)
+    @file_name = File.basename(@file.original_filename)
 
     set_csv_options
     File.open(ImportContextHelper.read_tempfile_path(@file_name))
+  end
+
+  def mapping_matches_file?
+    @headers = CSV.read(ImportContextHelper.read_tempfile_path(@file_name), headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
+    matching_mappings = matching_import_mappings(@headers)
+    return true if matching_mappings.include? @import_mapping
+
+    importer = Imports::MappingCsvImporter.new(@file, @layer.id, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
+    importer.import
+    @missing_fields = importer.missing_fields
+    false
   end
 
   def set_csv_options

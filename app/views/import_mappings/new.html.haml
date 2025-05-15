@@ -3,13 +3,6 @@
     = link_to root_path, class: 'close_link' do
       %i.fi.fi-x
 
-  .grid-x.grid-padding-x
-    .large-12.medium-12.small-12.cell
-      %hr
-      - if flash[:alert]
-        .alert.alert-danger
-          %p= flash[:alert]
-
   - if @missing_fields&.present?
     .alert
       %h3 Missing column names

@@ -56,7 +56,7 @@ class LayersController < ApplicationController
       flash[:notice] = 'CSV read successfully!'
       redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer.id, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char)
     rescue CSV::MalformedCSVError => e
-      flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV?)"
+      flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
       render :import
     end
   end
