@@ -29,6 +29,12 @@ Rails.application.routes.draw do
   resources :iconsets do
     resources :icons, only: [:edit, :destroy, :update]
   end
+
+  resources :import_mappings, only: [:new, :create, :show] do
+    post :apply_mapping, on: :member
+    get :import_preview, on: :member
+  end
+
   resources :maps do
     resources :tags, only: [:index, :show]
     resources :relations
@@ -36,6 +42,7 @@ Rails.application.routes.draw do
     resources :layers do
       collection do
         post :search
+        get :fetch_layers, to: 'layers#fetch_layers'
       end
       member do
         get :pack

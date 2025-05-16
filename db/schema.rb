@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_02_24_185738) do
-  create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+ActiveRecord::Schema.define(version: 2025_03_26_143647) do
+
+  create_table "active_storage_attachments", charset: "utf8mb3", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -119,7 +120,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_02_24_185738) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
-  create_table "layers", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+  create_table "import_mappings", charset: "utf8mb3", force: :cascade do |t|
+    t.string "name"
+    t.json "mapping"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "layers", charset: "utf8mb3", force: :cascade do |t|
     t.string "title"
     t.string "subtitle"
     t.boolean "published", default: false
