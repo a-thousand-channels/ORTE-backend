@@ -47,7 +47,8 @@
     %p
       = f.input :overwrite, as: :boolean, label: 'Overwrite'
       %span.hint
-        Overwrite existing places with the same title
+        Overwrite existing places with the same values in the fields that are set as keys in this mapping, which are:
+        = @import_mapping.keys.any? ? + @import_mapping.keys.map(&:to_s).join(', ') : 'None'
     %hr
     .form-actions
       %p
