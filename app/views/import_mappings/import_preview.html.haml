@@ -68,8 +68,10 @@
                   %td= row[:duplicate_id]
             %p.small These duplicates cannot be overwritten when importing.
       - if @overwrite
-        %p.hint
-          Overwriting places with the same title is enabled.
+        %p
+          %b
+            Overwriting places with the same key(s) is enabled. Keys defined in the mapping:
+            = @import_mapping.keys.any? ? @import_mapping.keys.map(&:to_s).join(', ') : 'None'
       - if @duplicate_rows && @duplicate_rows.count > 0
         .alert
           %h3 Valid duplicate entries

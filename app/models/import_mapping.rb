@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ImportMapping < ApplicationRecord
+  before_save :ensure_id_is_key
   validate :validate_required_model_properties
   validate :validate_parsers
   validates :name, presence: true
@@ -40,6 +41,12 @@ class ImportMapping < ApplicationRecord
     header_row - mapped_headers
   end
 
+  def keys
+    mappings = mapping || []
+    keys = mappings.select { |m| m['key'] }
+    keys.map { |k| k['csv_column_name'] }
+  end
+
   private
 
   class << self
@@ -65,6 +72,11 @@ class ImportMapping < ApplicationRecord
     return unless missing_properties.any?
 
     errors.add(:mapping, "is missing required properties: #{missing_properties.join(', ')}")
+  end
+
+  def ensure_id_is_key
+    id_mapping = mapping.find { |m| m['model_property'] == 'id' }
+    id_mapping['key'] = true if id_mapping && !id_mapping['key']
   end
 
   def validate_parsers
