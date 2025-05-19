@@ -8,7 +8,7 @@ class ImportMappingsController < ApplicationController
 
   def new
     @missing_fields = params[:missing_fields]
-    @headers = params[:headers]
+    @headers = params[:headers].compact.reject(&:empty?)
     @place_columns = Place.column_names + ['tag_list']
     @import_mapping = ImportMapping.from_header(@headers)
     @existing_mappings = matching_import_mappings(@headers)
@@ -93,6 +93,7 @@ class ImportMappingsController < ApplicationController
   private
 
   def matching_import_mappings(headers)
+    headers = headers.compact.reject(&:empty?)
     ImportMapping.all.select do |mapping|
       mapping.mapping.all? { |m| headers.include?(m['csv_column_name']) }
     end
