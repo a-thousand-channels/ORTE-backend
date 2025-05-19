@@ -267,7 +267,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
     const yearDivs = document.querySelectorAll(".year");
     let startyear = $('#selection').data('map-timeline-minyear');
     $('#selection').data('map-selected-year',startyear);
-    if ( startyear ) {
+    if ( startyear && data.places_by_year && data.places_by_year.length > 0 ) {
 
       window.places_by_year = data.places_by_year;
       console.log("places_by_year",data.places_by_year);
