@@ -26,7 +26,7 @@ RSpec.describe Imports::MappingCsvImporter do
       end
 
       it 'returns valid rows except duplicate and invalid rows' do
-        place = create(:place, title: 'title1', layer: layer)
+        create(:place, title: 'title1', layer: layer)
         file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_lat.csv', 'text/csv')
 
         importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping)
@@ -37,14 +37,13 @@ RSpec.describe Imports::MappingCsvImporter do
         expect(importer.ambiguous_rows.count).to eq(0)
       end
 
-      it 'sanitizes a title with js and html' do
-        # TODO: hier findet überhaupt kein Sanitizing statt, auch nicht im bestehenden Importer - das JS wird genauso gespeichert, wie es im CSV steht
+      it 'sanitizes a title with js by removing script tags' do
         file_with_html = Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv')
 
         importer = Imports::MappingCsvImporter.new(file_with_html, layer.id, import_mapping)
         importer.import
         expect(importer.valid_rows.count).to eq(1)
-        expect(importer.valid_rows.first['teaser']).to match('Ein etwas <em>versteckt</em> gelegenes')
+        expect(importer.valid_rows.first['teaser']).to match("Ein etwas <em>versteckt</em> gelegenes <a href=\"#\">Fleckchen</a> let s ='a string'")
       end
     end
 
@@ -116,7 +115,8 @@ RSpec.describe Imports::MappingCsvImporter do
 
     context 'when multiple duplicates are found in the database' do
       it 'assigns ambiguous_rows' do
-        mapping = create(:import_mapping)
+        # Create mapping with title as key
+        mapping = create(:import_mapping) # title is the key
         file = Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv')
 
         # Create 2 existing records with the same title as one place in the file
@@ -132,25 +132,19 @@ RSpec.describe Imports::MappingCsvImporter do
       end
     end
 
-    # TODO: weitere Testfälle erstellen mit mapping edge cases
-
     context 'with not matching mapping' do
-      it 'detects unmatching of mapping and does not create Place records' do
+      it 'does not build place records' do
         not_matching_mapping = create(:import_mapping)
         file_invalid_headers = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header_valid_rows.csv', 'text/csv')
 
         importer = Imports::MappingCsvImporter.new(file_invalid_headers, layer.id, not_matching_mapping)
-        # expect do
-        #   importer.import
-        # end.to raise_error(StandardError)
-        # TODO: error werfen, dass mapping nicht passt?!
         importer.import
         expect(importer.valid_rows.count).to eq(0)
       end
     end
 
     context 'with matching mapping' do
-      it 'uses the mapping and successfully creates Place records' do
+      it 'uses the mapping and successfully builds place records' do
         matching_mapping = create(:import_mapping, mapping: [
                                     { csv_column_name: 'titleX', model_property: 'title' },
                                     { csv_column_name: 'latX', model_property: 'lat' },
@@ -159,9 +153,7 @@ RSpec.describe Imports::MappingCsvImporter do
         file_invalid_headers = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header_valid_rows.csv', 'text/csv')
 
         importer = Imports::MappingCsvImporter.new(file_invalid_headers, layer.id, matching_mapping)
-        expect do
-          importer.import
-        end.not_to raise_error
+        importer.import
         expect(importer.valid_rows.count).to eq(1)
       end
     end

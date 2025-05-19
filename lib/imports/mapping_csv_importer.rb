@@ -4,12 +4,11 @@ require 'csv'
 
 module Imports
   class MappingCsvImporter
+    include ActionView::Helpers::SanitizeHelper
     include ImportContextHelper
     attr_reader :valid_rows, :duplicate_rows, :invalid_duplicate_rows, :errored_rows, :ambiguous_rows, :missing_fields, :error
 
     REQUIRED_FIELDS = %w[title lat lon].freeze
-
-    ALLOWED_FIELDS = %w[title subtitle teaser text link startdate startdate_date startdate_time enddate enddate_date enddate_time lat lon location address zip city country published featured sensitive sensitive_radius shy imagelink layer_id icon_id relations_tos relations_froms tag_list].freeze
 
     PREVIEW_FIELDS = %w[uid title teaser lat lon location address zip city country tag_list].freeze
 
@@ -48,6 +47,7 @@ module Imports
             else
               processed_row[model_property] = row[csv_column_name]
             end
+            processed_row[model_property] = do_sanitize(processed_row[model_property])
           rescue StandardError => e
             parsing_errors[model_property] = e.message
           end
@@ -72,12 +72,12 @@ module Imports
           end
         elsif duplicate_count && duplicate_count > 1
           ambiguous_hash = { data: row, duplicate_count: duplicate_count }
-          @ambiguous_rows << ambiguous_hash # TODO: Testfälle
+          @ambiguous_rows << ambiguous_hash
         elsif place.errors.any?
           error_hash = { data: row, messages: [place.errors.full_messages] }
           @errored_rows << error_hash
         elsif place.valid?
-          @valid_rows << place # TODO: --> Zahl kalkulieren für UI/import-Vorschau
+          @valid_rows << place
         else
           error_hash = { data: row, messages: ['unknown error'] }
           @errored_rows << error_hash
@@ -85,6 +85,15 @@ module Imports
       rescue StandardError => e
         error_hash = { data: row, messages: [e.message] }
         @errored_rows << error_hash
+      end
+    end
+
+    def do_sanitize(value)
+      if value.is_a?(String)
+        # call rails sanitizer to remove potential malicious input + strip string
+        sanitize(value).strip
+      else
+        value
       end
     end
   end
