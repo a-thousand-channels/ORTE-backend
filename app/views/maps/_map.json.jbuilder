@@ -39,7 +39,7 @@ json.layers map.layers do |layer|
       end
     end
   end
-  json.places_by_year @places_by_year do |year, places|
-    json.set! year, places
-  end
+end
+json.places_by_year @places_by_year do |year, places|
+  json.set! year, places
 end
