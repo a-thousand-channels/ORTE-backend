@@ -215,12 +215,17 @@ RSpec.describe ImportMappingsController, type: :controller do
           Place.new(title: 'Place 2', teaser: 'Zusätzlich wurden zum Zweck der Feuerholzgewinnung...', lat: '53.55', lon: '9.95', layer_id: 1)
         ]
 
+        errored_rows = [{ data: '3,"",row without title,text2,annotations2,2025-01-02,2025-01-03,1.2,9,', messages: [["Title can't be blank"]] }]
+        ambiguous_rows = [{ data: '347,Place 1,Ein besonderer Ort', duplicate_count: '2' }]
+        duplicate_rows = [{ data: '1,title1,row with valid data,text1,annotations1,2025-01-01,2025-01-02,1.2,9,Main Street,,', duplicate_id: '3348' }]
+
         ImportContextHelper.write_importing_rows('places_with_valid_invalid_and_duplicate_rows.csv', valid_rows)
         ImportContextHelper.write_importing_duplicate_rows('places_with_valid_invalid_and_duplicate_rows.csv', importing_duplicate_rows)
+        ImportContextHelper.write_not_importing_rows('places_with_valid_invalid_and_duplicate_rows.csv', { errored_rows: errored_rows, ambiguous_rows: ambiguous_rows, duplicate_rows: duplicate_rows })
       end
 
-      it 'assigns variables from params and renders the import preview template' do
-        get :import_preview, params: { id: import_mapping.id, file_name: 'places_with_valid_invalid_and_duplicate_rows.csv', errored_rows: [{ data: '3,"",row without title,text2,annotations2,2025-01-02,2025-01-03,1.2,9,', 'messages' => [["Title can't be blank"]] }], ambiguous_rows: [{ data: '347,Place 1,Ein besonderer Ort', 'duplicate_count' => '2' }], duplicate_rows: [{ data: '1,title1,row with valid data,text1,annotations1,2025-01-01,2025-01-02,1.2,9,Main Street,,', duplicate_id: '3348' }], layer_id: @layer.id, map_id: @map.id }, session: valid_session
+      it 'assigns variables from rails cache and params and renders the import preview template' do
+        get :import_preview, params: { id: import_mapping.id, file_name: 'places_with_valid_invalid_and_duplicate_rows.csv', layer_id: @layer.id, map_id: @map.id }, session: valid_session
 
         expect(response).to have_http_status(200)
         expect(assigns(:valid_rows)).not_to be_empty

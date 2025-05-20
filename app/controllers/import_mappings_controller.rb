@@ -54,16 +54,19 @@ class ImportMappingsController < ApplicationController
     @ambiguous_rows = importer.ambiguous_rows
     @importing_duplicate_rows = @overwrite == '1' ? @duplicate_rows.map { |row| row[:place] } : []
 
+    ImportContextHelper.write_not_importing_rows(@file_name, {
+                                                   errored_rows: @errored_rows,
+                                                   duplicate_rows: @duplicate_rows,
+                                                   ambiguous_rows: @ambiguous_rows,
+                                                   invalid_duplicate_rows: @invalid_duplicate_rows
+                                                 })
     ImportContextHelper.write_importing_rows(@file_name, @valid_rows)
     ImportContextHelper.write_importing_duplicate_rows(@file_name, @importing_duplicate_rows)
+
     flash[:notice] = 'CSV read successfully!'
     redirect_to import_preview_import_mapping_path(
       @import_mapping,
       overwrite: @overwrite,
-      errored_rows: @errored_rows,
-      duplicate_rows: @duplicate_rows,
-      ambiguous_rows: @ambiguous_rows,
-      invalid_duplicate_rows: @invalid_duplicate_rows,
       file_name: @file_name,
       layer_id: @layer.id,
       map_id: @map.id
@@ -74,12 +77,13 @@ class ImportMappingsController < ApplicationController
   end
 
   def import_preview
+    not_importing_rows = ImportContextHelper.read_not_importing_rows(@file_name)
+    @duplicate_rows = not_importing_rows[:duplicate_rows]
+    @errored_rows = not_importing_rows[:errored_rows]
+    @ambiguous_rows = not_importing_rows[:ambiguous_rows]
+    @invalid_duplicate_rows = not_importing_rows[:invalid_duplicate_rows]
     @valid_rows = ImportContextHelper.read_importing_rows(@file_name)
-    @duplicate_rows = params[:duplicate_rows]
     @importing_duplicate_rows = ImportContextHelper.read_importing_duplicate_rows(@file_name)
-    @ambiguous_rows = params[:ambiguous_rows]
-    @errored_rows = params[:errored_rows]
-    @invalid_duplicate_rows = params[:invalid_duplicate_rows]
     @places_to_be_overwritten = []
     @overwrite = params[:overwrite] == '1'
     return unless @overwrite
