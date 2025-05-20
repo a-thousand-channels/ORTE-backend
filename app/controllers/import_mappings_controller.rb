@@ -122,7 +122,9 @@ class ImportMappingsController < ApplicationController
   def handle_file_upload
     if @file_name.present?
       file_path = ImportContextHelper.read_tempfile_path(@file_name)
-      return File.open(file_path)
+      return File.open(file_path) if file_path
+
+      return nil
     end
 
     @file = params[:import][:file]
