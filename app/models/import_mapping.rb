@@ -44,7 +44,7 @@ class ImportMapping < ApplicationRecord
   def keys
     mappings = mapping || []
     keys = mappings.select { |m| m['key'] }
-    keys.map { |k| k['csv_column_name'] }
+    keys.map { |k| k['model_property'] }
   end
 
   private
@@ -59,7 +59,9 @@ class ImportMapping < ApplicationRecord
         'split_to_first' => { lambda: ->(value) { value.split(',').first }, description: 'Takes the first value from a comma-separated list.' },
         'split_to_last' => { lambda: ->(value) { value.split(',').last }, description: 'Takes the last value from a comma-separated list.' },
         'european_date' => { lambda: ->(value) { DateTime.strptime(value, '%d.%m.%Y') }, description: 'Parses a date in European format (DD.MM.YYYY).' },
-        'american_date' => { lambda: ->(value) { DateTime.parse(value) }, description: 'Parses a date in American format (MM/DD/YYYY).' }
+        'american_date' => { lambda: ->(value) { DateTime.parse(value) }, description: 'Parses a date in American format (MM/DD/YYYY).' },
+        'remove_non_float_chars' => { lambda: ->(value) { value&.gsub(/[^0-9.\-]/, '') }, description: 'Removes all characters that are not numeric or a dot or a dash.' },
+        'remove_chars_before_dash' => { lambda: ->(value) { value.sub(/^.*?-/, '-') }, description: 'Removes all characters that are on the left from a dash.' }
       }
     end
   end

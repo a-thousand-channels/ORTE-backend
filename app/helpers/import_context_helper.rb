@@ -9,6 +9,18 @@ module ImportContextHelper
     Rails.cache.read("import_context/#{file_name}")&.[](:file_path)
   end
 
+  def self.write_not_importing_rows(file_name, rows_hash)
+    rows_hash.each do |key, rows|
+      Rails.cache.write("import_context/#{file_name}/#{key}", { rows: rows }, expires_in: 1.week)
+    end
+  end
+
+  def self.read_not_importing_rows(file_name)
+    %w[duplicate_rows errored_rows ambiguous_rows invalid_duplicate_rows].each_with_object({}) do |key, result|
+      result[key.to_sym] = Rails.cache.read("import_context/#{file_name}/#{key}")&.[](:rows)
+    end
+  end
+
   def self.write_importing_rows(file_name, rows)
     Rails.cache.write("import_context/#{file_name}/importing_rows", { rows: rows }, expires_in: 1.week)
   end
