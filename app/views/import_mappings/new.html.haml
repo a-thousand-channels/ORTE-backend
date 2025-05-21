@@ -27,7 +27,8 @@
           %option{ value: '' } Select a mapping
           - @existing_mappings.each do |mapping|
             %option{ value: mapping.id }= mapping.name
-        = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id'
+        = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id' if @layer
+        = f.hidden_field :map_id, value: @map.id, name: 'map_id' if @map
         = f.hidden_field :file_name, value: @file_name, name: 'file_name'
         = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
         = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'

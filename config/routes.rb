@@ -36,6 +36,11 @@ Rails.application.routes.draw do
   end
 
   resources :maps do
+    member do
+      get :import
+      post :import_preview
+      post :importing
+    end
     resources :tags, only: [:index, :show]
     resources :relations
     resources :people

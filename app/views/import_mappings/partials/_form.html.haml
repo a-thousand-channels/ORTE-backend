@@ -34,7 +34,8 @@
   = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
   = f.hidden_field :mapping, id: 'import_mapping_mapping'
   = f.hidden_field :headers, value: @headers.to_json, name: 'headers'
-  = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id'
+  = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id' if @layer
+  = f.hidden_field :map_id, value: @map.id, name: 'map_id' if @map
   = f.hidden_field :file_name, value: @file_name, name: 'file_name'
   = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
   = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
