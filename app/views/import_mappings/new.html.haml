@@ -17,8 +17,7 @@
       %p Please map the csv columns to the required fields.
   - else
     %h3 Column name mapping
-    %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below.
-
+    %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below. Make sure the required fields title, lat and lon are included in the selected model properties.
   .large-12.medium-12.small-12.cell
     - if @existing_mappings && !@existing_mappings.empty?
       %label Choose an existing mapping:
@@ -32,7 +31,7 @@
         = f.hidden_field :file_name, value: @file_name, name: 'file_name'
         = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
         = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
-        = f.submit 'Use Selected Mapping', class: 'button', name: nil, data: { disable_with: false }
+        = f.submit 'Use selected mapping', class: 'button', name: nil, data: { disable_with: false }
 
     = render 'import_mappings/partials/form'
     %h3 Available parsers
