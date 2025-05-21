@@ -11,7 +11,7 @@ RSpec.describe Imports::MappingCsvImporter do
 
     context 'with valid CSV' do
       it 'returns valid rows' do
-        importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping)
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, import_mapping)
         importer.import
         expect(importer.valid_rows.count).to eq(2)
       end
@@ -19,7 +19,7 @@ RSpec.describe Imports::MappingCsvImporter do
       it 'returns valid rows except non-allowed columns' do
         file = Rack::Test::UploadedFile.new('spec/support/files/places_valid_but_with_not_allowed_data.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping)
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, import_mapping)
         importer.import
         expect(importer.valid_rows.count).to eq(2)
         expect(importer.valid_rows.first['teaser']).to match('Ein etwas versteckt gelegenes und ')
@@ -29,7 +29,7 @@ RSpec.describe Imports::MappingCsvImporter do
         create(:place, title: 'title1', layer: layer)
         file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_lat.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping)
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, import_mapping)
         importer.import
         expect(importer.valid_rows.count).to eq(0)
         expect(importer.duplicate_rows.count).to eq(1)
@@ -40,7 +40,7 @@ RSpec.describe Imports::MappingCsvImporter do
       it 'sanitizes a title with js by removing script tags' do
         file_with_html = Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_with_html, layer.id, import_mapping)
+        importer = Imports::MappingCsvImporter.new(file_with_html, layer.id, nil, import_mapping)
         importer.import
         expect(importer.valid_rows.count).to eq(1)
         expect(importer.valid_rows.first['teaser']).to match("Ein etwas <em>versteckt</em> gelegenes <a href=\"#\">Fleckchen</a> let s ='a string'")
@@ -51,7 +51,7 @@ RSpec.describe Imports::MappingCsvImporter do
       it 'handles empty rows and does not create Place records' do
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_nodata.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, import_mapping)
+        importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, nil, import_mapping)
         importer.import
         expect(importer.errored_rows.count).to eq(1)
       end
@@ -60,7 +60,7 @@ RSpec.describe Imports::MappingCsvImporter do
         pending('error handling changed, test needs to be adjusted')
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, import_mapping)
+        importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, nil, import_mapping)
         expect do
           importer.import
         end.to raise_error(StandardError)
@@ -69,7 +69,7 @@ RSpec.describe Imports::MappingCsvImporter do
       it 'handles invalid row with wrong lat value and does not create Place records' do
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_lat.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, import_mapping)
+        importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, nil, import_mapping)
         importer.import
         expect(importer.errored_rows.count).to eq(2)
       end
@@ -79,7 +79,7 @@ RSpec.describe Imports::MappingCsvImporter do
       it 'returns valid rows' do
         file = Rack::Test::UploadedFile.new('spec/support/files/places_with_semicolon_separator.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping, col_sep: ';')
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, import_mapping, col_sep: ';')
         importer.import
         expect(importer.valid_rows.count).to eq(2)
       end
@@ -89,7 +89,7 @@ RSpec.describe Imports::MappingCsvImporter do
       it 'returns valid rows' do
         file = Rack::Test::UploadedFile.new('spec/support/files/places_with_tab_separator.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file, layer.id, import_mapping, col_sep: "\t")
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, import_mapping, col_sep: "\t")
         importer.import
         expect(importer.valid_rows.count).to eq(1)
         expect(importer.valid_rows.first.title).to eq('Place with tab separator')
@@ -104,7 +104,7 @@ RSpec.describe Imports::MappingCsvImporter do
         # Create 1 existing records with the same title as one place in the file
         existing_place = create(:place, title: 'Place 1', teaser: 'some text', layer: layer)
 
-        importer = Imports::MappingCsvImporter.new(file, layer.id, mapping)
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping)
         importer.import
 
         expect(importer.duplicate_rows.count).to eq(1)
@@ -123,7 +123,7 @@ RSpec.describe Imports::MappingCsvImporter do
         create(:place, title: 'Place 1', teaser: 'some text', layer: layer)
         create(:place, title: 'Place 1', teaser: 'some different text', layer: layer)
 
-        importer = Imports::MappingCsvImporter.new(file, layer.id, mapping)
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping)
         importer.import
 
         expect(importer.ambiguous_rows.count).to eq(1)
@@ -137,7 +137,7 @@ RSpec.describe Imports::MappingCsvImporter do
         not_matching_mapping = create(:import_mapping)
         file_invalid_headers = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header_valid_rows.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_invalid_headers, layer.id, not_matching_mapping)
+        importer = Imports::MappingCsvImporter.new(file_invalid_headers, layer.id, nil, not_matching_mapping)
         importer.import
         expect(importer.valid_rows.count).to eq(0)
       end
@@ -152,7 +152,7 @@ RSpec.describe Imports::MappingCsvImporter do
                                   ])
         file_invalid_headers = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header_valid_rows.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_invalid_headers, layer.id, matching_mapping)
+        importer = Imports::MappingCsvImporter.new(file_invalid_headers, layer.id, nil, matching_mapping)
         importer.import
         expect(importer.valid_rows.count).to eq(1)
       end
@@ -168,7 +168,7 @@ RSpec.describe Imports::MappingCsvImporter do
                          ])
         file_to_be_parsed = Rack::Test::UploadedFile.new('spec/support/files/places_to_be_parsed.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, mapping)
+        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, nil, mapping)
         expect do
           importer.import
         end.not_to raise_error
@@ -185,7 +185,7 @@ RSpec.describe Imports::MappingCsvImporter do
                          ])
         file_to_be_parsed = Rack::Test::UploadedFile.new('spec/support/files/places_lat_lon.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, mapping, col_sep: ';')
+        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, nil, mapping, col_sep: ';')
         expect do
           importer.import
         end.not_to raise_error
@@ -202,7 +202,7 @@ RSpec.describe Imports::MappingCsvImporter do
                          ])
         file_to_be_parsed = Rack::Test::UploadedFile.new('spec/support/files/places_lon_lat.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, mapping, col_sep: ';')
+        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, nil, mapping, col_sep: ';')
         expect do
           importer.import
         end.not_to raise_error
@@ -221,7 +221,7 @@ RSpec.describe Imports::MappingCsvImporter do
                          ])
         file_to_be_parsed = Rack::Test::UploadedFile.new('spec/support/files/places_european_date.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, mapping)
+        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, nil, mapping)
         expect do
           importer.import
         end.not_to raise_error
@@ -240,7 +240,7 @@ RSpec.describe Imports::MappingCsvImporter do
                          ])
         file_to_be_parsed = Rack::Test::UploadedFile.new('spec/support/files/places_american_date.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, mapping)
+        importer = Imports::MappingCsvImporter.new(file_to_be_parsed, layer.id, nil, mapping)
         expect do
           importer.import
         end.not_to raise_error
@@ -258,12 +258,58 @@ RSpec.describe Imports::MappingCsvImporter do
                          ])
         file_with_html = Rack::Test::UploadedFile.new('spec/support/files/places_with_html.csv', 'text/csv')
 
-        importer = Imports::MappingCsvImporter.new(file_with_html, layer.id, mapping)
+        importer = Imports::MappingCsvImporter.new(file_with_html, layer.id, nil, mapping)
         expect do
           importer.import
         end.not_to raise_error
         expect(importer.valid_rows.count).to eq(1)
         expect(importer.valid_rows.last.teaser).to eq("Ein etwas versteckt gelegenes Fleckchen let s ='a string'")
+      end
+    end
+
+    context 'when mapping contains a mapping to layer_id' do
+      let(:map) { create(:map) }
+      let!(:layer1) { create(:layer, id: 1, slug: 'first_layer', map: map) }
+      let!(:layer2) { create(:layer, id: 2, slug: 'second_layer', map: map) }
+      let!(:other_map_layer) { create(:layer, slug: 'other_map_layer') }
+      let(:mapping) do
+        create(:import_mapping, mapping: [
+                 { csv_column_name: 'title', model_property: 'title' },
+                 { csv_column_name: 'lat', model_property: 'lat' },
+                 { csv_column_name: 'lon', model_property: 'lon' },
+                 { csv_column_name: 'layer_id', model_property: 'layer_id' }
+               ])
+      end
+      let(:file_with_layer_id) { Rack::Test::UploadedFile.new('spec/support/files/places_with_layer_id.csv', 'text/csv') }
+
+      context 'when no layer_id is provided to the importer' do
+        it 'assigns the correct layer_id to the place' do
+          importer = Imports::MappingCsvImporter.new(file_with_layer_id, nil, map.id, mapping)
+          expect do
+            importer.import
+          end.not_to raise_error
+          expect(importer.valid_rows.count).to eq(3)
+          expect(importer.valid_rows.last.layer_id).to eq(layer1.id)
+          expect(importer.errored_rows.count).to eq(4)
+          expect(importer.errored_rows.first[:messages]).to eq([['Layer must exist']])
+          expect(importer.errored_rows.last[:messages]).to eq([['Layer must exist']])
+        end
+      end
+
+      context 'when a fallback layer_id is provided to the importer' do
+        let(:layer3) { create(:layer, map: map) }
+
+        it 'assigns the correct layer_id to the place' do
+          importer = Imports::MappingCsvImporter.new(file_with_layer_id, layer3.id, map.id, mapping)
+          expect do
+            importer.import
+          end.not_to raise_error
+          expect(importer.valid_rows.count).to eq(7)
+          expect(importer.valid_rows.first.layer_id).to eq(layer1.id)
+          expect(importer.valid_rows.second.layer_id).to eq(layer2.id)
+          expect(importer.valid_rows.last.layer_id).to eq(layer3.id)
+          expect(importer.errored_rows.count).to eq(0)
+        end
       end
     end
   end

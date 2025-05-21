@@ -1,4 +1,4 @@
-- content_for(:title) { "Apply mapping for #{@layer.title}" }
+- content_for(:title) { "Apply mapping for #{ @layer&.title || @map.title }" }
 #table-wrapper
   %p.text-right.close_link_wrapper
     =link_to map_path(@map), :class=>'close_link' do
@@ -7,12 +7,20 @@
     Apply Mapping:
     = @import_mapping.name
 
-    = link_to map_layer_path(@map,@layer) do
-      = @layer.title
-  %p
-    Map: #{@layer.map.title}
-    \|
-    Existing Places: #{@layer.places.count}
+    - if @layer
+      = link_to map_layer_path(@map, @layer) do
+        = @layer.title
+      %p
+        Map: #{@layer.map.title}
+        \|
+        Existing Places: #{@layer.places.count}
+    - else
+      = link_to map_path(@map) do
+        = @map.title
+      %p
+        Map: #{@map.title}
+        \|
+        Existing Places: #{@map.places.count}
   .grid-x.grid-padding-x
     .large-12.medium-12.small-12.cell
       %h3 Overview
@@ -167,6 +175,7 @@
                 %tr
                   - Imports::MappingCsvImporter::PREVIEW_FIELDS.each do |field|
                     %th= field.capitalize
+                  %th Layer_id
               %tbody
                 - @valid_rows.each do |row|
                   %tr
@@ -181,11 +190,18 @@
                           = truncate(row[field], length: 100, omission: '(...)')
                         - elsif row[field]
                           = row[field]
+                    %td
+                      = row['layer_id']
 
       - if @valid_rows && @valid_rows.any? || @overwrite && @importing_duplicate_rows && @importing_duplicate_rows.any?
-        = simple_form_for :import, url: importing_map_layer_path(@map.id, @layer.id, file_name: @file_name, import_mapping_id: @import_mapping.id), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
-          = link_to 'Back', :back, class: 'button secondary'
-          = f.submit "Confirm and start import", class: "button"
+        - if @layer
+          = simple_form_for :import, url: importing_map_layer_path(@map.id, @layer.id, file_name: @file_name, import_mapping_id: @import_mapping.id), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
+            = link_to 'Back', :back, class: 'button secondary'
+            = f.submit "Confirm and start import on layer #{@layer.title}", class: "button"
+        - else
+          = simple_form_for :import, url: importing_map_path(@map.id, file_name: @file_name, import_mapping_id: @import_mapping.id), multipart: true, method: "POST", html: { class: 'form-inline' } do |f|
+            = link_to 'Back', :back, class: 'button secondary'
+            = f.submit "Confirm and start import on map #{@map.title}", class: "button"
 
       - else
         %p No valid rows found.

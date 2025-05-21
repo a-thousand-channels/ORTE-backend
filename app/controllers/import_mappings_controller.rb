@@ -18,9 +18,10 @@ class ImportMappingsController < ApplicationController
     mapping = JSON.parse(params[:import_mapping][:mapping])
     @import_mapping = ImportMapping.new(name: params[:import_mapping][:name], mapping: mapping)
     @headers = JSON.parse(params[:headers])
+    layer_id = @layer&.id
 
     if @import_mapping.save
-      redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.'
+      redirect_to import_mapping_path(@import_mapping, layer_id: layer_id, map_id: @map.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.'
     else
       @place_columns = Place.column_names + ['tag_list']
       render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers
@@ -36,44 +37,28 @@ class ImportMappingsController < ApplicationController
   def apply_mapping
     csv_file = handle_file_upload
     return redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.' unless csv_file
-    return redirect_to import_mapping_path(@import_mapping), alert: 'Please select a layer' unless @layer
+
+    # require either a mapping for the model property layer_id or a fixed layer_id for the entire import
+    return redirect_to import_mapping_path(@import_mapping), alert: 'Please select a layer' if !@import_mapping&.mapping&.any? { |m| m['model_property'] == 'layer_id' } && !@layer
 
     unless mapping_matches_file?
       flash[:error] = 'CSV is not matching mapping. Please select or create another mapping.'
-      return redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer.id, file_name: @original_filename, col_sep: @col_sep, quote_char: @quote_char)
+      return redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer_id, file_name: @original_filename, col_sep: @col_sep, quote_char: @quote_char)
     end
 
-    @overwrite = params[:import][:overwrite]
-    importer = Imports::MappingCsvImporter.new(csv_file, @layer.id, @import_mapping, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
-    importer.import
-
-    @valid_rows = importer.valid_rows
-    @errored_rows = importer.errored_rows
-    @duplicate_rows = importer.duplicate_rows
-    @invalid_duplicate_rows = importer.invalid_duplicate_rows
-    @ambiguous_rows = importer.ambiguous_rows
-    @importing_duplicate_rows = @overwrite == '1' ? @duplicate_rows.map { |row| row[:place] } : []
-
-    ImportContextHelper.write_not_importing_rows(@file_name, {
-                                                   errored_rows: @errored_rows,
-                                                   duplicate_rows: @duplicate_rows,
-                                                   ambiguous_rows: @ambiguous_rows,
-                                                   invalid_duplicate_rows: @invalid_duplicate_rows
-                                                 })
-    ImportContextHelper.write_importing_rows(@file_name, @valid_rows)
-    ImportContextHelper.write_importing_duplicate_rows(@file_name, @importing_duplicate_rows)
+    prepare_import(csv_file)
 
     flash[:notice] = 'CSV read successfully!'
     redirect_to import_preview_import_mapping_path(
       @import_mapping,
       overwrite: @overwrite,
       file_name: @file_name,
-      layer_id: @layer.id,
-      map_id: @map.id
+      layer_id: @layer_id,
+      map_id: @map_id
     )
   rescue CSV::MalformedCSVError => e
     flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
-    redirect_to import_mapping_path(@import_mapping, layer_id: @layer.id)
+    redirect_to import_mapping_path(@import_mapping, layer_id: @layer_id, map_id: @map_id)
   end
 
   def import_preview
@@ -101,6 +86,7 @@ class ImportMappingsController < ApplicationController
     ImportMapping.all.select do |mapping|
       mapping.mapping.all? { |m| headers.include?(m['csv_column_name']) }
     end
+    # TODO: auch mappings ohne layer_id werden angezeigt
   end
 
   def import_mapping_params
@@ -112,7 +98,9 @@ class ImportMappingsController < ApplicationController
     @quote_char = params[:quote_char]
     @col_sep = params[:col_sep]
     @layer = Layer.find(params[:layer_id]) if params[:layer_id].present?
+    @layer_id = @layer&.id
     @map = @layer&.map || Map.find_by(id: params[:map_id])
+    @map_id = @map&.id
   end
 
   def set_import_mapping
@@ -145,7 +133,7 @@ class ImportMappingsController < ApplicationController
     matching_mappings = matching_import_mappings(@headers)
     return true if matching_mappings.include? @import_mapping
 
-    importer = Imports::MappingCsvImporter.new(@file, @layer.id, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
+    importer = Imports::MappingCsvImporter.new(@file, @layer.id, @map.id, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
     importer.import
     @missing_fields = importer.missing_fields
     false
@@ -160,5 +148,27 @@ class ImportMappingsController < ApplicationController
                else ','
                end
     @quote_char = params[:import][:quote_char] || '"'
+  end
+
+  def prepare_import(csv_file)
+    @overwrite = params[:import][:overwrite]
+    importer = Imports::MappingCsvImporter.new(csv_file, @layer&.id, @map.id, @import_mapping, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
+    importer.import
+
+    @valid_rows = importer.valid_rows
+    @errored_rows = importer.errored_rows
+    @duplicate_rows = importer.duplicate_rows
+    @invalid_duplicate_rows = importer.invalid_duplicate_rows
+    @ambiguous_rows = importer.ambiguous_rows
+    @importing_duplicate_rows = @overwrite == '1' ? @duplicate_rows.map { |row| row[:place] } : []
+
+    ImportContextHelper.write_not_importing_rows(@file_name, {
+                                                   errored_rows: @errored_rows,
+                                                   duplicate_rows: @duplicate_rows,
+                                                   ambiguous_rows: @ambiguous_rows,
+                                                   invalid_duplicate_rows: @invalid_duplicate_rows
+                                                 })
+    ImportContextHelper.write_importing_rows(@file_name, @valid_rows)
+    ImportContextHelper.write_importing_duplicate_rows(@file_name, @importing_duplicate_rows)
   end
 end

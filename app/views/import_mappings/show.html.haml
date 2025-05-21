@@ -26,7 +26,7 @@
     %p
       = f.input :layer_id, collection: @layers , prompt: 'Select a Layer', label: 'Layer', input_html: { class: 'layer-select', name: 'layer_id' }, selected: @layer&.id
       - unless @layer
-        %span.hint  Select the layer to which the CSV data will be imported.
+        %span.hint  Select the layer to which the CSV data will be imported. If you want to import the data to different layers, the csv file must provide a layer_id for each place which has to be mapped to the layer_id model property. If you select a layer here, it will be used as a fallback in case a place has no provided layer_id.
     %hr
     - if @file_name
       %p File to be imported: #{@file_name}

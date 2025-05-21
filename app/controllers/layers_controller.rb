@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
-  include ImportContextHelper
-
   before_action :set_layer, only: %i[images import import_preview importing show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
@@ -10,7 +8,6 @@ class LayersController < ApplicationController
   protect_from_forgery except: :show
 
   require 'color-generator'
-  require_relative '../../lib/imports/csv_importer'
 
   # GET /layers
   # GET /layers.json
@@ -50,7 +47,7 @@ class LayersController < ApplicationController
     @quote_char = params[:import][:quote_char] || '"'
     begin
       @headers = CSV.read(file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
-      importer = Imports::MappingCsvImporter.new(file, @layer.id, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
+      importer = Imports::MappingCsvImporter.new(file, @layer.id, nil, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
       importer.import
       @missing_fields = importer.missing_fields
       flash[:notice] = 'CSV read successfully!'

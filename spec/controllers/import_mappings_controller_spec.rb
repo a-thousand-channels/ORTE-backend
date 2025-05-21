@@ -57,7 +57,7 @@ RSpec.describe ImportMappingsController, type: :controller do
 
       expect(assigns(:import_mapping)).to be_a(ImportMapping)
       expect(assigns(:import_mapping)).to be_valid
-      expect(response).to redirect_to(import_mapping_path(assigns(:import_mapping), layer_id: @layer.id))
+      expect(response).to redirect_to(import_mapping_path(assigns(:import_mapping), layer_id: @layer.id, map_id: @map.id))
     end
 
     it 'renders the new template with errors if the mapping is invalid' do
@@ -160,7 +160,7 @@ RSpec.describe ImportMappingsController, type: :controller do
       it 'redirects to the import mapping page with an error message' do
         post :apply_mapping, params: { id: import_mapping.id, layer_id: @layer.id, file_name: nil, col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
 
-        expect(response).to redirect_to(import_mapping_path(import_mapping, layer_id: @layer.id))
+        expect(response).to redirect_to(import_mapping_path(import_mapping, layer_id: @layer.id, map_id: @map.id))
         expect(flash[:error]).to eq('Malformed CSV: Illegal quoting in line 2. (Maybe the file does not contain CSV or has another column separator?)')
       end
     end

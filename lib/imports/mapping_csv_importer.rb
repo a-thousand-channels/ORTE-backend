@@ -12,9 +12,10 @@ module Imports
 
     PREVIEW_FIELDS = %w[uid title teaser lat lon location address zip city country tag_list].freeze
 
-    def initialize(file, layer_id, import_mapping, overwrite: false, col_sep: ',', quote_char: '"', row_sep: "\n")
+    def initialize(file, layer_id, map_id, import_mapping, overwrite: false, col_sep: ',', quote_char: '"', row_sep: "\n")
       @file = file
-      @layer = Layer.find(layer_id)
+      @fallback_layer = Layer.find(layer_id) if layer_id
+      @map = @fallback_layer ? Map.find(@fallback_layer.map_id) : Map.find(map_id) if map_id
       @import_mapping = import_mapping
       @overwrite = overwrite
       @duplicate_rows = []
@@ -34,13 +35,14 @@ module Imports
       csv_content = @file.read.force_encoding('UTF-8').scrub.gsub(/\r\n?/, "\n")
       csv = CSV.parse(csv_content, headers: true, col_sep: @col_sep, quote_char: @quote_char, row_sep: @row_sep)
       csv.each do |row|
-        processed_row = { layer_id: @layer.id }
+        processed_row = {}
         mappings = @import_mapping.mapping
         parsing_errors = {}
         mappings.each do |mapping|
           csv_column_name = mapping['csv_column_name']
           model_property = mapping['model_property']
           begin
+            @layer = @map.layers.find_by(id: row['layer_id'].to_i) || @map.layers.find_by(slug: row['layer_id']) if model_property == 'layer_id'
             if mapping['parsers']
               value = @import_mapping.parse(row[csv_column_name], mapping['parsers'])
               processed_row[model_property] = value
@@ -52,6 +54,12 @@ module Imports
             parsing_errors[model_property] = e.message
           end
         end
+        if @layer
+          processed_row[:layer_id] = @layer.id
+        elsif @fallback_layer
+          processed_row[:layer_id] = @fallback_layer.id if @fallback_layer
+        end
+
         processed_row = processed_row.reject { |key, _| key.to_s.strip.empty? }
         place = Place.new(processed_row)
         place.validate
