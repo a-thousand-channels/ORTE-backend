@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
+  include ImportContextHelper
+
   before_action :set_layer, only: %i[images import import_preview importing show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]

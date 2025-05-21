@@ -9,8 +9,8 @@
   %table.table.table-striped
     %thead
       %tr
-        %th CSV Column name
-        %th Model Property
+        %th CSV column name
+        %th Model property
         %th Parsers (see explanation below)
         %th Key
         %th Add row
@@ -39,4 +39,4 @@
   = f.hidden_field :file_name, value: @file_name, name: 'file_name'
   = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
   = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
-  = f.submit 'Save Mapping', class: 'button'
+  = f.submit 'Save mapping', class: 'button'

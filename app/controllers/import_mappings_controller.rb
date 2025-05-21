@@ -84,9 +84,8 @@ class ImportMappingsController < ApplicationController
   def matching_import_mappings(headers)
     headers = headers.compact.reject(&:empty?)
     ImportMapping.all.select do |mapping|
-      mapping.mapping.all? { |m| headers.include?(m['csv_column_name']) }
+      (headers - mapping.mapping.map { |m| m['csv_column_name'] }).empty?
     end
-    # TODO: auch mappings ohne layer_id werden angezeigt
   end
 
   def import_mapping_params

@@ -66,16 +66,17 @@ module Imports
         parsing_errors.each do |key, error|
           place.errors.add(key, error)
         end
-        duplicate_count = duplicate_key_values(@import_mapping, place) && Place.where(duplicate_key_values(@import_mapping, place)).count
+        duplicates = duplicate_key_values(@import_mapping, place)&.map { |key, value| Place.where(key => value) }&.flatten&.uniq
+        duplicate_count = duplicates&.count
         if duplicate_count == 1
           if place.valid?
-            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(@import_mapping, place)).first.id, place: place }
+            duplicate_hash = { data: row, duplicate_id: duplicates.first.id, place: place }
             @duplicate_rows << duplicate_hash
           elsif place.errors.count == 1 && place.errors.full_messages.first == 'Id has already been taken'
-            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(@import_mapping, place)).first.id, place: place }
+            duplicate_hash = { data: row, duplicate_id: duplicates.first.id, place: place }
             @duplicate_rows << duplicate_hash
           else
-            duplicate_hash = { data: row, duplicate_id: Place.where(duplicate_key_values(@import_mapping, place)).first.id, messages: [place.errors.full_messages] }
+            duplicate_hash = { data: row, duplicate_id: duplicates.first.id, messages: [place.errors.full_messages] }
             @invalid_duplicate_rows << duplicate_hash
           end
         elsif duplicate_count && duplicate_count > 1

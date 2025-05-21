@@ -3,6 +3,8 @@
 require 'csv'
 
 class MapsController < ApplicationController
+  include ImportContextHelper
+
   before_action :set_map, only: %i[show edit update destroy import import_preview importing]
 
   before_action :redirect_to_friendly_id, only: %i[show]
