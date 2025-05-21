@@ -14,8 +14,10 @@
       = @layer.title
     %span.shy (with #{@layer.places.count} Places)
 
+  %p
+    &nbsp;        
   .grid-x.grid-padding-x
-    .medium-12.cell.card
+    .medium-7.cell.card
       %p.text-left.hint-simple
         - if @layer.published
           %i.fi-eye.fi-18
@@ -26,11 +28,7 @@
       - if @map.enable_time_slider
         %p.text-left.hint-simple
           %i.fi-clock.fi-18
-          The time slider for this layer is activated
-      %p.text-left.hint-simple
-        
-  .grid-x.grid-padding-x
-    .medium-7.cell.card
+          The time slider for this layer is activated    
       %p.text-left.hint-simple
         Privacy settings for this layer:
       %ul.hint
@@ -58,18 +56,18 @@
       %ul.hint
         %li
           = link_to annotations_map_layer_path(@map,@layer) do
-            All Annotations (about Places)
+            List of all annotations (about Places)
         %li
           = link_to relations_map_layer_path(@map,@layer) do
-            All relations (between places)
+            List of all relations (between places)
         %li
           = link_to images_map_layer_path(@map,@layer) do
             List of all images
       %hr
-      %ul.hint
-        %li
-          = link_to import_map_layer_path(@map,@layer) do
-            Import CSV to create places from
+      %p
+        = link_to import_map_layer_path(@map,@layer), :class=>'button small' do
+          %i.fi-plus.fi-18
+          Import/update places from CSV
   %p
     &nbsp;
   - if @map.enable_time_slider
@@ -124,10 +122,11 @@
                   %span.time.time-off>‒
   
 
-  
-  %p.text-right.small
-    Showing #{@places.count} of #{@layer.places.count}
-    = paginate @places
+  .grid-x
+    .medium-6.cell
+      Showing #{@places.count} of total of #{@layer.places.count} Placves
+    .medium-6.call
+      = paginate @places
   %table
     %thead
       %tr
