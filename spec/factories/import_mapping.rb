@@ -30,5 +30,15 @@ FactoryBot.define do
         ]
       end
     end
+    trait :with_layer_id do
+      mapping do
+        [
+          { csv_column_name: 'title', model_property: 'title', key: true },
+          { csv_column_name: 'lon', model_property: 'lon', key: false },
+          { csv_column_name: 'lat', model_property: 'lat', key: false },
+          { csv_column_name: 'layer_id', model_property: 'layer_id', key: false }
+        ]
+      end
+    end
   end
 end
