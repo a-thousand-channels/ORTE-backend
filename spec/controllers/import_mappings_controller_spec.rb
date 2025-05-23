@@ -110,6 +110,10 @@ RSpec.describe ImportMappingsController, type: :controller do
     end
 
     context 'with duplicate and invalid entries from previously uploaded file' do
+      before do
+        Place.destroy_all
+      end
+
       let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_with_valid_invalid_and_duplicate_rows.csv', 'text/csv') }
       let!(:place1) { create(:place, title: 'Place 1') }
       let!(:place2) { create(:place, title: 'title2', id: 2) }

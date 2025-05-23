@@ -10,31 +10,49 @@ module ImportContextHelper
   end
 
   def self.write_not_importing_rows(file_name, rows_hash)
+    prev = Rails.cache.read("import_context/#{file_name}")
+
+    raise ImportCacheExpiredException if prev.nil?
+
+    updated_rows = prev[:not_importing_rows] || {}
+
     rows_hash.each do |key, rows|
-      Rails.cache.write("import_context/#{file_name}/#{key}", { rows: rows }, expires_in: 1.week)
+      updated_rows[key] = rows
     end
+
+    Rails.cache.write("import_context/#{file_name}", prev.merge(not_importing_rows: updated_rows), expires_in: 1.week)
   end
 
   def self.read_not_importing_rows(file_name)
-    %w[duplicate_rows errored_rows ambiguous_rows invalid_duplicate_rows].each_with_object({}) do |key, result|
-      result[key.to_sym] = Rails.cache.read("import_context/#{file_name}/#{key}")&.[](:rows)
-    end
+    prev = Rails.cache.read("import_context/#{file_name}")
+
+    raise ImportCacheExpiredException if prev.nil?
+
+    prev[:not_importing_rows] || {}
   end
 
   def self.write_importing_rows(file_name, rows)
-    Rails.cache.write("import_context/#{file_name}/importing_rows", { rows: rows }, expires_in: 1.week)
+    prev = Rails.cache.read("import_context/#{file_name}")
+
+    raise ImportCacheExpiredException if prev.nil?
+
+    Rails.cache.write("import_context/#{file_name}", prev.merge(importing_rows: rows), expires_in: 1.week)
   end
 
   def self.read_importing_rows(file_name)
-    Rails.cache.read("import_context/#{file_name}/importing_rows")&.[](:rows)
+    Rails.cache.read("import_context/#{file_name}")&.[](:importing_rows)
   end
 
   def self.write_importing_duplicate_rows(file_name, rows)
-    Rails.cache.write("import_context/#{file_name}/importing_duplicate_rows", { rows: rows }, expires_in: 1.week)
+    prev = Rails.cache.read("import_context/#{file_name}")
+
+    raise ImportCacheExpiredException if prev.nil?
+
+    Rails.cache.write("import_context/#{file_name}", prev.merge(importing_duplicate_rows: rows), expires_in: 1.week)
   end
 
   def self.read_importing_duplicate_rows(file_name)
-    Rails.cache.read("import_context/#{file_name}/importing_duplicate_rows")&.[](:rows)
+    Rails.cache.read("import_context/#{file_name}")&.[](:importing_duplicate_rows)
   end
 
   def self.delete_tempfile_path(file_name)

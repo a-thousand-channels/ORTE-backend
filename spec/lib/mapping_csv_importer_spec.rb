@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Imports::MappingCsvImporter do
   describe '#import' do
+    before(:each) do
+      Place.destroy_all
+    end
+
     let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
 
     let(:layer) { create(:layer) }
