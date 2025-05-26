@@ -4,12 +4,14 @@ default: &default
   host: <%= ENV.fetch("RAILS_DB_HOST") { "127.0.0.1" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   database: orte
-  username: root
-  password: ""
+  username: orte
+  password: orte00
   timeout: 5000
 
 development:
   <<: *default
+  username: root
+  password: ""
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -18,6 +20,7 @@ development:
 test:
   <<: *default
   database: orte_test
+  collation: utf8mb4_uca1400_ai_ci
 
 staging:
   <<: *default
