@@ -7,20 +7,25 @@ class ImportMapping < ApplicationRecord
   validates :name, presence: true
   validates :name, uniqueness: true
 
-  # handle different datatypes for json column, see https://danielabaron.me/blog/activerecord-json-mysql-mariadb/
+  # overwrite the getter to ensure that the mapping is always parsed as JSON
+  # (MariaDB stores JSON as a string)
   def mapping
-    # Retrieve the typecast value of mapping from the database, which could be:
-    #   1. nil
-    #   2. String
-    #   3. Array
-    mappings = read_attribute(:mapping)
-    # 1. Not allowed to have default not null value on json column, return empty array in this case.
-    return [] if mappings.blank?
-    # 2. MariaDB: If a String is found, convert to JSON.
-    return JSON.parse(mappings) if mappings.is_a?(String)
+    return [] if super.blank?
 
-    # 3. MySQL: Otherwise, return the original value.
-    mappings
+    if super.is_a?(String)
+      begin
+        JSON.parse(super)
+      rescue JSON::ParserError
+        []
+      end
+    else
+      super
+    end
+  end
+
+  # overwrite the setter to ensure that the mapping is always stored as JSON
+  def mapping=(value)
+    super(value.is_a?(Array) || value.is_a?(Hash) ? value.to_json : value)
   end
 
   def self.from_header(header_row)

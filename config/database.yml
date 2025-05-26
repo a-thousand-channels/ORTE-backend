@@ -1,7 +1,7 @@
 default: &default
   adapter: mysql2
   encoding: utf8
-  host: <%= ENV.fetch("RAILS_DB_HOST") { "localhost" } %>
+  host: <%= ENV.fetch("RAILS_DB_HOST") { "127.0.0.1" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   database: orte
   username: orte
@@ -10,7 +10,8 @@ default: &default
 
 development:
   <<: *default
-  host: 127.0.0.1
+  username: root
+  password: ""
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -19,6 +20,9 @@ development:
 test:
   <<: *default
   database: orte_test
+#  for local test suite, please uncomment the following lines:
+#  username: root
+#  password: ""
 
 staging:
   <<: *default
