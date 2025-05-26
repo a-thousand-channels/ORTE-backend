@@ -1,16 +1,20 @@
 services:
   db:
-    image: mysql:9.2.0
+    image: mariadb:lts
     environment:
-      - MYSQL_DATABASE=orte
-      - MYSQL_USER=orte
-      - MYSQL_PASSWORD=orte00
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MARIADB_DATABASE=orte
+      - MARIADB_USER=orte
+      - MARIADB_PASSWORD=orte00
+      - MARIADB_ALLOW_EMPTY_PASSWORD=true
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=true
+    ports:
+      - 127.0.0.1:3306:3306
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 10s
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 3
   server:
     build:
       context: .
