@@ -20,7 +20,9 @@ development:
 test:
   <<: *default
   database: orte_test
-  collation: utf8mb4_uca1400_ai_ci
+#  for local test suite, please uncomment the following lines:
+#  username: root
+#  password: ""
 
 staging:
   <<: *default
