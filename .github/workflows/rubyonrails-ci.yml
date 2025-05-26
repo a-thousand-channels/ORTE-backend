@@ -13,10 +13,12 @@ on:
     branches:
       - main
       - feature*
+
   pull_request:
     branches:
       - main
       - feature*
+      - feat*
 jobs:
   run-lint:
     name: Rubocop & Brakeman
