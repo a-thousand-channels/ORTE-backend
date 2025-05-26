@@ -36,14 +36,17 @@ class ImportMappingsController < ApplicationController
 
   def apply_mapping
     csv_file = handle_file_upload
-    return redirect_to import_mapping_path(@import_mapping), alert: 'Please upload a CSV file.' unless csv_file
+    return redirect_to import_mapping_path(@import_mapping, layer_id: @layer_id, map_id: @map_id), alert: 'Please upload a CSV file.' unless csv_file
 
     # require either a mapping for the model property layer_id or a fixed layer_id for the entire import
-    return redirect_to import_mapping_path(@import_mapping), alert: 'Please select a layer' if !@import_mapping&.mapping&.any? { |m| m['model_property'] == 'layer_id' } && !@layer
+    if !@import_mapping&.mapping&.any? { |m| m['model_property'] == 'layer_id' } && !@layer
+      flash[:error] = 'Please select a layer.'
+      return redirect_to import_mapping_path(@import_mapping, map_id: @map_id, file_name: @file_name, overwrite: @overwrite, col_sep: @col_sep, quote_char: @quote_char)
+    end
 
     unless mapping_matches_file?
       flash[:error] = 'CSV is not matching mapping. Please select or create another mapping.'
-      return redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer_id, file_name: @original_filename, col_sep: @col_sep, quote_char: @quote_char)
+      return redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer_id, overwrite: @overwrite, file_name: @original_filename, col_sep: @col_sep, quote_char: @quote_char)
     end
 
     prepare_import(csv_file)

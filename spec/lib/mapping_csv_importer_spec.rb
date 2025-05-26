@@ -4,6 +4,10 @@ require 'rails_helper'
 
 RSpec.describe Imports::MappingCsvImporter do
   describe '#import' do
+    before(:each) do
+      Place.destroy_all
+    end
+
     let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
 
     let(:layer) { create(:layer) }
@@ -272,19 +276,13 @@ RSpec.describe Imports::MappingCsvImporter do
       let!(:layer1) { create(:layer, id: 1, slug: 'first_layer', map: map) }
       let!(:layer2) { create(:layer, id: 2, slug: 'second_layer', map: map) }
       let!(:other_map_layer) { create(:layer, slug: 'other_map_layer') }
-      let(:mapping) do
-        create(:import_mapping, mapping: [
-                 { csv_column_name: 'title', model_property: 'title' },
-                 { csv_column_name: 'lat', model_property: 'lat' },
-                 { csv_column_name: 'lon', model_property: 'lon' },
-                 { csv_column_name: 'layer_id', model_property: 'layer_id' }
-               ])
-      end
+      let(:import_mapping) { create(:import_mapping, :with_layer_id) }
+
       let(:file_with_layer_id) { Rack::Test::UploadedFile.new('spec/support/files/places_with_layer_id.csv', 'text/csv') }
 
       context 'when no layer_id is provided to the importer' do
         it 'assigns the correct layer_id to the place' do
-          importer = Imports::MappingCsvImporter.new(file_with_layer_id, nil, map.id, mapping)
+          importer = Imports::MappingCsvImporter.new(file_with_layer_id, nil, map.id, import_mapping)
           expect do
             importer.import
           end.not_to raise_error
@@ -300,7 +298,7 @@ RSpec.describe Imports::MappingCsvImporter do
         let(:layer3) { create(:layer, map: map) }
 
         it 'assigns the correct layer_id to the place' do
-          importer = Imports::MappingCsvImporter.new(file_with_layer_id, layer3.id, map.id, mapping)
+          importer = Imports::MappingCsvImporter.new(file_with_layer_id, layer3.id, map.id, import_mapping)
           expect do
             importer.import
           end.not_to raise_error

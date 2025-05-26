@@ -110,9 +110,13 @@ RSpec.describe ImportMappingsController, type: :controller do
     end
 
     context 'with duplicate and invalid entries from previously uploaded file' do
+      before do
+        Place.destroy_all
+      end
+
       let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_with_valid_invalid_and_duplicate_rows.csv', 'text/csv') }
       let!(:place1) { create(:place, title: 'Place 1') }
-      let!(:place2) { create(:place, title: 'title2') }
+      let!(:place2) { create(:place, title: 'title2', id: 2) }
 
       it 'applies the mapping and redirects to the import preview page' do
         post :apply_mapping, params: { id: import_mapping.id, layer_id: @layer.id, file_name: 'places_with_valid_invalid_and_duplicate_rows.csv', col_sep: ',', quote_char: '"', import: { overwrite: '1' } }, session: valid_session
@@ -123,7 +127,7 @@ RSpec.describe ImportMappingsController, type: :controller do
         expect(assigns(:duplicate_rows)).not_to be_empty
         expect(assigns(:duplicate_rows).first[:duplicate_id]).to eq(place1.id)
         expect(assigns(:invalid_duplicate_rows)).not_to be_empty
-        expect(assigns(:invalid_duplicate_rows).first[:messages]).to eq([['Lat should be a valid latitude value', "Lon can't be blank", 'Lon should be a valid longitude value', 'Lat is not a number', 'Lon is not a number']])
+        expect(assigns(:invalid_duplicate_rows).first[:messages]).to eq([['Lat should be a valid latitude value', "Lon can't be blank", 'Lon should be a valid longitude value', 'Lat is not a number', 'Lon is not a number', 'Id has already been taken']])
         expect(assigns(:ambiguous_rows)).to be_empty
         expect(assigns(:importing_duplicate_rows)).not_to be_empty
         expect(assigns(:importing_duplicate_rows).first.title).to eq('Place 1')
@@ -162,6 +166,52 @@ RSpec.describe ImportMappingsController, type: :controller do
 
         expect(response).to redirect_to(import_mapping_path(import_mapping, layer_id: @layer.id, map_id: @map.id))
         expect(flash[:error]).to eq('Malformed CSV: Illegal quoting in line 2. (Maybe the file does not contain CSV or has another column separator?)')
+      end
+    end
+
+    context 'when no layer_id is provided and the mapping does not contain layer_id' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_with_layer_id.csv', 'text/csv') }
+
+      it 'redirects to the import mapping page with an error message' do
+        post :apply_mapping, params: { id: import_mapping.id, layer_id: nil, map_id: @map.id, file_name: 'places_with_layer_id.csv', col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
+
+        expect(response).to redirect_to(import_mapping_path(import_mapping, file_name: 'places_with_layer_id.csv', col_sep: ',', quote_char: '"', map_id: @map.id))
+        expect(flash[:error]).to eq('Please select a layer.')
+      end
+    end
+
+    context 'when the mapping does contain layer_id' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_with_layer_id.csv', 'text/csv') }
+      let(:import_mapping) { create(:import_mapping, :with_layer_id) }
+      Layer.destroy_all
+      let!(:layer) { create(:layer, map_id: @map.id, slug: 'first_layer', id: 1) }
+
+      context 'without fallback layer_id' do
+        it 'redirects to the import preview page with the layer_id from csv file assigned' do
+          post :apply_mapping, params: { id: import_mapping.id, layer_id: nil, map_id: @map.id, file_name: 'places_with_layer_id.csv', col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
+
+          expect(response).to redirect_to(import_preview_import_mapping_path(assigns(:import_mapping), file_name: 'places_with_layer_id.csv', map_id: @map.id, overwrite: '1'))
+          expect(assigns(:valid_rows).count).to eq(2)
+          expect(assigns(:valid_rows).first.title).to eq('Place for first layer by id')
+          expect(assigns(:valid_rows).last.title).to eq('Place for first layer by slug')
+          expect(assigns(:valid_rows).first.layer_id).to eq(1)
+          expect(assigns(:errored_rows).count).to eq(5)
+          expect(assigns(:errored_rows).first[:messages]).to eq([['Layer must exist']])
+        end
+      end
+
+      context 'whith fallback layer_id' do
+        let(:fallback_layer) { FactoryBot.create(:layer, map_id: @map.id) }
+
+        it 'redirects to the import preview page with the layer_id from csv file assigned' do
+          post :apply_mapping, params: { id: import_mapping.id, layer_id: fallback_layer.id, map_id: @map.id, file_name: 'places_with_layer_id.csv', col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
+
+          expect(response).to redirect_to(import_preview_import_mapping_path(assigns(:import_mapping), file_name: 'places_with_layer_id.csv', layer_id: fallback_layer.id, map_id: @map.id, overwrite: '1'))
+          expect(assigns(:valid_rows).count).to eq(7)
+          expect(assigns(:valid_rows).first.title).to eq('Place for first layer by id')
+          expect(assigns(:valid_rows).first.layer_id).to eq(1)
+          expect(assigns(:valid_rows).last.layer_id).to eq(fallback_layer.id)
+        end
       end
     end
   end

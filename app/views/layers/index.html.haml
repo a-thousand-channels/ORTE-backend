@@ -39,9 +39,8 @@
         %hr
       %ul.hint
         %li
-          = link_to import_map_path(@map), :class=>'button small' do
-            %i.fi-plus.fi-18
-            Import/update places from CSV
+          = link_to import_map_path(@map) do
+            Import CSV to create places from
 
   %table
     %thead
