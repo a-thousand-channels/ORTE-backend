@@ -21,6 +21,23 @@ RSpec.describe ImportMapping, type: :model do
       expect(import_mapping).to be_valid
     end
 
+    it 'is invalid if mapping contains duplicate model properties' do
+      invalid_mapping = [
+        { 'csv_column_name' => 'title', 'model_property' => 'title' },
+        { 'csv_column_name' => 'lat', 'model_property' => 'lat' },
+        { 'csv_column_name' => 'lon', 'model_property' => 'lon' },
+        { 'csv_column_name' => 'duplicate_lat', 'model_property' => 'lat' }
+      ]
+
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: invalid_mapping
+      )
+
+      expect(import_mapping).not_to be_valid
+      expect(import_mapping.errors[:mapping]).to include('contains duplicate model properties: lat')
+    end
+
     it 'is invalid without a name' do
       import_mapping = ImportMapping.new(name: nil, mapping: valid_mapping)
       expect(import_mapping).not_to be_valid

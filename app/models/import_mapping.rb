@@ -3,6 +3,7 @@
 class ImportMapping < ApplicationRecord
   before_save :ensure_id_is_key
   validate :validate_required_model_properties
+  validate :validate_unique_model_properties
   validate :validate_parsers
   validates :name, presence: true
   validates :name, uniqueness: true
@@ -95,6 +96,17 @@ class ImportMapping < ApplicationRecord
     return unless missing_properties.any?
 
     errors.add(:mapping, "is missing required properties: #{missing_properties.join(', ')}")
+  end
+
+  def validate_unique_model_properties
+    return unless mapping.present?
+
+    model_properties = mapping.map { |m| m['model_property'] }.compact
+    duplicates = model_properties.select { |property| model_properties.count(property) > 1 }.uniq
+
+    return unless duplicates.any?
+
+    errors.add(:mapping, "contains duplicate model properties: #{duplicates.join(', ')}")
   end
 
   def ensure_id_is_key
