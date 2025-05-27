@@ -78,6 +78,7 @@ jobs:
           RAILS_ENV: test
           COVERAGE: true
         run: |
+          bin/rails db:drop
           bin/rails db:setup
           bundler exec rspec spec
       - name: Upload coverage results
