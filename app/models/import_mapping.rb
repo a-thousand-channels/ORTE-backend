@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ImportMapping < ApplicationRecord
-  before_save :sanitize_mappings
+  before_save :ensure_id_is_key
   validate :validate_required_model_properties
   validate :validate_parsers
   validates :name, presence: true
@@ -97,13 +97,10 @@ class ImportMapping < ApplicationRecord
     errors.add(:mapping, "is missing required properties: #{missing_properties.join(', ')}")
   end
 
-  def sanitize_mappings
+  def ensure_id_is_key
     mappings = mapping || []
-    # ensure that 'id' is always a key
     id_mapping = mappings.find { |m| m['model_property'] == 'id' }
     id_mapping['key'] = true if id_mapping && !id_mapping['key']
-    # remove mappings without model_property
-    mappings.reject! { |m| m['model_property'].blank? }
     self.mapping = mappings
   end
 
