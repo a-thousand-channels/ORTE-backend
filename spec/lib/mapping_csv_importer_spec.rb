@@ -234,13 +234,13 @@ RSpec.describe Imports::MappingCsvImporter do
         expect(importer.valid_rows.last.enddate).to eq('2024-02-20 00:00:00 UTC')
       end
 
-      it 'parses american dates into datetime format' do
+      it 'parses us american dates into datetime format' do
         mapping = create(:import_mapping, mapping: [
                            { csv_column_name: 'title', model_property: 'title' },
                            { csv_column_name: 'lon', model_property: 'lon' },
                            { csv_column_name: 'lat', model_property: 'lat' },
-                           { csv_column_name: 'starting_from', model_property: 'startdate', parsers: '["american_date"]' },
-                           { csv_column_name: 'ending_from', model_property: 'enddate', parsers: '["american_date"]' }
+                           { csv_column_name: 'starting_from', model_property: 'startdate', parsers: '["us_date"]' },
+                           { csv_column_name: 'ending_from', model_property: 'enddate', parsers: '["us_date"]' }
                          ])
         file_to_be_parsed = Rack::Test::UploadedFile.new('spec/support/files/places_american_date.csv', 'text/csv')
 

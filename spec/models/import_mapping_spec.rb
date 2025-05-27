@@ -202,4 +202,20 @@ RSpec.describe ImportMapping, type: :model do
                                            ])
     end
   end
+
+  it 'ensures the id mapping has key set to true' do
+    import_mapping = ImportMapping.new(
+      name: 'Test Mapping',
+      mapping: [
+        { 'csv_column_name' => 'id', 'model_property' => 'id', 'parsers' => '[]', 'key' => false },
+        { 'csv_column_name' => 'title', 'model_property' => 'title', 'parsers' => '[]', 'key' => false },
+        { 'csv_column_name' => 'lat', 'model_property' => 'lat', 'parsers' => [], 'key' => false },
+        { 'csv_column_name' => 'lon', 'model_property' => 'lon', 'parsers' => [], 'key' => false }
+
+      ]
+    )
+    import_mapping.save
+
+    expect(import_mapping.mapping.find { |m| m['model_property'] == 'id' }['key']).to eq(true)
+  end
 end
