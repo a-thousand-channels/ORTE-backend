@@ -218,7 +218,7 @@ class Place < ApplicationRecord
 
   def self.to_csv
     headers = %w[id uid title subtitle teaser text link annotations tags sources startdate startdate_qualifier enddate enddate_qualifier lat lon location address zip city country published featured shy sensitive sensitive_radius layer]
-    attributes = %w[id title subtitle teaser_as_text text_as_text link annotations_as_text tags_as_list sources startdate startdate_qualifier enddate enddate_qualifier public_lat public_lon location address zip city country published featured shy sensitive sensitive_radius layer_slug]
+    attributes = %w[id uid title subtitle teaser_as_text text_as_text link annotations_as_text tags_as_list sources startdate startdate_qualifier enddate enddate_qualifier public_lat public_lon location address zip city country published featured shy sensitive sensitive_radius layer_slug]
     CSV.generate(headers: true, force_quotes: false, strip: true) do |csv|
       csv << headers
       all.each do |place|

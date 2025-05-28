@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :place do
     uid { Faker::Internet.password(min_length: 3, max_length: 20, special_characters: true) }
     title { Faker::TvShows::Simpsons.location }
-    subtitle { Faker::TvShows::Simpsons.quote }
+    subtitle { Faker::Lorem.sentence }
     teaser { Faker::Lorem.sentence }
     text { Faker::Lorem.paragraph }
     sources { Faker::Artist.name }
