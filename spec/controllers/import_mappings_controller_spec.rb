@@ -86,9 +86,7 @@ RSpec.describe ImportMappingsController, type: :controller do
     let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
 
     before do
-      temp_file_path = Rails.root.join('tmp', File.basename(file.original_filename))
-      File.binwrite(temp_file_path, file.read)
-      ImportContextHelper.write_tempfile_path(file, temp_file_path)
+      ImportContextHelper.write_tempfile_path(file)
     end
 
     context 'with only valid entries from previously uploaded file' do
@@ -221,9 +219,7 @@ RSpec.describe ImportMappingsController, type: :controller do
     let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
 
     before do
-      temp_file_path = Rails.root.join('tmp', File.basename(file.original_filename))
-      File.binwrite(temp_file_path, file.read)
-      ImportContextHelper.write_tempfile_path(file, temp_file_path)
+      ImportContextHelper.write_tempfile_path(file)
     end
 
     context 'with only valid entries' do

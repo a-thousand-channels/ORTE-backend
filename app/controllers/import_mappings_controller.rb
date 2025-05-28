@@ -60,6 +60,7 @@ class ImportMappingsController < ApplicationController
       map_id: @map_id
     )
   rescue CSV::MalformedCSVError => e
+    ImportContextHelper.delete_tempfile_and_cache_path(@file_name)
     flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
     redirect_to import_mapping_path(@import_mapping, layer_id: @layer_id, map_id: @map_id)
   end
@@ -121,10 +122,8 @@ class ImportMappingsController < ApplicationController
     return unless @file
 
     @original_filename = @file.original_filename
-    temp_file_path = Rails.root.join('tmp', File.basename(@original_filename))
-    File.binwrite(temp_file_path, @file.read)
-    ImportContextHelper.write_tempfile_path(@file, temp_file_path)
-    @file_name = File.basename(@file.original_filename)
+    ImportContextHelper.write_tempfile_path(@file)
+    @file_name = File.basename(@original_filename)
 
     set_csv_options
     File.open(ImportContextHelper.read_tempfile_path(@file_name))

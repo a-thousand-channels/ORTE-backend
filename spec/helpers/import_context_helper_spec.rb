@@ -5,10 +5,10 @@ require 'rails_helper'
 RSpec.describe ImportContextHelper, type: :helper do
   describe '.write_tempfile_path' do
     it 'writes the tempfile path to the cache' do
-      file = double('file', original_filename: 'test_file.txt')
-      temp_file_path = '/tmp/test_file.txt'
-      expect(Rails.cache).to receive(:write).with("import_context/#{file.original_filename}", { file_path: temp_file_path.to_s }, expires_in: 1.week)
-      ImportContextHelper.write_tempfile_path(file, temp_file_path)
+      file = double('file', original_filename: 'test_file.txt', read: 'test content')
+      temp_file_path = Rails.root.join('tmp', 'import_files', 'test_file.txt').to_s
+      expect(Rails.cache).to receive(:write).with("import_context/#{file.original_filename}", { file_path: temp_file_path }, expires_in: 1.week)
+      ImportContextHelper.write_tempfile_path(file)
     end
   end
 
@@ -126,11 +126,11 @@ RSpec.describe ImportContextHelper, type: :helper do
     end
   end
 
-  describe '.delete_tempfile_path' do
-    it 'deletes the tempfile path from the cache' do
+  describe '.delete_tempfile_and_cache_path' do
+    it 'deletes the tempfile path from the cache and the file from the tmp folder' do
       file_name = 'test_file.txt'
       expect(Rails.cache).to receive(:delete).with("import_context/#{file_name}")
-      ImportContextHelper.delete_tempfile_path(file_name)
+      ImportContextHelper.delete_tempfile_and_cache_path(file_name)
     end
   end
 end

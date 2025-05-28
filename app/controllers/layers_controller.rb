@@ -30,11 +30,9 @@ class LayersController < ApplicationController
       redirect_to import_map_layer_path(@map, @layer) and return
     end
     file = params[:import][:file]
-    temp_file_path = Rails.root.join('tmp', File.basename(params[:import][:file].original_filename))
-    File.binwrite(temp_file_path, file.read)
-    ImportContextHelper.write_tempfile_path(file, temp_file_path)
     return unless file
 
+    ImportContextHelper.write_tempfile_path(file)
     column_separator = params[:import][:column_separator] || ','
     @col_sep = case column_separator
                when 'Comma'
@@ -55,6 +53,7 @@ class LayersController < ApplicationController
       flash[:notice] = 'CSV read successfully!'
       redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer.id, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char)
     rescue CSV::MalformedCSVError => e
+      ImportContextHelper.delete_tempfile_and_cache_path(file.original_filename)
       flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
       render :import
     end
@@ -77,7 +76,7 @@ class LayersController < ApplicationController
       existing_place&.update(place.attributes.except('id', 'created_at', 'updated_at'))
     end
     importing_rows&.each(&:save!)
-    ImportContextHelper.delete_tempfile_path(file_name)
+    ImportContextHelper.delete_tempfile_and_cache_path(file_name)
     if (importing_rows && !importing_rows.empty?) || (importing_duplicate_rows_data && !importing_duplicate_rows_data.empty?)
       redirect_to map_layer_path(@map, @layer), notice: "CSV import to #{@layer.title} completed successfully! (#{importing_rows&.count || 0} places have been created and #{importing_duplicate_rows_data&.count || 0} places have been updated.)"
     else
