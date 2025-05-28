@@ -275,6 +275,7 @@
                               "enddate",
                               "lat",
                               "lon",
+                              "tags",
                               "location",
                               "address",
                               "zip",
@@ -457,6 +458,40 @@
                                  ],
                                  "pattern":"^(.*)$"
                               },
+                              "tags": {
+                                 "type": "array",
+                                 "properties": {
+                                   "$id": {
+                                     "type": "string"
+                                   },
+                                   "type": {
+                                     "type": "string"
+                                   },
+                                   "title": {
+                                     "type": "string"
+                                   },
+                                   "default": {
+                                     "type": "string"
+                                   },
+                                   "examples": {
+                                     "type": "array",
+                                     "items": {
+                                       "type": "string"
+                                     }
+                                   },
+                                   "pattern": {
+                                     "type": "string"
+                                   }
+                                 },
+                                 "required": [
+                                   "$id",
+                                   "type",
+                                   "title",
+                                   "default",
+                                   "examples",
+                                   "pattern"
+                                 ]
+                               },                              
                               "location":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/location",
                                  "type":"string",
