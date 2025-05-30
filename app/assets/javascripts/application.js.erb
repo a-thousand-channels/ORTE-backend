@@ -480,9 +480,52 @@ jQuery(function ($) {
   // layers: show all places
   if ( $('body').attr('id') === 'layers' )  {
     if ( $('#selection').data('ltype') === 'geojson' ) {
+      var customDivIcon = L.divIcon({
+        html: '<div class="custom-div-icon">P</div>',
+        className: 'custom-div-icon',
+        iconSize: [100, 100]
+      });      
+      var iconSettings = {
+        mapIconUrl: "<svg height='{radius}' width='{radius}' xmlns='http://www.w3.org/2000/svg'><circle cx='15' cy='15' r='15' fill='{color}' fill-opacity='{opacity}' shape-rendering='geometricPrecision'></circle></svg>",
+        color: '#cc756b',
+        opacity: 1,
+        radius: 30
+    };
+    var divIcon = L.divIcon({
+        className: "leaflet-data-marker",
+        html: L.Util.template(iconSettings.mapIconUrl, iconSettings), //.replace('#','%23'),
+        iconAnchor  : [15, 15],
+        iconSize    : [30, 30],
+        popupAnchor : [0, -28]
+    });
+
       const layer_json_url = $('#selection').data('url')
       $.getJSON(layer_json_url, function(data) {
-        const geoJsonLayer = L.geoJSON(JSON.parse(data.geojson)).addTo(map);
+        const geoJsonLayer = L.geoJSON(JSON.parse(data.geojson),
+        {
+          style: function(feature) {
+              // Use the style definitions from the GeoJSON if available
+              return feature.properties.style || {
+                  color: "#000000",
+                  weight: 5,
+                  opacity: 0.65,
+                  fillColor: "#000000", 
+                  fillOpacity: 0.15
+              };
+          },
+          pointToLayer: function(feature, latlng) {
+            if (feature.geometry.type === 'Point') {
+                return L.marker(latlng, { icon: divIcon });
+            }
+            return L.circleMarker(latlng);
+          },          
+          onEachFeature: function(feature, layer) {
+              // Add any additional interactions or popups here
+              if (feature.properties && feature.properties.name) {
+                  layer.bindPopup(feature.properties.name);
+              }
+          }
+        }).addTo(map);
         map.fitBounds(geoJsonLayer.getBounds().pad(0.35));
         $('.loader_wrapper').hide(300);
       })
