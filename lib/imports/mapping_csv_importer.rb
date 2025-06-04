@@ -42,12 +42,15 @@ module Imports
           csv_column_name = mapping['csv_column_name']
           model_property = mapping['model_property']
           begin
-            @layer = @map.layers.find_by(id: row['layer_id'].to_i) || @map.layers.find_by(slug: row['layer_id']) if model_property == 'layer_id'
-            if mapping['parsers']
-              value = @import_mapping.parse(row[csv_column_name], mapping['parsers'])
-              processed_row[model_property] = value
+            value = if mapping['parsers']
+                      @import_mapping.parse(row[csv_column_name], mapping['parsers'])
+                    else
+                      row[csv_column_name]
+                    end
+            if model_property == 'layer_id'
+              @layer = @map.layers.find_by(id: value.to_i) || @map.layers.find_by(slug: value)
             else
-              processed_row[model_property] = row[csv_column_name]
+              processed_row[model_property] = value
             end
             processed_row[model_property] = do_sanitize(processed_row[model_property])
           rescue StandardError => e
@@ -67,6 +70,10 @@ module Imports
           place.errors.add(key, error)
         end
         duplicates = duplicate_key_values(@import_mapping, place)&.map { |key, value| Place.where(key => value) }&.flatten&.uniq
+        duplicates&.select! do |duplicate|
+          layer = @layer ? @layer : @fallback_layer
+          duplicate.layer.map_id == layer&.map_id
+        end
         duplicate_count = duplicates&.count
         if duplicate_count == 1
           if place.valid?

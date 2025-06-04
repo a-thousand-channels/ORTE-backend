@@ -16,22 +16,37 @@ class ImportMappingsController < ApplicationController
 
   def create
     mapping = JSON.parse(params[:import_mapping][:mapping])
-    @import_mapping = ImportMapping.new(name: params[:import_mapping][:name], mapping: mapping)
     @headers = JSON.parse(params[:headers])
     layer_id = @layer&.id
 
-    if @import_mapping.save
-      redirect_to import_mapping_path(@import_mapping, layer_id: layer_id, map_id: @map.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.'
+    existing_mapping = ImportMapping.find_by(name: params[:import_mapping][:name])
+
+    if existing_mapping
+      if params[:import_mapping][:update_existing] == '1'
+        existing_mapping.update(mapping: mapping)
+        redirect_to import_mapping_path(existing_mapping, layer_id: layer_id, map_id: @map.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import-Mapping mapping was successfully updated.'
+      else
+        flash[:alert] = 'An import mapping with this name already exists. Please tick the "update" box if you would like to update it.'
+        @import_mapping = ImportMapping.new(name: params[:import_mapping][:name], mapping: mapping)
+        @place_columns = Place.column_names + ['tag_list']
+        render :new, missing_fields: existing_mapping.errors[:mapping], headers: @headers
+      end
     else
-      @place_columns = Place.column_names + ['tag_list']
-      render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers
+      @import_mapping = ImportMapping.new(name: params[:import_mapping][:name], mapping: mapping)
+
+      if @import_mapping.save
+        redirect_to import_mapping_path(@import_mapping, layer_id: layer_id, map_id: @map.id, file_name: @file_name, col_sep: @col_sep, quote_char: @quote_char), notice: 'Import mapping was successfully created.'
+      else
+        @place_columns = Place.column_names + ['tag_list']
+        render :new, missing_fields: @import_mapping.errors[:mapping], headers: @headers
+      end
     end
   end
 
   def show
     @import_mapping = ImportMapping.find(params[:id])
     @maps = Map.all
-    @layers = Layer.all
+    @layers = @map ? @map.layers : Layer.all
   end
 
   def apply_mapping

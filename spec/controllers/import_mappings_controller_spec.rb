@@ -66,6 +66,25 @@ RSpec.describe ImportMappingsController, type: :controller do
       expect(response).to render_template(:new)
       expect(assigns(:import_mapping)).not_to be_valid
     end
+
+    context 'when an import mapping with the same name already exists' do
+      let!(:existing_mapping) { FactoryBot.create(:import_mapping, name: 'Existing Mapping') }
+
+      it 'updates the existing mapping if update_existing is checked' do
+        post :create, params: { import_mapping: { name: 'Existing Mapping', mapping: '[{ "csv_column_name": "id", "model_property": "uid", "key": false },{ "csv_column_name": "title", "model_property": "title" }, { "csv_column_name": "lat", "model_property": "lat" }, { "csv_column_name": "lon", "model_property": "lon" }]', update_existing: '1' }, headers: '["title", "teaser", "latX", "lonX"]', layer_id: @layer.id }, session: valid_session
+
+        expect(response).to redirect_to(import_mapping_path(existing_mapping.reload, layer_id: @layer.id, map_id: @map.id))
+        expect(existing_mapping.mapping.first['model_property']).to eq('uid')
+      end
+
+      it 'renders the new template with an error if update_existing is not checked' do
+        post :create, params: { import_mapping: { name: 'Existing Mapping', mapping: '[{ "csv_column_name": "id", "model_property": "uid", "key": false },{ "csv_column_name": "title", "model_property": "title" }, { "csv_column_name": "lat", "model_property": "lat" }, { "csv_column_name": "lon", "model_property": "lon" }]' }, headers: '["title", "teaser", "latX", "lonX"]', layer_id: @layer.id }, session: valid_session
+
+        expect(response).to render_template(:new)
+        expect(assigns(:import_mapping)).not_to be_valid
+        expect(flash[:alert]).to eq('An import mapping with this name already exists. Please tick the "update" box if you would like to update it.')
+      end
+    end
   end
 
   describe 'GET #show' do
@@ -113,8 +132,8 @@ RSpec.describe ImportMappingsController, type: :controller do
       end
 
       let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places_with_valid_invalid_and_duplicate_rows.csv', 'text/csv') }
-      let!(:place1) { create(:place, title: 'Place 1') }
-      let!(:place2) { create(:place, title: 'title2', id: 2) }
+      let!(:place1) { create(:place, title: 'Place 1', layer: @layer) }
+      let!(:place2) { create(:place, title: 'title2', id: 2, layer: @layer) }
 
       it 'applies the mapping and redirects to the import preview page' do
         post :apply_mapping, params: { id: import_mapping.id, layer_id: @layer.id, file_name: 'places_with_valid_invalid_and_duplicate_rows.csv', col_sep: ',', quote_char: '"', import: { overwrite: '1' } }, session: valid_session
@@ -193,7 +212,7 @@ RSpec.describe ImportMappingsController, type: :controller do
           expect(assigns(:valid_rows).first.title).to eq('Place for first layer by id')
           expect(assigns(:valid_rows).last.title).to eq('Place for first layer by slug')
           expect(assigns(:valid_rows).first.layer_id).to eq(1)
-          expect(assigns(:errored_rows).count).to eq(5)
+          expect(assigns(:errored_rows).count).to eq(6)
           expect(assigns(:errored_rows).first[:messages]).to eq([['Layer must exist']])
         end
       end
@@ -205,7 +224,7 @@ RSpec.describe ImportMappingsController, type: :controller do
           post :apply_mapping, params: { id: import_mapping.id, layer_id: fallback_layer.id, map_id: @map.id, file_name: 'places_with_layer_id.csv', col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
 
           expect(response).to redirect_to(import_preview_import_mapping_path(assigns(:import_mapping), file_name: 'places_with_layer_id.csv', layer_id: fallback_layer.id, map_id: @map.id, overwrite: '1'))
-          expect(assigns(:valid_rows).count).to eq(7)
+          expect(assigns(:valid_rows).count).to eq(8)
           expect(assigns(:valid_rows).first.title).to eq('Place for first layer by id')
           expect(assigns(:valid_rows).first.layer_id).to eq(1)
           expect(assigns(:valid_rows).last.layer_id).to eq(fallback_layer.id)
