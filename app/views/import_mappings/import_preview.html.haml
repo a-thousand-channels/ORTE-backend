@@ -98,7 +98,7 @@
             Overwriting places with the same key(s) is enabled. Keys defined in the mapping:
             = @import_mapping.keys.any? ? @import_mapping.keys.map(&:to_s).join(', ') : 'None'
       - if @duplicate_rows && @duplicate_rows.count > 0
-        .alert
+        .warning
           %h3 Valid duplicate entries
           %p Some rows in the CSV have exactly one duplicate with the specified key(s) in the database:
           %table.table.table-striped
