@@ -49,6 +49,16 @@ Additional requirements for production
 * Webserver (e.g. Apache or NGINX)
 * Passenger stand-alone
 
+#### Cron job
+To schedule the maintenance cron job to remove outdated import files in the tmp folder on staging and production env, add it to the crontab file. 
+This is an example how the line in the crontab file could look like to do the cleanup every Sunday at 3:30 am:
+
+```bash
+30 3 * * 0 cd /path/to/ORTE-backend && RAILS_ENV=production bundle exec rake cron_jobs:maintenance:import_files_cleanup
+```
+
+Replace /path/to/ORTE-backend with the full path to the Rails application.
+
 ### Get repository
 
 ```bash
@@ -76,7 +86,7 @@ $ bundle exec rails db:seed
 
 Note: With Mariadb locally, you might not need a user root, just
 
-```sudo mysql``
+```sudo mysql```
 
 
 ### Settings for server setup

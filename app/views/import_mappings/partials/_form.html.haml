@@ -1,0 +1,46 @@
+= simple_form_for @import_mapping do |f|
+  - if @import_mapping.errors.any?
+    .alert
+      #error_explanation
+        %p= "#{pluralize(@import_mapping.errors.count, "error")} prohibited this import mapping from being saved:"
+        %ul
+          - @import_mapping.errors.full_messages.each do |message|
+            %li= message
+  %table.table.table-striped
+    %thead
+      %tr
+        %th CSV column name
+        %th Model property
+        %th Parsers (see explanation below)
+        %th Key
+        %th Add row
+    %tbody#mapping
+      - @headers&.each do |header|
+        %tr
+          %td= header
+          - mapping = @import_mapping.mapping.find { |m| m['csv_column_name'] == header }
+          - unless mapping
+            - mapping = { 'csv_column_name' => header, 'model_property' => nil, 'parsers' => [], 'key' => false }
+            - @import_mapping.mapping << mapping
+          = f.fields_for :mapping, OpenStruct.new(mapping) do |mapping_form|
+            %td
+              = mapping_form.input :model_property, collection: @place_columns, label: false, input_html: { class: 'model-property-select' }
+            %td
+              = mapping_form.input :parsers, label: false, input_html: { class: 'parsers-input', value: "[]" }
+            %td
+              = mapping_form.input :key, as: :boolean, label: false, input_html: { class: 'key-input' }
+            %td
+              %button.duplicate-row{ type: 'button' } +
+  = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
+  = f.hidden_field :mapping, id: 'import_mapping_mapping'
+  = f.hidden_field :headers, value: @headers.to_json, name: 'headers'
+  = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id' if @layer
+  = f.hidden_field :map_id, value: @map.id, name: 'map_id' if @map
+  = f.hidden_field :file_name, value: @file_name, name: 'file_name'
+  = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
+  = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
+  %div.checkbox-container
+    %label
+      %input{ type: 'checkbox', name: 'import_mapping[update_existing]', value: '1' }
+      Update existing mapping if name already exists
+  = f.submit 'Save mapping', class: 'button'
