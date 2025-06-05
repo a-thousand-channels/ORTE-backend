@@ -13,8 +13,8 @@
           %li= field
   - elsif @import_mapping.errors[:mapping] && @import_mapping.errors[:mapping].any?
     .alert
-      %h3 Import mapping has missing column names
-      %p Please map the csv columns to the required fields.
+      %h3 Import mapping has errors
+      %p Please map the csv columns to the required fields and be sure that each model property is listed only once
   - else
     %h3 Column name mapping
     %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below. Make sure the required fields title, lat and lon are included in the selected model properties.

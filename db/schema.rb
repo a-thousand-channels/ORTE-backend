@@ -119,7 +119,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
-  create_table "import_mappings", charset: "utf8mb4", collation: "utf8mb4_unicode_520_ci", force: :cascade do |t|
+  create_table "import_mappings", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name"
     t.text "mapping", size: :long, collation: "utf8mb4_bin"
     t.datetime "created_at", null: false

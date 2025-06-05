@@ -39,4 +39,8 @@
   = f.hidden_field :file_name, value: @file_name, name: 'file_name'
   = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
   = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
+  %div.checkbox-container
+    %label
+      %input{ type: 'checkbox', name: 'import_mapping[update_existing]', value: '1' }
+      Update existing mapping if name already exists
   = f.submit 'Save mapping', class: 'button'

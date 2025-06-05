@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
+require 'fileutils'
+
 module ImportContextHelper
-  def self.write_tempfile_path(file, temp_file_path)
+  def self.write_tempfile_path(file)
+    temp_file_path = Rails.root.join('tmp/import_files', File.basename(file.original_filename))
+    FileUtils.mkdir_p(File.dirname(temp_file_path))
+    File.binwrite(temp_file_path, file.read)
     Rails.cache.write("import_context/#{file.original_filename}", { file_path: temp_file_path.to_s }, expires_in: 1.week)
   end
 
@@ -55,8 +60,14 @@ module ImportContextHelper
     Rails.cache.read("import_context/#{file_name}")&.[](:importing_duplicate_rows)
   end
 
-  def self.delete_tempfile_path(file_name)
+  def self.delete_tempfile_and_cache_path(file_name)
+    cached_data = Rails.cache.read("import_context/#{file_name}")
     Rails.cache.delete("import_context/#{file_name}")
+
+    return unless cached_data && cached_data[:file_path]
+
+    file_path = cached_data[:file_path]
+    FileUtils.rm_f(file_path)
   end
 
   def duplicate_key_values(import_mapping, place)

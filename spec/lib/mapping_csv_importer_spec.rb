@@ -60,16 +60,6 @@ RSpec.describe Imports::MappingCsvImporter do
         expect(importer.errored_rows.count).to eq(1)
       end
 
-      it 'handles wrong csv header and does not create Place records' do
-        pending('error handling changed, test needs to be adjusted')
-        invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_header.csv', 'text/csv')
-
-        importer = Imports::MappingCsvImporter.new(invalid_file, layer.id, nil, import_mapping)
-        expect do
-          importer.import
-        end.to raise_error(StandardError)
-      end
-
       it 'handles invalid row with wrong lat value and does not create Place records' do
         invalid_file = Rack::Test::UploadedFile.new('spec/support/files/places_invalid_lat.csv', 'text/csv')
 
@@ -106,7 +96,7 @@ RSpec.describe Imports::MappingCsvImporter do
         file = Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv')
 
         # Create 1 existing records with the same title as one place in the file
-        existing_place = create(:place, title: 'Place 1', teaser: 'some text', layer: layer)
+        existing_place = create(:place, id: 66, title: 'Place 1', teaser: 'some text', layer: layer)
 
         importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping)
         importer.import
@@ -133,6 +123,60 @@ RSpec.describe Imports::MappingCsvImporter do
         expect(importer.ambiguous_rows.count).to eq(1)
         expect(importer.ambiguous_rows.first[:duplicate_count]).to eq(2)
         expect(importer.duplicate_rows.count).to eq(0)
+      end
+    end
+
+    context 'when overwrite is enabled and title and id are key' do
+      let(:mapping) { create(:import_mapping) } # mapping from factory has set title and id as key
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
+      let(:other_map_layer) { create(:layer, map: create(:map)) }
+
+      it 'overwrites existing places of the same map with the same title' do
+        # Create 1 existing record with the same title as one place in the file
+        create(:place, id: 99, title: 'Place 1', teaser: 'some text', layer: layer)
+
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping, overwrite: true)
+        importer.import
+
+        expect(importer.valid_rows.count).to eq(1)
+        expect(importer.duplicate_rows.count).to eq(1)
+        expect(importer.errored_rows.count).to eq(0)
+      end
+
+      it 'does not overwrite existing places of another map with the same title' do
+        # Create 1 existing record with the same title as one place in the file but from another map
+        create(:place, id: 99, title: 'Place 1', teaser: 'some text', layer: other_map_layer)
+
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping, overwrite: true)
+        importer.import
+
+        expect(importer.valid_rows.count).to eq(2)
+        expect(importer.duplicate_rows.count).to eq(0)
+        expect(importer.errored_rows.count).to eq(0)
+      end
+
+      it 'overwrites existing places of the same map with the same id' do
+        # Create 1 existing record with the same title as one place in the file
+        create(:place, id: 239, title: 'some title', teaser: 'some text', layer: layer)
+
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping, overwrite: true)
+        importer.import
+
+        expect(importer.valid_rows.count).to eq(1)
+        expect(importer.duplicate_rows.count).to eq(1)
+        expect(importer.errored_rows.count).to eq(0)
+      end
+
+      it 'does not overwrite existing places of another map with the same id' do
+        # Create 1 existing record with the same title as one place in the file but from another map
+        create(:place, id: 239, title: 'some title', teaser: 'some text', layer: other_map_layer)
+
+        importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping, overwrite: true)
+        importer.import
+
+        expect(importer.valid_rows.count).to eq(1)
+        expect(importer.duplicate_rows.count).to eq(0)
+        expect(importer.errored_rows.count).to eq(1)
       end
     end
 
@@ -234,13 +278,13 @@ RSpec.describe Imports::MappingCsvImporter do
         expect(importer.valid_rows.last.enddate).to eq('2024-02-20 00:00:00 UTC')
       end
 
-      it 'parses american dates into datetime format' do
+      it 'parses us american dates into datetime format' do
         mapping = create(:import_mapping, mapping: [
                            { csv_column_name: 'title', model_property: 'title' },
                            { csv_column_name: 'lon', model_property: 'lon' },
                            { csv_column_name: 'lat', model_property: 'lat' },
-                           { csv_column_name: 'starting_from', model_property: 'startdate', parsers: '["american_date"]' },
-                           { csv_column_name: 'ending_from', model_property: 'enddate', parsers: '["american_date"]' }
+                           { csv_column_name: 'starting_from', model_property: 'startdate', parsers: '["us_date"]' },
+                           { csv_column_name: 'ending_from', model_property: 'enddate', parsers: '["us_date"]' }
                          ])
         file_to_be_parsed = Rack::Test::UploadedFile.new('spec/support/files/places_american_date.csv', 'text/csv')
 
@@ -273,9 +317,10 @@ RSpec.describe Imports::MappingCsvImporter do
 
     context 'when mapping contains a mapping to layer_id' do
       let(:map) { create(:map) }
+      let(:other_map) { create(:map) }
       let!(:layer1) { create(:layer, id: 1, slug: 'first_layer', map: map) }
       let!(:layer2) { create(:layer, id: 2, slug: 'second_layer', map: map) }
-      let!(:other_map_layer) { create(:layer, slug: 'other_map_layer') }
+      let!(:other_map_layer) { create(:layer, id: 77, slug: 'other_map_layer', map: other_map) }
       let(:import_mapping) { create(:import_mapping, :with_layer_id) }
 
       let(:file_with_layer_id) { Rack::Test::UploadedFile.new('spec/support/files/places_with_layer_id.csv', 'text/csv') }
@@ -288,7 +333,7 @@ RSpec.describe Imports::MappingCsvImporter do
           end.not_to raise_error
           expect(importer.valid_rows.count).to eq(3)
           expect(importer.valid_rows.last.layer_id).to eq(layer1.id)
-          expect(importer.errored_rows.count).to eq(4)
+          expect(importer.errored_rows.count).to eq(5)
           expect(importer.errored_rows.first[:messages]).to eq([['Layer must exist']])
           expect(importer.errored_rows.last[:messages]).to eq([['Layer must exist']])
         end
@@ -302,7 +347,7 @@ RSpec.describe Imports::MappingCsvImporter do
           expect do
             importer.import
           end.not_to raise_error
-          expect(importer.valid_rows.count).to eq(7)
+          expect(importer.valid_rows.count).to eq(8)
           expect(importer.valid_rows.first.layer_id).to eq(layer1.id)
           expect(importer.valid_rows.second.layer_id).to eq(layer2.id)
           expect(importer.valid_rows.last.layer_id).to eq(layer3.id)
