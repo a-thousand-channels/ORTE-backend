@@ -21,6 +21,23 @@ RSpec.describe ImportMapping, type: :model do
       expect(import_mapping).to be_valid
     end
 
+    it 'is valid if mapping contains duplicate empty strings as model properties' do
+      mapping_with_empty_values = [
+        { 'csv_column_name' => 'title', 'model_property' => 'title' },
+        { 'csv_column_name' => 'lat', 'model_property' => 'lat' },
+        { 'csv_column_name' => 'lon', 'model_property' => 'lon' },
+        { 'csv_column_name' => 'something', 'model_property' => '' },
+        { 'csv_column_name' => 'something else', 'model_property' => '' }
+      ]
+
+      import_mapping = ImportMapping.new(
+        name: 'Test Mapping',
+        mapping: mapping_with_empty_values
+      )
+
+      expect(import_mapping).to be_valid
+    end
+
     it 'is invalid if mapping contains duplicate model properties' do
       invalid_mapping = [
         { 'csv_column_name' => 'title', 'model_property' => 'title' },
