@@ -114,8 +114,8 @@ RSpec.describe Imports::MappingCsvImporter do
         file = Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv')
 
         # Create 2 existing records with the same title as one place in the file
-        create(:place, title: 'Place 1', teaser: 'some text', layer: layer)
-        create(:place, title: 'Place 1', teaser: 'some different text', layer: layer)
+        create(:place, id: 123, title: 'Place 1', teaser: 'some text', layer: layer)
+        create(:place, id: 234, title: 'Place 1', teaser: 'some different text', layer: layer)
 
         importer = Imports::MappingCsvImporter.new(file, layer.id, nil, mapping)
         importer.import
