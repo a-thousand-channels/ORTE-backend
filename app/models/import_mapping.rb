@@ -102,8 +102,7 @@ class ImportMapping < ApplicationRecord
     return unless mapping.present?
 
     model_properties = mapping.map { |m| m['model_property'] }.compact
-    duplicates = model_properties.select { |property| model_properties.count(property) > 1 }.uniq
-
+    duplicates = model_properties.select { |property| model_properties.count(property) > 1 }.uniq.compact.reject(&:empty?)
     return unless duplicates.any?
 
     errors.add(:mapping, "contains duplicate model properties: #{duplicates.join(', ')}")
