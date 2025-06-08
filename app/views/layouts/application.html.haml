@@ -58,10 +58,10 @@
         .cell.large-6.medium-6.small-12
           = render partial: "layouts/version"
           = render partial: "layouts/credits"
+          = render partial: "layouts/menu"
           - if user_signed_in?
             %span.show-for-small-only
-              &nbsp;
-              %a{:href => settings_path, :title => 'Your Settings'}
+              %a{:href => settings_path, :title => 'Your Settings', class: 'shy spacer' }
                 %i.fi-widget.fi-18
 
 

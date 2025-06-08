@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
+  before_action :set_pages_in_menu
 
   protect_from_forgery with: :exception
 
@@ -11,5 +12,11 @@ class ApplicationController < ActionController::Base
 
   def default_checkbox(param)
     %w[on true].include?(param)
+  end
+
+  private
+
+  def set_pages_in_menu
+    @pages = Page.published.in_menu
   end
 end
