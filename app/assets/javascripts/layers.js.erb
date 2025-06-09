@@ -20,7 +20,19 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
     // cluster is used here to show entries on the very same coordinates
     maxClusterRadius = 0;
   }
+  console.log("level", level);
 
+  if ( $('#selection').data('ltype') === 'geojson' ) {    
+    const layer_json_url = $('#selection').data('url')
+    $.getJSON(layer_json_url, function(data) {
+      ShowGeoJsonForLayer(map,data.geojson);
+      
+      $('.loader_wrapper').hide(300);
+    })
+    return;
+  }
+
+  /* -------------------------------------------- */
   var markerclusterSettings = {
             maxClusterRadius: maxClusterRadius,
             showCoverageOnHover: false,
@@ -166,13 +178,18 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
         drawCurves(map,data.id,curve_layers,marker_layers,data.color,places_with_relations,data.relations_bending,data.relations_coloring);
         marker_meta_layers.addLayer(marker_layers);
 
+      // show map with all layers
       } else  {
         // layers combined
         var all_places = [];
-        var layers_count = data.layers.length;
-
-        $.each(data.layers, function(key,data) {
-          all_places.push(...data.places);
+        $.each(data.layers, function(key,layer) {
+          all_places.push(...layer.places);
+          console.log("Layer "+key+" ("+layer.title+") has "+layer.places.length+" places");
+          if ( layer.geojson ) {
+            console.log("layer with geojson",layer.id)
+            ShowGeoJsonForLayer(map, layer.geojson);
+          }
+            
         });
         var show_annotations_on_map = data.show_annotations_on_map;
 
@@ -214,10 +231,7 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           console.log("Places_with_relations: "+data.places_with_relations.length);
           drawCurves(map,data.id,curve_layers,marker_layers,data.color,data.places_with_relations, data.relations_bending,data.relations_coloring);
           marker_meta_layers.addLayer(marker_layers);
-          
-          
         });
-
       }
       console.log('******************************');
       console.log("Saved in window.markers: "+window.markers.length);
@@ -372,6 +386,44 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
       };
     });
   }
+}
+function ShowGeoJsonForLayer(map,geojson) {
+  console.log("Show GeoJSON for layer");
+  const geoJsonLayer = L.geoJSON(JSON.parse(geojson),
+  {
+    style: function(feature) {
+        let style_defaults = {
+          color: "#333",
+          weight: 5,
+          opacity: 0.65,
+          fillColor: "#333", 
+          fillOpacity: 0.15
+      };
+      // Use the style definitions from the GeoJSON if available
+      console.log("geojson defaults",style_defaults);
+      console.log("geojson feature",feature.properties);
+      // Mapping von GeoJSON-Properties zu Leaflet-Style
+      if (feature.properties) {
+        return {
+            color: feature.properties.stroke || style_defaults.color,
+            weight: feature.properties['stroke-width'] || style_defaults.weight,
+            opacity: feature.properties['stroke-opacity'] || style_defaults.opacity,
+            fillColor: feature.properties.fill || style_defaults.fillColor,
+            fillOpacity: feature.properties['fill-opacity'] || style_defaults.fillOpacity
+        };
+      }
+      return style_defaults;
+    },
+    pointToLayer: function(feature, latlng) {
+      return L.circleMarker(latlng);
+    },          
+    onEachFeature: function(feature, layer) {
+      if (feature.properties && feature.properties.name) {
+          layer.bindPopup(feature.properties.name);
+      }
+    }
+  }).addTo(map);
+  map.fitBounds(geoJsonLayer.getBounds().pad(0.35));  
 }
 
 function getParams() {
