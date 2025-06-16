@@ -1,0 +1,78 @@
+.dropdown.menu > li > a {
+  background: #fefefe;
+  color: #333;
+  padding: 0.7rem 0.5rem 0.7rem;
+  padding: 0.8rem 1.2rem 0.6rem 0.6rem;
+  font-size: 16px;
+}
+
+.dropdown.menu > li.is-dropdown-submenu-parent > a {
+  position: relative;
+  padding-right: 1.5rem;
+  width: 100%;
+  min-width: 300px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb%28138, 138, 138%29'></polygon></svg>");
+  background-origin: content-box;
+  background-position: right -1rem center;
+  background-repeat: no-repeat;
+  background-size: 9px 6px;
+}
+.dropdown.menu > li.is-dropdown-submenu-parent > a::after {
+  display: none;
+}
+.dropdown.menu > li.is-active > a:hover,
+.dropdown.menu > li.is-active > a {
+  background-color: white;
+  color: #333
+}
+.dropdown .is-dropdown-submenu li  {
+  min-width: 300px;
+  display: flex;
+  line-height: 1;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+.dropdown .is-dropdown-submenu li:hover{
+  background-color: rgba(147, 147, 0, 0.2);
+}
+.dropdown .is-dropdown-submenu li svg {
+  vertical-align: middle;
+  margin: 1rem 0.6rem;
+}
+
+.dropdown .is-dropdown-submenu li a {
+  padding: 0;
+  color: #222;
+  font-size: 16px;
+  display: inline-block;
+}
+.dropdown .is-dropdown-submenu li a:hover {
+  
+  
+}
+
+.dropdown .is-dropdown-submenu li.layer-hidden a {
+  color: #777;
+  font-style: italic;
+}
+
+.dropdown .is-dropdown-submenu li a.view_link {
+  display: inline-block;
+  padding: 0.1rem;
+  margin-left: 0.1rem;
+  color: #222;
+  font-size: 16px;
+  width: 20px; height: 20px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.dropdown .is-dropdown-submenu li a.edit_link {
+  display: inline-block;
+  padding: 0.1rem;
+  margin-left: 0.1rem;
+  color: #222;
+  font-size: 16px;
+  width: 20px; height: 20px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
