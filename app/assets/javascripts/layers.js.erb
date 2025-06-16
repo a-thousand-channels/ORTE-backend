@@ -187,7 +187,8 @@ function ShowPlacesForLayer(map,text_layers,image_layers,marker_meta_layers,curv
           console.log("Layer "+key+" ("+layer.title+") has "+layer.places.length+" places");
           if ( layer.geojson ) {
             console.log("layer with geojson",layer.id)
-            ShowGeoJsonForLayer(map, layer.geojson);
+            let geoJsonLayer = ShowGeoJsonForLayer(map, layer.geojson);
+            marker_meta_layers.addLayer(geoJsonLayer);
           }
             
         });
@@ -423,7 +424,9 @@ function ShowGeoJsonForLayer(map,geojson) {
       }
     }
   }).addTo(map);
+  
   map.fitBounds(geoJsonLayer.getBounds().pad(0.35));  
+  return geoJsonLayer;
 }
 
 function getParams() {
