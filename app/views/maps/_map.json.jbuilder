@@ -3,6 +3,8 @@
 json.extract! map, :id, :title, :subtitle, :text, :credits, :image_link, :published, :group_id, :created_at, :updated_at, :show_annotations_on_map
 json.url map_url(map, format: :json)
 json.layers map.layers do |layer|
+  next unless layer.published
+
   json.extract! layer, :id, :title, :subtitle, :text, :credits, :image_link, :published, :map_id, :color, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :created_at, :updated_at, :ltype, :geojson
   json.iconset layer.map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if layer.map.iconset
   json.places layer.places do |place|
