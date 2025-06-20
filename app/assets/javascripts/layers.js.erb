@@ -420,7 +420,8 @@ function ShowGeoJsonForLayer(map,geojson) {
     },          
     onEachFeature: function(feature, layer) {
       if (feature.properties && feature.properties.name) {
-          layer.bindPopup(feature.properties.name);
+          console.log("GeoJSON feature name", feature.properties.name);
+          layer.bindTooltip(feature.properties.name);          
       }
     }
   }).addTo(map);
