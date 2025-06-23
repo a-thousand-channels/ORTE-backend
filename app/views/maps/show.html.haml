@@ -94,28 +94,27 @@
                 .cell.medium-12 
                   %div.tags
                     %h5.hide Tags
-                    - all_tags_count = 0
-                    - @places.all_tags.each do |tag|
-                      - all_tags_count = @places.all_tags.count
-                      
-                      - count = @places.tagged_with(["#{tag.name}"]).count
-                      - max_count = @places.all_tags.map { |tag| @places.tagged_with(tag.name).count }.max
-                      - count_threshold = 1
-                      - count_threshold = (max_count * 0.1).ceil
-                      - next if all_tags_count > 5 && count <= count_threshold && params[:show_tags] != 'all'
-                      %span.label.secondary.tag{class: "#{params[:filter]&.split(',')&.include?(tag.name) ? 'active' : ''}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
-                        = link_to map_path(@map, filter: (params[:filter] ? (params[:filter].split(',').include?(tag.name) ? (params[:filter].split(',') - [tag.name]).join(',') : "#{params[:filter]},#{tag.name}") : tag.name), search: @search) do
-                          %i.fi-price-tag
-                          = tag.name
-                          (#{count})
-                      
+                    - if @all_tags
+                      - @all_tags.each do |tag|
+                        
+                        - count =  @places.tagged_with(tag.name).size
+                        - max_count = @all_tags.map { |tag| @places.tagged_with(tag.name).count }.max
+                        - count_threshold = 1
+                        - count_threshold = (max_count * 0.1).ceil
+                        - next if @all_tags_count > 5 && count <= count_threshold && params[:show_tags] != 'all'
+                        %span.label.secondary.tag{class: "#{params[:filter]&.split(',')&.include?(tag.name) ? 'active' : ''}", id: "tag-#{tag.id}", "data-tag-id" => tag.id}
+                          = link_to map_path(@map, filter: (params[:filter] ? (params[:filter].split(',').include?(tag.name) ? (params[:filter].split(',') - [tag.name]).join(',') : "#{params[:filter]},#{tag.name}") : tag.name), search: @search) do
+                            %i.fi-price-tag
+                            = tag.name
+                            (#{count})
+                        
 
                     - if ( params[:filter] && !params[:filter].empty? )
                       %span.label.secondary.tag 
                         = link_to map_path(@map, search: @search), {title: 'Show all places'} do
                           %i.fi-x      
                           All places
-                    - if all_tags_count > 5
+                    - if @all_tags && @all_tags_count > 5
                       - if params[:show_tags] != 'all'
                         = link_to map_path(@map, filter: params[:filter], search: @search, show_tags: 'all'), {title: 'Show all tags'} do
                           %strong{style: 'font-size: 23px; line-height: 1; padding-left: 3px'}

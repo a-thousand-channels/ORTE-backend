@@ -17,41 +17,45 @@ class MapsController < ApplicationController
     @maps = Map.sorted.by_user(current_user)
 
     if @map
-      @map_layers = @map.layers
+      if @map&.layers
+        @map_layers = @map.layers
+                          .includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
+                          .where(places: { published: true })
+        @places = Place.where(id: @map_layers.flat_map(&:places).map(&:id))
+        @all_tags = @places.all_tags
+        @all_tags_count = @all_tags.count
 
-      @places = @map.places
-      if params[:search] && !params[:search].empty?
-        @search = params[:search]
-        @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
-      end
-      if params[:filter].present?
-        @tag_names = params[:filter].split(',')
-        @places = @places.tagged_with(@tag_names)
-      end
-
-      if @map.enable_time_slider
-        @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
-
-        # timeline calculation, for now on a yearly basis
-        @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
-        @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
-
-        # make a hash, where the key is a single year and it contains all places that are active in that year
-        @places_by_year = {}
-        @places_with_dates.each do |place|
-          startyear = place.startdate.nil? ? @minyear : place.startdate.year
-          endyear = place.enddate.nil? ? startyear : place.enddate.year
-          (startyear..endyear).each do |year|
-            @places_by_year[year.to_i] ||= []
-            @places_by_year[year.to_i] << place
-          end
+        if params[:search] && !params[:search].empty?
+          @search = params[:search]
+          @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
         end
-        @timespan = @maxyear - @minyear
-      end
+        if params[:filter].present?
+          @tag_names = params[:filter].split(',')
+          @places = @places.tagged_with(@tag_names)
+        end
 
-      respond_to do |format|
-        format.html { render :show }
-        format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
+        if @map.enable_time_slider
+          @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
+          # timeline calculation, for now on a yearly basis
+          @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+          @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
+
+          # make a hash, where the key is a single year and it contains all places that are active in that year
+          @places_by_year = {}
+          @places_with_dates.each do |place|
+            startyear = place.startdate.nil? ? @minyear : place.startdate.year
+            endyear = place.enddate.nil? ? startyear : place.enddate.year
+            (startyear..endyear).each do |year|
+              @places_by_year[year.to_i] ||= []
+              @places_by_year[year.to_i] << place
+            end
+          end
+          @timespan = @maxyear - @minyear
+        end
+        respond_to do |format|
+          format.html { render :show }
+          format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
+        end
       end
     else
       redirect_to maps_path, notice: 'Sorry, this map could not be found.'
