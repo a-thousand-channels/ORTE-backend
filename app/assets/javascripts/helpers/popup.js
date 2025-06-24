@@ -44,7 +44,7 @@ function PopupFullContent(place) {
     if ( layer_title && ( layer_title.length > 30)) {
         layer_title = layer_title.substring(0, 30) + "...";
     }
-    content += "<p class='label' style='background-color: "+place.layer_color+"; color: #444;'>" + layer_title + "</p>";
+    content += "<p class='label' style='background-color: "+place.layer_color+"; color: #fff; font-weight: bold; font-size: 10pt;'>" + layer_title + "</p>";
     if (place.date_with_qualifier) {
         content += "<p>" + place.date_with_qualifier;
         if (place.address) {

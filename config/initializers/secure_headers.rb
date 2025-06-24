@@ -40,4 +40,3 @@ SecureHeaders::Configuration.default do |config|
     report_uri: %w()
   }
 end
-

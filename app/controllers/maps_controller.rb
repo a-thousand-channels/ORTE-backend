@@ -16,14 +16,25 @@ class MapsController < ApplicationController
   def show
     @maps = Map.sorted.by_user(current_user)
 
-    if @map
-      if @map&.layers
-        @map_layers = @map.layers
-                          .includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
-                          .where(places: { published: true })
-        @places = @map_layers.flat_map(&:places)
-        @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
+    if @map&.layers
+      @map_layers = @map.layers
+                        .includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
+                        .where(places: { published: true })
+      @places = Place.where(id: @map_layers.flat_map(&:places).map(&:id))
+      @all_tags = @places.all_tags
+      @all_tags_count = @all_tags.count
 
+      if params[:search] && !params[:search].empty?
+        @search = params[:search]
+        @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
+      end
+      if params[:filter].present?
+        @tag_names = params[:filter].split(',')
+        @places = @places.tagged_with(@tag_names)
+      end
+
+      if @map.enable_time_slider
+        @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
         # timeline calculation, for now on a yearly basis
         @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
         @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
@@ -39,13 +50,11 @@ class MapsController < ApplicationController
           end
         end
         @timespan = @maxyear - @minyear
-
-        respond_to do |format|
-          format.html { render :show }
-          format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
-        end
       end
-
+      respond_to do |format|
+        format.html { render :show }
+        format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
+      end
     else
       redirect_to maps_path, notice: 'Sorry, this map could not be found.'
     end
