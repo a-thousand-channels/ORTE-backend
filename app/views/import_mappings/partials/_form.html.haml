@@ -10,14 +10,18 @@
     %thead
       %tr
         %th CSV column name
+        %th Preview
         %th Model property
         %th Parsers (see explanation below)
         %th Key
         %th Add row
     %tbody#mapping
-      - @headers&.each do |header|
+      - @headers&.each_with_index do |header,index|
         %tr
           %td= header
+          %td
+            %tt
+              = @first_row.present? ? @first_row[index] : 'No data available'
           - mapping = @import_mapping.mapping.find { |m| m['csv_column_name'] == header }
           - unless mapping
             - mapping = { 'csv_column_name' => header, 'model_property' => nil, 'parsers' => [], 'key' => false }

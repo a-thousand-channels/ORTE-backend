@@ -9,6 +9,7 @@ class ImportMappingsController < ApplicationController
   def new
     @missing_fields = params[:missing_fields]
     @headers = params[:headers].compact.reject(&:empty?)
+    @first_row = params[:first_row].is_a?(String) ? params[:first_row].split(',') : []
     @place_columns = Place.column_names + ['tag_list']
     @import_mapping = ImportMapping.from_header(@headers)
     @existing_mappings = matching_import_mappings(@headers)
