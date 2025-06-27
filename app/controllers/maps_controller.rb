@@ -20,28 +20,43 @@ class MapsController < ApplicationController
   def show
     @maps = Map.sorted.by_user(current_user)
 
-    if @map
-      @map_layers = @map.layers
+    if @map&.layers
+      # @map_layers = @map.layers.includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }]).where(places: { published: true })
+      @map_layers = @map.layers.published
+      @places = Place.where(id: @map_layers.flat_map(&:places).map(&:id)).includes(:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] })
 
-      @places = @map_layers.flat_map(&:places)
-      @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
+      @tags = @places.all_tags
+      @tags_count = @tags.count
+      @tags_max_count = @tags.map(&:taggings_count).max || 1
+      @tags_count_threshold = (@tags_max_count * 0.1).ceil
 
-      # timeline calculation, for now on a yearly basis
-      @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
-      @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
-
-      # make a hash, where the key is a single year and it contains all places that are active in that year
-      @places_by_year = {}
-      @places_with_dates.each do |place|
-        startyear = place.startdate.nil? ? @minyear : place.startdate.year
-        endyear = place.enddate.nil? ? startyear : place.enddate.year
-        (startyear..endyear).each do |year|
-          @places_by_year[year.to_i] ||= []
-          @places_by_year[year.to_i] << place
-        end
+      if params[:search] && !params[:search].empty?
+        @search = params[:search]
+        @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
       end
-      @timespan = @maxyear - @minyear
+      if params[:filter].present?
+        @tag_names = params[:filter].split(',')
+        @places = @places.tagged_with(@tag_names)
+      end
 
+      if @map.enable_time_slider
+        @places_with_dates = @places.reject { |place| place.startdate.nil? && place.enddate.nil? }
+        # timeline calculation, for now on a yearly basis
+        @minyear = @places.reject { |place| place.startdate.nil? }.min_by { |place| place.startdate.year }&.startdate&.year || Date.today.year
+        @maxyear = @places.reject { |place| place.enddate.nil? }.max_by { |place| place.enddate.year }&.enddate&.year || Date.today.year
+
+        # make a hash, where the key is a single year and it contains all places that are active in that year
+        @places_by_year = {}
+        @places_with_dates.each do |place|
+          startyear = place.startdate.nil? ? @minyear : place.startdate.year
+          endyear = place.enddate.nil? ? startyear : place.enddate.year
+          (startyear..endyear).each do |year|
+            @places_by_year[year.to_i] ||= []
+            @places_by_year[year.to_i] << place
+          end
+        end
+        @timespan = @maxyear - @minyear
+      end
       respond_to do |format|
         format.html { render :show }
         format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
@@ -135,7 +150,7 @@ class MapsController < ApplicationController
       redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char, map_id: @map.id)
     rescue CSV::MalformedCSVError => e
       ImportContextHelper.delete_tempfile_and_cache_path(file.original_filename)
-      flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
+      flash[:error] = "Maybe the file has a different column separator? Or it does not contain CSV? (Malformed CSV: #{e.message})"
       render :import
     end
   end

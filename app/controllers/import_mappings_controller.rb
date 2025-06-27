@@ -9,6 +9,7 @@ class ImportMappingsController < ApplicationController
   def new
     @missing_fields = params[:missing_fields]
     @headers = params[:headers].compact.reject(&:empty?)
+    @first_row = params[:first_row].is_a?(String) ? params[:first_row].split(',') : []
     @place_columns = Place.column_names + ['tag_list']
     @import_mapping = ImportMapping.from_header(@headers)
     @existing_mappings = matching_import_mappings(@headers)
@@ -76,7 +77,7 @@ class ImportMappingsController < ApplicationController
     )
   rescue CSV::MalformedCSVError => e
     ImportContextHelper.delete_tempfile_and_cache_path(@file_name)
-    flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
+    flash[:error] = "Maybe the file has a different column separator? Or it does not contain CSV? (Malformed CSV: #{e.message})"
     redirect_to import_mapping_path(@import_mapping, layer_id: @layer_id, map_id: @map_id)
   end
 
