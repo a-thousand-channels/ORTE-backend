@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :place do
     uid { Faker::Internet.password(min_length: 3, max_length: 20, special_characters: true) }
     title { Faker::TvShows::Simpsons.location }
-    subtitle { Faker::TvShows::Simpsons.quote }
+    subtitle { Faker::Lorem.sentence }
     teaser { Faker::Lorem.sentence }
     text { Faker::Lorem.paragraph }
     sources { Faker::Artist.name }
@@ -14,6 +14,7 @@ FactoryBot.define do
     lat { Faker::Address.latitude }
     lon { Faker::Address.longitude }
     direction { Faker::Alphanumeric.alphanumeric(number: 3) }
+    tag_list { Faker::Lorem.words(number: 3).join(', ') }
     location { Faker::Games::Pokemon.location }
     address { Faker::Address.street_address }
     zip { Faker::Address.zip }

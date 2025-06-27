@@ -266,10 +266,10 @@ RSpec.describe Place, type: :model do
       p3 = FactoryBot.create(:place, layer: other_layer, address: 'An address3', location: 'A location', zip: '12345', city: 'City', country: 'Country')
       a3 = FactoryBot.create(:annotation, place: p3, title: 'Annotation 3')
       places = l.places
-      csv_header = 'id,title,teaser,text,annotations,startdate,enddate,lat,lon,location,address,zip,city,country'
-      csv_line1 = 'An address1,12345,City,Country'
-      csv_line2 = 'An address2,12345,City,Country'
-      csv_line3 = 'An address3,12345,City,Country'
+      csv_header = 'id,uid,title,subtitle,teaser,text,link,annotations,tags,sources,startdate,startdate_qualifier,enddate,enddate_qualifier,lat,lon,location,address,zip,city,country,published,featured,shy,sensitive,sensitive_radius,layer'
+      csv_line1 = "#{p1.id},#{p1.uid},#{p1.title},#{p1.subtitle},#{p1.teaser},#{p1.text},#{p1.link},\"#{a1.person.name}:\n#{a1.title}\n#{a1.text}\n---------------\n\",\"#{p1.tag_list}\""
+      csv_line2 = "#{p2.id},#{p2.uid},#{p2.title},#{p2.subtitle},#{p2.teaser},#{p2.text},#{p2.link},\"#{a2.person.name}:\n#{a2.title}\n#{a2.text}\n---------------\n\",\"#{p2.tag_list}\""
+      csv_line3 = "#{p3.id},#{p3.uid},#{p3.title},#{p3.subtitle},#{p3.teaser},#{p3.text},#{p3.link},\"#{a3.person.name}:\n#{a3.title}\n#{a3.text}\n---------------\n\",\"#{p3.tag_list}\",#{p3.sources},2018-01-01 00:00:00.000,2018-01-01 00:00:00.000,2018-12-31 00:00:00.000,2018-12-31 00:00:00.000,50.0,10.0,A location1,An address1,12345,City1,Country1"
       expect(places.to_csv).to include(csv_header)
       expect(places.to_csv).to include(csv_line1)
       expect(places.to_csv).to include(csv_line2)

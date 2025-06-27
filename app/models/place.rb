@@ -210,6 +210,12 @@ class Place < ApplicationRecord
     t.to_s
   end
 
+  def tags_as_list
+    return unless tag_list
+
+    tag_list.to_s
+  end
+
   def teaser_as_text
     require 'nokogiri'
     Nokogiri::HTML(teaser).text
@@ -221,9 +227,9 @@ class Place < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = %w[id title teaser_as_text text_as_text annotations_as_text startdate enddate public_lat public_lon location address zip city country]
-    headers = %w[id title teaser text annotations startdate enddate lat lon location address zip city country]
-    CSV.generate(headers: false, force_quotes: false, strip: true) do |csv|
+    headers = %w[id uid title subtitle teaser text link annotations tags sources startdate startdate_qualifier enddate enddate_qualifier lat lon location address zip city country published featured shy sensitive sensitive_radius layer]
+    attributes = %w[id uid title subtitle teaser_as_text text_as_text link annotations_as_text tags_as_list sources startdate startdate_qualifier enddate enddate_qualifier public_lat public_lon location address zip city country published featured shy sensitive sensitive_radius layer_slug]
+    CSV.generate(headers: true, force_quotes: false, strip: true) do |csv|
       csv << headers
       all.each do |place|
         csv << attributes.map { |attr| place.send(attr) }
