@@ -120,7 +120,7 @@
         %p
           - @place.tags.each do |tag|
             %span.label.secondary.tag
-              = link_to map_tag_path(@map,tag) do
+              = link_to map_path(@map,tag: tag.name) do
                 %i.fi-price-tag
                 = tag
 

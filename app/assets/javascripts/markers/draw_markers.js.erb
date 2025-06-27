@@ -6,7 +6,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
     if ( layer_type === 'image' ) {
       marker_size = 15;
     }
-    console.log("Drawing "+places.length+" markers for layer "+layer_id+" of type "+layer_type+" at level "+level + " (Marker size is "+marker_size+")");
+    // console.log("Drawing "+places.length+" markers for layer "+layer_id+" of type "+layer_type+" at level "+level + " (Marker size is "+marker_size+")");
     var CustomLargeIcon = L.Icon.extend({
         options: {
             iconSize:     [marker_size, marker_size],
@@ -37,7 +37,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
     });
 
     $.each(places, function(key,place) {
-      console.log("Place ID " + place.id + " at Layer " + layer_id + " // Title: " + place.title);
+      //console.log("Place ID " + place.id + " at Layer " + layer_id + " // Title: " + place.title);
       var opacity = '0.5';
       var stroke = 'transparent';
       var stroke_width = '0';
@@ -64,7 +64,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         var marker_display_mode = $('#selection').data('map-marker-display-mode');
         var defs_with_gradient = '';
         if ( marker_display_mode === 'zigzag cluster, w/gradient' ) {
-          console.log("!!!!Marker display mode: "+marker_display_mode);
+          // console.log("!!!!Marker display mode: "+marker_display_mode);
           opacity = '0.85'
           defs_with_gradient = '<defs><style>.cls-1{fill:url(#linear-gradient);stroke-width:0px;}</style><linearGradient id="linear-gradient" x1="23.08" y1="216.25" x2="274.44" y2="80.74" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f0746f"/><stop offset=".24" stop-color="#f0746f"/><stop offset=".31" stop-color="'+color+'"/><stop offset="1" stop-color="'+color+'"/></linearGradient></defs>';
         }
@@ -159,7 +159,7 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
         marker.data.layer_id = layer_id;
 
         // Attach fromYear and toYear attributes to marker 
-        console.log("Marker data", marker.data);
+        // console.log("Marker data", marker.data);
         
         
         window.markers.push(marker);    

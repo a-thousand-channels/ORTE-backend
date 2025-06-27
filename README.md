@@ -138,7 +138,7 @@ A project by and for [A Thousand Channels](https://a-thousand-channels.xyz)
 
 ## Feedback & Contributions
 
-Feedback, bug reports and code contributions are very much welcome!
+Feedback, bug reports and code contributions are most welcome.
 
 Send Feedback to hello@a-thousand-channels.xyz
 
@@ -148,11 +148,7 @@ For code contributions, please fork this repo, make a branch, commit your code &
 
 All contributors shall respect the [Contributor Covenant Code of Conduct](https://github.com/a-thousand-channels/ORTE-backend/blob/main/CODE_OF_CONDUCT.md)
 
-## Donations
-
-[You can support us by donating some bucks or euros](https://buymeacoffee.com/a_thousand_channels). We will gladly appreciate any donation. It will help us to cover server costs, maintenance and even further developments.
-
 
 ## Licence
 
-This software is licensed under a [GNU General Public Licence v3](https://github.com/a-thousand-channels/ORTE-backend/blob/master/LICENSE)
+This project is licensed under a [GNU General Public Licence v3](https://github.com/a-thousand-channels/ORTE-backend/blob/master/LICENSE)
