@@ -182,7 +182,7 @@ RSpec.describe ImportMappingsController, type: :controller do
         post :apply_mapping, params: { id: import_mapping.id, layer_id: @layer.id, file_name: nil, col_sep: ',', quote_char: '"', import: { overwrite: '1', file: file } }, session: valid_session
 
         expect(response).to redirect_to(import_mapping_path(import_mapping, layer_id: @layer.id, map_id: @map.id))
-        expect(flash[:error]).to eq('Malformed CSV: Illegal quoting in line 2. (Maybe the file does not contain CSV or has another column separator?)')
+        expect(flash[:error]).to eq('Maybe the file has a different column separator? Or it does not contain CSV? (Malformed CSV: Illegal quoting in line 2.)')
       end
     end
 

@@ -59,7 +59,7 @@ class LayersController < ApplicationController
       redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, first_row: @rows[0], layer_id: @layer.id, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char)
     rescue CSV::MalformedCSVError => e
       ImportContextHelper.delete_tempfile_and_cache_path(file.original_filename)
-      flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
+      flash[:error] = "Maybe the file has a different column separator? Or it does not contain CSV? (Malformed CSV: #{e.message})"
       render :import
     end
   end
