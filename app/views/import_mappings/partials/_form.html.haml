@@ -10,11 +10,17 @@
     %thead
       %tr
         %th CSV column name
-        %th Preview
-        %th Model property
+        %th CSV preview
+        %th 
+          Model property
+          %i.fi.fi-info{"data-tooltip"=>true, :title=>"This column is used to map CSV columns to model properties."}
         %th Parsers (see explanation below)
-        %th Key
-        %th Add row
+        %th 
+          Key
+          %i.fi.fi-info{"data-tooltip"=>true, :title=>"This column is used to identify unique records in the CSV file. If checked, this column will be used as a key for the import."}
+        %th 
+          Add row
+          %i.fi.fi-info{"data-tooltip"=>true, :title=>"This button allows you to add a new mapping row for the referring CSV column."}
     %tbody#mapping
       - @headers&.each_with_index do |header,index|
         %tr
@@ -34,7 +40,8 @@
             %td
               = mapping_form.input :key, as: :boolean, label: false, input_html: { class: 'key-input' }
             %td
-              %button.duplicate-row{ type: 'button' } +
+              %button.duplicate-row{ class: 'button small', type: 'button' } 
+                %i.fi.fi-plus
   = f.input :name, label: 'Name your mapping in order to re-use it later:', input_html: { class: 'import-mapping-name' }
   = f.hidden_field :mapping, id: 'import_mapping_mapping'
   = f.hidden_field :headers, value: @headers.to_json, name: 'headers'
