@@ -266,18 +266,41 @@ select {
   }
 }
 /* -------------------- */
+.card {
+  padding: 0.75rem;
+
+  p {
+    line-height: 1.1;
+    margin-bottom: 0.25rem;
+  }
+}
+/* -------------------- */
 .label.secondary.tag {
-    padding: 0.15em 0.45em 0.25em;
+    padding: 0.4em 0.6em;
+    margin-bottom: 0.25rem;
     border-radius: 4px;
     background-color: #baa;
+    background-color: #767676;
+    font-size: 0.9rem;
+    transition: all 0.3s;
 
     a {
       color: white;
     }
-
 }
+@media screen and (max-width: 39.9375em) {
+  .label.secondary.tag {
+    padding: 0.35em 0.5em;
+    margin-bottom: 0rem;
+    font-size: 0.8rem;
+  }
+}
+.label.secondary.tag.active,
 .label.secondary.tag:hover {
     background-color: #a99;
+    background-color: #8c7f7f;
+    background-color: #c6c600;
+    transition: all 0.3s;
     a {
       color: white;
     }
@@ -436,6 +459,9 @@ div.input-group {
       padding: 0.4em 1em 0 1em;
       margin: 0;
   }
+}
+form.form-inline div.input-group {
+  margin-bottom: 0rem;
 }
 [type="text"], [type="password"], [type="date"], [type="datetime"], [type="datetime-local"], [type="month"], [type="week"], [type="email"], [type="number"], [type="search"], [type="tel"], [type="time"], [type="url"], [type="color"], textarea {
     margin: 0 0 0.3rem;

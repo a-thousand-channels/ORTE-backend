@@ -34,9 +34,3 @@ staging:
 
 production:
   <<: *defaults
-#  app_host:          'www.example.com'
-#  app_host_protocol: 'https'
-#  app_url:           'https://www.example.com'
-#  relative_url_root:  ""
-#  secure:             'true'
-# TODO: ????

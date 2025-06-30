@@ -81,7 +81,7 @@ class ImportMapping < ApplicationRecord
         'split_to_first' => { lambda: ->(value) { value.split(',').first }, description: 'Takes the first value from a comma-separated list.' },
         'split_to_last' => { lambda: ->(value) { value.split(',').last }, description: 'Takes the last value from a comma-separated list.' },
         'european_date' => { lambda: ->(value) { DateTime.strptime(value, '%d.%m.%Y') }, description: 'Parses a date in European format (DD.MM.YYYY).' },
-        'us_date' => { lambda: ->(value) { DateTime.parse(value) }, description: 'Parses a date in US-American format (MM/DD/YYYY).' },
+        'us_date' => { lambda: ->(value) { DateTime.strptime(value, '%m-%d-%Y') }, description: 'Parses a date in US-American format (MM-DD-YYYY).' },
         'remove_non_float_chars' => { lambda: ->(value) { value&.gsub(/[^0-9.\-]/, '') }, description: 'Removes all characters that are not numeric or a dot or a dash.' },
         'remove_chars_before_dash' => { lambda: ->(value) { value.sub(/^.*?-/, '-') }, description: 'Removes all characters that are on the left from a dash.' }
       }
