@@ -1,20 +1,25 @@
 # This workflow will download a prebuilt Ruby version, install dependencies, and  run linters
 env:
   RUBY_VERSION: 3.2
-  MYSQL_HOST: 127.0.0.1
-  MYSQL_DB: orte_test
-  MYSQL_USER: root
-  MYSQL_PASSWORD: root
+  MARIADB_HOST: 127.0.0.1
+  MARIADB_DATABASE: orte_test
+  MARIADB_PASSWORD: orte00
+  MARIADB_USER: orte
+  MARIADB_ALLOW_EMPTY_PASSWORD: true
+  MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
 name: Linters & Rspec
 on:
   push:
     branches:
       - main
       - feature*
+      - feat/*       
+
   pull_request:
     branches:
       - main
       - feature*
+      - feat/*
 jobs:
   run-lint:
     name: Rubocop & Brakeman
@@ -43,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:5.7
+        image: mariadb:latest
         env:
           MYSQL_HOST: 127.0.0.1
           MYSQL_DB: orte_test
@@ -76,6 +81,7 @@ jobs:
           RAILS_ENV: test
           COVERAGE: true
         run: |
+          bin/rails db:drop
           bin/rails db:setup
           bundler exec rspec spec
       - name: Upload coverage results

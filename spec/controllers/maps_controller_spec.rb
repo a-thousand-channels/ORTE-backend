@@ -143,6 +143,90 @@ RSpec.describe MapsController, type: :controller do
       end
     end
 
+    describe 'GET #import' do
+      it 'returns a success response and renders the import form' do
+        get :import, params: { id: map.friendly_id }, session: valid_session
+        expect(response).to have_http_status(200)
+        expect(response).to render_template(:import)
+      end
+    end
+
+    describe 'POST #import_preview' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
+
+      context 'with valid CSV' do
+        it 'renders the import preview' do
+          post :import_preview, params: { id: map.friendly_id, import: { file: file } }, session: valid_session
+          expect(response).to be_redirect
+        end
+      end
+
+      context 'with invalid CSV' do
+        let(:invalid_file) { Rack::Test::UploadedFile.new('spec/support/files/malformed.csv', 'text/csv') }
+
+        it 'shows an error message' do
+          post :import_preview, params: { id: map.friendly_id, import: { file: invalid_file } }, session: valid_session
+
+          expect(flash[:error]).to eq('Maybe the file has a different column separator? Or it does not contain CSV? (Malformed CSV: Illegal quoting in line 2.)')
+          expect(response).to render_template(:import)
+        end
+      end
+    end
+
+    describe 'POST #importing' do
+      let(:file) { Rack::Test::UploadedFile.new('spec/support/files/places.csv', 'text/csv') }
+      let(:invalid_file) { Rack::Test::UploadedFile.new('spec/support/files/places_invalid_lat.csv', 'text/csv') }
+      let(:layer) { create(:layer, map: map) }
+      let(:import_mapping) { create(:import_mapping) }
+
+      context 'without data stored in cache' do
+        it 'redirects to map_layer_path and flashes error message' do
+          post :importing, params: { id: map.friendly_id, file: file, import_mapping_id: import_mapping.id }, session: valid_session
+          expect(response).to redirect_to(import_map_path(map))
+          expect(flash[:notice]).to eq('No data provided to import!')
+        end
+      end
+
+      context 'with data stored in cache' do
+        context 'with valid CSV' do
+          before do
+            importing_rows = [Place.new(title: 'Place 1', lat: 53.95, lon: 9.34, layer: layer), Place.new(title: 'Place 2', lat: 53.85, lon: 9.27, layer: layer)]
+            allow(ImportContextHelper).to receive(:read_importing_rows).and_return(importing_rows)
+          end
+
+          it 'imports the CSV and redirects to map_layer_path' do
+            post :importing, params: { id: map.friendly_id, file: file, import_mapping_id: import_mapping.id }, session: valid_session
+
+            expect(response).to redirect_to(map_path(map))
+            expect(flash[:notice]).to match("CSV import to #{map.title} completed successfully!")
+          end
+
+          it 'creates new place records from the CSV' do
+            expect do
+              post :importing, params: { id: map.friendly_id, file: file, import_mapping_id: import_mapping.id }, session: valid_session
+            end.to change(Place, :count).by(2)
+
+            expect(Place.pluck(:title)).to contain_exactly('Place 1', 'Place 2')
+          end
+        end
+
+        context 'with invalid CSV' do
+          it 'does not import the CSV and shows an error message' do
+            post :importing, params: { id: map.friendly_id, file: invalid_file, import_mapping_id: import_mapping.id }, session: valid_session
+
+            expect(response).to redirect_to(import_map_path(map))
+            expect(flash[:notice]).to include('No data provided')
+          end
+
+          it 'does not create book records from the invalid CSV' do
+            expect do
+              post :importing, params: { id: map.friendly_id, file: invalid_file, import_mapping_id: import_mapping.id }, session: valid_session
+            end.not_to change(Place, :count)
+          end
+        end
+      end
+    end
+
     describe 'DELETE #destroy' do
       it 'destroys the requested map' do
         map = Map.create! valid_attributes

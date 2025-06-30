@@ -22,21 +22,26 @@
               (#{@map.places.tagged_with(["#{tag.name}"]).count})
 
   .grid-x.grid-padding-x
-    .cell.medium-3
+    .cell.medium-7
       - if @map.places.all_tags
         %p
           = link_to map_tags_path(@map), :class => "button small" do
             %i.fi-pricetag-multiple
             List of all tags
-    .cell.medium-6
       = render 'layers/partials/searchform', object: @map
-    .cell.medium-3
+    .cell.medium-5
       %p.text-right.hint
         = link_to map_people_path(@map) do
           Persons of this map
       %p.text-right.hint
         = link_to map_relations_path(@map) do
           Relations in this map
+        %hr
+      %ul.hint
+        %li
+          = link_to import_map_path(@map), class: "button small" do
+            %i.fi-upload.fi-18          
+            Import/update places from CSV 
 
   %table
     %thead
@@ -105,3 +110,4 @@
           %i.fi-plus.fi-18
           New GeoJSON Layer
       %p.shy Import a GeoJSON
+

@@ -6,7 +6,9 @@ json.layers @map_layers do |layer|
   json.extract! layer, :id, :title, :subtitle, :text, :credits, :image_link, :published, :map_id, :color, :relations_bending, :relations_coloring, :image_alt, :image_licence, :image_source, :image_creator, :image_caption, :created_at, :updated_at, :ltype
   json.iconset layer.map.iconset, :title, :icon_anchor, :icon_size, :popup_anchor, :class_name if layer.map.iconset
 
-  places_query = @places
+  # places_query = @places
+  places_query = layer.places
+
   places_query = places_query.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%") if @search.present?
 
   places_query = places_query.tagged_with(@tag_names) if @tag_names.present?

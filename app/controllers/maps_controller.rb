@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require 'csv'
+
 class MapsController < ApplicationController
-  before_action :set_map, only: %i[show edit update destroy]
+  include ImportContextHelper
+
+  before_action :set_map, only: %i[show edit update destroy import import_preview importing]
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -111,6 +115,68 @@ class MapsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to maps_url, notice: 'Map was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def import; end
+
+  def import_preview
+    if params[:import].blank? || params[:import][:file].blank?
+      flash[:alert] = 'Please select a file before proceeding.'
+      redirect_to import_map_path(@map) and return
+    end
+    file = params[:import][:file]
+    return unless file
+
+    ImportContextHelper.write_tempfile_path(file)
+    column_separator = params[:import][:column_separator] || ','
+    @col_sep = case column_separator
+               when 'Comma'
+                 ','
+               when 'Semicolon'
+                 ';'
+               when 'Tab'
+                 "\t"
+               else
+                 ','
+               end
+    @quote_char = params[:import][:quote_char] || '"'
+    begin
+      @headers = CSV.read(file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
+      importer = Imports::MappingCsvImporter.new(file, nil, @map.id, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
+      importer.import
+      @missing_fields = importer.missing_fields
+      flash[:notice] = 'CSV read successfully!'
+      redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char, map_id: @map.id)
+    rescue CSV::MalformedCSVError => e
+      ImportContextHelper.delete_tempfile_and_cache_path(file.original_filename)
+      flash[:error] = "Maybe the file has a different column separator? Or it does not contain CSV? (Malformed CSV: #{e.message})"
+      render :import
+    end
+  end
+
+  def importing
+    file_name = params[:file_name]
+    import_mapping = ImportMapping.find(params[:import_mapping_id])
+    importing_rows_data = ImportContextHelper.read_importing_rows(file_name)
+
+    if importing_rows_data
+      importing_rows = importing_rows_data.map do |place_data|
+        Place.new(place_data.attributes)
+      end
+    end
+
+    importing_duplicate_rows_data = ImportContextHelper.read_importing_duplicate_rows(file_name)
+    importing_duplicate_rows_data&.each do |place|
+      existing_place = Place.find_by(duplicate_key_values(import_mapping, place))
+      existing_place&.update(place.attributes.except('id', 'created_at', 'updated_at'))
+    end
+    importing_rows&.each(&:save!)
+    ImportContextHelper.delete_tempfile_and_cache_path(file_name)
+    if (importing_rows && !importing_rows.empty?) || (importing_duplicate_rows_data && !importing_duplicate_rows_data.empty?)
+      redirect_to map_path(@map), notice: "CSV import to #{@map.title} completed successfully! (#{importing_rows&.count || 0} places have been created and #{importing_duplicate_rows_data&.count || 0} places have been updated.)"
+    else
+      redirect_to import_map_path(@map), notice: 'No data provided to import!'
     end
   end
 
