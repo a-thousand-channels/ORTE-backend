@@ -32,3 +32,4 @@ staging:
 production:
   <<: *default
   password: <%= ENV.fetch("RAILS_DB_PASSWORD") { Rails.application.credentials.dig(:mysql, :production, :password ) } %>
+

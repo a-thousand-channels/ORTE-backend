@@ -16,23 +16,32 @@
       %h3 Import mapping has errors
       %p Please map the csv columns to the required fields and be sure that each model property is listed only once
   - else
-    %h3 Column name mapping
-    %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below. Make sure the required fields title, lat and lon are included in the selected model properties.
+    %h3 Mapping column names <> Datebase fields
+    %p The file can be imported with the prefilled mapping. If you want, you can adjust the mapping below. 
+    %p 
+      Make sure the required fields 
+      %strong.label.secondary.tag title, 
+      %strong.label.secondary.tag  lat 
+      and 
+      %strong.label.secondary.tag lon 
+      are included in the selected model properties.
   .large-12.medium-12.small-12.cell
     - if @existing_mappings && !@existing_mappings.empty?
       %label Choose an existing mapping:
       = form_with url: '', method: :get, local: true, id: 'existing_mappings_form' do |f|
-        %select{name: 'mapping', id: 'mapping_select'}
-          %option{ value: '' } Select a mapping
-          - @existing_mappings.each do |mapping|
-            %option{ value: mapping.id }= mapping.name
+        %p
+          %select{name: 'mapping', id: 'mapping_select'}
+            %option{ value: '' } Select a mapping
+            - @existing_mappings.each do |mapping|
+              %option{ value: mapping.id }= mapping.name
         = f.hidden_field :layer_id, value: @layer.id, name: 'layer_id' if @layer
         = f.hidden_field :map_id, value: @map.id, name: 'map_id' if @map
         = f.hidden_field :file_name, value: @file_name, name: 'file_name'
         = f.hidden_field :col_sep, value: @col_sep, name: 'col_sep'
         = f.hidden_field :quote_char, value: @quote_char, name: 'quote_char'
-        = f.submit 'Use selected mapping', class: 'button', name: nil, data: { disable_with: false }
-
+        %p
+          = f.submit 'Use selected mapping', class: 'button', name: nil, data: { disable_with: false }
+    %label Or adjust the mapping between the column names of your CSV and the datebase fields:
     = render 'import_mappings/partials/form'
     %h3 Available parsers
     %p
