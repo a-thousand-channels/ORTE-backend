@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class LayersController < ApplicationController
+  include ImportContextHelper
+
   before_action :set_layer, only: %i[images import import_preview importing show edit update destroy annotations relations pack build]
 
   before_action :redirect_to_friendly_id, only: %i[show]
@@ -8,7 +10,6 @@ class LayersController < ApplicationController
   protect_from_forgery except: :show
 
   require 'color-generator'
-  require_relative '../../lib/imports/csv_importer'
 
   # GET /layers
   # GET /layers.json
@@ -24,31 +25,60 @@ class LayersController < ApplicationController
   def import; end
 
   def import_preview
+    if params[:import].blank? || params[:import][:file].blank?
+      flash[:alert] = 'Please select a file before proceeding.'
+      redirect_to import_map_layer_path(@map, @layer) and return
+    end
     file = params[:import][:file]
-    @overwrite = params[:import][:overwrite] == '1'
     return unless file
 
+    ImportContextHelper.write_tempfile_path(file)
+    column_separator = params[:import][:column_separator] || ','
+    @col_sep = case column_separator
+               when 'Comma'
+                 ','
+               when 'Semicolon'
+                 ';'
+               when 'Tab'
+                 "\t"
+               else
+                 ','
+               end
+    @quote_char = params[:import][:quote_char] || '"'
     begin
-      importer = Imports::CsvImporter.new(file, @layer.id, overwrite: @overwrite)
+      @headers = CSV.read(file.path, headers: true, col_sep: @col_sep, quote_char: @quote_char).headers
+      importer = Imports::MappingCsvImporter.new(file, @layer.id, nil, ImportMapping.new, col_sep: @col_sep, quote_char: @quote_char)
       importer.import
+      @missing_fields = importer.missing_fields
       flash[:notice] = 'CSV read successfully!'
+      redirect_to new_import_mapping_path(headers: @headers, missing_fields: @missing_fields, layer_id: @layer.id, file_name: file.original_filename, col_sep: @col_sep, quote_char: @quote_char)
     rescue CSV::MalformedCSVError => e
-      flash[:error] = "Malformed CSV: #{e.message}. (Maybe the file does not contain CSV?)"
+      ImportContextHelper.delete_tempfile_and_cache_path(file.original_filename)
+      flash[:error] = "Malformed CSV: #{e.message} (Maybe the file does not contain CSV or has another column separator?)"
+      render :import
     end
-    @valid_rows = importer.valid_rows
-    session[:importing_rows] = @valid_rows
-    @invalid_rows = importer.invalid_rows
-    @duplicate_rows = importer.duplicate_rows
-    @errored_rows = importer.errored_rows
   end
 
   def importing
-    importing_rows_data = session[:importing_rows]
+    file_name = params[:file_name]
+    import_mapping = ImportMapping.find(params[:import_mapping_id])
+    importing_rows_data = ImportContextHelper.read_importing_rows(file_name)
+
     if importing_rows_data
-      @importing_rows = importing_rows_data.map { |place_data| Place.new(place_data.merge(layer_id: @layer.id)) }
-      @importing_rows.each(&:save!)
-      session.delete(:importing_rows)
-      redirect_to map_layer_path(@map, @layer), notice: "CSV import completed successfully! (#{@importing_rows.count} places has been imported to #{@layer.title})"
+      importing_rows = importing_rows_data.map do |place_data|
+        Place.new(place_data.attributes.merge(layer_id: @layer.id))
+      end
+    end
+
+    importing_duplicate_rows_data = ImportContextHelper.read_importing_duplicate_rows(file_name)
+    importing_duplicate_rows_data&.each do |place|
+      existing_place = Place.find_by(duplicate_key_values(import_mapping, place))
+      existing_place&.update(place.attributes.except('id', 'created_at', 'updated_at'))
+    end
+    importing_rows&.each(&:save!)
+    ImportContextHelper.delete_tempfile_and_cache_path(file_name)
+    if (importing_rows && !importing_rows.empty?) || (importing_duplicate_rows_data && !importing_duplicate_rows_data.empty?)
+      redirect_to map_layer_path(@map, @layer), notice: "CSV import to #{@layer.title} completed successfully! (#{importing_rows&.count || 0} places have been created and #{importing_duplicate_rows_data&.count || 0} places have been updated.)"
     else
       redirect_to import_map_layer_path(@map, @layer), notice: 'No data provided to import!'
     end
@@ -59,6 +89,15 @@ class LayersController < ApplicationController
     @layers = @map.layers
     @query = params[:q][:query]
     @places = @map.places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@query}%")
+  end
+
+  def fetch_layers
+    @map = Map.find(params[:map_id])
+    @layers = @map.layers
+
+    respond_to do |format|
+      format.json { render json: @layers }
+    end
   end
 
   def pack

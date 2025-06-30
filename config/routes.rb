@@ -29,13 +29,25 @@ Rails.application.routes.draw do
   resources :iconsets do
     resources :icons, only: [:edit, :destroy, :update]
   end
+
+  resources :import_mappings, only: [:new, :create, :show] do
+    post :apply_mapping, on: :member
+    get :import_preview, on: :member
+  end
+
   resources :maps do
+    member do
+      get :import
+      post :import_preview
+      post :importing
+    end
     resources :tags, only: [:index, :show]
     resources :relations
     resources :people
     resources :layers do
       collection do
         post :search
+        get :fetch_layers, to: 'layers#fetch_layers'
       end
       member do
         get :pack
