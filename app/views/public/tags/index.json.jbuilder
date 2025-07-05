@@ -6,7 +6,7 @@ json.array! @tags do |tag|
   json.created_at tag.created_at
   json.updated_at tag.updated_at
   json.taggings_count tag.taggings_count
-  json.places tag.taggings.map(&:taggable) do |place|
+  json.places(tag.taggings.map(&:taggable).select { |place| @places.include?(place) }) do |place|
     next unless place.published
 
     # TODO: replace URL with json call for place data
