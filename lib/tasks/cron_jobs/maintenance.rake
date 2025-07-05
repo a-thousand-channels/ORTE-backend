@@ -14,7 +14,7 @@ namespace :cron_jobs do
           file_path = File.join(directory, file)
           if File.file?(file_path) && File.mtime(file_path) < cutoff_time
             FileUtils.rm(file_path)
-            puts "Deleted: #{file_path}"
+            # puts "Deleted: #{file_path}"
           end
         end
       else

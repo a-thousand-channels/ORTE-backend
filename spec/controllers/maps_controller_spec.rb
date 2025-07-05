@@ -53,7 +53,7 @@ RSpec.describe MapsController, type: :controller do
         expect(response).to have_http_status(302)
         expect(flash[:notice]).to match 'Sorry, this map could not be found.'
       end
-      it 'returns a no success response (for a non-existin map)' do
+      it 'returns a no success response (for a non-existing map)' do
         another_group = FactoryBot.create(:group)
         map = FactoryBot.create(:map, group_id: another_group.id)
         get :show, params: { id: 'UNKNOWN' }, session: valid_session
@@ -74,6 +74,52 @@ RSpec.describe MapsController, type: :controller do
         get :show, params: { id: map.friendly_id }, session: valid_session, format: 'json'
         json = JSON.parse(response.body)
         expect(json['title']).to eq map.title
+      end
+
+      it 'a map w/2 layers for a published map' do
+        map = FactoryBot.create(:map, group_id: @group.id, published: true)
+        layer1 = FactoryBot.create(:layer, map: map, published: true)
+        FactoryBot.create(:place, layer: layer1, published: true)
+        layer2 = FactoryBot.create(:layer, map: map, published: false)
+        FactoryBot.create(:place, layer: layer2, published: true)
+
+        get :show, params: { id: map.friendly_id }, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        expect(json['layers'][0]['title']).to eq layer1.title
+        expect(json['layers'][1]['title']).to eq layer2.title
+      end
+
+      it 'a map w/2 layers for a published map and search param' do
+        map = FactoryBot.create(:map, group_id: @group.id, published: true)
+        layer1 = FactoryBot.create(:layer, map: map)
+        place1 = FactoryBot.create(:place, layer: layer1)
+        layer2 = FactoryBot.create(:layer, map: map)
+        place2 = FactoryBot.create(:place, layer: layer2)
+        get :show, params: { id: map.friendly_id, search: place1.title }, session: valid_session, format: 'json'
+        expect(response.body).to include(place1.title)
+        expect(response.body).not_to include(place2.title)
+      end
+
+      it 'a map w/2 layers for a published map and filter param' do
+        map = FactoryBot.create(:map, group_id: @group.id, published: true)
+        layer1 = FactoryBot.create(:layer, map: map)
+        place1 = FactoryBot.create(:place, :with_tags, layer: layer1)
+        layer2 = FactoryBot.create(:layer, map: map)
+        place2 = FactoryBot.create(:place, layer: layer2)
+        get :show, params: { id: map.friendly_id, filter: place1.tags[0].to_s }, session: valid_session, format: 'json'
+        expect(response.body).to include(place1.title)
+        expect(response.body).not_to include(place2.title)
+      end
+
+      it 'a map w/places_by_year for timeslider of a published map' do
+        map = FactoryBot.create(:map, group_id: @group.id, published: true, enable_time_slider: true)
+        layer1 = FactoryBot.create(:layer, map: map)
+        FactoryBot.create(:place, :date_and_time, layer: layer1)
+        layer2 = FactoryBot.create(:layer, map: map)
+        FactoryBot.create(:place, :date_and_time, layer: layer2)
+        get :show, params: { id: map.friendly_id }, session: valid_session, format: 'json'
+        json = JSON.parse(response.body)
+        expect(json['places_by_year']).to be_present
       end
     end
 

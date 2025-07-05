@@ -16,8 +16,6 @@ json.layers @map_layers do |layer|
 
   json.places do
     json.array! places_query do |place|
-      next unless place.published
-
       json.call(place, :id, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :date_with_qualifier, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :shy, :layer_id, :layer_title, :layer_color, :layer_type, :created_at, :updated_at, :date, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name, :tags)
       json.lat place.public_lat
       json.lon place.public_lon
@@ -29,8 +27,6 @@ json.layers @map_layers do |layer|
     end
   end
   json.places_with_relations layer.places do |place|
-    next unless place.published
-
     if place.relations_froms.size.positive?
       json.relations place.relations_froms do |relation|
         json.id relation.id

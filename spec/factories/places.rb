@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :place do
     uid { Faker::Internet.password(min_length: 3, max_length: 20, special_characters: true) }
-    title { Faker::TvShows::Simpsons.location }
+    title { Faker::Book.title }
     subtitle { Faker::TvShows::Simpsons.quote }
     teaser { Faker::Lorem.sentence }
     text { Faker::Lorem.paragraph }
@@ -27,9 +27,9 @@ FactoryBot.define do
       published { true }
     end
     trait :date_and_time do
-      startdate_date { Faker::Date.between(from: 100.years.ago, to: Date.today) }
+      startdate_date { Faker::Date.between(from: 100.years.ago, to: 90.years.ago) }
       startdate_time { '11:45' }
-      enddate_date { Faker::Date.between(from: 100.years.ago, to: Date.today) }
+      enddate_date { Faker::Date.between(from: 30.years.ago, to: 20.years.ago) }
       enddate_time { '16:45' }
     end
     trait :start_date_and_time do

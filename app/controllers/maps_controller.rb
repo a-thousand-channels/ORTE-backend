@@ -21,10 +21,9 @@ class MapsController < ApplicationController
     @maps = Map.sorted.by_user(current_user)
 
     if @map&.layers
-      # @map_layers = @map.layers.includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }]).where(places: { published: true })
-      @map_layers = @map.layers.published
-      @places = Place.where(id: @map_layers.flat_map(&:places).map(&:id)).includes(:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] })
-
+      @map_layers = @map.layers.includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
+      # @map_layers = @map.layers
+      @places = Place.where(id: @map_layers.flat_map(&:places).map(&:id))
       @tags = @places.all_tags
       @tags_count = @tags.count
       @tags_max_count = @tags.map(&:taggings_count).max || 1
