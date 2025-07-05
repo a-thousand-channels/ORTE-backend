@@ -140,7 +140,7 @@ class LayersController < ApplicationController
       @places = @layer.places.includes(:images, :annotations, :tags, :icon, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
       if params[:search] && !params[:search].empty?
         @search = params[:search]
-        @places = @places.where('title LIKE :query OR teaser LIKE :query OR text LIKE :query', query: "%#{@search}%")
+        @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")
       end
       if params[:filter].present?
         @tag_names = params[:filter].split(',')
