@@ -8,7 +8,7 @@
 
 Backend application for creating and managing places/POIs (or in german "Orte"),  formatted text and assets like images, audio and video on a web-based map. Additionally relations between places can be set. Output is a public available API w/JSON or exportable as CSV/JSON/GeoJSON data. It has also some extra features like visualising relations between places and a map to go feature (see below).
 
-Based on Ruby on Rails 7.2, Ruby 3, MySQL/MariaDB, jQuery, Leaflet and Foundation 6.
+Based on Ruby on Rails 7.2, Ruby 3, MariaDB, jQuery, Leaflet and Foundation 6.
 
 Contributions to this application are appreciated (see below).
 
@@ -36,7 +36,7 @@ Basic steps for a local installation on your machine:
 #### Development
 
 * Ruby 3.2+, RVM, Rubygems
-* MySQL/Maria DB
+* Maria DB
 * ffmpeg (for the video feature)
 * ImageMagick or graphicsmagick (for image features)
 * Redis
@@ -71,7 +71,7 @@ $ gem install bundler
 $ bundle install
 ```
 
-### Setup MySQL/Maria DB
+### Setup Maria DB
 
 ```bash
 $ sudo mysql -u root
