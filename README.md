@@ -12,6 +12,10 @@ Based on Ruby on Rails 7.2, Ruby 3, MariaDB, jQuery, Leaflet and Foundation 6.
 
 Contributions to this application are appreciated (see below).
 
+🥁 [Latest Release v0.9:](https://github.com/a-thousand-channels/ORTE-backend/releases/tag/0.9), published July 2025 
+
+For a user manual and other informations check our [Handbook](https://github.com/a-thousand-channels/ORTE-backend/wiki/) in the wiki, a [German version](https://github.com/a-thousand-channels/ORTE-backend/wiki/Home-de-DE) is also available. 
+
 <img src="https://raw.githubusercontent.com/a-thousand-channels/ORTE-backend/main/app/assets/images/ORTE-sample-map-desktop.jpg" style="max-width: 640px" width="640" />
 <img src="https://raw.githubusercontent.com/a-thousand-channels/ORTE-backend/main/app/assets/images/ORTE-sample-map-desktop2.jpg" style="max-width: 640px" width="640" />
 
@@ -137,26 +141,35 @@ $ RAILS_ENV=test COVERAGE=true bundle exec rspec spec
 
 A project by and for [A Thousand Channels](https://a-thousand-channels.xyz)
 
-* Initial code and UI by [Ulf Treger](https://github.com/ut) with kind support by and in collaboration with:
-* [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for initial code donation,
+Initial code and UI by [Ulf Treger](https://github.com/ut) with kind support by and in collaboration with:
+
+* [Pragma Shift](https://www.pragma-shift.net/), Hamburg, for code donation,
 * Treffentotal 2018, Hamburg (first use public case with a map at [map.treffentotal.de](https://map.treffentotal.de), which gets its geolocations from ORTE backend via JSON),
 * Participants of mapping workshops of [city/data/explosion](https://citydataexplosion.tumblr.com/) at Kunst- und Kulturverein Spedition, Bremen 2019+
-* Members of the working group "Queer narratives, mappped" 💖 for testing, bringing up ideas and feature requests for improving the user interface and the maps and thinking the tool more inclusive.
+* Members of the working group "Queer narratives, mappped" 💖 for testing, bringing up ideas and feature requests for improving the user interface and the maps and thinking the tool more inclusive,
 * [Sandbostel Camp Memorial](https://www.stiftung-lager-sandbostel.de/) for the public submission interface and to [Sefux](https://github.com/Sefux) for coding it.
-* [Prototype Fund](https://prototypefund.de/en/) for funding the development in 2021-2022, especially the MapToGo feature, mapping of relations plus some enhanced privacy features.
-* There is a fork by [Leerstandsmeldungen](https://gitlab.com/leerstandsmelder/lsm-orte) with PostgreSQL and Pundit Gem for a more sophisticated model of  authorization and roles.
+* [Prototype Fund](https://prototypefund.de/en/) for funding the development in 2021-2022, especially the MapToGo feature, mapping of relations plus some enhanced privacy features,
+* A big thanks to [birtona](https://github.com/birtona) for coding the CSV import feature and extending the public API plus improving code quality and to [MarcusRiemer](https://github.com/MarcusRiemer) for code reviews and to the [Civic Data Lab](https://civic-data.de/) for funding the development of these features.
+* Thanks [dyedwiper](https://github.com/dyedwiper) for code contributions to the GeoJSON feature.
+* A Thousand Channels members [Jarami110d](https://github.com/Jarami110d) and [tab-oo](https://github.com/tab-oo) for creating, editing and illustrating the [handbook, a users documentation in the wiki](https://github.com/a-thousand-channels/ORTE-backend/wiki)
+
+There is an active fork by [Leerstandsmeldungen](https://gitlab.com/leerstandsmelder/lsm-orte) with PostgreSQL and Pundit Gem for a more sophisticated model of  authorization and roles.
+
+
 
 ## Feedback & Contributions
 
 Feedback, bug reports and code contributions are most welcome.
 
-Send Feedback to hello@a-thousand-channels.xyz
+Send your feedback to hello@a-thousand-channels.xyz.
 
 Please file bug reports and feature request to our Github Repository at https://github.com/a-thousand-channels/ORTE-backend
 
 For code contributions, please fork this repo, make a branch, commit your code & [create a pull request](https://help.github.com/en/articles/creating-a-pull-request).
 
 All contributors shall respect the [Contributor Covenant Code of Conduct](https://github.com/a-thousand-channels/ORTE-backend/blob/main/CODE_OF_CONDUCT.md)
+
+Please support our project by [Buy Us A Coffee](https://buymeacoffee.com/a_thousand_channels) or contact us for alternatie ways of supporting us.
 
 
 ## Licence
