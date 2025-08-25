@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!
+  before_action :set_pages_in_menu
 
   protect_from_forgery with: :exception
 
@@ -26,5 +27,11 @@ class ApplicationController < ActionController::Base
     else
       redirect_to root_path, alert: alert
     end
+  end
+
+  private
+
+  def set_pages_in_menu
+    @pages = Page.published.in_menu
   end
 end

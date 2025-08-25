@@ -1,0 +1,29 @@
+- content_for(:title) { "#{@page.title}" }
+
+#info-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to maps_path, :class=>'close_link' do
+      %i.fi.fi-x
+  %h1
+    = @page.title
+    - if @page.is_published
+      %i.fi-eye.fi-24{title: 'Page is published'}
+    - else
+      %i.fi-x.fi-24{title: 'Page is hidden'}
+    - if @page.in_menu
+      %i.fi-check.fi-24{title: 'Page is in Menu'}
+    - if admin? && current_user.group.title == 'Admins'
+      = link_to edit_admin_page_path(@page), class: "button small"  do
+        %i.fi.fi-pencil
+
+  - if @page.teasertext
+    %p.teasertext
+      =sanitze @page.teasertext.html_safe
+  - if @page.fulltext
+    %p.fulltext
+      =sanitze @page.fulltext.html_safe
+  - if @page.footertext
+    %p.footertext
+      =sanitze @page.footertext.html_safe
+ 
+

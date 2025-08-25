@@ -26,6 +26,9 @@ Rails.application.routes.draw do
   # Serve websocket cable requests in-process
   mount ActionCable.server => '/cable'
 
+
+  resources :pages, only: [:show]
+  
   resources :iconsets do
     resources :icons, only: [:edit, :destroy, :update]
   end
@@ -76,6 +79,7 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :users
     resources :groups
+    resources :pages
   end
 
   scope "/:locale" do
