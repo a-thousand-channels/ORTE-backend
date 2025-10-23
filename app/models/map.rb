@@ -14,6 +14,7 @@ class Map < ApplicationRecord
   validates :title, presence: true
 
   extend FriendlyId
+
   friendly_id :title, use: :slugged
 
   # call me: Map.by_user(current_user).find(params[:id])

@@ -172,7 +172,7 @@ class Place < ApplicationRecord
     # return '' unless images.exists?
 
     i = images.filter { |image| image.place_id == id && image.preview }
-    i.count.positive? ? ApplicationController.helpers.image_link(i.first) : ''
+    i.any? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 
   def audiolink

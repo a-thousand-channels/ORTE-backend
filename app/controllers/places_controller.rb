@@ -109,9 +109,9 @@ class PlacesController < ApplicationController
     @map = @place.layer.map
 
     # TODO: render this at generating the form
-    params[:place][:published] = default_checkbox(params[:place][:published])
-    params[:place][:featured] = default_checkbox(params[:place][:featured])
-    params[:place][:sensitive] = default_checkbox(params[:place][:sensitive])
+    params[:place][:published] = default_checkbox?(params[:place][:published])
+    params[:place][:featured] = default_checkbox?(params[:place][:featured])
+    params[:place][:sensitive] = default_checkbox?(params[:place][:sensitive])
     respond_to do |format|
       if @place.update(place_params)
         @place.update({ 'published' => params[:place][:published] })

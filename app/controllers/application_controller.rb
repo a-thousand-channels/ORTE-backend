@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
     # do nothing right now...
   end
 
-  def default_checkbox(param)
+  def default_checkbox?(param)
     %w[on true].include?(param)
   end
 
