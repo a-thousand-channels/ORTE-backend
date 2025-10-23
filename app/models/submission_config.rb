@@ -2,6 +2,7 @@
 
 class SubmissionConfig < ApplicationRecord
   extend Mobility
+
   translates :title_intro,    type: :string
   translates :subtitle_intro, type: :string
   translates :intro,          type: :text

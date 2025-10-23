@@ -4,6 +4,7 @@ require 'open3'
 require 'fileutils'
 include ActionView::Helpers::DateHelper
 include ActionView::Helpers::NumberHelper
+
 class Build::Maptogo
   def initialize(current_user, map, layer)
     @current_user = current_user

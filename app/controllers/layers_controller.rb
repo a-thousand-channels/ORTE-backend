@@ -246,8 +246,8 @@ class LayersController < ApplicationController
   # PATCH/PUT /layers/1.json
   def update
     @layer.color = "##{@layer.color}" if @layer.color && !@layer.color.include?('#')
-    params[:layer][:exif_remove] = default_checkbox(params[:layer][:exif_remove])
-    params[:layer][:rasterize_images] = default_checkbox(params[:layer][:rasterize_images])
+    params[:layer][:exif_remove] = default_checkbox?(params[:layer][:exif_remove])
+    params[:layer][:rasterize_images] = default_checkbox?(params[:layer][:rasterize_images])
 
     respond_to do |format|
       if @layer.ltype == 'image' && validate_images_format

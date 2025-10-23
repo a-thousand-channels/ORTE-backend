@@ -6,6 +6,7 @@ module Imports
   class MappingCsvImporter
     include ActionView::Helpers::SanitizeHelper
     include ImportContextHelper
+
     attr_reader :valid_rows, :duplicate_rows, :invalid_duplicate_rows, :errored_rows, :ambiguous_rows, :missing_fields, :error
 
     REQUIRED_FIELDS = %w[title lat lon].freeze
@@ -79,7 +80,7 @@ module Imports
           if place.valid?
             duplicate_hash = { data: row, duplicate_id: duplicates.first.id, place: place }
             @duplicate_rows << duplicate_hash
-          elsif place.errors.count == 1 && place.errors.full_messages.first == 'Id has already been taken'
+          elsif place.errors.one? && place.errors.full_messages.first == 'Id has already been taken'
             duplicate_hash = { data: row, duplicate_id: duplicates.first.id, place: place }
             @duplicate_rows << duplicate_hash
           else

@@ -50,7 +50,7 @@ module ImagesHelper
       filename = ActiveStorage::Blob.service.path_for(file.key)
       return 'Image not found.' unless File.exist?(filename)
 
-      "<img src=\"#{polymorphic_url(file.variant(resize: '800x800').processed)}\" title=\"#{title.present? ? title : ''}\">".html_safe
+      "<img src=\"#{polymorphic_url(file.variant(resize: '800x800').processed)}\" title=\"#{title if title.present?}\">".html_safe
     rescue Errno::ENOENT => e
       'Image not found.'
     rescue ActiveStorage::FileNotFoundError => e

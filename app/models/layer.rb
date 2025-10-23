@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 include ActionView::Helpers::NumberHelper
+
 class Layer < ApplicationRecord
   belongs_to :map
   has_many :places, dependent: :destroy
@@ -18,6 +19,7 @@ class Layer < ApplicationRecord
   attr_accessor :images_creator, :images_licence, :images_source, :images_files
 
   extend FriendlyId
+
   friendly_id :title, use: :slugged
 
   scope :published, -> { where(published: true) }
