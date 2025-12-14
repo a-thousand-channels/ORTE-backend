@@ -70,7 +70,7 @@ function lookupNominatim(address, url) {
                     }
                     console.log('Lookup :: "value.class" ' + val.class);
 
-                    var regexp = /amenity|building|highway|boundary/gi;
+                    var regexp = /amenity|building|highway|boundary|leisure|landuse/gi;
                     var label = '';
                     if (val.class === 'building') {
                         label = 'Adresse:';
