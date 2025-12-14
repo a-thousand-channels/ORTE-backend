@@ -54,18 +54,18 @@
               %i.fi-magnifying-glass.fi-24
               %i.fi-fast-forward.fi-24.hide
 
-      - if params[:remap]
-        %div#selection-hint
-          %p
-            Type an address or double-click on the map to change the location of
-            =link_to edit_map_layer_place_path(@map,@layer,@place) do
-              #{@place.title}
+        - if params[:remap]
+          #selection-hint
+            %p
+              Type an address or double-click on the map to change the location of
+              =link_to edit_map_layer_place_path(@map,@layer,@place) do
+                #{@place.title}
 
 
-      - else
-        #selection-hint
-          %p
-            How to map: Search an address with the field above or double-click anywhere on the map to create a place.
+        - else
+          #selection-hint
+            %p
+              How to map: Search an address with the field above or double-click anywhere on the map to create a place.
   .grid-x
     .cell.medium-12
       #filter-wrapper.grid-x
