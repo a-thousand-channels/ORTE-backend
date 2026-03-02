@@ -1,3 +1,12 @@
+- # json created with "i18n export"
+:javascript
+  console.log('CURRENT LOCALE: ' + "#{I18n.locale}");
+  const currentLocale = "#{I18n.locale}";
+  const I18nTranslations = #{File.read(Rails.root.join('app', 'javascript', 'locales.json'))};
+  console.log('ADDING TRANSLATIONS TO WINDOW');
+  window.I18nTranslations = I18nTranslations[currentLocale];
+  console.log(window.I18nTranslations);
+  console.log(window.I18nTranslations.search.lookup.no_result);
 #step_place
   #form-wrapper.large-wrapper
     - if @layer && @layer.public_submission

@@ -1,5 +1,4 @@
-  $(function () {
-
+$(function () {
     if( $('#submissions').length > 0 ){
 
       // hide image preview unless user chooses to provide an image
@@ -71,6 +70,8 @@
 
 
   function LookupCity(address = '', lookupCityOnly = false) {
+    const i18n = window.I18nTranslations;
+  
     $.ajaxSetup({
       headers : {
         'User-Agent' : 'ORTE-Backend, in development (https://github.com/ut/ORTE-backend)',
@@ -85,12 +86,12 @@
     console.log("LookupNominatim");
     console.log("Checking for params...");
     if ( address === '' ) {
-      $('#selection-hint').html("<p>" + I18n.t('search.lookup.no_input') +  "</p>");
+      $('#selection-hint').html("<p>" + i18n.search.lookup.no_input +  "</p>");
       $('#selection-hint').addClass('active');
     }
     if ( address.length < 5 ) {
       console.log('Lookup:: Value too short!');
-      $('#selection-hint').html("<p>" + I18n.t('search.lookup.too_short') +  "</p>");
+      $('#selection-hint').html("<p>" + i18n.search.lookup.too_short +  "</p>");
       $('#selection-hint').addClass('active');
     } else {
       console.log('Lookup:: '+address);
@@ -103,12 +104,13 @@
       }
 
       var request = $.getJSON( nominatium_url+"?q="+address+nominatium_url_params, function( data ) {
+          const i18n = window.I18nTranslations;
 
           console.log(data);
           // if no result
           if ( !data || data.length === 0) {
             console.log('Lookup:: No result');
-            $('#selection-hint').html("<p>" + I18n.t('search.lookup.no_result') +  "</p>");
+            $('#selection-hint').html("<p>" + i18n.search.lookup.no_result +  "</p>");
             $('#selection-hint').addClass('active');
             return;
           }
@@ -121,7 +123,7 @@
             console.log('Lookup:: Data value class ' + val.class);
             var label = ''
             if ( val.class === 'building') {
-              label = I18n.t('search.lookup.address');
+              label = i18n.search.lookup.addresss;
             }
 
             // OR better get address details
@@ -162,7 +164,7 @@
               country = val.address.country
             }
             console.log('Lookup:: Using entry');
-            items.push( "<li id='" + key + "' class='nominatim_results' ><a href='return false;' data-zip='"+ postcode + "' data-city='"+ city + "' data-country='"+ country + "' data-lat='"+ val.lat + "' data-lon='"+ val.lon + "' data-location='"+ label + " " + val.display_name + "'>" + label + " " + val.display_name + "</a></li>" );
+            items.push( "<li id='" + key + "' class='nominatim_results' ><a href='' data-zip='"+ postcode + "' data-city='"+ city + "' data-country='"+ country + "' data-lat='"+ val.lat + "' data-lon='"+ val.lon + "' data-location='"+ label + " " + val.display_name + "'>" + label + " " + val.display_name + "</a></li>" );
             
           });
           $( "<ul/>", {
@@ -172,13 +174,12 @@
           }).appendTo( "#selection" );
 
           console.log( "Success" );
-          $('#selection-hint').html("<p>" + I18n.t('search.lookup.success_result') +  "</p>");
+          $('#selection-hint').html("<p>" + i18n.search.lookup.success_result +  "</p>");
           $('#selection-hint').addClass('active');
         }).done(function() {
           $('.nominatim_results a').on('click', function(e){
-
-            console.log( "Click" );
             e.preventDefault();
+            console.log( "Click" );
             var lat = $(this).data('lat');
             console.log( "Click", lat );
             $('#place_lat').val(lat);
@@ -195,7 +196,7 @@
           });
         }).fail(function() {
           console.log( "error" );
-          $('#selection-hint').html("<p>" + I18n.t('search.lookup.nothing_found') +  "</p>");
+          $('#selection-hint').html("<p>" + i18n.search.lookup.nothing_found +  "</p>");
           $('#selection-hint').addClass('active');
         }).always(function() {
           console.log( "Complete" );
