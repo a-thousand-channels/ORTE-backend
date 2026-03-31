@@ -8,7 +8,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma', '~> 6'
-gem 'rails', '~> 7.2'
+gem 'rails', '>= 7.2.3.1'
 gem 'sassc-rails'
 gem 'terser', '~> 1.1', '>= 1.1.12'
 
