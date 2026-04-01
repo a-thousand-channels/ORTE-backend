@@ -23,7 +23,7 @@ RSpec.feature 'Login' do
     fill_in 'user_email', with: 'nobody@nowhere.com'
     fill_in 'user_password', with: 'abcdefghijklmn'
     click_button 'Log in'
-    expect(page).to have_content 'Invalid Email or password'
+    expect(page).to have_content 'Invalid email or password'
   end
 
   scenario 'shows success message if login with credentials worked' do
