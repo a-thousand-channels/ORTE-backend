@@ -73,7 +73,12 @@ class Image < ApplicationRecord
                    attachment_changes['file'].attachable
                  end
 
-    tmp_new_image = File.read(attachable)
+    tmp_new_image = if attachable.respond_to?(:read)
+                      attachable.rewind
+                      attachable.read
+                    else
+                      File.read(attachable)
+                    end
 
     File.open(attachment_path, 'wb') do |tmp_file|
       tmp_file.write(tmp_new_image)
