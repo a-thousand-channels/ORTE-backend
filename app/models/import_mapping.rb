@@ -134,7 +134,7 @@ class ImportMapping < ApplicationRecord
 
   def parse_and_validate_format(parsers)
     parsers = JSON.parse(parsers) if parsers.is_a?(String)
-    unless parsers.is_a?(Array) && parsers.all? { |p| p.is_a?(String) }
+    unless parsers.is_a?(Array) && parsers.all?(String)
       errors.add(:mapping, "contains invalid parser format: #{parsers}")
       return nil
     end

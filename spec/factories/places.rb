@@ -60,7 +60,7 @@ FactoryBot.define do
     trait :with_audio do
       after(:build) do |place|
         place.audio.attach(
-          io: File.open(Rails.root.join('spec/support/files/test.mp3')),
+          io: StringIO.new(File.read(Rails.root.join('spec/support/files/test.mp3'))),
           filename: 'test.mp3',
           content_type: 'audio/mpeg'
         )
@@ -76,14 +76,12 @@ FactoryBot.define do
       after(:build) do |place, evaluator|
         evaluator.images_count.times do |i|
           file_path = Rails.root.join('spec', 'support', 'files', 'test.jpg')
-          file = File.open(file_path)
           preview_value = i == 0
           place.images.build(attributes_for(:image, preview: preview_value)).file.attach(
-            io: file,
+            io: StringIO.new(File.read(file_path)),
             filename: "sample_image_#{i + 1}.jpg",
             content_type: 'image/jpeg'
           )
-          file.close
         end
       end
     end
