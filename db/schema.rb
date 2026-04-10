@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_10_161914) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -230,17 +230,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
   end
 
   create_table "pages", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
-    t.boolean "is_published", default: false
-    t.boolean "in_menu", default: false
-    t.string "ptype"
     t.string "title"
-    t.text "teasertext"
-    t.text "fulltext"
-    t.text "footertext"
+    t.string "subtitle"
+    t.text "teaser"
+    t.text "text"
+    t.text "footer"
+    t.string "slug"
+    t.boolean "published"
+    t.string "state"
+    t.bigint "map_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "slug"
-    t.index ["slug"], name: "index_pages_on_slug", unique: true
+    t.index ["map_id"], name: "index_pages_on_map_id"
   end
 
   create_table "people", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
@@ -404,6 +405,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
+  add_foreign_key "pages", "maps"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"
