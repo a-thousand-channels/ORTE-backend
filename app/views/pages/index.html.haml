@@ -51,9 +51,9 @@
             - if page.subtitle.present?
               %p= page.subtitle
           %td.show-for-medium
-            - if page.image && page.image.attached? && ActiveStorage::Blob.service.exist?(page.image.blob.key)
-              = link_to url_for(page.image) do
-                = image_tag page.image.variant(resize: "120x120").processed, class: "thumbnail", title: page.title
+            - if page.image && page.imageable.attached? && ActiveStorage::Blob.service.exist?(page.imageable.blob.key)
+              = link_to url_for(page.imageable) do
+                = image_tag page.imageabimimageableageablele.variant(resize: "120x120").processed, class: "thumbnail", title: page.title
           %td
             = link_to edit_map_page_path(@map, page), :class=>"button" do
               %i.fi-pencil.fi-24

@@ -32,7 +32,7 @@
                     - if img.preview.present?
                       %li.orbit-slide{"data-open": "reveal#{img.id}"}
                         %figure.orbit-figure
-                          - if img.place.layer.rasterize_images && img.itype == 'image'
+                          - if img.imageable.layer.rasterize_images && img.itype == 'image'
                             = image_tag(img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, class: "orbit-image", alt: img.alt )
                           - else
                             = image_tag(img.file.variant(resize: "1200x1200").processed, class: "orbit-image", alt: img.alt)
@@ -54,7 +54,7 @@
               - if img.file.attached?
                 - filename = ActiveStorage::Blob.service.path_for(img.key)
                 - if File.exist?(filename)
-                  - if img.place.layer.rasterize_images && img.itype == 'image'
+                  - if img.imageable.layer.rasterize_images && img.itype == 'image'
                     = image_tag img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, alt: img.alt
                   - else
                     = image_tag img.file.variant(resize: "1200x1200").processed, alt: img.alt

@@ -2,7 +2,8 @@
   .grid-x
     .large-12.cell
       = f.error_notification
-      = f.association :place, as: :hidden, :input_html => { :value => @place.id }
+      = f.input :imageable_id, as: :hidden, input_html: { value: @place.id }
+      = f.input :imageable_type, as: :hidden, input_html: { value: 'Place' }  
 
   .grid-x
     .large-12.medium-12.cell

@@ -60,7 +60,7 @@ class Image < ApplicationRecord
   private
 
   def strip_exif_data
-    return unless place.layer.exif_remove
+    return unless imageable.is_a?(Place) && imageable.layer.exif_remove
 
     return unless file.attached? && file.changed? && attachment_changes['file']
 

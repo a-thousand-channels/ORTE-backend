@@ -207,7 +207,7 @@ class Public::SubmissionsController < ApplicationController
     @submission = Submission.find(session[:submission_id])
     @image = Image.new(image_params)
     @place = @submission.place
-    @image.place = @place
+    @image.imageable = @place
     @image.imageable_type = 'Place'
     @image.imageable_id = @place.id
     respond_to do |format|
