@@ -44,6 +44,8 @@ Rails.application.routes.draw do
     resources :tags, only: [:index, :show]
     resources :relations
     resources :people
+    resources :pages
+    
     resources :layers do
       collection do
         post :search

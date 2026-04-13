@@ -48,7 +48,7 @@ class PagesController < ApplicationController
 
   # GET /pages/new
   def new
-    @page = Layer.new
+    @page = Page.new
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
 
     respond_to do |format|
@@ -66,7 +66,7 @@ class PagesController < ApplicationController
   # POST /pages
   # POST /pages.json
   def create
-    @page = Layer.new(page_params)
+    @page = Page.new(page_params)
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     respond_to do |format|
       if @page.save

@@ -11,23 +11,10 @@
     = link_to edit_map_path(@map) do
       %i.fi-pencil.fi-24
 
-  - if @map.pages.all_tags
-    %div.tags
-      - @map.pages.all_tags.each do |tag|
-        - if @map.pages.tagged_with(["#{tag.name}"]).count > 1
-          %span.label.secondary.tag
-            = link_to map_tag_path(@map,tag) do
-              %i.fi-price-tag
-              = tag.name
-              (#{@map.pages.tagged_with(["#{tag.name}"]).count})
 
   .grid-x.grid-padding-x
     .cell.medium-7
-      - if @map.pages.all_tags
-        %p
-          = link_to map_tags_path(@map), :class => "button small" do
-            %i.fi-pricetag-multiple
-            List of all tags
+
     .cell.medium-5
       %p.text-right.hint
         = link_to map_people_path(@map) do
