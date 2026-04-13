@@ -20,12 +20,6 @@
         %p.shy
           Created:
           = l(@page.created_at)
-          %br
-          = @page.ltype.titleize
-          Page 
-          with
-          = link_to map_page_places_path(@map, @page) do
-            = @page.places.count
-            Places.
+
   = render 'pages/partials/form'
   = link_to 'View Page', [@map, @page], :class => 'button secondary'

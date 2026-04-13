@@ -72,7 +72,7 @@ class PagesController < ApplicationController
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     respond_to do |format|
       if @page.save
-        format.html { redirect_to map_page_path(@map, @page), notice: 'Layer was created.' }
+        format.html { redirect_to map_page_path(@map, @page), notice: 'Page was created.' }
         format.json { render :show, status: :created, location: @page }
       else
         format.html { render :new }
@@ -86,7 +86,7 @@ class PagesController < ApplicationController
   def update
     respond_to do |format|
       if @page.update(page_params)
-        format.html { redirect_to map_page_path(@map, @page), notice: 'Layer was successfully updated.' }
+        format.html { redirect_to map_page_path(@map, @page), notice: 'Page was successfully updated.' }
         format.json { render :show, status: :ok, location: @page }
       else
         format.html { render :edit }
@@ -138,7 +138,7 @@ class PagesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_page
     @map = Map.by_user(current_user).find_by_slug(params[:map_id]) || Map.by_user(current_user).find_by_id(params[:map_id])
-    @page = Layer.find_by_slug(params[:id]) || Layer.find_by_id(params[:id])
+    @page = Page.find_by_slug(params[:id]) || Page.find_by_id(params[:id])
   end
 
   def page_params
