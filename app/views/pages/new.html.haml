@@ -1,0 +1,11 @@
+- content_for(:title) { "Add page" }
+
+#form-wrapper
+  - if params[:ltype] == 'image'
+    %h1 Add image page
+  - elsif params[:ltype] == 'geojson'
+    %h1 Add GeoJson page
+  - else
+    %h1 Add page
+  = render 'pages/partials/form'
+

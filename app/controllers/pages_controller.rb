@@ -4,7 +4,6 @@ class PagesController < ApplicationController
   include ImportContextHelper
 
   before_action :set_page, only: %i[show edit update destroy]
-
   before_action :redirect_to_friendly_id, only: %i[show]
 
   protect_from_forgery except: :show

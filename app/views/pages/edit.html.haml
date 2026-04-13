@@ -1,0 +1,31 @@
+- content_for(:title) { "Page: #{@page.title} (Edit)" }
+
+#form-wrapper
+  %p.text-right.close_link_wrapper
+    = link_to map_pages_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %p
+    Map:
+    = link_to map_pages_path(@map) do
+      = @map.title
+    > Page:
+    = link_to map_page_path(@map, @page) do
+      = @page.title
+  .grid-x.grid-padding-x
+    .large-6.medium-6.small-6.cell
+      %h1
+        =@page.title
+    .large-6.medium-6.small-6.cell
+      - if @page && @page.created_at
+        %p.shy
+          Created:
+          = l(@page.created_at)
+          %br
+          = @page.ltype.titleize
+          Page 
+          with
+          = link_to map_page_places_path(@map, @page) do
+            = @page.places.count
+            Places.
+  = render 'pages/partials/form'
+  = link_to 'View Page', [@map, @page], :class => 'button secondary'

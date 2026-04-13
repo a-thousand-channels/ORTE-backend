@@ -1,0 +1,85 @@
+- content_for(:title) { "Pages of #{@map.title}" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %h1
+    Map:
+    = link_to map_path(@map) do
+      = @map.title
+    = link_to edit_map_path(@map) do
+      %i.fi-pencil.fi-24
+
+  - if @map.pages.all_tags
+    %div.tags
+      - @map.pages.all_tags.each do |tag|
+        - if @map.pages.tagged_with(["#{tag.name}"]).count > 1
+          %span.label.secondary.tag
+            = link_to map_tag_path(@map,tag) do
+              %i.fi-price-tag
+              = tag.name
+              (#{@map.pages.tagged_with(["#{tag.name}"]).count})
+
+  .grid-x.grid-padding-x
+    .cell.medium-7
+      - if @map.pages.all_tags
+        %p
+          = link_to map_tags_path(@map), :class => "button small" do
+            %i.fi-pricetag-multiple
+            List of all tags
+    .cell.medium-5
+      %p.text-right.hint
+        = link_to map_people_path(@map) do
+          Persons of this map
+      %p.text-right.hint
+        = link_to map_relations_path(@map) do
+          Relations in this map
+        %hr
+      %ul.hint
+        %li
+          = link_to import_map_path(@map), class: "button small" do
+            %i.fi-upload.fi-18          
+            Import/update places from CSV 
+
+  %table
+    %thead
+      %tr
+        %th Page
+        %th.show-for-medium
+          \&nbsp;
+        %th
+
+    %tbody
+      - @pages.each do |page|
+        %tr
+          %td
+            %h4
+              = link_to map_page_url(page.map,page) do
+                = page.title
+              - if page.published
+                %i.fi-eye.fi-24{title: 'Page is published'}
+              - else
+                %i.fi-lock.fi-21{title: 'Page is hidden'}
+            - if page.subtitle.present?
+              %p= page.subtitle
+          %td.show-for-medium
+            - if page.image && page.image.attached? && ActiveStorage::Blob.service.exist?(page.image.blob.key)
+              = link_to url_for(page.image) do
+                = image_tag page.image.variant(resize: "120x120").processed, class: "thumbnail", title: page.title
+          %td
+            = link_to edit_map_page_path(@map, page), :class=>"button" do
+              %i.fi-pencil.fi-24
+            &nbsp;
+            - if page.places.count == 0 
+              = link_to map_page_path(@map, page), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+                %i.fi-trash.fi-24
+
+  .grid-x.grid-padding-x
+    .cell.medium-3
+      %p
+        = link_to new_map_page_path(@map), :class=>'button small' do
+          %i.fi-plus.fi-18
+          New Standard Page
+      %p.shy Create a page for this map
+

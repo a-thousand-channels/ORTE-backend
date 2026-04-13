@@ -1,0 +1,68 @@
+- content_for(:title) { "Search in #{@map.title}" }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %h1
+    Map:
+    = link_to map_path(@map) do
+      = @map.title
+
+
+
+
+  - if @map.pages.all_tags
+    %div.tags
+      - @map.pages.all_tags.each do |tag|
+        - if @map.pages.tagged_with(["#{tag.name}"]).count > 1
+          %span.label.secondary.tag
+            = link_to map_tag_path(@map,tag) do
+              %i.fi-price-tag
+              = tag.name
+              (#{@map.pages.tagged_with(["#{tag.name}"]).count})
+    %div.tags.hidden
+      - ActsAsTaggableOn::Tag.all.each do |tag|
+        %span.label.secondary.tag
+          %i.fi-price-tag
+          = tag.name
+
+  .grid-x.grid-padding-x
+    .cell.medium-4
+      - if @map.pages.all_tags
+        %p
+          = link_to map_tags_path(@map), :class => "button small" do
+            %i.fi-pricetag-multiple
+            List of all tags
+    .cell.medium-8
+      = render 'pages/partials/searchform', object: @map
+  %hr
+  %p
+    Searching all places of this map for "#{@query}"
+    - if @places && @places.count > 0
+      \— #{@places.count} Places found
+    - else
+      \— Sorry, nothing found
+  %hr
+
+  %div
+    - @places.each do |place|
+      %div.card
+        - if place.startdate.present?
+          %p
+            = smart_date_display(place.startdate, place.enddate)
+        %h3
+          - if place.uid 
+            = place.uid
+          = link_to map_page_place_path(@map,place.page,place) do
+            = place.title
+        %p.small
+          = link_to map_page_path(@map,place.page) do
+            = place.page.title
+        - if place.tag_list
+          %p
+            - place.tags.each do |tag|
+              %span.label.secondary.tag
+                %i.fi-price-tag
+                = link_to map_tag_path(@map,tag) do
+                  = tag
