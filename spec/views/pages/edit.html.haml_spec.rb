@@ -9,11 +9,11 @@ RSpec.describe 'pages/edit', type: :view do
     sign_in user
     @map = FactoryBot.create(:map, group_id: group.id, enable_privacy_features: false)
     @page = assign(:page, Page.create!(
-                              title: 'MyString',
-                              text: 'MyString',
-                              published: false,
-                              map: @map
-                            ))
+                            title: 'MyString',
+                            text: 'MyString',
+                            published: false,
+                            map: @map
+                          ))
     @colors_selectable = %w[aaa bbb ccc]
   end
 
@@ -26,5 +26,4 @@ RSpec.describe 'pages/edit', type: :view do
       assert_select 'textarea[name=?]', 'page[text]'
     end
   end
-
 end

@@ -9,11 +9,11 @@ RSpec.describe 'pages/new', type: :view do
     sign_in user
     @map = FactoryBot.create(:map, group_id: group.id)
     assign(:page, Page.new(
-                     title: 'MyString',
-                     text: 'MyString',
-                     published: false,
-                     map: @map
-                   ))
+                    title: 'MyString',
+                    text: 'MyString',
+                    published: false,
+                    map: @map
+                  ))
   end
 
   it 'renders new page form' do

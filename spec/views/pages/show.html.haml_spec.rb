@@ -10,15 +10,15 @@ RSpec.describe 'pages/show', type: :view do
 
     @map = FactoryBot.create(:map, group_id: group.id)
     @page = FactoryBot.create(:page, map_id: @map.id)
-    @maps =  FactoryBot.create_list(:map, 3)
+    @maps = FactoryBot.create_list(:map, 3)
     @map_pages = @map.pages
     @page = assign(:page,
-                    Page.create!(
-                      title: 'Title',
-                      text: 'Text',
-                      published: false,
-                      map: @map
-                    ))
+                   Page.create!(
+                     title: 'Title',
+                     text: 'Text',
+                     published: false,
+                     map: @map
+                   ))
   end
 
   it 'renders attributes in <p>' do

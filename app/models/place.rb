@@ -171,7 +171,7 @@ class Place < ApplicationRecord
     # this call is very costly for larger datasets, maybe a switch in the map settings could be establied?
     # return '' unless images.exists?
 
-    i = images.filter { |image| image.place_id == id && image.preview }
+    i = images.filter { |image| image.imageable_type == 'Place' && image.imageable_id == id && image.preview }
     i.any? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 

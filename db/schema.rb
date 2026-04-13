@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_10_161914) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_13_174904) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -116,6 +116,9 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_10_161914) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "itype", default: "image"
     t.bigint "place_id"
+    t.string "imageable_type"
+    t.bigint "imageable_id"
+    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
@@ -393,7 +396,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_10_161914) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.bigint "place_id"
+    t.string "videoable_type"
+    t.bigint "videoable_id"
     t.index ["place_id"], name: "index_videos_on_place_id"
+    t.index ["videoable_type", "videoable_id"], name: "index_videos_on_videoable_type_and_videoable_id"
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
