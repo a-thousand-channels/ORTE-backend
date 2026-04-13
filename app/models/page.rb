@@ -8,9 +8,18 @@ class Page < ApplicationRecord
 
   validates :title, presence: true
 
+  extend Mobility
+
+  translates :slug,     type: :string
+  translates :title,    type: :string
+  translates :subtitle, type: :string
+  translates :teaser,   type: :text
+  translates :text,     type: :text
+  translates :footer,   type: :text
+
   extend FriendlyId
 
-  friendly_id :title, use: :slugged
+  friendly_id :title, use: %i[mobility slugged]
 
   scope :published, -> { where(published: true) }
 end

@@ -80,7 +80,12 @@ Rails.application.routes.draw do
     resources :groups
   end
 
+  
+
   scope "/:locale" do
+    resources :maps do
+      resources :pages
+    end
     scope "/:layer_id" do
       resources :submissions, :controller => "public/submissions", only: [:new, :create, :edit, :update, :index] do
         get :new_place, :controller => "public/submissions", :action => 'new_place'

@@ -53,7 +53,10 @@ Mobility.configure do
     # Dirty
     #
     # Uncomment this line to include and enable globally:
-    # dirty
+    dirty
+    # UT: this is needed by friendly_id-mobility to track changes to the slugged attribute
+
+
     #
     # Or uncomment this line to include but disable by default, and only enable
     # per model by passing +dirty: true+ to +translates+.

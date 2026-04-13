@@ -5,6 +5,8 @@ class PagesController < ApplicationController
 
   before_action :set_page, only: %i[show edit update destroy]
   before_action :redirect_to_friendly_id, only: %i[show]
+  before_action :set_locale
+  before_action :redirect_to_localized_url, only: %i[show index]
 
   protect_from_forgery except: :show
 
@@ -98,12 +100,29 @@ class PagesController < ApplicationController
   def destroy
     @page.destroy
     respond_to do |format|
-      format.html { redirect_to map_path(@map), notice: 'Layer was successfully destroyed.' }
+      format.html { redirect_to map_path(@map), notice: 'Page was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
+
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
+
+  def redirect_to_localized_url
+    return if params[:locale].present? || request.path.starts_with?('/rails/')
+
+    default_locale = I18n.default_locale
+    path = request.path_info
+    new_path = "/#{default_locale}#{path}"
+
+    # Avoid infinite redirects for root path or API routes if needed
+    return if path == '/' || path.starts_with?('/api/')
+
+    redirect_to new_path, status: 301
+  end
 
   def build_params
     params.require(:page).permit(:content, :build)
