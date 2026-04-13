@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Video < ApplicationRecord
-  belongs_to :place
+  belongs_to :videoable, polymorphic: true
 
   has_one_attached :file
   delegate_missing_to :file

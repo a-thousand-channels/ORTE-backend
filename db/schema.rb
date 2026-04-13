@@ -108,7 +108,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_10_161914) do
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
@@ -116,6 +115,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_10_161914) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "itype", default: "image"
+    t.bigint "place_id"
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
@@ -386,13 +386,13 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_10_161914) do
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
     t.boolean "preview"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.bigint "place_id"
     t.index ["place_id"], name: "index_videos_on_place_id"
   end
 

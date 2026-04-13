@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Image < ApplicationRecord
-  belongs_to :place
+  belongs_to :imageable, polymorphic: true
 
   attr_accessor :skip_beforesave_callback
 

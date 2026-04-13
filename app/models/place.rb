@@ -21,8 +21,8 @@ class Place < ApplicationRecord
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
-  has_many :images, dependent: :destroy
-  has_many :videos, dependent: :destroy
+  has_many :images, as: :imageable, dependent: :destroy
+  has_many :videos, as: :videoable, dependent: :destroy
   has_many :submissions, dependent: :destroy
 
   validate :check_audio_format

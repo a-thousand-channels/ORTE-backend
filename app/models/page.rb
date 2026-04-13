@@ -3,8 +3,8 @@
 class Page < ApplicationRecord
   belongs_to :map
 
-  has_many :images, dependent: :destroy
-  has_many :videos, dependent: :destroy
+  has_many :images, as: :imageable, dependent: :destroy
+  has_many :videos, as: :videoable, dependent: :destroy
 
   validates :title, presence: true
 
