@@ -28,8 +28,15 @@ class ImagesController < ApplicationController
 
   # GET /images/1/edit
   def edit
-    @place = @image.place
-    redirect_to root_url, notice: 'No valid place defined for editing an mage' unless @place || (@place && @place.layer.map.group == current_user.group)
+    if @image.imageable_type == 'Place'
+      @place = @image.imageable_id
+      redirect_to root_url, notice: 'No valid relation defined for editing an image' unless @place || (@place && @place.layer.map.group == current_user.group)
+    elsif @image.imageable_type == 'Layer'
+      @layer = @image.imageable_id
+      redirect_to root_url, notice: 'No valid relation defined for editing an image' unless @layer || (@layer && @layer.map.group == current_user.group)
+    else
+      redirect_to root_url, notice: 'No valid relation defined for editing an image'
+    end
   end
 
   # POST /images
