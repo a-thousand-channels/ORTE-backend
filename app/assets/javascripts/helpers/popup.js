@@ -44,7 +44,12 @@ function PopupFullContent(place) {
     if ( layer_title && ( layer_title.length > 30)) {
         layer_title = layer_title.substring(0, 30) + "...";
     }
-    content += "<p class='label' style='background-color: "+place.layer_color+"; color: #fff; font-weight: bold; font-size: 10pt;'>" + layer_title + "</p>";
+    var textColor = '#fff';
+    if ( place.layer_color ) {
+        var c = place.layer_color.replace('#', '');
+        textColor = (parseInt(c.substr(0,2),16)*299 + parseInt(c.substr(2,2),16)*587 + parseInt(c.substr(4,2),16)*114) / 1000 > 128 ? '#333' : '#fff';    
+    }
+    content += "<p class='label' style='background-color: "+place.layer_color+"; color: "+textColor+"; font-weight: bold; font-size: 10pt;'>" + layer_title + "</p>";
     if (place.date_with_qualifier) {
         content += "<p>" + place.date_with_qualifier;
         if (place.address) {
