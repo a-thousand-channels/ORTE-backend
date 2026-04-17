@@ -14,6 +14,7 @@ class Image < ApplicationRecord
   validate :check_file_presence
   validate :check_file_format
 
+  scope :for, ->(record) { where(imageable: record) }
   scope :sorted, -> { order(sorting: :asc) }
   scope :sorted_by_place, ->(place_id) { where(place_id: place_id).order(sorting: :asc) }
   scope :preview, ->(place_id) { where(place_id: place_id, preview: true) }

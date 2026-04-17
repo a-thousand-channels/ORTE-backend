@@ -98,8 +98,8 @@ RSpec.describe Public::LayersController, type: :controller do
       it 'can handle images with and without sorting values' do
         layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         place = FactoryBot.create(:place, layer_id: layer.id, published: true)
-        FactoryBot.create(:image, place: place, sorting: nil)
-        FactoryBot.create(:image, place: place, sorting: 1)
+        FactoryBot.create(:image, imageable_type: "place", imageable_id: place.id, sorting: nil)
+        FactoryBot.create(:image, imageable_type: "place", imageable_id: place.id, sorting: 1)
         get :show, params: { id: layer.to_param, map_id: @map.id, format: 'json' }, session: valid_session
         expect(response.status).to eq 200
         expect(response.content_type).to eq('application/json; charset=utf-8')

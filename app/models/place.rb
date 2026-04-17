@@ -3,6 +3,8 @@
 require 'csv'
 
 class Place < ApplicationRecord
+  include HasImages
+
   belongs_to :layer
   belongs_to :icon, optional: true
 
