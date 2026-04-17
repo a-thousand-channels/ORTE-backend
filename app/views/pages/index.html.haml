@@ -14,20 +14,21 @@
 
   .grid-x.grid-padding-x
     .cell.medium-7
+      %p.text-right.hint
+
+        = link_to map_layers_path(@map) do
+          Layers of this map
+          (#{@map.layers.size})
 
     .cell.medium-5
       %p.text-right.hint
         = link_to map_people_path(@map) do
           Persons of this map
+          (#{@map.people.size})
       %p.text-right.hint
         = link_to map_relations_path(@map) do
           Relations in this map
         %hr
-      %ul.hint
-        %li
-          = link_to import_map_path(@map), class: "button small" do
-            %i.fi-upload.fi-18          
-            Import/update places from CSV 
 
   %table
     %thead
@@ -51,22 +52,23 @@
             - if page.subtitle.present?
               %p= page.subtitle
           %td.show-for-medium
-            - if page.image && page.imageable.attached? && ActiveStorage::Blob.service.exist?(page.imageable.blob.key)
-              = link_to url_for(page.imageable) do
-                = image_tag page.imageabimimageableageablele.variant(resize: "120x120").processed, class: "thumbnail", title: page.title
+            - if page.images.count > 0
+              - page.images.each do |i|
+                - if i.attached? && ActiveStorage::Blob.service.exist?(i.blob.key)
+                  = link_to url_for(i) do
+                    = image_tag i.variant(resize: "120x120").processed, class: "thumbnail", title: i.title
           %td
             = link_to edit_map_page_path(@map, page), :class=>"button" do
               %i.fi-pencil.fi-24
             &nbsp;
-            - if page.places.count == 0 
-              = link_to map_page_path(@map, page), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
-                %i.fi-trash.fi-24
+            = link_to map_page_path(@map, page), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+              %i.fi-trash.fi-24
 
   .grid-x.grid-padding-x
-    .cell.medium-3
+    .cell.medium-12
       %p
         = link_to new_map_page_path(@map), :class=>'button small' do
           %i.fi-plus.fi-18
-          New Standard Page
+          New Page
       %p.shy Create a page for this map
 

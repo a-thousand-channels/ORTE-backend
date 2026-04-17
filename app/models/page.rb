@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Page < ApplicationRecord
+  include HasImages
+
   belongs_to :map
 
   has_many :images, as: :imageable, dependent: :destroy
