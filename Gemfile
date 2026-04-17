@@ -46,7 +46,7 @@ gem 'image_processing'
 gem 'mini_racer', '0.16', platforms: :ruby
 gem 'nokogiri'
 
-gem 'acts-as-taggable-on', '~> 11'
+gem 'acts-as-taggable-on'
 gem 'color-generator'
 gem 'mini_magick'
 gem 'mobility', '~> 1.2'
