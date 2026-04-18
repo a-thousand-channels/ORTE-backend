@@ -3,10 +3,11 @@
 class PagesController < ApplicationController
   include ImportContextHelper
 
+  before_action :set_locale
   before_action :set_page, only: %i[show edit update destroy]
   before_action :redirect_to_friendly_id, only: %i[show]
-  before_action :set_locale
-  before_action :redirect_to_localized_url, only: %i[show index]
+
+  # before_action :redirect_to_localized_url
 
   protect_from_forgery except: :show
 
@@ -111,7 +112,13 @@ class PagesController < ApplicationController
     I18n.locale = params[:locale] || I18n.default_locale
   end
 
+  def default_url_options
+    { locale: I18n.locale }
+  end
+
   def redirect_to_localized_url
+    puts "Current locale: #{I18n.locale}, Request path: #{request.path}"
+    puts "Locale in params: #{params[:locale]}"
     return if params[:locale].present? || request.path.starts_with?('/rails/')
 
     default_locale = I18n.default_locale
@@ -137,8 +144,10 @@ class PagesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_page
+    puts "Finding map with slug: #{params[:map_id]} or id: #{params[:map_id]}"
     @map = Map.by_user(current_user).find_by_slug(params[:map_id]) || Map.by_user(current_user).find_by_id(params[:map_id])
-    @page = Page.find_by_slug(params[:id]) || Page.find_by_id(params[:id])
+    @page = Page.friendly.find(params[:id])
+    puts "Found map: #{@map&.id}, Found page: #{@page&.id}"
   end
 
   def page_params

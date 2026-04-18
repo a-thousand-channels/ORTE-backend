@@ -26,7 +26,29 @@
             = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
             = f.input :text, :label => 'Description', :input_html => {:rows => 24, class: 'large-text tinymce' }
             = f.input :footer, :label => 'Footer', :input_html => {:rows => 8, class: 'large-text tinymce' }        
-          
+        .grid-x.grid-padding-x
+          .large-12.medium-12.small-12.cell
+            %label Images
+            - if params[:action] == 'edit'
+              = link_to new_map_page_image_path(@map,@page), class: 'button' do
+                %i.fi.fi-plus
+                Add image
+              %p.hint
+                Please upload one image and describe its content and metadata. You can repeat this to add multiple images to this place.
+            - else
+              %p.hint.text-left
+                You have to save this place, before you can add images
+              
+            - # = render '/places/form/images'
+            %hr
+            - if params[:action] == 'edit'
+              %label Videos
+              = link_to new_map_page_video_path(@map,@page), class: 'button' do
+                %i.fi.fi-plus
+                Add video
+              %p.hint
+                Please upload one video and describe its content and metadata. You can repeat this to add multiple videos to this place.
+            - # = render 'places/form/videos'
         
 
         %hr

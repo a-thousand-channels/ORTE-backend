@@ -8,6 +8,7 @@ RSpec.describe PagesController, type: :controller do
 
   describe "functionalities with logged in user with role 'admin'" do
     before do
+      I18n.locale = I18n.default_locale
       group = FactoryBot.create(:group)
       user = FactoryBot.create(:admin_user, group_id: group.id)
       sign_in user
@@ -19,7 +20,7 @@ RSpec.describe PagesController, type: :controller do
     end
 
     let(:valid_attributes) do
-      FactoryBot.build(:page, map_id: @map.id).attributes
+      FactoryBot.attributes_for(:page, map_id: @map.id)
     end
 
     let(:invalid_attributes) do
@@ -31,7 +32,7 @@ RSpec.describe PagesController, type: :controller do
     describe 'GET #index' do
       it 'returns a success response' do
         page = Page.create! valid_attributes
-        get :index, params: { map_id: @map.id }, session: valid_session
+        get :index, params: { locale: I18n.default_locale, map_id: @map.id }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
@@ -39,42 +40,42 @@ RSpec.describe PagesController, type: :controller do
     describe 'GET #images' do
       it 'returns a success response' do
         page = Page.create! valid_attributes
-        get :images, params: { map_id: @map.id, id: page.friendly_id }, session: valid_session
+        get :images, params: { locale: I18n.default_locale, map_id: @map.id, id: page.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
 
     describe 'GET #search' do
       it 'returns a success response' do
-        page = Page.create! valid_attributes
-        get :search, params: { map_id: @map.id, q: { query: 'Nope' } }, session: valid_session
+        Page.create! valid_attributes
+        get :search, params: { locale: I18n.default_locale, map_id: @map.id, q: { query: 'Nope' } }, session: valid_session
         expect(response).to have_http_status(200)
       end
 
       it 'returns a success response' do
-        page = Page.create! valid_attributes
-        place = FactoryBot.create(:place, page_id: page.id, title: 'Test')
-        get :search, params: { map_id: @map.id, q: { query: 'Test' } }, session: valid_session
-        expect(assigns(:places)).to eq([place])
+        Page.create! valid_attributes
+        FactoryBot.create(:page, title: 'Test')
+        get :search, params: { locale: I18n.default_locale, map_id: @map.id, q: { query: 'Test' } }, session: valid_session
+        expect(assigns(:pages)).to eq([page])
       end
     end
 
     describe 'GET #show' do
       it 'returns a success response' do
         page = Page.create! valid_attributes
-        get :show, params: { map_id: @map.friendly_id, id: page.friendly_id }, session: valid_session
+        get :show, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
       end
       it 'returns a redirect to an friendly_id' do
         page = Page.create! valid_attributes
-        get :show, params: { map_id: @map.friendly_id, id: page.id }, session: valid_session
+        get :show, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.id }, session: valid_session
         expect(response).to have_http_status(301)
       end
       it 'returns a no success response (for a non-accesible map)' do
         another_group = FactoryBot.create(:group)
         map = FactoryBot.create(:map, group_id: another_group.id)
         page = FactoryBot.create(:page, map_id: map.id)
-        get :show, params: { map_id: map.friendly_id, id: page.friendly_id }, session: valid_session
+        get :show, params: { locale: I18n.default_locale, map_id: map.friendly_id, id: page.friendly_id }, session: valid_session
         expect(response).to have_http_status(302)
         expect(flash[:notice]).to match 'Sorry, this map could not be found.'
       end
@@ -83,13 +84,13 @@ RSpec.describe PagesController, type: :controller do
     describe 'GET #show as json' do
       it 'returns a success reponse' do
         page = Page.create! valid_attributes
-        get :show, params: { id: page.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
+        get :show, params: { locale: I18n.default_locale, id: page.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
         expect(response).to have_http_status(200)
       end
 
       it 'a page w/title for a published page' do
         page = FactoryBot.create(:page, map_id: @map.id, published: true)
-        get :show, params: { id: page.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
+        get :show, params: { locale: I18n.default_locale, id: page.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
         json = JSON.parse(response.body)
         expect(json['title']).to eq page.title
       end
@@ -97,7 +98,7 @@ RSpec.describe PagesController, type: :controller do
 
     describe 'GET #new' do
       it 'returns a success response' do
-        get :new, params: { map_id: @map.id }, session: valid_session
+        get :new, params: { locale: I18n.default_locale, map_id: @map.id }, session: valid_session
         expect(response).to have_http_status(200)
         expect(response).to render_template(:new)
       end
@@ -106,7 +107,7 @@ RSpec.describe PagesController, type: :controller do
     describe 'GET #edit' do
       it 'returns a success response' do
         page = Page.create! valid_attributes
-        get :edit, params: { map_id: @map.friendly_id, id: page.friendly_id }, session: valid_session
+        get :edit, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
       end
     end
@@ -115,12 +116,12 @@ RSpec.describe PagesController, type: :controller do
       context 'with valid params' do
         it 'creates a new Page' do
           expect do
-            post :create, params: { map_id: @map.friendly_id, page: valid_attributes }, session: valid_session
+            post :create, params: { locale: I18n.default_locale, map_id: @map.friendly_id, page: valid_attributes }, session: valid_session
           end.to change(Page, :count).by(1)
         end
 
         it 'redirects to the map' do
-          post :create, params: { map_id: @map.friendly_id, page: valid_attributes }, session: valid_session
+          post :create, params: { locale: I18n.default_locale, map_id: @map.friendly_id, page: valid_attributes }, session: valid_session
           page = Page.last
           expect(response).to redirect_to(map_page_path(@map.friendly_id, page))
         end
@@ -128,7 +129,7 @@ RSpec.describe PagesController, type: :controller do
 
       context 'with invalid params' do
         it "returns a success response (i.e. to display the 'new' template)" do
-          post :create, params: { map_id: @map.id, page: invalid_attributes }, session: valid_session
+          post :create, params: { locale: I18n.default_locale, map_id: @map.id, page: invalid_attributes }, session: valid_session
           expect(response.status).to eq(200)
         end
       end
@@ -136,7 +137,7 @@ RSpec.describe PagesController, type: :controller do
 
     describe 'PUT #update' do
       let(:image_page) do
-        FactoryBot.create(:page, :with_ltype_image, map_id: @map.id)
+        FactoryBot.create(:page, :with_images, map_id: @map.id)
       end
 
       let(:images_files) do
@@ -154,7 +155,7 @@ RSpec.describe PagesController, type: :controller do
 
         it 'updates the requested page' do
           page = Page.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: page.id, page: new_attributes }, session: valid_session
+          put :update, params: { locale: I18n.default_locale, map_id: @map.id, id: page.id, page: new_attributes }, session: valid_session
           page.reload
           expect(page.title).to eq('OtherTitle')
           expect(page.image_alt).to eq(new_attributes['image_alt'])
@@ -162,7 +163,7 @@ RSpec.describe PagesController, type: :controller do
 
         it 'redirects to the page' do
           page = Page.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: page.id, page: valid_attributes }, session: valid_session
+          put :update, params: { locale: I18n.default_locale, map_id: @map.id, id: page.id, page: valid_attributes }, session: valid_session
           expect(response).to redirect_to(map_page_path(@map.friendly_id, page))
         end
       end
@@ -170,7 +171,7 @@ RSpec.describe PagesController, type: :controller do
       context 'with invalid params' do
         it "returns a success response (i.e. to display the 'edit' template)" do
           page = Page.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: page.friendly_id, page: invalid_attributes }, session: valid_session
+          put :update, params: { locale: I18n.default_locale, map_id: @map.id, id: page.friendly_id, page: invalid_attributes }, session: valid_session
           expect(response.status).to eq(200)
         end
       end
@@ -180,13 +181,13 @@ RSpec.describe PagesController, type: :controller do
       it 'destroys the requested page' do
         page = Page.create! valid_attributes
         expect do
-          delete :destroy, params: { map_id: @map.id, id: page.friendly_id }, session: valid_session
+          delete :destroy, params: { locale: I18n.default_locale, map_id: @map.id, id: page.friendly_id }, session: valid_session
         end.to change(Page, :count).by(-1)
       end
 
       it 'redirects to the pages list' do
         page = Page.create! valid_attributes
-        delete :destroy, params: { map_id: @map.id, id: page.friendly_id }, session: valid_session
+        delete :destroy, params: { locale: I18n.default_locale, map_id: @map.id, id: page.friendly_id }, session: valid_session
         expect(response).to redirect_to(map_url(@map))
       end
     end
@@ -214,7 +215,7 @@ RSpec.describe PagesController, type: :controller do
       end
 
       let(:page) do
-        FactoryBot.create(:page, :with_ltype_image, map_id: @map.id)
+        FactoryBot.create(:page, :with_images, map_id: @map.id)
       end
 
       let(:valid_image_page_attributes) do

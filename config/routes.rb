@@ -44,7 +44,6 @@ Rails.application.routes.draw do
     resources :tags, only: [:index, :show]
     resources :relations
     resources :people
-    resources :pages
     
     resources :layers do
       collection do
@@ -84,7 +83,10 @@ Rails.application.routes.draw do
 
   scope "/:locale" do
     resources :maps do
-      resources :pages
+      resources :pages do  
+        resources :images
+        resources :videos
+      end
     end
     scope "/:layer_id" do
       resources :submissions, :controller => "public/submissions", only: [:new, :create, :edit, :update, :index] do

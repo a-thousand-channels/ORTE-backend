@@ -11,6 +11,9 @@
     = link_to edit_map_path(@map) do
       %i.fi-pencil.fi-24
 
+  %p 
+    Locale: 
+    = I18n.locale
   - if @map.places.all_tags
     %div.tags
       - @map.places.all_tags.each do |tag|
@@ -30,9 +33,15 @@
             List of all tags
       = render 'layers/partials/searchform', object: @map
     .cell.medium-5
+      - if @map.pages.count > 0
+        %p.text-right.hint
+          = link_to map_pages_path(I18n.locale, @map) do
+            Pages of this map 
+            (#{@map.pages.size})
       %p.text-right.hint
         = link_to map_people_path(@map) do
-          Persons of this map
+          Persons of this map 
+          (#{@map.people.size})
       %p.text-right.hint
         = link_to map_relations_path(@map) do
           Relations in this map
