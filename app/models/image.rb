@@ -20,6 +20,15 @@ class Image < ApplicationRecord
   scope :preview, ->(place_id) { where(place_id: place_id, preview: true) }
   scope :without_attached_file, -> { left_joins(:file_attachment).where('active_storage_attachments.id IS NULL') }
 
+  # defs to maintain old accesors
+  def place
+    imageable if imageable.is_a?(Place)
+  end
+
+  def page
+    imageable if imageable.is_a?(Page)
+  end
+
   def image_filename
     file.filename if file&.attached?
   end

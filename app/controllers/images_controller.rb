@@ -6,7 +6,6 @@ class ImagesController < ApplicationController
   # GET /images
   # GET /images.json
   def index
-    @place = Place.where(id: params[:place_id]).first
     redirect_to root_url, notice: 'No place defined for showing this image' if !@place || @place.layer.map.group != current_user.group
     @images = Image.where(place_id: @place_id)
   end
@@ -21,9 +20,14 @@ class ImagesController < ApplicationController
   def new
     @image = Image.new
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layer = Layer.friendly.find(params[:layer_id])
-    @place = Place.find(params[:place_id])
-    redirect_to root_url, notice: 'No place defined for adding an image' unless @place || (@place && @place.layer.map.group == current_user.group)
+    if params[:page_id].present?
+      @page = Page.friendly.find(params[:page_id])
+      redirect_to root_url, notice: 'No page defined for adding an image' unless @page || (@page && @page.map.group == current_user.group)
+    else
+      @place = Place.find(params[:place_id])
+      @layer = @place.layer
+      redirect_to root_url, notice: 'No place defined for adding an image' unless @place || (@place && @place.layer.map.group == current_user.group)
+    end
   end
 
   # GET /images/1/edit

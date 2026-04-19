@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_13_174904) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -203,6 +203,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_13_174904) do
     t.string "marker_display_mode", default: "cluster"
     t.boolean "enable_historical_maps", default: false
     t.boolean "enable_time_slider", default: false
+    t.boolean "exif_remove", default: true
+    t.boolean "rasterize_images", default: false
+    t.string "primary_language"
+    t.string "available_languages"
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
