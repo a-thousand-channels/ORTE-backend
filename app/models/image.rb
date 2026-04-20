@@ -16,8 +16,9 @@ class Image < ApplicationRecord
 
   scope :for, ->(record) { where(imageable: record) }
   scope :sorted, -> { order(sorting: :asc) }
-  scope :sorted_by_place, ->(place_id) { where(place_id: place_id).order(sorting: :asc) }
-  scope :preview, ->(place_id) { where(place_id: place_id, preview: true) }
+  scope :sorted_by_place, ->(place_id) { where(imageable_type: 'Place', imageable_id: place_id).order(sorting: :asc) }
+  scope :sorted_by_page, ->(page_id) { where(imageable_type: 'Page', imageable_id: page_id).order(sorting: :asc) }
+  scope :preview, ->(place_id) { where(imageable_type: 'Place', imageable_id: place_id, preview: true) }
   scope :without_attached_file, -> { left_joins(:file_attachment).where('active_storage_attachments.id IS NULL') }
 
   # defs to maintain old accesors

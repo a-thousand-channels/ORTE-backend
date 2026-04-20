@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ImagesController < ApplicationController
+  before_action :set_locale
   before_action :set_image, only: %i[show edit update destroy]
 
   # GET /images
@@ -21,6 +22,7 @@ class ImagesController < ApplicationController
     @image = Image.new
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     if params[:page_id].present?
+      @locale = params[:locale]
       @page = Page.friendly.find(params[:page_id])
       redirect_to root_url, notice: 'No page defined for adding an image' unless @page || (@page && @page.map.group == current_user.group)
     else
@@ -32,8 +34,14 @@ class ImagesController < ApplicationController
 
   # GET /images/1/edit
   def edit
-    @place = @image.place
-    redirect_to root_url, notice: 'No valid place defined for editing an mage' unless @place || (@place && @place.layer.map.group == current_user.group)
+    if params[:page_id].present?
+      @locale = params[:locale]
+      @page = @image.page
+      redirect_to root_url, notice: 'No valid page defined for editing an mage' unless @page || (@page && @page.layer.map.group == current_user.group)
+    else
+      @place = @image.place
+      redirect_to root_url, notice: 'No valid place defined for editing an mage' unless @place || (@place && @place.layer.map.group == current_user.group)
+    end
   end
 
   # POST /images
@@ -41,13 +49,24 @@ class ImagesController < ApplicationController
   def create
     @image = Image.new(image_params)
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layer = Layer.friendly.find(params[:layer_id])
-    @place = Place.find(params[:place_id])
+    if params[:page_id].present?
+      @locale = params[:locale]
+      @page = Page.friendly.find(params[:page_id])
+    else
+      @layer = Layer.friendly.find(params[:layer_id])
+      @place = Place.find(params[:place_id])
+    end
+    puts "image_params: #{image_params.inspect}"
     respond_to do |format|
       if @image.save
-        format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map, @image.place.layer, @image.place), notice: 'Image was successfully created.' }
+        if params[:page_id].present?
+          format.html { redirect_to edit_map_page_path(@locale, @image.page.map, @image.page), notice: 'Image was successfully created.' }
+        else
+          format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map, @image.place.layer, @image.place), notice: 'Image was successfully created.' }
+        end
         format.json { render :show, status: :created, location: @image }
       else
+        puts "image errors: #{@image.errors.full_messages.join(', ')}"
         format.html { render :new }
         format.json { render json: @image.errors, status: :unprocessable_entity }
       end
@@ -79,6 +98,10 @@ class ImagesController < ApplicationController
 
   private
 
+  def set_locale
+    I18n.locale = params[:locale] || I18n.default_locale
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_image
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
@@ -89,6 +112,6 @@ class ImagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def image_params
-    params.require(:image).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file, :itype)
+    params.require(:image).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file, :itype, :imageable_id, :imageable_type)
   end
 end

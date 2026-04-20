@@ -1,7 +1,11 @@
-= simple_form_for([@map,@page,@image]) do |f|
+
+- image_url = @image.new_record? ? map_page_images_path(@map, @page, locale: @locale) : map_page_image_path(@map, @page, @image, locale: @locale)
+= simple_form_for(@image, url: image_url) do |f|
+
   .grid-x
     .large-12.cell
       = f.error_notification
+      = f.input :locale, as: :hidden, input_html: { value: @locale }
       = f.input :imageable_id, as: :hidden, input_html: { value: @page.id }
       = f.input :imageable_type, as: :hidden, input_html: { value: 'Page' }  
 
@@ -75,6 +79,7 @@
 
 
       .form-actions
-        = f.button :submit, :class => "button"
+        = f.button :submit, :class => "button", value: @image.new_record? ? "Add image" : "Update image"
+
     .large-2.cell
       &nbsp;

@@ -27,6 +27,6 @@
 		= render 'form_for_places'
 	
 	- if @page
-		= link_to 'Back to page', edit_map_page_path(@page.map,@page), class: 'button secondary'
+		= link_to 'Back to page', map_page_path(params[:locale],@page.map,@page), class: 'button secondary'
 	- else 
 		= link_to 'Back to place', edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: 'button secondary'

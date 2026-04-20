@@ -3,11 +3,10 @@
 class PagesController < ApplicationController
   include ImportContextHelper
 
+  # before_action :redirect_to_localized_url
   before_action :set_locale
   before_action :set_page, only: %i[show edit update destroy]
   before_action :redirect_to_friendly_id, only: %i[show]
-
-  # before_action :redirect_to_localized_url
 
   protect_from_forgery except: :show
 
@@ -119,15 +118,11 @@ class PagesController < ApplicationController
   def redirect_to_localized_url
     puts "Current locale: #{I18n.locale}, Request path: #{request.path}"
     puts "Locale in params: #{params[:locale]}"
-    return if params[:locale].present? || request.path.starts_with?('/rails/')
+    return if params[:locale].present?
 
     default_locale = I18n.default_locale
     path = request.path_info
     new_path = "/#{default_locale}#{path}"
-
-    # Avoid infinite redirects for root path or API routes if needed
-    return if path == '/' || path.starts_with?('/api/')
-
     redirect_to new_path, status: 301
   end
 

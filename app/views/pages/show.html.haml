@@ -8,8 +8,9 @@
         %i.fi.fi-x
 
   .grid-x.grid-padding-x
-    - images = Image.sorted_by_place(@page.id)
-    - if images.count > 0
+    - images = Image.sorted_by_page(@page.id)
+    = images.size
+    - if images.size > 0
       - textcol = 8
       .cell.small-12.medium-12
         
@@ -26,13 +27,14 @@
                 &#9654;&#xFE0E;
             %ul.orbit-container          
               - images.each do |img|
-                - if img.attached?
+                
+                - if img.file.attached?
                   - filename = ActiveStorage::Blob.service.path_for(img.key)
                   - if File.exist?(filename)
                     - if img.preview.present?
                       %li.orbit-slide{"data-open": "reveal#{img.id}"}
                         %figure.orbit-figure
-                          - if img.place.layer.rasterize_images && img.itype == 'image'
+                          - if img.page.map.rasterize_images && img.itype == 'image'
                             = image_tag(img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, class: "orbit-image", alt: img.alt )
                           - else
                             = image_tag(img.file.variant(resize: "1200x1200").processed, class: "orbit-image", alt: img.alt)
@@ -40,7 +42,7 @@
                     - else
                       %li.orbit-slide{"data-open": "reveal#{img.id}"}
                         %figure.orbit-figure
-                          - if img.place.layer.rasterize_images && img.itype == 'image'
+                          - if img.page.map.rasterize_images && img.itype == 'image'
                             = image_tag(img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, class: "orbit-image", alt: img.alt)
                           - else
                             = image_tag(img.file.variant(resize: "1200x1200").processed, class: "orbit-image", alt: img.alt )
@@ -49,12 +51,13 @@
                     %p
                       No image uploaded, please do so
 
+                    
           - images.each do |img|
             .reveal{id: "reveal#{img.id}", "data-reveal": true, "data-animation-in": "fade-in", "data-animation-out": "fade-out"}
               - if img.file.attached?
                 - filename = ActiveStorage::Blob.service.path_for(img.key)
                 - if File.exist?(filename)
-                  - if img.place.layer.rasterize_images && img.itype == 'image'
+                  - if img.page.map.rasterize_images && img.itype == 'image'
                     = image_tag img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, alt: img.alt
                   - else
                     = image_tag img.file.variant(resize: "1200x1200").processed, alt: img.alt
@@ -64,7 +67,7 @@
               - else
                 %p
                   No image uploaded, please do so
-    - videos = Video.where(place_id: @page.id)
+    - videos = Video.where(videoable_type: 'Page', videoable_id: @page.id)
     - if videos.count > 0
       - textcol = 8
       .cell.small-4.medium-4
