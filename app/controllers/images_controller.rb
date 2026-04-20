@@ -7,14 +7,28 @@ class ImagesController < ApplicationController
   # GET /images
   # GET /images.json
   def index
-    redirect_to root_url, notice: 'No place defined for showing this image' if !@place || @place.layer.map.group != current_user.group
-    @images = Image.where(place_id: @place_id)
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    if params[:page_id].present?
+      @locale = params[:locale]
+      @page = Page.friendly.find(params[:page_id])
+      redirect_to root_url, notice: 'No page defined for showing this image' if !@page || @page.map.group != current_user.group
+      @images = Image.where(imageable_type: 'Page', imageable_id: @page.id)
+    else
+      @layer = Layer.friendly.find(params[:layer_id])
+      @place = Place.find(params[:place_id])
+      redirect_to root_url, notice: 'No place defined for showing this image' if !@place || @place.layer.map.group != current_user.group
+      @images = Image.where(imageable_type: 'Place', imageable_id: @place.id)
+    end
   end
 
   # GET /images/1
   # GET /images/1.json
   def show
-    redirect_to root_url, notice: "You are not allowed for viewing this image #{current_user.group.title}" if @image.place.layer.map.group != current_user.group && current_user.group.title != 'Admins'
+    if params[:page_id].present?
+      redirect_to root_url, notice: 'No valid page defined for showing this image' unless @page || (@page && @page.map.group == current_user.group && current_user.group.title != 'Admins')
+    else
+      redirect_to root_url, notice: 'No valid place defined for showing this image' unless @place || (@place && @place.layer.map.group == current_user.group && current_user.group.title != 'Admins')
+    end
   end
 
   # GET /images/new
@@ -56,17 +70,16 @@ class ImagesController < ApplicationController
       @layer = Layer.friendly.find(params[:layer_id])
       @place = Place.find(params[:place_id])
     end
-    puts "image_params: #{image_params.inspect}"
     respond_to do |format|
       if @image.save
         if params[:page_id].present?
-          format.html { redirect_to edit_map_page_path(@locale, @image.page.map, @image.page), notice: 'Image was successfully created.' }
+          format.html { redirect_to edit_map_page_path(@locale, @page.map, @page), notice: 'Image was successfully created.' }
         else
-          format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map, @image.place.layer, @image.place), notice: 'Image was successfully created.' }
+          format.html { redirect_to edit_map_layer_place_path(@place.layer.map, @place.layer, @place), notice: 'Image was successfully created.' }
         end
         format.json { render :show, status: :created, location: @image }
       else
-        puts "image errors: #{@image.errors.full_messages.join(', ')}"
+        # puts "image errors: #{@image.errors.full_messages.join(', ')}"
         format.html { render :new }
         format.json { render json: @image.errors, status: :unprocessable_entity }
       end
@@ -79,7 +92,11 @@ class ImagesController < ApplicationController
     params[:image][:preview] = default_checkbox?(params[:image][:preview])
     respond_to do |format|
       if @image.update(image_params)
-        format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map, @image.place.layer, @image.place), notice: 'Image was successfully updated.' }
+        if params[:page_id].present?
+          format.html { redirect_to edit_map_page_path(@locale, @page.map, @page), notice: 'Image was successfully updated.' }
+        else
+          format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map, @image.place.layer, @image.place), notice: 'Image was successfully updated.' }
+        end
       else
         format.html { render :edit }
       end
@@ -91,7 +108,11 @@ class ImagesController < ApplicationController
   def destroy
     @image.destroy
     respond_to do |format|
-      format.html { redirect_to edit_map_layer_place_path(@image.place.layer.map, @image.place.layer, @image.place), notice: 'Image was successfully destroyed.' }
+      if params[:page_id].present?
+        format.html { redirect_to edit_map_page_path(@locale, @page.map, @page), notice: 'Image was successfully destroyed.' }
+      else
+        format.html { redirect_to edit_map_layer_place_path(@place.layer.map, @place.layer, @place), notice: 'Image was successfully destroyed.' }
+      end
       format.json { head :no_content }
     end
   end
@@ -105,8 +126,13 @@ class ImagesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_image
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
-    @layer = Layer.friendly.find(params[:layer_id])
-    @place = Place.find(params[:place_id])
+    if params[:page_id].present?
+      @locale = params[:locale]
+      @page = Page.friendly.find(params[:page_id])
+    else
+      @layer = Layer.friendly.find(params[:layer_id])
+      @place = Place.find(params[:place_id])
+    end
     @image = Image.find(params[:id])
   end
 
