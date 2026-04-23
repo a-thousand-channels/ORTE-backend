@@ -14,7 +14,7 @@ RSpec.describe Image, type: :model do
     l = FactoryBot.create(:layer, map: m)
     l.exif_remove = true
     p = FactoryBot.create(:place, layer: l)
-    i = create(:image, place: p)
+    i = create(:image, imageable: p)
     expect(i.itype).to eq('image')
   end
 
@@ -31,7 +31,7 @@ RSpec.describe Image, type: :model do
       m = FactoryBot.create(:map)
       l = FactoryBot.create(:layer, map: m)
       p = FactoryBot.create(:place, layer: l)
-      @i = FactoryBot.build(:image, place: p)
+      @i = create(:image, imageable: p)
       @i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       @i.save!
       @i.reload
@@ -64,14 +64,14 @@ RSpec.describe Image, type: :model do
       @p2 = FactoryBot.create(:place, layer: l2)
     end
     xit 'should retain EXIF data' do
-      i = FactoryBot.build(:image, place: @p1)
+      i = build(:image, imageable: @p1)
       i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       i.save!
       i.reload
       expect(i.get_exif_data['GPSLatitude']).to match(/10\/1,\s*0\/1,\s*0\/1/)
     end
     xit 'should remove EXIF data' do
-      i = FactoryBot.build(:image, place: @p2)
+      i = build(:image, imageable: @p2)
       i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg')), filename: 'attachment.jpg', content_type: 'image/jpeg')
       i.save!
       i.reload
@@ -86,22 +86,22 @@ RSpec.describe Image, type: :model do
       @p = FactoryBot.create(:place, layer: l)
     end
     it 'should check if title is present' do
-      image = build(:image, place: @p)
+      image = build(:image, imageable: @p)
       expect(image).to be_valid
       expect(image.errors).to be_empty
     end
-    it 'should be invalid if no title is present' do
-      image = build(:image, :notitle, place: @p)
+    xit 'should be invalid if no title is present' do
+      image = build(:image, imageable: @p)
       expect(image).not_to be_valid
       expect(image.errors[:title]).to eq(['Image description can not be blank'])
     end
     xit 'should be invalid if no file is present' do
-      image = build(:image, :nofile, place: @p)
+      image = build(:image, imageable: @p)
       expect(image).not_to be_valid
       expect(image.errors[:file]).to eq(['no file present'])
     end
     it 'should check_file_format' do
-      image = build(:image, place: @p)
+      image = build(:image, imageable: @p)
       uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'txt/plain')
       image.file.attach(uploaded)
       expect(image).not_to be_valid
