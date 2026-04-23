@@ -304,7 +304,8 @@ RSpec.describe LayersController, type: :controller do
       end
     end
 
-    describe 'POST #create with image layer', skip: 'Fix CI Testing for Exif values' do
+    describe 'POST #create with image layer' do
+      # , skip: 'Fix CI Testing for Exif values' do
       let(:image_layer) do
         FactoryBot.create(:layer, :with_ltype_image, map_id: @map.id)
       end
@@ -325,9 +326,10 @@ RSpec.describe LayersController, type: :controller do
         before do
           # HINT: none-model values must be merge into the factory here
           valid_image_layer_attributes.merge!(images_files: images_files)
+          valid_image_layer_attributes[:ltype] = 'image'
         end
 
-        it 'creates a new Layer' do
+        it 'creates a new Layer', focus: true do
           expect do
             post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
           end.to change(Layer, :count).by(1)
@@ -354,7 +356,6 @@ RSpec.describe LayersController, type: :controller do
 
         it 'redirects to the map' do
           post :create, params: { map_id: @map.friendly_id, layer: valid_image_layer_attributes }, session: valid_session
-          layer = Layer.last
           expect(response).to render_template(:new)
         end
       end
@@ -375,21 +376,23 @@ RSpec.describe LayersController, type: :controller do
 
       context 'with valid params' do
         let(:new_attributes) do
-          FactoryBot.build(:layer, :changed, map_id: @map.id).attributes
+          FactoryBot.build(:layer, :changed_with_ltype_image, map_id: @map.id).attributes
+        end
+
+        before do
+          new_attributes.merge!(images_files: images_files)
         end
 
         it 'updates the requested layer' do
-          layer = Layer.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: layer.id, layer: new_attributes }, session: valid_session
-          layer.reload
-          expect(layer.title).to eq('OtherTitle')
-          expect(layer.image_alt).to eq(new_attributes['image_alt'])
+          put :update, params: { map_id: @map.id, id: image_layer.id, layer: new_attributes }, session: valid_session
+          image_layer.reload
+          expect(image_layer.title).to eq('OtherTitle')
+          expect(image_layer.image_alt).to eq(new_attributes['image_alt'])
         end
 
         it 'redirects to the layer' do
-          layer = Layer.create! valid_attributes
-          put :update, params: { map_id: @map.id, id: layer.id, layer: valid_attributes }, session: valid_session
-          expect(response).to redirect_to(map_layer_path(@map.friendly_id, layer))
+          put :update, params: { map_id: @map.id, id: image_layer.id, layer: new_attributes }, session: valid_session
+          expect(response).to redirect_to(map_layer_path(@map.friendly_id, image_layer))
         end
       end
 
@@ -444,7 +447,7 @@ RSpec.describe LayersController, type: :controller do
       end
 
       let(:valid_image_layer_attributes) do
-        layer.attributes
+        FactoryBot.build(:layer, :with_ltype_image, map_id: @map.id).attributes
       end
 
       context 'with valid image files' do

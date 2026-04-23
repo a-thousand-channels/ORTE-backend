@@ -79,6 +79,11 @@ FactoryBot.define do
       title { 'OtherTitle' }
     end
 
+    trait :changed_with_ltype_image do
+      ltype { 'image' }
+      title { 'OtherTitle' }
+    end
+
     trait :geojson do
       ltype { 'geojson' }
     end
