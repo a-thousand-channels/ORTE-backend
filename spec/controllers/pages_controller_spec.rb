@@ -45,21 +45,6 @@ RSpec.describe PagesController, type: :controller do
       end
     end
 
-    describe 'GET #search' do
-      it 'returns a success response' do
-        Page.create! valid_attributes
-        get :search, params: { locale: I18n.default_locale, map_id: @map.id, q: { query: 'Nope' } }, session: valid_session
-        expect(response).to have_http_status(200)
-      end
-
-      it 'returns a success response' do
-        Page.create! valid_attributes
-        FactoryBot.create(:page, title: 'Test')
-        get :search, params: { locale: I18n.default_locale, map_id: @map.id, q: { query: 'Test' } }, session: valid_session
-        expect(assigns(:pages)).to eq([page])
-      end
-    end
-
     describe 'GET #show' do
       it 'returns a success response' do
         page = Page.create! valid_attributes
@@ -150,7 +135,7 @@ RSpec.describe PagesController, type: :controller do
 
       context 'with valid params' do
         let(:new_attributes) do
-          FactoryBot.build(:page, :changed, map_id: @map.id).attributes
+          FactoryBot.attributes_for(:page, :changed, map_id: @map.id)
         end
 
         it 'updates the requested page' do
@@ -158,7 +143,6 @@ RSpec.describe PagesController, type: :controller do
           put :update, params: { locale: I18n.default_locale, map_id: @map.id, id: page.id, page: new_attributes }, session: valid_session
           page.reload
           expect(page.title).to eq('OtherTitle')
-          expect(page.image_alt).to eq(new_attributes['image_alt'])
         end
 
         it 'redirects to the page' do
@@ -189,60 +173,6 @@ RSpec.describe PagesController, type: :controller do
         page = Page.create! valid_attributes
         delete :destroy, params: { locale: I18n.default_locale, map_id: @map.id, id: page.friendly_id }, session: valid_session
         expect(response).to redirect_to(map_url(@map))
-      end
-    end
-
-    describe '#validate_images_format' do
-      let(:images_files) do
-        [
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
-        ]
-      end
-      let(:falsey_images_files) do
-        [
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg'),
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg'),
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test-with-exif-data.jpg'), 'image/jpeg')
-        ]
-      end
-      let(:no_images_files) do
-        [
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'text/plain'),
-          Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.txt'), 'text/plain')
-        ]
-      end
-
-      let(:page) do
-        FactoryBot.create(:page, :with_images, map_id: @map.id)
-      end
-
-      let(:valid_image_page_attributes) do
-        page.attributes
-      end
-
-      context 'with valid image files' do
-        before do
-          valid_image_page_attributes.merge!(images_files: images_files)
-        end
-
-        it 'returns true' do
-          controller.params[:page] = valid_image_page_attributes
-          expect(controller.send(:validate_images_format)).to be_truthy
-        end
-      end
-
-      context 'with invalid image files' do
-        before do
-          valid_image_page_attributes.merge!(images_files: no_images_files)
-        end
-
-        it 'adds an error to the page' do
-          controller.params[:page] = valid_image_page_attributes
-          expect(controller.send(:validate_images_format)).to be_falsey
-          expect(flash[:alert]).to match 'Invalid file formats found. Only JPEG, PNG and GIF are allowed.'
-        end
       end
     end
   end

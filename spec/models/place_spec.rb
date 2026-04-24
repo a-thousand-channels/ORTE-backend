@@ -140,7 +140,7 @@ RSpec.describe Place, type: :model do
     p1 = FactoryBot.create(:place, layer: l)
     expect(p1.imagelink2).not_to eq(p1.imagelink)
     p2 = FactoryBot.create(:place, layer: l)
-    i = build(:image, :preview, place: p2)
+    i = build(:image, :preview, imageable: p2)
     i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
     i.save!
     expect(p2.imagelink2).not_to eq(p2.imagelink)

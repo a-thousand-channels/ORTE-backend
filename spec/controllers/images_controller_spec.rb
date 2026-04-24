@@ -97,7 +97,7 @@ RSpec.describe ImagesController, type: :controller do
           expect(response).to have_http_status(302)
         end
 
-        it 'redirects to related place url', focus: true do
+        it 'redirects to related place url' do
           post :create, params: { image: valid_attributes, place_id: @place.id, layer_id: @layer.id, map_id: @map.id }, session: valid_session
           expect(response).to redirect_to(edit_map_layer_place_url(@map, @layer, @place))
         end

@@ -95,7 +95,7 @@ RSpec.describe ImagesController, type: :controller do
           expect(response).to have_http_status(302)
         end
 
-        it 'redirects to related page url', focus: true do
+        it 'redirects to related page url' do
           post :create, params: { locale: I18n.default_locale, image: valid_attributes, page_id: @page.id, map_id: @map.id }, session: valid_session
           expect(response).to redirect_to(edit_map_page_url(locale: I18n.default_locale, map: @map, page: @page))
         end
