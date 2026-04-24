@@ -1,9 +1,10 @@
 - content_for(:title) { "#{@page.title} — #{@page.map.title}" }
+- current_locale = I18n.locale || I18n.default_locale
 
 #info-wrapper{}
 
   %p.text-right.close_link_wrapper
-    = link_to map_pages_url(@page.map), :class=>"close-link", "aria-label"=>"Close back" do
+    = link_to map_pages_url(locale: current_locale, map_id: @page.map), :class=>"close-link", "aria-label"=>"Close back" do
       %span{"aria-hidden"=>"true"}
         %i.fi.fi-x
 
@@ -87,13 +88,13 @@
         = link_to map_url(@page.map) do
           = @page.map.title 
         \—          
-        = link_to map_pages_url(@page.map) do
+        = link_to map_pages_url(locale: current_locale, map_id: @page.map) do
           Pages
 
 
       %h1
         = @page.title
-        = link_to edit_map_page_path(@page.map, @page) do
+        = link_to edit_map_page_path(locale: current_locale, map_id: @page.map, id: @page) do
           %i.fi.fi-pencil.fi-24
       - if @page.subtitle.present?
         %p

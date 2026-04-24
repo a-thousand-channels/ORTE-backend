@@ -1,4 +1,7 @@
-= simple_form_for([@map, @page]) do |f|
+
+- current_locale = @locale || I18n.locale || I18n.default_locale
+- page_url = @page.new_record? ? map_pages_path(@map, locale: current_locale) : map_page_path(@map, @page, locale: current_locale)
+= simple_form_for(@page, url: page_url) do |f|
   .grid-x
     .large-12.cell
       = f.error_notification

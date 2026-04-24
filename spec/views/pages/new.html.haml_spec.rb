@@ -19,7 +19,7 @@ RSpec.describe 'pages/new', type: :view do
   it 'renders new page form' do
     render
 
-    assert_select 'form[action=?][method=?]', map_pages_path(@map.friendly_id), 'post' do
+    assert_select 'form[action=?][method=?]', map_pages_path(locale: I18n.default_locale, map_id: @map.friendly_id), 'post' do
       assert_select 'input[name=?]', 'page[title]'
     end
   end

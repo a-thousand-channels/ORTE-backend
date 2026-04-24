@@ -3,6 +3,7 @@
 class ImagesController < ApplicationController
   before_action :set_locale
   before_action :set_image, only: %i[show edit update destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
 
   # GET /images
   # GET /images.json
@@ -25,9 +26,11 @@ class ImagesController < ApplicationController
   # GET /images/1.json
   def show
     if params[:page_id].present?
-      redirect_to root_url, notice: 'No valid page defined for showing this image' unless @page || (@page && @page.map.group == current_user.group && current_user.group.title != 'Admins')
+      allowed = current_user.group.title == 'Admins' || (@page && @page.map.group == current_user.group && @image.page == @page)
+      redirect_to root_url, notice: 'No valid page defined for showing this image' unless allowed
     else
-      redirect_to root_url, notice: 'No valid place defined for showing this image' unless @place || (@place && @place.layer.map.group == current_user.group && current_user.group.title != 'Admins')
+      allowed = current_user.group.title == 'Admins' || (@place && @place.layer.map.group == current_user.group && @image.place == @place)
+      redirect_to root_url, notice: 'No valid place defined for showing this image' unless allowed
     end
   end
 
@@ -139,5 +142,9 @@ class ImagesController < ApplicationController
   # Only allow a list of trusted parameters through.
   def image_params
     params.require(:image).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file, :itype, :imageable_id, :imageable_type)
+  end
+
+  def handle_record_not_found
+    redirect_to root_url, alert: 'Resource not found'
   end
 end

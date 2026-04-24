@@ -83,7 +83,10 @@ Rails.application.routes.draw do
 
   scope "/:locale" do
     resources :maps do
-      resources :pages do  
+      resources :pages do
+        member do
+          get :images, path: 'images_overview'
+        end
         resources :images
         resources :videos
       end

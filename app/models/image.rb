@@ -6,6 +6,7 @@ class Image < ApplicationRecord
   attr_accessor :skip_beforesave_callback
 
   before_save :strip_exif_data, unless: :skip_beforesave_callback
+  before_validation :normalize_imageable_type
 
   has_one_attached :file
   delegate_missing_to :file
@@ -26,8 +27,16 @@ class Image < ApplicationRecord
     imageable if imageable.is_a?(Place)
   end
 
+  def place=(record)
+    self.imageable = record
+  end
+
   def page
     imageable if imageable.is_a?(Page)
+  end
+
+  def page=(record)
+    self.imageable = record
   end
 
   def image_filename
@@ -101,6 +110,10 @@ class Image < ApplicationRecord
     tmp_image.write attachment_path
     self.skip_beforesave_callback = true
     file.attach(io: File.open(attachment_path), filename: file.filename)
+  end
+
+  def normalize_imageable_type
+    self.imageable_type = imageable_type.classify if imageable_type.present?
   end
 
   def check_file_presence

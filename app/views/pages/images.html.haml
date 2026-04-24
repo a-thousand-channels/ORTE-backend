@@ -9,28 +9,26 @@
     = link_to map_page_path(@map,@page) do
       = @page.title
     %hr
-  - @page.places.each_slice(4) do | batch |
+  - @page.images.sorted.each_slice(4) do |batch|
     .grid-x.grid-padding-x.grid-images
-      - batch.each do | place |
+      - batch.each do |img|
         .cell.small-12.medium-3.large-3
           %div.gallery
-            = link_to map_page_place_path(@map,@page,place) do
-              = place.title
+            = link_to map_page_image_path(@map, @page, img) do
+              = img.title
             %hr
 
-            - if place.images.count > 0
-              - place.images.each do |img|
-                - if img.attached? && ActiveStorage::Blob.service.exist?(img.blob.key)
-                  - if img.preview.present?
-                    %p{"data-open": "reveal#{img.id}"}
-                      = link_to map_page_place_image_path(place.page.map,place.page,place,img), class: "thumbnail thumbnail-preview" do
-                        = image_tag img.file.variant(resize: "400x400").processed
-                        = image_tag img.file.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
-                  - else
-                    %p{"data-open": "reveal#{img.id}"}
-                      = link_to map_page_place_image_path(place.page.map,place.page,place,img), class: "thumbnail" do
-                        = image_tag img.file.variant(resize: "400x400").processed
-                        = image_tag img.file.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
+            - if img.attached? && ActiveStorage::Blob.service.exist?(img.blob.key)
+              - if img.preview.present?
+                %p{"data-open": "reveal#{img.id}"}
+                  = link_to map_page_image_path(@map, @page, img), class: "thumbnail thumbnail-preview" do
+                    = image_tag img.file.variant(resize: "400x400").processed
+                    = image_tag img.file.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
+              - else
+                %p{"data-open": "reveal#{img.id}"}
+                  = link_to map_page_image_path(@map, @page, img), class: "thumbnail" do
+                    = image_tag img.file.variant(resize: "400x400").processed
+                    = image_tag img.file.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
             - else
               %p.small.shy No images (yet)
 

@@ -14,11 +14,11 @@ RSpec.describe VideosController, type: :controller do
     end
 
     let(:video) do
-      FactoryBot.create(:video, :with_file, place_id: @place.id)
+      FactoryBot.create(:video, :with_file, videoable_type: 'Place', videoable_id: @place.id)
     end
 
     let(:valid_attributes) do
-      FactoryBot.attributes_for(:video, :with_file, place_id: @place.id)
+      FactoryBot.attributes_for(:video, :with_file, videoable_type: 'Place', videoable_id: @place.id)
     end
 
     let(:invalid_attributes) do
@@ -26,11 +26,11 @@ RSpec.describe VideosController, type: :controller do
     end
 
     let(:without_file_attributes) do
-      FactoryBot.attributes_for(:video, :without_file, place_id: @place.id)
+      FactoryBot.attributes_for(:video, :without_file, videoable_type: 'Place', videoable_id: @place.id)
     end
 
     let(:with_wrong_fileformat_attributes) do
-      FactoryBot.attributes_for(:video, :with_wrong_fileformat, place_id: @place.id)
+      FactoryBot.attributes_for(:video, :with_wrong_fileformat, videoable_type: 'Place', videoable_id: @place.id)
     end
 
     let(:valid_session) { {} }
@@ -131,7 +131,7 @@ RSpec.describe VideosController, type: :controller do
     describe 'PUT #update' do
       context 'with valid params' do
         let(:new_attributes) do
-          FactoryBot.attributes_for(:video, :changed, place_id: @place.id)
+          FactoryBot.attributes_for(:video, :changed, videoable_type: 'Place', videoable_id: @place.id)
         end
 
         it 'updates the requested video' do

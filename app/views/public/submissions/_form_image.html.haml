@@ -1,5 +1,6 @@
 = simple_form_for [@map, @submission, @place, @image], :url => {:action => "create_image"} do |f|
-  = f.association :place, as: :hidden, :input_html => { :value => @place.id }
+  = f.input :imageable_type, as: :hidden, input_html: { value: 'Place' }
+  = f.input :imageable_id, as: :hidden, input_html: { value: @place.id }
   = f.input 'image_input', as: :hidden, :input_html => {:name => 'image_input', :value => params[:image_input],:id => "image_input" }
   = render partial: 'form_head', locals: { :menu_index => 2 }
   = render partial: 'form_menu', locals: { :menu_index => 2 }

@@ -19,6 +19,7 @@ class PagesController < ApplicationController
 
   def images
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
+    @page = Page.friendly.find(params[:id])
   end
 
   def fetch_pages
@@ -109,6 +110,7 @@ class PagesController < ApplicationController
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
+    @locale = I18n.locale
   end
 
   def default_url_options
@@ -139,13 +141,13 @@ class PagesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_page
-    puts "Finding map with slug: #{params[:map_id]} or id: #{params[:map_id]}"
+    # puts "Finding map with slug: #{params[:map_id]} or id: #{params[:map_id]}"
     @map = Map.by_user(current_user).find_by_slug(params[:map_id]) || Map.by_user(current_user).find_by_id(params[:map_id])
     @page = Page.friendly.find(params[:id])
-    puts "Found map: #{@map&.id}, Found page: #{@page&.id}"
+    # puts "Found map: #{@map&.id}, Found page: #{@page&.id}"
   end
 
   def page_params
-    params.require(:page).permit(:title, :subtitle, :teaser, :text, :published, :map_id, images_files: [])
+    params.require(:page).permit(:title, :subtitle, :teaser, :text, :published, :map_id, :locale, images_files: [])
   end
 end

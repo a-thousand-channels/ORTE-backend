@@ -97,7 +97,7 @@ RSpec.describe ImagesController, type: :controller do
 
         it 'redirects to related page url' do
           post :create, params: { locale: I18n.default_locale, image: valid_attributes, page_id: @page.id, map_id: @map.id }, session: valid_session
-          expect(response).to redirect_to(edit_map_page_url(locale: I18n.default_locale, map: @map, page: @page))
+          expect(response).to redirect_to(edit_map_page_url(locale: I18n.default_locale, map_id: @map, id: @page))
         end
       end
 
@@ -142,7 +142,7 @@ RSpec.describe ImagesController, type: :controller do
         it 'redirects to the page' do
           image = Image.create! valid_attributes
           put :update, params: { locale: I18n.default_locale, id: image.to_param, image: valid_attributes, page_id: @page.id, map_id: @map.id }, session: valid_session
-          expect(response).to redirect_to(edit_map_page_url(locale: I18n.default_locale, map: @map, page: @page))
+          expect(response).to redirect_to(edit_map_page_url(locale: I18n.default_locale, map_id: @map, id: @page))
         end
       end
 
@@ -166,7 +166,7 @@ RSpec.describe ImagesController, type: :controller do
       it 'redirects to the page edit view' do
         image = Image.create! valid_attributes
         delete :destroy, params: { locale: I18n.default_locale, id: image.to_param, page_id: @page.id, map_id: @map.id }, session: valid_session
-        expect(response).to redirect_to(edit_map_page_url(locale: I18n.default_locale, map: @map, page: @page))
+        expect(response).to redirect_to(edit_map_page_url(locale: I18n.default_locale, map_id: @map, id: @page))
       end
     end
   end

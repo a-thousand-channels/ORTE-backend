@@ -1,15 +1,16 @@
 - content_for(:title) { "Page: #{@page.title} (Edit)" }
+- current_locale = I18n.locale || I18n.default_locale
 
 #form-wrapper
   %p.text-right.close_link_wrapper
-    = link_to map_pages_path(@map), :class=>'close_link' do
+    = link_to map_pages_path(locale: current_locale, map_id: @map), :class=>'close_link' do
       %i.fi.fi-x
   %p
     Map:
-    = link_to map_pages_path(@map) do
+    = link_to map_pages_path(locale: current_locale, map_id: @map) do
       = @map.title
     > Page:
-    = link_to map_page_path(@map, @page) do
+    = link_to map_page_path(locale: current_locale, map_id: @map, id: @page) do
       = @page.title
   .grid-x.grid-padding-x
     .large-6.medium-6.small-6.cell
@@ -22,4 +23,4 @@
           = l(@page.created_at)
 
   = render 'pages/partials/form'
-  = link_to 'View Page', [@map, @page], :class => 'button secondary'
+  = link_to 'View Page', map_page_path(locale: current_locale, map_id: @map, id: @page), :class => 'button secondary'
