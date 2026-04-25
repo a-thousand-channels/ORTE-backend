@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Map < ApplicationRecord
+  serialize :available_languages
+
   belongs_to :group
   belongs_to :iconset, optional: true
   has_many :layers, dependent: :destroy

@@ -12,6 +12,10 @@
           .large-4.medium-5.small-6.cell
             %p
               = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
+            %p 
+              = f.input :primary_language, :collection => language_for_select, :input_html => { :class => '' }, label: 'Primary language'
+            %p 
+              = f.input :available_languages, :collection => language_for_select, :input_html => { :class => '', multiple: true }, label: 'Available languages'
         .grid-x.grid-padding-x
           .large-12.medium-12.small-12.cell
             = tinymce
