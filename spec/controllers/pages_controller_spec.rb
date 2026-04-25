@@ -175,5 +175,44 @@ RSpec.describe PagesController, type: :controller do
         expect(response).to redirect_to(map_url(@map))
       end
     end
+    describe 'multilanguage content' do
+      it 'creates english title and updates german translation on same page' do
+        post :create,
+             params: {
+               locale: :en,
+               map_id: @map.friendly_id,
+               page: valid_attributes.merge(title: 'English title')
+             },
+             session: valid_session
+
+        expect(response).to have_http_status(302)
+        page = Page.last
+
+        expect do
+          put :update,
+              params: {
+                locale: :de,
+                map_id: @map.friendly_id,
+                id: page.id,
+                page: { title: 'Deutscher Titel' }
+              },
+              session: valid_session
+        end.not_to change(Page, :count)
+
+        get :show,
+            params: { locale: :en, map_id: @map.friendly_id, id: page.id },
+            session: valid_session,
+            format: :json
+        en_json = JSON.parse(response.body)
+        expect(en_json['title']).to eq('English title')
+
+        get :show,
+            params: { locale: :de, map_id: @map.friendly_id, id: page.id },
+            session: valid_session,
+            format: :json
+        de_json = JSON.parse(response.body)
+        expect(de_json['title']).to eq('Deutscher Titel')
+      end
+    end
   end
 end

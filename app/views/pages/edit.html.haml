@@ -12,6 +12,10 @@
     > Page:
     = link_to map_page_path(locale: current_locale, map_id: @map, id: @page) do
       = @page.title
+    - if @translation_missing_for_locale
+      .callout.notice
+        %strong Translation missing:
+        = " This page has no translation into #{t("languages.#{current_locale}")}  yet. Saving will create it."    
   .grid-x.grid-padding-x
     .large-6.medium-6.small-6.cell
       %h1

@@ -56,5 +56,9 @@
 
         %hr
       .form-actions
+        - if @translation_missing_for_locale
+          - submit_label = "Create translation into #{t("languages.#{current_locale}")} "
+        - else
+          - submit_label = "Save changes"
         %p
-          = f.button :submit, :class => "button"
+          = f.button :submit, submit_label,:class => "button"

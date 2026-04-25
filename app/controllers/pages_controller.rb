@@ -61,6 +61,7 @@ class PagesController < ApplicationController
 
   # GET /pages/1/edit
   def edit
+    @translation_missing_for_locale = translation_missing_for_current_locale?(@page)
     respond_to do |format|
       format.html { render :edit }
     end
@@ -143,8 +144,28 @@ class PagesController < ApplicationController
   def set_page
     # puts "Finding map with slug: #{params[:map_id]} or id: #{params[:map_id]}"
     @map = Map.by_user(current_user).find_by_slug(params[:map_id]) || Map.by_user(current_user).find_by_id(params[:map_id])
-    @page = Page.friendly.find(params[:id])
+    @page = find_page_with_locale_fallback(params[:id])
     # puts "Found map: #{@map&.id}, Found page: #{@page&.id}"
+  end
+
+  # fallback if original language exists, but not the requested translation
+  def find_page_with_locale_fallback(identifier)
+    Page.friendly.find(identifier)
+  rescue ActiveRecord::RecordNotFound
+    page = Page.find_by(id: identifier)
+    return page if page
+
+    I18n.available_locales.each do |locale|
+      page = I18n.with_locale(locale) { Page.friendly.find_by(slug: identifier) }
+      return page if page
+    end
+  end
+
+  def translation_missing_for_current_locale?(page)
+    locale_accessor = :"title_#{I18n.locale}"
+    return false unless page.respond_to?(locale_accessor)
+
+    page.public_send(locale_accessor).blank?
   end
 
   def page_params
