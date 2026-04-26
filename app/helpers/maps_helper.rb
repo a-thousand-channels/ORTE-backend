@@ -8,7 +8,7 @@ module MapsHelper
 
   def language_for_select
     I18n.available_locales.to_h do |locale|
-      [I18n.t('language.name', locale: locale), locale]
+      [I18n.t("languages.#{locale}", locale: locale), locale.to_s]
     end
   end
 

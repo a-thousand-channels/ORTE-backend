@@ -34,7 +34,22 @@
   %table
     %thead
       %tr
-        %th Page
+        %th 
+          %h5 Pages
+          - if @map.available_languages.present?
+            %p.shy
+              Available languages:
+              = @map.available_languages.each do |locale|
+                = link_to map_pages_path(locale: locale, map_id: @map) do
+                  - if I18n.locale.to_s == locale.to_s
+                    %span.active
+                      = I18n.t("languages.#{locale}", locale: locale)
+                  - else
+                    %span= I18n.t("languages.#{locale}", locale: locale)
+
+             
+
+
         %th.show-for-medium
           \&nbsp;
         %th
@@ -52,6 +67,23 @@
                 %i.fi-lock.fi-21{title: 'Page is hidden'}
             - if page.subtitle.present?
               %p= page.subtitle
+            - translated_locales = Array(@map.available_languages).select do |locale|
+              - accessor = :"title_#{locale}"
+              - page.respond_to?(accessor) && page.public_send(accessor).present?
+            - if @map.available_languages.present?
+              %p.shy
+                Versions:
+                - @map.available_languages.each do |locale|
+                  - if translated_locales.include?(locale)
+                    = link_to edit_map_page_path(locale: locale, map_id: page.map_id, id: page.id), class: 'button small' do  
+                      %i.fi-pencil.fi-21
+                      = I18n.t("languages.#{locale}", locale: locale)
+                  - else
+                    = link_to edit_map_page_path(locale: locale, map_id: page.map_id, id: page.id), class: 'button small secondary' do  
+                      %i.fi-plus.fi-21
+                      = I18n.t("languages.#{locale}", locale: locale)
+                    
+
           %td.show-for-medium
             - if page.images.count > 0
               - page.images.each do |i|

@@ -12,10 +12,7 @@
           .large-4.medium-5.small-6.cell
             %p
               = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
-            %p 
-              = f.input :primary_language, :collection => language_for_select, :input_html => { :class => '' }, label: 'Primary language'
-            %p 
-              = f.input :available_languages, :collection => language_for_select, :input_html => { :class => '', multiple: true }, label: 'Available languages'
+
         .grid-x.grid-padding-x
           .large-12.medium-12.small-12.cell
             = tinymce
@@ -172,6 +169,29 @@
                       .large-6.medium-6.small-12.cell
                         %p
                           = f.input :southwest_corner,  :label => 'South-West'
+        - if admin?
+          %hr 
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell
+              %h5
+                Languages
+              %p.hint
+                These settings are for multilingual maps. If you want to create a monolingual map,
+                you can ignore these settings. If you want to create a multilingual map, you should set a primary language and at least one alternative language. The primary language is used as fallback if a translation is missing in the requested language.
+              %p.hint
+                %i.fi-alert.fi-21
+                Pleas don't change the values after you have created pages, places and layers, because these values are used to link the translations of places and layers. If you change them afterwards, the links between translations will be broken and you have to set the languages for all places and layers again.
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-6.cell
+              %p
+                = f.input :primary_language, collection: language_for_select, include_blank: true
+              %p.hint
+                The primary language of the map. This is the default language. It is used as fallback if a translation is missing in the requested language.
+            .large-6.medium-6.small-6.cell
+              %p
+                = f.input :available_languages, collection: language_for_select, as: :check_boxes, label: 'Alternative languages'
+              %p.hint
+                The available languages for this map. If a user requests a translation in a language that is not listed here, the primary language will be used as fallback.                       
         %hr
         - # = f.input :script
       .form-actions

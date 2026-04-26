@@ -47,6 +47,9 @@ p.small.compact {
 a.disabled {
    cursor: not-allowed;
 }
+a.active {
+  font-weight: bold;
+}
 div.small {
     font-size: 0.8rem;
 }

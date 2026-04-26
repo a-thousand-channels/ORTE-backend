@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Map < ApplicationRecord
-  serialize :available_languages
+  serialize :available_languages, type: Array
 
   belongs_to :group
   belongs_to :iconset, optional: true
@@ -32,6 +32,10 @@ class Map < ApplicationRecord
   scope :sorted, -> { order(title: :asc) }
 
   scope :published, -> { where(published: true) }
+
+  def available_languages=(values)
+    super(Array(values).reject(&:blank?))
+  end
 
   def image_link
     ApplicationController.helpers.image_url(image) if image&.attached?

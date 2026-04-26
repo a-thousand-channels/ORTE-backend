@@ -29,15 +29,14 @@
     %ul.menu.text-right
       - if I18n.locale
         %li#show_language
-          %span= I18n.locale
-          %span 
-            = @map.available_languages.count if @map&.available_languages
-            = controller.controller_name
           - if @map&.available_languages && controller.controller_name == 'pages'
             %ul.menu.dropdownmenu{"data-dropdown-menu" => "", "data-close-on-click" => "true"}
-              - @map.available_languages.each do |locale|
-                %li
-                  = link_to locale, url_for(locale: locale), class: (I18n.locale == locale ? 'active' : '')   
+              %li
+                %span= I18n.locale
+                %ul.menu
+                  - @map.available_languages.each do |locale|
+                    %li
+                      = link_to locale, url_for(locale: locale), class: (I18n.locale == locale ? 'active' : '')   
 
       - if admin?
         %li#show_zoomlevel

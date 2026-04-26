@@ -1,5 +1,5 @@
 header {
-
+  z-index: 9999;
   div.input-group {
     margin-bottom: 0;
     margin-top: 8px;
@@ -13,6 +13,31 @@ header {
       padding: 0.1rem 0.4rem;
       border-radius: 3px;
       text-transform: uppercase;
+    }
+    ul.dropdownmenu {
+      position: relative;
+      z-index: 9000;
+      ul.is-dropdown-submenu {
+        z-index: 9001;
+        min-width: auto;
+        right: unset;
+        left: unset;
+        border: none;
+        margin-top: 20px;
+        li {
+          a {
+            display: inline-block;
+            background-color:#888;
+            color: #ddd;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            text-transform: uppercase;            
+          }
+          a:hover {
+            background-color:#898901;
+            color: #ddd;}
+        }
+      }
     }
   }
   .menu li#show_zoomlevel {

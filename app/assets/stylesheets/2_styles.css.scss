@@ -21,6 +21,11 @@ main {
   a {
     color: darken(#c6c600,10%);
   }
+  a span.active {
+    font-weight: bold;
+    color: darken(#c6c600,10%);
+    border-bottom: 2px solid darken(#c6c600,0%);
+  }
 
   .grid-x {
     /* height: 100%; */
