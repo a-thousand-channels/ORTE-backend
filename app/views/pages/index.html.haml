@@ -1,5 +1,8 @@
 - content_for(:title) { "Pages of #{@map.title}" }
 - current_locale = I18n.locale || I18n.default_locale
+- public_json_locales = (Array(@map.available_languages)).uniq.select do |locale|
+  - accessor = :"title_#{locale}"
+  - @pages.select(&:published).any? { |page| page.respond_to?(accessor) && page.public_send(accessor).present? }
 
 #table-wrapper
   %p.text-right.close_link_wrapper
@@ -98,10 +101,18 @@
               %i.fi-trash.fi-24
 
   .grid-x.grid-padding-x
-    .cell.medium-12
+    .cell.medium-6
       %p
         = link_to new_map_page_path(locale: current_locale, map_id: @map), :class=>'button small' do
           %i.fi-plus.fi-18
           New Page
       %p.shy Create a page for this map
+    .cell.medium-6
+      %p.text-right
+        - if public_json_locales.any?
+          Public JSON:
+          - public_json_locales.each do |locale|
+            = link_to public_map_pages_path(locale: locale, map_id: @map, format: :json), class: 'button small' do
+              %i.fi-download.fi-18
+              = I18n.t("languages.#{locale}", locale: locale)
 
