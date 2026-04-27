@@ -62,7 +62,7 @@
             %i.fi-upload.fi-18          
             Import/update places from CSV 
         %li
-          = link_to new_map_page_path(locale: I18n.locale, map: @map), class: "button small" do
+          = link_to new_map_page_path(locale: I18n.locale, map_id: @map.id), class: "button small" do
             %i.fi-plus.fi-18          
             Create a page
 

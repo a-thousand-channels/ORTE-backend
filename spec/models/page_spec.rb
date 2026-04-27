@@ -26,11 +26,11 @@ RSpec.describe Page, type: :model do
       expect(Page.where(id: page.id).count).to eq(1)
 
       I18n.with_locale(I18n.default_locale) do
-        expect(page.reload.title).to eq('English title')
+        expect(Page.find(page.id).title).to eq('English title')
       end
 
       I18n.with_locale(:de) do
-        expect(page.reload.title).to eq('Deutscher Titel')
+        expect(Page.find(page.id).title).to eq('Deutscher Titel')
       end
 
       expect(page.title_en).to eq('English title')

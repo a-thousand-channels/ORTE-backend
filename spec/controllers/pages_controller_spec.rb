@@ -175,6 +175,69 @@ RSpec.describe PagesController, type: :controller do
         expect(response).to redirect_to(map_url(@map))
       end
     end
+    describe 'POST #sort' do
+      it 'updates image sorting order and returns empty JSON' do
+        page = create(:page, map_id: @map.id)
+        image1 = create(:image, imageable: page)
+        image2 = create(:image, imageable: page)
+        image3 = create(:image, imageable: page)
+
+        post :sort, params: {
+          locale: I18n.default_locale,
+          map_id: @map.id,
+          id: page.id,
+          images: ["image_#{image3.id}", "image_#{image1.id}", "image_#{image2.id}"]
+        }, session: valid_session
+
+        expect(response).to have_http_status(200)
+        expect(JSON.parse(response.body)).to eq({})
+        expect(image3.reload.sorting).to eq(1)
+        expect(image1.reload.sorting).to eq(2)
+        expect(image2.reload.sorting).to eq(3)
+      end
+
+      it 'sets sorting starting at 1 regardless of previous values' do
+        page = create(:page, map_id: @map.id)
+        image1 = create(:image, imageable: page, sorting: 99)
+        image2 = create(:image, imageable: page, sorting: 5)
+
+        post :sort, params: {
+          locale: I18n.default_locale,
+          map_id: @map.id,
+          id: page.id,
+          images: ["image_#{image1.id}", "image_#{image2.id}"]
+        }, session: valid_session
+
+        expect(image1.reload.sorting).to eq(1)
+        expect(image2.reload.sorting).to eq(2)
+      end
+    end
+
+    describe '#find_page_with_locale_fallback' do
+      it 'finds a page by friendly_id in the current locale' do
+        page = create(:page, map_id: @map.id)
+        get :edit, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.friendly_id }, session: valid_session
+        expect(assigns(:page)).to eq(page)
+      end
+
+      it 'falls back to numeric id when no slug matches in current locale' do
+        page = create(:page, map_id: @map.id)
+        get :edit, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.id }, session: valid_session
+        expect(assigns(:page)).to eq(page)
+      end
+
+      it 'falls back to another locale slug when current locale has no match' do
+        page = I18n.with_locale(:en) { create(:page, map_id: @map.id, title: 'English slug page') }
+        de_slug = I18n.with_locale(:de) do
+          page.update!(title: 'Deutscher Slug Seite')
+          page.friendly_id
+        end
+
+        get :edit, params: { locale: :en, map_id: @map.friendly_id, id: de_slug }, session: valid_session
+        expect(assigns(:page)).to eq(page)
+      end
+    end
+
     describe 'multilanguage content' do
       it 'creates english title and updates german translation on same page' do
         post :create,

@@ -80,11 +80,15 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'returns translated page content for the requested locale' do
       map = create(:map, published: true)
-      page = create(:page, map: map, published: true,
-                           title_en: 'English title', subtitle_en: 'English subtitle',
-                           text_en: 'English text', footer_en: 'English footer')
-      page.update!(title_de: 'Deutscher Titel', subtitle_de: 'Deutscher Untertitel',
-                   text_de: 'Deutscher Text', footer_de: 'Deutsche Fusszeile')
+      page = I18n.with_locale(:en) do
+        create(:page, map: map, published: true,
+                      title: 'English title', subtitle: 'English subtitle',
+                      text: 'English text', footer: 'English footer')
+      end
+      I18n.with_locale(:de) do
+        page.update!(title: 'Deutscher Titel', subtitle: 'Deutscher Untertitel',
+                     text: 'Deutscher Text', footer: 'Deutsche Fusszeile')
+      end
 
       get :index, params: { locale: 'en', map_id: map.id, format: 'json' }, session: valid_session
       en_json = JSON.parse(response.body)

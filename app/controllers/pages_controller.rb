@@ -3,7 +3,6 @@
 class PagesController < ApplicationController
   include ImportContextHelper
 
-  # before_action :redirect_to_localized_url
   before_action :set_locale
   before_action :set_page, only: %i[show edit update destroy]
   before_action :redirect_to_friendly_id, only: %i[show]
@@ -20,15 +19,6 @@ class PagesController < ApplicationController
   def images
     @map = Map.sorted.by_user(current_user).friendly.find(params[:map_id])
     @page = Page.friendly.find(params[:id])
-  end
-
-  def fetch_pages
-    @map = Map.find(params[:map_id])
-    @pages = @map.pages
-
-    respond_to do |format|
-      format.json { render json: @pages }
-    end
   end
 
   # GET /pages/1
@@ -132,17 +122,6 @@ class PagesController < ApplicationController
 
   def default_url_options
     { locale: I18n.locale }
-  end
-
-  def redirect_to_localized_url
-    puts "Current locale: #{I18n.locale}, Request path: #{request.path}"
-    puts "Locale in params: #{params[:locale]}"
-    return if params[:locale].present?
-
-    default_locale = I18n.default_locale
-    path = request.path_info
-    new_path = "/#{default_locale}#{path}"
-    redirect_to new_path, status: 301
   end
 
   def build_params
