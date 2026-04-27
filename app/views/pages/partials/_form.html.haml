@@ -31,7 +31,8 @@
             = f.input :footer, :label => 'Footer', :input_html => {:rows => 8, class: 'large-text tinymce' }        
         .grid-x.grid-padding-x
           .large-12.medium-12.small-12.cell
-            %label Images
+            %hr
+            %h5 Images
             - if params[:action] == 'edit'
               = link_to new_map_page_image_path(@map,@page), class: 'button' do
                 %i.fi.fi-plus
@@ -42,7 +43,7 @@
               %p.hint.text-left
                 You have to save this place, before you can add images
               
-            - # = render '/places/form/images'
+            = render '/pages/partials/images'
             %hr
             - if params[:action] == 'edit'
               %label Videos

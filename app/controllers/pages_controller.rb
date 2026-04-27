@@ -107,6 +107,22 @@ class PagesController < ApplicationController
     end
   end
 
+  def sort
+    @image_ids = params[:images]
+    n = 1
+    ActiveRecord::Base.transaction do
+      @image_ids.each do |dom_id|
+        # dom_id is like "image_20"
+        id = dom_id.gsub('image_', '')
+        image = Image.find(id)
+        image.sorting = n
+        n += 1
+        image.save
+      end
+    end
+    render json: {}
+  end
+
   private
 
   def set_locale

@@ -86,6 +86,7 @@ Rails.application.routes.draw do
       resources :pages do
         member do
           get :images, path: 'images_overview'
+          post :sort
         end
         resources :images
         resources :videos
