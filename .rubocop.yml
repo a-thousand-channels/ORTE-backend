@@ -210,6 +210,7 @@ Metrics/ModuleLength:
 Metrics/ParameterLists:
   Exclude:
     - lib/imports/mapping_csv_importer.rb
+    - spec/helpers/application_helper_spec.rb
 
 Metrics/PerceivedComplexity:
   Enabled: false
