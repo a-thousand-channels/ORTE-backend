@@ -8,14 +8,14 @@
       No Video
   %p
     %b Place:
-    = link_to map_path(@video.place.layer.map) do
-      = @video.place.layer.map.title
+    = link_to map_path(@video.videoable.layer.map) do
+      = @video.videoable.layer.map.title
     \>
-    = link_to map_layer_path(@video.place.layer.map,@video.place.layer) do
-      = @video.place.layer.title
+    = link_to map_layer_path(@video.videoable.layer.map,@video.videoable.layer) do
+      = @video.videoable.layer.title
     \>
-    = link_to map_layer_place_path(@video.place.layer.map,@video.place.layer,@video.place)  do
-      = @video.place.title
+    = link_to map_layer_place_path(@video.videoable.layer.map,@video.videoable.layer,@video.videoable)  do
+      = @video.videoable.title
 
   - if @video.title
     %h3= @video.title

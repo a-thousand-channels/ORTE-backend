@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -108,7 +108,6 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
@@ -116,6 +115,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "itype", default: "image"
+    t.bigint "place_id"
+    t.string "imageable_type"
+    t.bigint "imageable_id"
+    t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
     t.index ["place_id"], name: "index_images_on_place_id"
   end
 
@@ -200,6 +203,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
     t.string "marker_display_mode", default: "cluster"
     t.boolean "enable_historical_maps", default: false
     t.boolean "enable_time_slider", default: false
+    t.boolean "exif_remove", default: true
+    t.boolean "rasterize_images", default: false
+    t.string "primary_language"
+    t.string "available_languages"
     t.index ["group_id"], name: "index_maps_on_group_id"
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
@@ -230,17 +237,18 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
   end
 
   create_table "pages", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
-    t.boolean "is_published", default: false
-    t.boolean "in_menu", default: false
-    t.string "ptype"
     t.string "title"
-    t.text "teasertext"
-    t.text "fulltext"
-    t.text "footertext"
+    t.string "subtitle"
+    t.text "teaser"
+    t.text "text"
+    t.text "footer"
+    t.string "slug"
+    t.boolean "published"
+    t.string "state"
+    t.bigint "map_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "slug"
-    t.index ["slug"], name: "index_pages_on_slug", unique: true
+    t.index ["map_id"], name: "index_pages_on_map_id"
   end
 
   create_table "people", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
@@ -385,14 +393,17 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
     t.boolean "preview"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.bigint "place_id"
+    t.string "videoable_type"
+    t.bigint "videoable_id"
     t.index ["place_id"], name: "index_videos_on_place_id"
+    t.index ["videoable_type", "videoable_id"], name: "index_videos_on_videoable_type_and_videoable_id"
   end
 
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
@@ -404,6 +415,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_03_26_143647) do
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
+  add_foreign_key "pages", "maps"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"

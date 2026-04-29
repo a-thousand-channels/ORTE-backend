@@ -11,6 +11,19 @@
     = link_to edit_map_path(@map) do
       %i.fi-pencil.fi-24
 
+  %p.shy.hint
+    - if @map.available_languages.present?
+      Available languages:
+      = @map.available_languages.each do |locale|
+        = link_to map_pages_path(locale: locale, map_id: @map) do
+          - if I18n.locale.to_s == locale.to_s
+            %span.active
+              = I18n.t("languages.#{locale}", locale: locale)
+          - else
+            %span= I18n.t("languages.#{locale}", locale: locale)
+    - else 
+      No alternative languages defined. 
+      Default locale #{I18n.locale} will be used for all content.
   - if @map.places.all_tags
     %div.tags
       - @map.places.all_tags.each do |tag|
@@ -30,9 +43,15 @@
             List of all tags
       = render 'layers/partials/searchform', object: @map
     .cell.medium-5
+      - if @map.pages.count > 0
+        %p.text-right.hint
+          = link_to map_pages_path(I18n.locale, @map) do
+            Pages of this map 
+            (#{@map.pages.size})
       %p.text-right.hint
         = link_to map_people_path(@map) do
-          Persons of this map
+          Persons of this map 
+          (#{@map.people.size})
       %p.text-right.hint
         = link_to map_relations_path(@map) do
           Relations in this map
@@ -42,6 +61,10 @@
           = link_to import_map_path(@map), class: "button small" do
             %i.fi-upload.fi-18          
             Import/update places from CSV 
+        %li
+          = link_to new_map_page_path(locale: I18n.locale, map_id: @map.id), class: "button small" do
+            %i.fi-plus.fi-18          
+            Create a page
 
   %table
     %thead
@@ -97,17 +120,17 @@
         = link_to new_map_layer_path(@map), :class=>'button small' do
           %i.fi-plus.fi-18
           New Standard Layer
-      %p.shy Create a typical layer with places and various content for this map
+      %p.shy Create a layer with places and various content for this map
     .cell.medium-3 
       %p         
         = link_to new_map_layer_path(@map, :ltype => 'image'), :class=>'button small' do
           %i.fi-plus.fi-18
           New Image Layer
-      %p.shy Import a batch of images and create a new layer
+      %p.shy Create a new layer and import a batch of images
     .cell.medium-3 
       %p         
         = link_to new_map_layer_path(@map, :ltype => 'geojson'), :class=>'button small' do
           %i.fi-plus.fi-18
           New GeoJSON Layer
-      %p.shy Import a GeoJSON
+      %p.shy Create a new layer and import geodata in GeoJSON Format
 

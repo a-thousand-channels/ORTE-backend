@@ -1,0 +1,65 @@
+
+- current_locale = @locale || I18n.locale || I18n.default_locale
+- page_url = @page.new_record? ? map_pages_path(@map, locale: current_locale) : map_page_path(@map, @page, locale: current_locale)
+= simple_form_for(@page, url: page_url) do |f|
+  .grid-x
+    .large-12.cell
+      = f.error_notification
+  .grid-x
+    .large-12.medium-12.cell
+      .form-inputs
+        .grid-x.grid-padding-x
+          .large-8.medium-7.small-6.cell
+            = f.input :title
+            = f.input :subtitle
+          .large-4.medium-5.small-6.cell
+            %p
+              = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
+            %p
+              - if admin? && params[:action] == 'edit'
+                = f.association :map, collection: Map.by_user(current_user), include_blank: false, :label => 'Map'
+              - else
+                Map:
+                =link_to map_path(@map) do
+                  #{@map.title}
+                = f.association :map, as: :hidden, :input_html => { :value => @map.id }
+        .grid-x.grid-padding-x
+          .large-12.medium-12.small-12.cell
+            = tinymce
+            = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 4, class: 'large-text tinymce' }
+            = f.input :text, :label => 'Description', :input_html => {:rows => 24, class: 'large-text tinymce' }
+            = f.input :footer, :label => 'Footer', :input_html => {:rows => 8, class: 'large-text tinymce' }        
+        .grid-x.grid-padding-x
+          .large-12.medium-12.small-12.cell
+            %hr
+            %h5 Images
+            - if params[:action] == 'edit'
+              = link_to new_map_page_image_path(@map,@page), class: 'button' do
+                %i.fi.fi-plus
+                Add image
+              %p.hint
+                Please upload one image and describe its content and metadata. You can repeat this to add multiple images to this place.
+            - else
+              %p.hint.text-left
+                You have to save this place, before you can add images
+              
+            = render '/pages/partials/images'
+            %hr
+            - if params[:action] == 'edit'
+              %label Videos
+              = link_to new_map_page_video_path(@map,@page), class: 'button' do
+                %i.fi.fi-plus
+                Add video
+              %p.hint
+                Please upload one video and describe its content and metadata. You can repeat this to add multiple videos to this place.
+            - # = render 'places/form/videos'
+        
+
+        %hr
+      .form-actions
+        - if @translation_missing_for_locale
+          - submit_label = "Create translation into #{t("languages.#{current_locale}")} "
+        - else
+          - submit_label = "Save changes"
+        %p
+          = f.button :submit, submit_label,:class => "button"

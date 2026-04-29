@@ -3,6 +3,8 @@
 require 'csv'
 
 class Place < ApplicationRecord
+  include HasImages
+
   belongs_to :layer
   belongs_to :icon, optional: true
 
@@ -21,8 +23,8 @@ class Place < ApplicationRecord
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
 
-  has_many :images, dependent: :destroy
-  has_many :videos, dependent: :destroy
+  has_many :images, as: :imageable, dependent: :destroy
+  has_many :videos, as: :videoable, dependent: :destroy
   has_many :submissions, dependent: :destroy
 
   validate :check_audio_format
@@ -171,7 +173,7 @@ class Place < ApplicationRecord
     # this call is very costly for larger datasets, maybe a switch in the map settings could be establied?
     # return '' unless images.exists?
 
-    i = images.filter { |image| image.place_id == id && image.preview }
+    i = images.filter { |image| image.imageable_type == 'Place' && image.imageable_id == id && image.preview }
     i.any? ? ApplicationController.helpers.image_link(i.first) : ''
   end
 

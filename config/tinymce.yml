@@ -1,6 +1,7 @@
 toolbar:
-  - bold italic blockquote bullist code | link | undo redo | fullscreen
+  - bold italic blockquote bullist code formatselect | link image | undo redo | fullscreen
 plugins:
+  - wordcount
   - image
   - link
   - lists
@@ -8,4 +9,4 @@ plugins:
   - fullscreen
 branding: false
 menubar: false
-statusbar: false
+statusbar: true

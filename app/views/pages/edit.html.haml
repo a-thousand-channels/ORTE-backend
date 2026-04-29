@@ -1,0 +1,30 @@
+- content_for(:title) { "Page: #{@page.title} (Edit)" }
+- current_locale = I18n.locale || I18n.default_locale
+
+#form-wrapper
+  %p.text-right.close_link_wrapper
+    = link_to map_pages_path(locale: current_locale, map_id: @map), :class=>'close_link' do
+      %i.fi.fi-x
+  %p
+    Map:
+    = link_to map_pages_path(locale: current_locale, map_id: @map) do
+      = @map.title
+    > Page:
+    = link_to map_page_path(locale: current_locale, map_id: @map, id: @page) do
+      = @page.title
+    - if @translation_missing_for_locale
+      .callout.notice
+        %strong Translation missing:
+        = " This page has no translation into #{t("languages.#{current_locale}")}  yet. Saving will create it."    
+  .grid-x.grid-padding-x
+    .large-6.medium-6.small-6.cell
+      %h1
+        =@page.title
+    .large-6.medium-6.small-6.cell
+      - if @page && @page.created_at
+        %p.shy
+          Created:
+          = l(@page.created_at)
+
+  = render 'pages/partials/form'
+  = link_to 'View Page', map_page_path(locale: current_locale, map_id: @map, id: @page), :class => 'button secondary'

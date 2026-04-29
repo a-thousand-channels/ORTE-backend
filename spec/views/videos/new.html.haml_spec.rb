@@ -14,7 +14,8 @@ RSpec.describe 'videos/new', type: :view do
     sign_in user
     assign(:video, Video.new(
                      title: 'MyString',
-                     place: @place
+                     videoable_type: 'Place',
+                     videoable_id: @place.id
                    ))
   end
 

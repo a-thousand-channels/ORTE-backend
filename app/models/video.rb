@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Video < ApplicationRecord
-  belongs_to :place
+  belongs_to :videoable, polymorphic: true
 
   has_one_attached :file
   delegate_missing_to :file
@@ -13,8 +13,10 @@ class Video < ApplicationRecord
   validate :check_file_presence
   validate :check_file_format
 
-  scope :sorted, -> { order(sorted: :asc) }
-  scope :sorted_by_place, ->(place_id) { where(place_id: place_id).order(sorted: :asc) }
+  scope :for, ->(record) { where(imageable: record) }
+  scope :sorted, -> { order(sorting: :asc) }
+  scope :sorted_by_place, ->(place_id) { where(imageable_type: 'Place', imageable_id: place_id).order(sorting: :asc) }
+  scope :sorted_by_page, ->(page_id) { where(imageable_type: 'Page', imageable_id: page_id).order(sorting: :asc) }
   scope :preview, ->(place_id) { where(place_id: place_id, preview: true) }
 
   def video_url

@@ -6,7 +6,7 @@ FactoryBot.define do
     licence { Faker::FunnyName.two_word_name }
     source {  Faker::Lorem.word }
     creator { Faker::FunnyName.name }
-    place
+    association :imageable, factory: :place
     alt { Faker::Lorem.sentence }
     caption { Faker::Hipster.sentence }
     sorting { Faker::Number.between(from: 1, to: 10) }

@@ -1,0 +1,33 @@
+- images = @page.images
+- if images.count > 0
+  %p
+    Images
+  .grid-x#sortable{data: { map: @page.map_id, place: @page.id }}
+    - images.order('sorting ASC').each_with_index do |img,i|
+      .image.ui-state-default{id: "image_#{img.id}"}
+        .image-toolbar
+          = link_to map_page_path(locale: @locale, map_id: @page.map_id, id: @page.id), class: 'button button-right tiny sortable_handle', title: 'Change sort order' do
+            %i.fi-arrows-out
+          = link_to map_page_image_path(locale: @locale, map_id: @page.map_id, page_id: @page.id, id: img.id), class: "button button-right button-show tiny", title: 'Show details'  do
+            %i.fi-eye
+          = link_to edit_map_page_image_path(locale: @locale, map_id: @page.map_id, page_id: @page.id, id: img.id), class: "button button-right button-edit tiny", title: 'Edit/change image'  do
+            %i.fi-pencil
+          = link_to map_page_image_path(locale: @locale, map_id: @page.map_id, page_id: @page.id, id: img.id), method: :delete, data: { :confirm => 'Are you sure?' }, class: "button button-right button-edit tiny warning", title: 'Delete image'  do
+            %i.fi-x
+        - if img.file.attached? && ActiveStorage::Blob.service.exist?(img.file.blob.key)
+          - klass = 'thumbnail'
+          - if img.preview.present?
+            - klass = 'thumbnail thumbnail-preview'
+          = link_to map_page_image_path(locale: @locale, map_id: @page.map_id, page_id: @page.id, image_id: img.id), class: "#{klass}" do
+            - if img.page.map&.rasterize_images  && img.itype == 'image'
+              = image_tag img.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
+            - else
+              = image_tag img.variant(resize: "400x400").processed
+        - else
+          = link_to edit_map_page_image_path(locale: @locale, map_id: @page.map_id, page_id: @page.id, image_id: img.id), class: "thumbnail" do
+            %p
+              Oups, image file is missing!
+              %br
+              Please click here to upload a new file.
+        %small
+          = img.title      

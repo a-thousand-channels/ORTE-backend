@@ -1,0 +1,123 @@
+- content_for(:title) { "#{@page.title} — #{@page.map.title}" }
+- current_locale = I18n.locale || I18n.default_locale
+
+#info-wrapper{}
+
+  %p.text-right.close_link_wrapper
+    = link_to map_pages_url(locale: current_locale, map_id: @page.map), :class=>"close-link", "aria-label"=>"Close back" do
+      %span{"aria-hidden"=>"true"}
+        %i.fi.fi-x
+
+  .grid-x.grid-padding-x
+    - images = Image.sorted_by_page(@page.id)
+    = images.size
+    - if images.size > 0
+      - textcol = 8
+      .cell.small-12.medium-12
+        
+        .orbit{"data-orbit":true}
+          .orbit-wrapper
+            .orbit-controls
+              %button.orbit-previous
+                %span.show-for-sr
+                  Previous slide
+                &#9664;&#xFE0E;
+              %button.orbit-next
+                %span.show-for-sr
+                  Next slide
+                &#9654;&#xFE0E;
+            %ul.orbit-container          
+              - images.each do |img|
+                
+                - if img.file.attached?
+                  - filename = ActiveStorage::Blob.service.path_for(img.key)
+                  - if File.exist?(filename)
+                    - if img.preview.present?
+                      %li.orbit-slide{"data-open": "reveal#{img.id}"}
+                        %figure.orbit-figure
+                          - if img.page.map.rasterize_images && img.itype == 'image'
+                            = image_tag(img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, class: "orbit-image", alt: img.alt )
+                          - else
+                            = image_tag(img.file.variant(resize: "1200x1200").processed, class: "orbit-image", alt: img.alt)
+
+                    - else
+                      %li.orbit-slide{"data-open": "reveal#{img.id}"}
+                        %figure.orbit-figure
+                          - if img.page.map.rasterize_images && img.itype == 'image'
+                            = image_tag(img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, class: "orbit-image", alt: img.alt)
+                          - else
+                            = image_tag(img.file.variant(resize: "1200x1200").processed, class: "orbit-image", alt: img.alt )
+
+                  - else
+                    %p
+                      No image uploaded, please do so
+
+                    
+          - images.each do |img|
+            .reveal{id: "reveal#{img.id}", "data-reveal": true, "data-animation-in": "fade-in", "data-animation-out": "fade-out"}
+              - if img.file.attached?
+                - filename = ActiveStorage::Blob.service.path_for(img.key)
+                - if File.exist?(filename)
+                  - if img.page.map.rasterize_images && img.itype == 'image'
+                    = image_tag img.file.variant(resize: "1000x1000", "ordered-dither": "h8x8a").processed, alt: img.alt
+                  - else
+                    = image_tag img.file.variant(resize: "1200x1200").processed, alt: img.alt
+
+                  %button.close-button{"data-close": true, "aria-label": "Close", type: "button"}
+                    %i.fi.fi-x{"aria-hidden": true}
+              - else
+                %p
+                  No image uploaded, please do so
+    - videos = Video.where(videoable_type: 'Page', videoable_id: @page.id)
+    - if videos.count > 0
+      - textcol = 8
+      .cell.small-4.medium-4
+        %div
+          - videos.each do |video|
+            - if video.file.attached?
+              - if video.preview.present?
+                %p{"data-open": "reveal#{video.id}"}
+                  = video_tag video.file.variant(resize: "300x300").processed
+              - else
+                %p{"data-open": "reveal#{video.id}"}
+                  = video_tag url_for(video.file), controls: true, width:150
+    - else
+      - textcol = 12
+    .cell{class: "small-#{textcol} medium-#{textcol}"}
+      %p.hint.text-left
+        = link_to map_url(@page.map) do
+          = @page.map.title 
+        \—          
+        = link_to map_pages_url(locale: current_locale, map_id: @page.map) do
+          Pages
+
+
+      %h1
+        = @page.title
+        = link_to edit_map_page_path(locale: current_locale, map_id: @page.map, id: @page) do
+          %i.fi.fi-pencil.fi-24
+      - if @page.subtitle.present?
+        %p
+          = @page.subtitle
+      - if @page.teaser.present?
+        %div
+          %strong
+            =h @page.teaser.html_safe
+      - if @page.text.present?
+        %div
+          =h @page.text.html_safe
+      - if @page.footer.present?
+        %div
+          =h @page.footer.html_safe
+
+
+
+      %p.hint.text-left
+        %b Published:
+        - if @page.published
+          %i.fi-check.fi-18
+        - else
+          %i.fi-lock.fi-18
+        \|
+        %b Last edit:
+        = l(@page.updated_at)

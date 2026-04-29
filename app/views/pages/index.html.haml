@@ -1,0 +1,118 @@
+- content_for(:title) { "Pages of #{@map.title}" }
+- current_locale = I18n.locale || I18n.default_locale
+- public_json_locales = (Array(@map.available_languages)).uniq.select do |locale|
+  - accessor = :"title_#{locale}"
+  - @pages.select(&:published).any? { |page| page.respond_to?(accessor) && page.public_send(accessor).present? }
+
+#table-wrapper
+  %p.text-right.close_link_wrapper
+    =link_to map_path(@map), :class=>'close_link' do
+      %i.fi.fi-x
+  %h1
+    Map:
+    = link_to map_path(@map) do
+      = @map.title
+    = link_to edit_map_path(@map) do
+      %i.fi-pencil.fi-24
+
+
+  .grid-x.grid-padding-x
+    .cell.medium-7
+      %p.text-right.hint
+
+        = link_to map_layers_path(@map) do
+          Layers of this map
+          (#{@map.layers.size})
+
+    .cell.medium-5
+      %p.text-right.hint
+        = link_to map_people_path(@map) do
+          Persons of this map
+          (#{@map.people.size})
+      %p.text-right.hint
+        = link_to map_relations_path(@map) do
+          Relations in this map
+        %hr
+
+  %table
+    %thead
+      %tr
+        %th 
+          %h5 Pages
+          - if @map.available_languages.present?
+            %p.shy
+              Available languages:
+              = @map.available_languages.each do |locale|
+                = link_to map_pages_path(locale: locale, map_id: @map) do
+                  - if I18n.locale.to_s == locale.to_s
+                    %span.active
+                      = I18n.t("languages.#{locale}", locale: locale)
+                  - else
+                    %span= I18n.t("languages.#{locale}", locale: locale)
+
+             
+
+
+        %th.show-for-medium
+          \&nbsp;
+        %th
+
+    %tbody
+      - @pages.each do |page|
+        %tr
+          %td
+            %h4
+              = link_to map_page_url(locale: current_locale, map_id: page.map, id: page) do
+                = page.title
+              - if page.published
+                %i.fi-eye.fi-24{title: 'Page is published'}
+              - else
+                %i.fi-lock.fi-21{title: 'Page is hidden'}
+            - if page.subtitle.present?
+              %p= page.subtitle
+            - translated_locales = Array(@map.available_languages).select do |locale|
+              - accessor = :"title_#{locale}"
+              - page.respond_to?(accessor) && page.public_send(accessor).present?
+            - if @map.available_languages.present?
+              %p.shy
+                Versions:
+                - @map.available_languages.each do |locale|
+                  - if translated_locales.include?(locale)
+                    = link_to edit_map_page_path(locale: locale, map_id: page.map_id, id: page.id), class: 'button small' do  
+                      %i.fi-pencil.fi-21
+                      = I18n.t("languages.#{locale}", locale: locale)
+                  - else
+                    = link_to edit_map_page_path(locale: locale, map_id: page.map_id, id: page.id), class: 'button small secondary' do  
+                      %i.fi-plus.fi-21
+                      = I18n.t("languages.#{locale}", locale: locale)
+                    
+
+          %td.show-for-medium
+            - if page.images.count > 0
+              - page.images.each do |i|
+                - if i.attached? && ActiveStorage::Blob.service.exist?(i.blob.key)
+                  = link_to url_for(i) do
+                    = image_tag i.variant(resize: "120x120").processed, class: "thumbnail", title: i.title
+          %td
+            = link_to edit_map_page_path(locale: current_locale, map_id: @map, id: page), :class=>"button" do
+              %i.fi-pencil.fi-24
+            &nbsp;
+            = link_to map_page_path(locale: current_locale, map_id: @map, id: page), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+              %i.fi-trash.fi-24
+
+  .grid-x.grid-padding-x
+    .cell.medium-6
+      %p
+        = link_to new_map_page_path(locale: current_locale, map_id: @map), :class=>'button small' do
+          %i.fi-plus.fi-18
+          New Page
+      %p.shy Create a page for this map
+    .cell.medium-6
+      %p.text-right
+        - if public_json_locales.any?
+          Public JSON:
+          - public_json_locales.each do |locale|
+            = link_to public_map_pages_path(locale: locale, map_id: @map, format: :json), class: 'button small' do
+              %i.fi-download.fi-18
+              = I18n.t("languages.#{locale}", locale: locale)
+

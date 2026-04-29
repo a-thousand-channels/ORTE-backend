@@ -20,7 +20,7 @@ RSpec.describe PlacesHelper, type: :helper do
   describe 'image_link' do
     it 'it returns an polymorphic image link' do
       p = create(:place)
-      i = build(:image, place: p)
+      i = build(:image, imageable: p)
       uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
       i.attach(uploaded)
       i.save!
