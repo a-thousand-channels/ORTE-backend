@@ -10,6 +10,8 @@ class Public::SubmissionsController < ApplicationController
   SUBMISSION_STATUS_STEP2 = 2
   SUBMISSION_STATUS_STEP3 = 3
 
+  layout 'submission'
+
   def index; end
 
   def switch_locale(&)

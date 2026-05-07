@@ -20,10 +20,14 @@ body.lang-ru {
 }
 
 body#submissions {
-  background-color: white;
+  background-color: #091926;
 
   main {
-    max-width: 85%;
+    width: 80%;
+    max-width: 850px;
+    min-width: auto;
+    margin: 65px auto 0;
+    position: relative;
     @media screen and (max-width: 39.9375em) {
       width: auto;
       min-width: auto;
@@ -49,7 +53,7 @@ body#submissions {
     hr {
       border-bottom: 2px solid #aaa;
       width: 80%;
-      margin: 40px auto;
+      margin: 15px auto;
     }
 
     button.secondary,
@@ -137,8 +141,10 @@ body#submissions {
 
     .callout#preview {
       border: none;
-      background-color: rgba(224, 223, 216, 0.75);
+      background-color: rgba(224, 223, 216, 0.95);
       padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 2px 2px 20px rgba(20,20,20,0.1);
     }
 
     .preview:before {

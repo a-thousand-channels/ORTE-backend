@@ -55,20 +55,20 @@
               %p.hint.text-left Enable public submissions
             - if @layer.public_submission
               - if @layer.submission_config
-                = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button small" do
+                = link_to edit_submission_config_path(@layer.submission_config.id), :class=>"button secondary" do
                   %i.fi-pencil.fi-18
-                  Edit submissions configuration
+                  Edit configuration
                 - if @layer.submission_config.locales.count > 0
                   %br
                   Submission forms:
                   %br
                   - @layer.submission_config.locales.each do |language|
-                    - klass = 'button secondary'
+                    - klass = 'button'
                     = link_to new_submission_path(layer_id: @layer.id, locale: language.to_s), class: "#{klass}", target: '_blank' do
-                      %i.fi-web.fi-24
+                      %i.fi-eye.fi-24
                       - title = @layer.submission_config.title_intro(locale: language)
                       - if title.nil?
-                        %i Missing title
+                        %i Missing title (#{language})
                       - else
                         = title
               - else
