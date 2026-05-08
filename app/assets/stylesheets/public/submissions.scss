@@ -79,17 +79,45 @@ body#submissions {
       li {
         font-size: 1rem;
         color: #777;
+        text-transform: none;
         a {
           color: #777;
+          span.badge {
+            background-color: #1e5365;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: bold;
+            margin-right: 5px;
+          }
         }
       }
       li.current {
         font-size: 1rem;
-        color: #c6c600;
-        a {
-          color: #c6c600;
-        }
+        color: #333;
+        span.badge {
+            background-color: #c6c600;
+            color: #333;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-right: 5px;
+          }           
       }
+      li.disabled {
+        font-size: 1rem;
+        color: #888;
+        span.badge {
+            background-color: #ccc;
+            color: #333;
+            font-size: 0.7rem;
+            font-weight: bold;
+            margin-right: 5px;
+          }           
+      }      
+    }
+    .breadcrumbs li:not(:last-child)::after {
+      content: "— ";
+      margin: 0 5px;
+      color: #555;
     }
     .form-actions input.button[type="submit"] {
       background-color: #1e5365;
