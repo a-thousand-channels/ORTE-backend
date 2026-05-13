@@ -1,0 +1,21 @@
+
+
+jQuery(function () {
+  var available_languages_checked_array = $('input[type="checkbox"][name="map[available_languages][]"]:checked').map(function(){ return $(this).val()}).get(); 
+  console.log('map language settings :: available_languages_checked_array', available_languages_checked_array);
+  var primary_language_selected = $('#map_primary_language option:selected').val();
+  console.log('map language settings :: primary_language_selected',primary_language_selected);
+
+  // if change in available language, change selectable list of primary language
+
+  // if anything is set, issue a warning before change
+  $('.map_available_languages').change
+    $('xxx').text('Attention! Do you really want to change already set languages?')
+    
+
+
+    // if wanring is acepted change second form element
+    // reduce list by selection in available_languages_checked_array
+    // remove()
+
+});
