@@ -12,7 +12,7 @@ gem 'rails', '>= 7.2.3.1'
 gem 'sassc-rails'
 gem 'terser', '~> 1.1', '>= 1.1.12'
 
-gem 'friendly_id'
+gem 'friendly_id', '~> 5.5'
 
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
