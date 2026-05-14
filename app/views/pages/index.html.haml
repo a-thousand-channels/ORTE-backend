@@ -42,7 +42,7 @@
           - if @map.available_languages.present?
             %p.shy
               Available languages:
-              = @map.available_languages.each do |locale|
+              - @map.available_languages.each do |locale|
                 = link_to map_pages_path(locale: locale, map_id: @map) do
                   - if I18n.locale.to_s == locale.to_s
                     %span.active

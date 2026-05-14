@@ -173,15 +173,15 @@
           %hr 
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
-              .warning
+              .warning#language_settings-warning{style: 'display: none;'}
                 %h3 Danger!
                 %p Your are about to change already set language settings. This might break things. 
                 .grid-x.text-center
                   .small-6.cell
-                    %button.button.warning
+                    %button.button.warning#confirm-language-settings-change
                       Yes, I am aware 
                   .small-6.cell
-                    %button.button.secondary
+                    %button.button.secondary#deny-language-settings-change
                       Cancel
               %h5
                 Multilanguage content
@@ -194,6 +194,8 @@
             .large-6.medium-6.small-6.cell
               %p
                 = f.input :available_languages, collection: language_for_select, as: :check_boxes, label: 'Languages'
+                %p#available_languages-hint.error{style: 'color: red; display: none;'}
+                  At least 2 languages must be selected.
             .large-6.medium-6.small-6.cell
               %p
                 = f.input :primary_language, collection: language_for_select, include_blank: true

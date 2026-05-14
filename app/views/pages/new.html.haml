@@ -1,6 +1,9 @@
 - content_for(:title) { "Add page" }
 
 #form-wrapper
-  %h1 Add page
+  %h1 
+    Add page
+    - if @map.available_languages.present?
+      %span.badge.secondary= I18n.locale.to_s
   = render 'pages/partials/form'
 
