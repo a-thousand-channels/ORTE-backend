@@ -173,25 +173,44 @@
           %hr 
           .grid-x.grid-padding-x
             .large-12.medium-12.small-12.cell
+              .warning#language_settings-warning{style: 'display: none;'}
+                %h3 Danger!
+                %p Your are about to change already set language settings. This might break things. 
+                .grid-x.text-center
+                  .small-6.cell
+                    %button.button.warning#confirm-language-settings-change
+                      Yes, I am aware 
+                  .small-6.cell
+                    %button.button.secondary#deny-language-settings-change
+                      Cancel
               %h5
-                Languages
+                Multilanguage content
               %p.hint
-                These settings are for multilingual maps. If you want to create a monolingual map,
-                you can ignore these settings. If you want to create a multilingual map, you should set a primary language and at least one alternative language. The primary language is used as fallback if a translation is missing in the requested language.
+                These settings are for multilingual maps. Seledct all languages you need. You select one of them as a primary language. The primary language is also used as fallback if a translation is missing in the requested language.
               %p.hint
-                %i.fi-alert.fi-21
-                Pleas don't change the values after you have created pages, places and layers, because these values are used to link the translations of places and layers. If you change them afterwards, the links between translations will be broken and you have to set the languages for all places and layers again.
+                If you want to create a monolingual map, you can ignore these settings. 
+
           .grid-x.grid-padding-x
+            .large-6.medium-6.small-6.cell
+              %p
+                = f.input :available_languages, collection: language_for_select, as: :check_boxes, label: 'Languages'
+                %p#available_languages-hint.error{style: 'color: red; display: none;'}
+                  At least 2 languages must be selected.
             .large-6.medium-6.small-6.cell
               %p
                 = f.input :primary_language, collection: language_for_select, include_blank: true
               %p.hint
-                The primary language of the map. This is the default language. It is used as fallback if a translation is missing in the requested language.
-            .large-6.medium-6.small-6.cell
-              %p
-                = f.input :available_languages, collection: language_for_select, as: :check_boxes, label: 'Alternative languages'
-              %p.hint
-                The available languages for this map. If a user requests a translation in a language that is not listed here, the primary language will be used as fallback.                       
+                The primary language of the map. It is used as fallback if a translation is missing in the requested language.
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell
+              %div.warning
+                %p
+                  %i.fi-alert.fi-21
+                  %br
+                  Please don't change the values after you have created pages, places and layers, because these values are used to link the translations.
+                  %br
+                  If you change them, existing translations might not be accessible anymore.
+
         %hr
         - # = f.input :script
       .form-actions
