@@ -199,6 +199,7 @@ Metrics/CyclomaticComplexity:
     - app/controllers/layers_controller.rb
     - app/controllers/public/layers_controller.rb
     - app/controllers/maps_controller.rb
+    - app/controllers/images_controller.rb
     - lib/imports/mapping_csv_importer.rb
 
 Metrics/MethodLength:

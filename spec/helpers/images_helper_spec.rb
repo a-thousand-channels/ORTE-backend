@@ -6,7 +6,7 @@ RSpec.describe ImagesHelper, type: :helper do
   describe 'image_url' do
     it 'it returns an polymorphic image link' do
       p = create(:place)
-      i = build(:image, place: p)
+      i = build(:image, imageable: p)
       uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
       i.file.attach(uploaded)
       i.save!
@@ -16,7 +16,7 @@ RSpec.describe ImagesHelper, type: :helper do
 
     it 'it raises a RuntimeError' do
       p = create(:place)
-      i = build(:image, place: p)
+      i = build(:image, imageable: p)
 
       expect do
         uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test1.jpg'), 'image/jpeg')
@@ -28,7 +28,7 @@ RSpec.describe ImagesHelper, type: :helper do
   describe 'image_path' do
     it 'it returns an polymorphic image path' do
       p = create(:place)
-      i = build(:image, place: p)
+      i = build(:image, imageable: p)
       uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.jpg'), 'image/jpeg')
       i.file.attach(uploaded)
       i.save!
@@ -38,7 +38,7 @@ RSpec.describe ImagesHelper, type: :helper do
 
     it 'it raises a RuntimeError' do
       p = create(:place)
-      i = build(:image, place: p)
+      i = build(:image, imageable: p)
 
       expect do
         uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test1.jpg'), 'image/jpeg')
@@ -50,7 +50,7 @@ RSpec.describe ImagesHelper, type: :helper do
   describe 'image_linktag' do
     it 'it returns an image link tag' do
       p = create(:place)
-      i = build(:image, place: p)
+      i = build(:image, imageable: p)
       i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg')
       i.save!
       i.reload
@@ -59,7 +59,7 @@ RSpec.describe ImagesHelper, type: :helper do
 
     it 'it raises a Errno:ENOENT error' do
       p = create(:place)
-      i = build(:image, place: p)
+      i = build(:image, imageable: p)
 
       expect { i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test1.jpg')), filename: 'attachment.jpg', content_type: 'image/jepg') }.to raise_error(Errno::ENOENT)
     end

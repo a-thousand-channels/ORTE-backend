@@ -14,7 +14,8 @@ RSpec.describe 'images/new', type: :view do
     sign_in user
     assign(:image, Image.new(
                      title: 'MyString',
-                     place: @place
+                     imageable_type: 'place',
+                     imageable_id: @place.id
                    ))
   end
 

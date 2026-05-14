@@ -6,7 +6,7 @@ FactoryBot.define do
     licence { Faker::Hipster.word }
     source { Faker::Book.publisher }
     creator { Faker::Book.author }
-    place
+    association :videoable, factory: :place
     alt { Faker::Commerce.material }
     caption { Faker::Commerce.department }
     sorting { Faker::Number.between(from: 1, to: 10) }

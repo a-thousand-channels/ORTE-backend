@@ -21,5 +21,13 @@
           %br
           Layers:
           = @map.layers.count
+          - if @map.pages.count > 0
+            \| Pages:
+            = @map.pages.count
+          - if @map.available_languages.present?
+            %br
+              =@map.primary_language.present? ? "Primary language: #{@map.primary_language}" : "Primary language not set"
+              \| Alternatives:
+              = @map.available_languages.join(', ')
 
   = render 'form'

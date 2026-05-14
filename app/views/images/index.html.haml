@@ -15,8 +15,12 @@
         %tr
           %td.img_col{style: 'width: 200px'}
             %p.shy
-              =link_to map_layer_place_path(image.place.layer.map.id,image.place.layer.id,image.place.id) do
-                = image.place.title
+              - if @page.present?
+                =link_to map_page_path(locale: I18n.locale, map: @page.map.id, id: @page.id) do
+                  = @page.title
+              - elsif @place.present?              
+                =link_to map_layer_place_path(@place.layer.map.id, @place.layer.id, @place.id) do
+                  = @place.title
             - if image.title.present?
               %h4
                 = image.title
@@ -49,9 +53,17 @@
               %i.fi-star.fi-24
             = image.sorting
           %td
-            = link_to edit_map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image), :class => 'button' do
-              %i.fi.fi-pencil
-              Edit
-            = link_to map_layer_place_image_path(image.place.layer.map,image.place.layer,image.place,image), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
-              %i.fi.fi-x
-              Destroy
+            - if @page.present?
+              = link_to edit_map_page_image_path('en', @page.map, @page, image), :class => 'button' do
+                %i.fi.fi-pencil
+                Edit
+              = link_to map_page_image_path('en', @page.map, @page, image), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
+                %i.fi.fi-x
+                Destroy            
+            - elsif @place.present?              
+              = link_to edit_map_layer_place_image_path(@place.layer.map, @place.layer, @place, image), :class => 'button' do
+                %i.fi.fi-pencil
+                Edit
+              = link_to map_layer_place_image_path(@place.layer.map, @place.layer, @place, image), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
+                %i.fi.fi-x
+                Destroy

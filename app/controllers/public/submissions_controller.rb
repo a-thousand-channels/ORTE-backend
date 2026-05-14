@@ -207,8 +207,9 @@ class Public::SubmissionsController < ApplicationController
     @submission = Submission.find(session[:submission_id])
     @image = Image.new(image_params)
     @place = @submission.place
-    @image.place = @place
-    @image.place_id = @place.id
+    @image.imageable = @place
+    @image.imageable_type = 'Place'
+    @image.imageable_id = @place.id
     respond_to do |format|
       if params[:image_input] && params[:image_input] == '1'
         if @image.save

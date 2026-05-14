@@ -11,8 +11,8 @@
       No Image
   %p
     %b Place:
-    = link_to map_path(@image.place.layer.map) do
-      = @image.place.layer.map.title
+    = link_to map_path(@image.imageable.layer.map) do
+      = @image.imageable.layer.map.title
     \>
     = link_to map_layer_path(@image.place.layer.map,@image.place.layer) do
       = @image.place.layer.title

@@ -15,9 +15,16 @@ main {
   background-color: transparent;
   min-height: auto;
   padding: 0;
+  max-width: 800px;
+  width: 90%;
 
   a {
     color: darken(#c6c600,10%);
+  }
+  a span.active {
+    font-weight: bold;
+    color: darken(#c6c600,10%);
+    border-bottom: 2px solid darken(#c6c600,0%);
   }
 
   .grid-x {

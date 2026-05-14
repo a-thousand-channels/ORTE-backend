@@ -17,7 +17,7 @@
           - if img.preview.present?
             - klass = 'thumbnail thumbnail-preview'
           = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,img), class: "#{klass}" do
-            - if img.place.layer.rasterize_images  && img.itype == 'image'
+            - if img.imageable.layer.rasterize_images  && img.itype == 'image'
               = image_tag img.variant(resize: "400x400", "ordered-dither": "h4x4a").processed
             - else
               = image_tag img.variant(resize: "400x400").processed

@@ -12,11 +12,12 @@
 
     %tbody
       - @videos.each do |video|
+        - place = video.videoable
         %tr
           %td.img_col{style: 'width: 200px'}
             %p.shy
-              =link_to map_layer_place_path(video.place.layer.map.id,video.place.layer.id,video.place.id) do
-                = video.place.title
+              =link_to map_layer_place_path(place.layer.map.id, place.layer.id, place.id) do
+                = place.title
             - if video.title.present?
               %h4
                 = video.title
@@ -49,9 +50,9 @@
               %i.fi-star.fi-24
             = video.sorting
           %td
-            = link_to edit_map_layer_place_video_path(video.place.layer.map,video.place.layer,video.place,video), :class => 'button' do
+            = link_to edit_map_layer_place_video_path(place.layer.map, place.layer, place, video), :class => 'button' do
               %i.fi.fi-pencil
               Edit
-            = link_to map_layer_place_video_path(video.place.layer.map,video.place.layer,video.place,video), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
+            = link_to map_layer_place_video_path(place.layer.map, place.layer, place, video), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
               %i.fi.fi-x
               Destroy

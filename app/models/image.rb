@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class Image < ApplicationRecord
-  belongs_to :place
+  belongs_to :imageable, polymorphic: true
 
   attr_accessor :skip_beforesave_callback
 
   before_save :strip_exif_data, unless: :skip_beforesave_callback
+  before_validation :normalize_imageable_type
 
   has_one_attached :file
   delegate_missing_to :file
@@ -14,10 +15,29 @@ class Image < ApplicationRecord
   validate :check_file_presence
   validate :check_file_format
 
+  scope :for, ->(record) { where(imageable: record) }
   scope :sorted, -> { order(sorting: :asc) }
-  scope :sorted_by_place, ->(place_id) { where(place_id: place_id).order(sorting: :asc) }
-  scope :preview, ->(place_id) { where(place_id: place_id, preview: true) }
+  scope :sorted_by_place, ->(place_id) { where(imageable_type: 'Place', imageable_id: place_id).order(sorting: :asc) }
+  scope :sorted_by_page, ->(page_id) { where(imageable_type: 'Page', imageable_id: page_id).order(sorting: :asc) }
+  scope :preview, ->(place_id) { where(imageable_type: 'Place', imageable_id: place_id, preview: true) }
   scope :without_attached_file, -> { left_joins(:file_attachment).where('active_storage_attachments.id IS NULL') }
+
+  # defs to maintain old accesors
+  def place
+    imageable if imageable.is_a?(Place)
+  end
+
+  def place=(record)
+    self.imageable = record
+  end
+
+  def page
+    imageable if imageable.is_a?(Page)
+  end
+
+  def page=(record)
+    self.imageable = record
+  end
 
   def image_filename
     file.filename if file&.attached?
@@ -60,7 +80,7 @@ class Image < ApplicationRecord
   private
 
   def strip_exif_data
-    return unless place.layer.exif_remove
+    return unless imageable.is_a?(Place) && imageable.layer.exif_remove
 
     return unless file.attached? && file.changed? && attachment_changes['file']
 
@@ -90,6 +110,10 @@ class Image < ApplicationRecord
     tmp_image.write attachment_path
     self.skip_beforesave_callback = true
     file.attach(io: File.open(attachment_path), filename: file.filename)
+  end
+
+  def normalize_imageable_type
+    self.imageable_type = imageable_type.classify if imageable_type.present?
   end
 
   def check_file_presence

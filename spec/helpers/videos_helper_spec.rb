@@ -9,7 +9,8 @@ RSpec.describe VideosHelper, type: :helper do
     it 'it returns an polymorphic video link' do
       i = Video.new
       i.title = 'ttt'
-      i.place = place
+      i.videoable_type = 'Place'
+      i.videoable_id = place.id
       i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp4')), filename: 'video.mp4', content_type: 'video/mp4')
       i.save!
       expect(helper.video_url(i.file)).to eq(polymorphic_url(i.file).to_s)
@@ -19,7 +20,8 @@ RSpec.describe VideosHelper, type: :helper do
     it 'it returns an video link tag with a filmstill' do
       i = Video.new
       i.title = 'ttt'
-      i.place = place
+      i.videoable_type = 'Place'
+      i.videoable_id = place.id
       i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp4')), filename: 'video.mp4', content_type: 'video/mp4')
       i.filmstill.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.jpg')), filename: 'filmstill.jpg', content_type: 'image/jepg')
       i.save!
@@ -28,7 +30,8 @@ RSpec.describe VideosHelper, type: :helper do
     it 'it returns an video link tag without a filmstill' do
       i = Video.new
       i.title = 'ttt'
-      i.place = place
+      i.videoable_type = 'Place'
+      i.videoable_id = place.id
       i.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp4')), filename: 'video.mp4', content_type: 'video/mp4')
       i.save!
       expect(helper.video_linktag(i.file, nil)).to eq("<video controls=\"controls\" preload=\"metadata\" src=\"#{polymorphic_url(i.file)}\"></video>")

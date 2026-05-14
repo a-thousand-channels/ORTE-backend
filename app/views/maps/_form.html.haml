@@ -12,6 +12,7 @@
           .large-4.medium-5.small-6.cell
             %p
               = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
+
         .grid-x.grid-padding-x
           .large-12.medium-12.small-12.cell
             = tinymce
@@ -168,6 +169,48 @@
                       .large-6.medium-6.small-12.cell
                         %p
                           = f.input :southwest_corner,  :label => 'South-West'
+        - if admin?
+          %hr 
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell
+              .warning#language_settings-warning{style: 'display: none;'}
+                %h3 Danger!
+                %p Your are about to change already set language settings. This might break things. 
+                .grid-x.text-center
+                  .small-6.cell
+                    %button.button.warning#confirm-language-settings-change
+                      Yes, I am aware 
+                  .small-6.cell
+                    %button.button.secondary#deny-language-settings-change
+                      Cancel
+              %h5
+                Multilanguage content
+              %p.hint
+                These settings are for multilingual maps. Seledct all languages you need. You select one of them as a primary language. The primary language is also used as fallback if a translation is missing in the requested language.
+              %p.hint
+                If you want to create a monolingual map, you can ignore these settings. 
+
+          .grid-x.grid-padding-x
+            .large-6.medium-6.small-6.cell
+              %p
+                = f.input :available_languages, collection: language_for_select, as: :check_boxes, label: 'Languages'
+                %p#available_languages-hint.error{style: 'color: red; display: none;'}
+                  At least 2 languages must be selected.
+            .large-6.medium-6.small-6.cell
+              %p
+                = f.input :primary_language, collection: language_for_select, include_blank: true
+              %p.hint
+                The primary language of the map. It is used as fallback if a translation is missing in the requested language.
+          .grid-x.grid-padding-x
+            .large-12.medium-12.small-12.cell
+              %div.warning
+                %p
+                  %i.fi-alert.fi-21
+                  %br
+                  Please don't change the values after you have created pages, places and layers, because these values are used to link the translations.
+                  %br
+                  If you change them, existing translations might not be accessible anymore.
+
         %hr
         - # = f.input :script
       .form-actions

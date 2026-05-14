@@ -2,19 +2,23 @@
 
 class VideosController < ApplicationController
   before_action :set_video, only: %i[show edit update destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
 
   # GET /videos
   # GET /videos.json
   def index
-    @place = Place.where(id: params[:place_id]).first
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
+    @place = Place.find(params[:place_id])
     redirect_to root_url, notice: 'No place defined for showing this video' if !@place || @place.layer.map.group != current_user.group
-    @videos = Video.where(place_id: @place_id)
+    @videos = Video.where(videoable_type: 'Place', videoable_id: @place.id)
   end
 
   # GET /videos/1
   # GET /videos/1.json
   def show
-    redirect_to root_url, notice: "You are not allowed for viewing this video #{current_user.group.title}" if @video.place.layer.map.group != current_user.group && current_user.group.title != 'Admins'
+    allowed = current_user.group.title == 'Admins' || (@place && @place.layer.map.group == current_user.group && @video.videoable == @place)
+    redirect_to root_url, notice: "You are not allowed for viewing this video #{current_user.group.title}" unless allowed
   end
 
   # GET /videos/new
@@ -28,7 +32,7 @@ class VideosController < ApplicationController
 
   # GET /videos/1/edit
   def edit
-    @place = @video.place
+    @place = @video.videoable
     redirect_to root_url, notice: 'No valid place defined for editing an mage' unless @place || (@place && @place.layer.map.group == current_user.group)
   end
 
@@ -36,12 +40,13 @@ class VideosController < ApplicationController
   # POST /videos.json
   def create
     @video = Video.new(video_params)
-    @map = Map.by_user(current_user).find(params[:map_id])
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
+    @video.videoable ||= @place
     respond_to do |format|
       if @video.save
-        format.html { redirect_to edit_map_layer_place_path(@video.place.layer.map, @video.place.layer, @video.place), notice: 'Video was successfully created.' }
+        format.html { redirect_to edit_map_layer_place_path(@video.videoable.layer.map, @video.videoable.layer, @video.videoable), notice: 'Video was successfully created.' }
         format.json { render :show, status: :created, location: @video }
       else
         format.html { render :new }
@@ -55,7 +60,7 @@ class VideosController < ApplicationController
   def update
     respond_to do |format|
       if @video.update(video_params)
-        format.html { redirect_to edit_map_layer_place_path(@video.place.layer.map, @video.place.layer, @video.place), notice: 'Video was successfully updated.' }
+        format.html { redirect_to edit_map_layer_place_path(@video.videoable.layer.map, @video.videoable.layer, @video.videoable), notice: 'Video was successfully updated.' }
       else
         format.html { render :edit }
       end
@@ -67,7 +72,7 @@ class VideosController < ApplicationController
   def destroy
     @video.destroy
     respond_to do |format|
-      format.html { redirect_to edit_map_layer_place_path(@video.place.layer.map, @video.place.layer, @video.place), notice: 'Video was successfully destroyed.' }
+      format.html { redirect_to edit_map_layer_place_path(@video.videoable.layer.map, @video.videoable.layer, @video.videoable), notice: 'Video was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -76,14 +81,18 @@ class VideosController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_video
-    @map = Map.by_user(current_user).where(id: params[:map_id]).first
-    @layer = Layer.find(params[:layer_id])
+    @map = Map.by_user(current_user).friendly.find(params[:map_id])
+    @layer = Layer.friendly.find(params[:layer_id])
     @place = Place.find(params[:place_id])
     @video = Video.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
   def video_params
-    params.require(:video).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file)
+    params.require(:video).permit(:title, :licence, :source, :creator, :alt, :caption, :sorting, :preview, :file, :videoable_type, :videoable_id)
+  end
+
+  def handle_record_not_found
+    redirect_to root_url, alert: 'Resource not found'
   end
 end

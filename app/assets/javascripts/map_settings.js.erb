@@ -1,0 +1,83 @@
+
+
+jQuery(function () {
+  var isEditMode = $('input[name="_method"][value="patch"]').length > 0;
+  var languageSettingsUnlocked = false;
+
+  function selectedAvailableLanguages() {
+    return $('input[type="checkbox"][name="map[available_languages][]"]:checked')
+      .map(function () {
+        return $(this).val();
+      })
+      .get();
+  }
+
+  function updatePrimaryLanguageOptions() {
+    var availableLanguages = selectedAvailableLanguages();
+    var $primarySelect = $('#map_primary_language');
+
+    $primarySelect.find('option').each(function () {
+      var optionValue = $(this).val();
+      var isAllowed = availableLanguages.includes(optionValue);
+      $(this).prop('disabled', !isAllowed);
+    });
+
+    var currentPrimaryLanguage = $primarySelect.val();
+    if (!availableLanguages.includes(currentPrimaryLanguage)) {
+      var firstAllowed = $primarySelect.find('option:not(:disabled)').first().val() || '';
+      $primarySelect.val(firstAllowed);
+    }
+  }
+
+  function validateMinLanguages() {
+    var count = $('input[type="checkbox"][name="map[available_languages][]"]').filter(':checked').length;
+    if (count < 2) {
+      $('#available_languages-hint').show();
+    } else {
+      $('#available_languages-hint').hide();
+    }
+  }
+
+  function lockLanguageFields() {
+    $('input[name="map[available_languages][]"]').on('click.languagelock', function (e) {
+      e.preventDefault();
+      $('#language_settings-warning').show();
+    });
+    $('#map_primary_language').on('mousedown.languagelock', function (e) {
+      e.preventDefault();
+      $('#language_settings-warning').show();
+    });
+  }
+
+  function unlockLanguageFields() {
+    $('input[name="map[available_languages][]"]').off('click.languagelock');
+    $('#map_primary_language').off('mousedown.languagelock');
+    languageSettingsUnlocked = true;
+  }
+
+  var hasExistingLanguageSettings =
+    $('input[name="map[available_languages][]"]:checked').length > 0 ||
+    $('#map_primary_language').val() !== '';
+
+  if (isEditMode && hasExistingLanguageSettings) {
+    lockLanguageFields();
+
+    $('#confirm-language-settings-change').on('click', function (e) {
+      e.preventDefault();
+      $('#language_settings-warning').hide();
+      unlockLanguageFields();
+    });
+
+    $('#deny-language-settings-change').on('click', function (e) {
+      e.preventDefault();
+      $('#language_settings-warning').hide();
+    }); 
+  }
+
+  $('.map_available_languages').on('change', function () {
+    validateMinLanguages();
+    updatePrimaryLanguageOptions();
+  });
+
+  updatePrimaryLanguageOptions();
+});

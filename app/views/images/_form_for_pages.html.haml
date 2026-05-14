@@ -1,8 +1,13 @@
-= simple_form_for([@map,@layer,@place,@image]) do |f|
+
+- image_url = @image.new_record? ? map_page_images_path(@map, @page, locale: @locale) : map_page_image_path(@map, @page, @image, locale: @locale)
+= simple_form_for(@image, url: image_url) do |f|
+
   .grid-x
     .large-12.cell
       = f.error_notification
-      = f.association :place, as: :hidden, :input_html => { :value => @place.id }
+      = f.input :locale, as: :hidden, input_html: { value: @locale }
+      = f.input :imageable_id, as: :hidden, input_html: { value: @page.id }
+      = f.input :imageable_type, as: :hidden, input_html: { value: 'Page' }  
 
   .grid-x
     .large-12.medium-12.cell
@@ -12,17 +17,17 @@
         .grid-x.grid-padding-x
           .large-6.medium-6.cell
             = f.input :file, as: :file, input_html: { accept: ('image'), multiple: false }, label: "Image (JPG, GIF or PNG)"
-            - if @layer.exif_remove
+            - if @map.exif_remove
               %p.shy
                 %i.fi.fi-check
                 All EXIF metadata will be removed
-            - if @layer.rasterize_images
+            - if @map.rasterize_images
               %p.shy
                 %i.fi.fi-check
                 Image will be published in a rasterized version
             - if params[:action] == 'edit' && @image.file.attached? && ActiveStorage::Blob.service.exist?(@image.file.blob.key)
               = link_to url_for(@image.file) do
-                - if @image.place.layer.rasterize_images && @image.itype == 'image'
+                - if @map.rasterize_images && @image.itype == 'image'
                   %p.show_for_itype_image= image_tag @image.variant(resize: "500x500", "ordered-dither": "h8x8a").processed
                   %p.show_for_itype_graphics.hide= image_tag @image.variant(resize: "500x500").processed
                 - else
@@ -74,6 +79,7 @@
 
 
       .form-actions
-        = f.button :submit, :class => "button"
+        = f.button :submit, :class => "button", value: @image.new_record? ? "Add image" : "Update image"
+
     .large-2.cell
       &nbsp;

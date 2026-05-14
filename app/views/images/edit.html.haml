@@ -12,7 +12,10 @@
 		%strong
 			#{@place.title}
 
-	= render 'form'
+	- if @page
+		= render 'form_for_pages'
+	- else
+		= render 'form_for_places'
 
 	%hr
 	.grid-x.grid-padding-x

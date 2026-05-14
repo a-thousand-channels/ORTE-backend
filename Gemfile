@@ -12,7 +12,7 @@ gem 'rails', '>= 7.2.3.1'
 gem 'sassc-rails'
 gem 'terser', '~> 1.1', '>= 1.1.12'
 
-gem 'friendly_id'
+gem 'friendly_id', '~> 5.5'
 
 gem 'jbuilder'
 # Use Redis adapter to run Action Cable in production
@@ -48,8 +48,9 @@ gem 'nokogiri'
 
 gem 'acts-as-taggable-on'
 gem 'color-generator'
+gem 'friendly_id-mobility'
 gem 'mini_magick'
-gem 'mobility', '~> 1.2'
+gem 'mobility', '~> 1.3'
 gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
