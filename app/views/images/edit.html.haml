@@ -3,14 +3,21 @@
 	%p
 		Edit this image for
 
-		%strong
-			#{@place.layer.map.title}
-		\>
-		%strong
-			#{@place.layer.title}
-		\>
-		%strong
-			#{@place.title}
+		- if @page
+			%strong
+				#{@page.map.title}
+			\>
+			%strong
+				#{@page.title}
+		- else	
+			%strong
+				#{@place.layer.map.title}
+			\>
+			%strong
+				#{@place.layer.title}
+			\>
+			%strong
+				#{@place.title}
 
 	- if @page
 		= render 'form_for_pages'
@@ -23,11 +30,20 @@
 
 
 		.large-6.cell
-			= link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
-				Back to place
+			- if @page
+				= link_to edit_map_page_path(@page.map,@page), class: "button"  do
+					Back to page
+			- else
+				= link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
+					Back to place
 		.large-6.cell
 			%p.text-right
-				= link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
-					%i.fi.fi-trash
-					Delete
+				- if @page
+					= link_to map_page_image_path(@page.map,@page,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
+						%i.fi.fi-trash
+						Delete
+				- else
+					= link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do		
+						%i.fi.fi-trash
+						Delete	
 
