@@ -31,7 +31,7 @@
 
 		.large-6.cell
 			- if @page
-				= link_to edit_map_page_path(@page.map,@page), class: "button"  do
+				= link_to edit_map_page_path('en',@page.map,@page), class: "button"  do
 					Back to page
 			- else
 				= link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
@@ -39,7 +39,7 @@
 		.large-6.cell
 			%p.text-right
 				- if @page
-					= link_to map_page_image_path(@page.map,@page,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
+					= link_to map_page_image_path('en', @page.map,@page,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
 						%i.fi.fi-trash
 						Delete
 				- else

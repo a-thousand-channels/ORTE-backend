@@ -3,7 +3,9 @@
   %p
     - if @image.file.attached?
       = link_to url_for(@image.file) do
-        - if @image.place.layer.rasterize_images && @image.itype == 'image'
+        - if @image.place && @image.place.layer.rasterize_images && @image.itype == 'image'
+          = image_tag @image.file.variant(resize: "800x800\>", "ordered-dither": "h8x8a").processed
+        - elsif @image.page.map.rasterize_images && @image.itype == 'image'
           = image_tag @image.file.variant(resize: "800x800\>", "ordered-dither": "h8x8a").processed
         - else
           = image_tag @image.file.variant(resize: "800x800\>").processed
@@ -11,15 +13,28 @@
       No Image
   %p
     %b Place:
-    = link_to map_path(@image.imageable.layer.map) do
-      = @image.imageable.layer.map.title
-    \>
-    = link_to map_layer_path(@image.place.layer.map,@image.place.layer) do
-      = @image.place.layer.title
-    \>
-    = link_to map_layer_place_path(@image.place.layer.map,@image.place.layer,@image.place)  do
-      = @image.place.title
-
+    - if @image.page
+      = link_to @image.page.title, map_page_path(@image.page.map,@image.page)
+    - else
+      = link_to @image.place.title, map_layer_place_path(@image.place.layer.map,@image.place.layer,@image.place)
+  %p
+    %b Map:
+    - if @image.page
+      = link_to @image.page.map.title, map_path(@image.page.map)
+    - else
+      = link_to @image.place.layer.map.title, map_path(@image.place.layer.map)
+  %p
+    - if @image.page
+      = link_to @image.page.map.title, map_path(@image.page.map)
+      \>
+      = link_to @image.page.title, map_page_path(@image.page.map,@image.page)
+    - else
+      = link_to @image.place.layer.map.title, map_path(@image.place.layer.map)
+      \>
+      = link_to @image.place.layer.title, map_layer_path(@image.place.layer.map,@image.place.layer)
+      \>
+      = link_to @image.place.title, map_layer_place_path(@image.place.layer.map,@image.place.layer,@image.place) 
+  
   - if @image.title
     %h3= @image.title
   .card.card-image-info
@@ -63,13 +78,26 @@
         %b Preview:
         %i.fi-star.fi-24
 
-  = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), class: "button"  do
-    %i.fi.fi-pencil
-    Edit
+  - if @image.page
+    = link_to edit_map_page_image_path('en',@image.page.map,@image.page,@image), class: "button"  do
+      %i.fi.fi-pencil
+      Edit
+  - else
+    = link_to edit_map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), class: "button"  do
+      %i.fi.fi-pencil
+      Edit
   &nbsp;
-  = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
-    %i.fi.fi-trash
-    Delete
-  &nbsp;
-  = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
-    Back to place
+  - if @image.page
+    = link_to map_page_image_path('en', @image.page.map,@image.page,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
+      %i.fi.fi-trash
+      Delete
+    &nbsp;
+    = link_to edit_map_page_path('en', @image.page.map,@image.page), class: "button"  do
+      Back to page      
+  - else
+    = link_to map_layer_place_image_path(@place.layer.map,@place.layer,@place,@image), method: :delete, data: { confirm: 'Are you sure to delete this image?' }, :class => 'button warning' do
+      %i.fi.fi-trash
+      Delete
+    &nbsp;
+    = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
+      Back to place
