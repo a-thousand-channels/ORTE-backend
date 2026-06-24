@@ -56,8 +56,7 @@ gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
 gem 'net-smtp'
-
-gem 'concurrent-ruby', '1.3.4' # https://github.com/rails/rails/issues/54260, remove after upgrade to 7.2
+gem 'concurrent-ruby'
 
 group :staging, :production do
   gem 'passenger', '~> 6'
