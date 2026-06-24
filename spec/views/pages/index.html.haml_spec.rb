@@ -13,13 +13,13 @@ RSpec.describe 'pages/index', type: :view do
                title: 'Title1',
                text: 'Text',
                published: false,
-               map: @map
+               pageable: @map
              ),
              Page.create!(
                title: 'Title2',
                text: 'Text',
                published: false,
-               map: @map
+               pageable: @map
              )
            ])
   end
