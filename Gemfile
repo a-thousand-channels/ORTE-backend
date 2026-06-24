@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'puma', '~> 6'
+gem 'puma', '~> 8'
 gem 'rails', '>= 7.2.3.1'
 gem 'sassc-rails'
 gem 'terser', '~> 1.1', '>= 1.1.12'
@@ -55,9 +55,8 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
+gem 'concurrent-ruby'
 gem 'net-smtp'
-
-gem 'concurrent-ruby', '1.3.4' # https://github.com/rails/rails/issues/54260, remove after upgrade to 7.2
 
 group :staging, :production do
   gem 'passenger', '~> 6'
