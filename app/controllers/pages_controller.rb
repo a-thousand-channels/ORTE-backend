@@ -164,6 +164,6 @@ class PagesController < ApplicationController
   end
 
   def page_params
-    params.require(:page).permit(:title, :subtitle, :teaser, :text, :published, :map_id, :locale, images_files: [])
+    params.require(:page).permit(:title, :subtitle, :teaser, :text, :published, :pageable_id, :pageable_type, :locale, images_files: [])
   end
 end

@@ -17,12 +17,14 @@
               = f.input :published, :label => 'Publish <i class="fi-eye fi-21"></i>'.html_safe
             %p
               - if admin? && params[:action] == 'edit'
-                = f.association :map, collection: Map.by_user(current_user), include_blank: false, :label => 'Map'
+                = f.input :pageable_id, as: :select, collection: Map.by_user(current_user).map { |m| [m.title, m.id] }, include_blank: false, :label => 'Map'
+                = f.input :pageable_type, as: :hidden, :input_html => { :value => 'Map' }
               - else
                 Map:
                 =link_to map_path(@map) do
                   #{@map.title}
-                = f.association :map, as: :hidden, :input_html => { :value => @map.id }
+                = f.input :pageable_id, as: :hidden, :input_html => { :value => @map.id }
+                = f.input :pageable_type, as: :hidden, :input_html => { :value => 'Map' }
         .grid-x.grid-padding-x
           .large-12.medium-12.small-12.cell
             = tinymce
