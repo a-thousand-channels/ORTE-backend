@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'puma', '~> 6'
+gem 'puma', '~> 8'
 gem 'rails', '>= 7.2.3.1'
 gem 'sassc-rails'
 gem 'terser', '~> 1.1', '>= 1.1.12'
@@ -55,8 +55,8 @@ gem 'rubyzip'
 gem 'tinymce-rails', '~> 5'
 gem 'turnout'
 
-gem 'net-smtp'
 gem 'concurrent-ruby'
+gem 'net-smtp'
 
 group :staging, :production do
   gem 'passenger', '~> 6'
