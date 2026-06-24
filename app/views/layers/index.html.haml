@@ -15,7 +15,7 @@
     - if @map.available_languages.present?
       Available languages:
       = @map.available_languages.each do |locale|
-        = link_to map_pages_path(locale: locale, map_id: @map) do
+        = link_to map_pages_path(locale: locale, map: @map) do
           - if I18n.locale.to_s == locale.to_s
             %span.active
               = I18n.t("languages.#{locale}", locale: locale)

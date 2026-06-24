@@ -140,40 +140,50 @@
           %td
             = render 'places/list/place', place: place
           %td
-            = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
-              %i.fi-pencil.fi-21
-              Edit
-            %br
-            - images = Image.where(place_id: place.id)
-            - if images.count > 0
-              %i.fi-photo.fi-21
-              = images.count
-              Images
+            %p
+              = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
+                %i.fi-pencil.fi-21
+                Edit
               %br
-            - videos = Video.where(place_id: place.id)
-            - if videos.count > 0
-              %i.fi-projection-screen.fi-21
-              = videos.count
-              Videos
+              - images = Image.where(place_id: place.id)
+              - if images.count > 0
+                %i.fi-photo.fi-21
+                = images.count
+                Images
+                %br
+              - videos = Video.where(place_id: place.id)
+              - if videos.count > 0
+                %i.fi-projection-screen.fi-21
+                = videos.count
+                Videos
+                %br
+              = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
+                %i.fi-plus.fi-21
+                Image
               %br
-            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
-              %i.fi-plus.fi-21
-              Image
-            %br
-            = link_to new_map_layer_place_video_path(place.layer.map,place.layer,place), :class => "button small" do
-              %i.fi-plus.fi-21
-              Video
-            - if admin? && current_user.group.title == 'Admins'
+              = link_to new_map_layer_place_video_path(place.layer.map,place.layer,place), :class => "button small" do
+                %i.fi-plus.fi-21
+                Video
+              - if admin? && current_user.group.title == 'Admins'
+                %br
+                = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small secondary', :title=>'Make a copy of this place and edit' do
+                  %i.fi-page-copy.fi-21
+                  Copy
               %br
-              = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small secondary', :title=>'Make a copy of this place and edit' do
-                %i.fi-page-copy.fi-21
-                Copy
-            %br
-            - if place.images.count > 0 || place.videos.count > 0
-              - warning = 'Are you sure to delete this place and all attached images and/or videos?'
-            - else
-              - warning = 'Are you sure to delete this place?'
-            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button alert small" do
-              %i.fi-trash.fi-21
-              Destroy
+              - if place.images.count > 0 || place.videos.count > 0
+                - warning = 'Are you sure to delete this place and all attached images and/or videos?'
+              - else
+                - warning = 'Are you sure to delete this place?'
+              = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button alert small" do
+                %i.fi-trash.fi-21
+                Destroy
+            %p
+              = link_to new_map_layer_place_page_path(map_id: place.layer.map.id, layer_id: place.layer.id, place_id: place.id), class: "button small" do
+                %i.fi-plus.fi-18          
+                Create a page
+              %br
+              - if place.pages&.size > 0
+                %ul
+                  - place.pages.each do |page|
+                    %li= page.title
   %p.text-right= paginate @places

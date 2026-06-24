@@ -1,16 +1,18 @@
 - content_for(:title) { "Page: #{@page.title} (Edit)" }
 - current_locale = I18n.locale || I18n.default_locale
+- pageable = @page.pageable
 
 #form-wrapper
   %p.text-right.close_link_wrapper
-    = link_to map_pages_path(locale: current_locale, map_id: @map), :class=>'close_link' do
+    = link_to polymorphic_path(pageable, locale: current_locale), :class=>'close_link' do
       %i.fi.fi-x
   %p
-    Map:
-    = link_to map_pages_path(locale: current_locale, map_id: @map) do
-      = @map.title
+    = pageable.class.to_s
+    = ":"
+    = link_to polymorphic_path(pageable, locale: current_locale) do
+      = pageable.title
     > Page:
-    = link_to map_page_path(locale: current_locale, map_id: @map, id: @page) do
+    = link_to polymorphic_path([pageable, @page], locale: current_locale) do
       = @page.title
     - if @translation_missing_for_locale
       .callout.notice
@@ -27,4 +29,4 @@
           = l(@page.created_at)
 
   = render 'pages/partials/form'
-  = link_to 'View Page', map_page_path(locale: current_locale, map_id: @map, id: @page), :class => 'button secondary'
+  = link_to 'View Page', polymorphic_path([pageable, @page], locale: current_locale), :class => 'button secondary'
