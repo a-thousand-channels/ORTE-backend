@@ -22,6 +22,7 @@ RSpec.describe 'pages/index', type: :view do
                pageable: @map
              )
            ])
+    assign(:pageable, @map)
   end
 
   it 'renders a list of pages' do

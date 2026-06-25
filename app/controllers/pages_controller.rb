@@ -4,7 +4,7 @@ class PagesController < ApplicationController
   include ImportContextHelper
 
   before_action :set_locale
-  before_action :set_pageable_context, only: %i[index new create]
+  before_action :set_pageable_context, only: %i[index show new create]
   before_action :set_page, only: %i[show edit update destroy images]
   before_action :set_pageable_from_page, only: %i[edit update destroy]
   before_action :redirect_to_friendly_id, only: %i[show]
@@ -36,7 +36,7 @@ class PagesController < ApplicationController
           return
         end
       end
-      
+
       respond_to do |format|
         format.html { render :show }
         format.json { render :show }
@@ -66,7 +66,7 @@ class PagesController < ApplicationController
   # POST /pages.json
   def create
     @page = Page.new(page_params.merge(pageable: @pageable))
-  
+
     respond_to do |format|
       if @page.save
         format.html { redirect_to polymorphic_path([@pageable, @page], locale: @locale), notice: 'Page was created.' }
@@ -96,11 +96,32 @@ class PagesController < ApplicationController
   # DELETE /pages/1
   # DELETE /pages/1.json
   def destroy
+    unless @page
+      return respond_to do |format|
+        format.html { redirect_to root_path, alert: 'Page not found.' }
+        format.json { head :not_found }
+      end
+    end
+
     pageable = @page.pageable
-    @page.destroy
+    success = @page.destroy
+
     respond_to do |format|
-      format.html { redirect_to polymorphic_path(pageable, locale: @locale), notice: 'Page was successfully destroyed.' }
-      format.json { head :no_content }
+      if success
+        redirect_path = if pageable.is_a?(Map)
+                          map_path(pageable, locale: @locale)
+                        elsif pageable.is_a?(Place)
+                          place_path(pageable, locale: @locale)
+                        else
+                          root_path
+                        end
+
+        format.html { redirect_to redirect_path, notice: 'Page was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { render :edit }
+        format.json { render json: @page.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -132,10 +153,14 @@ class PagesController < ApplicationController
   end
 
   def set_pageable_context
-    if params[:map_id]
-      @pageable = Map.by_user(current_user).friendly.find(params[:map_id])
-    elsif params[:place_id]
+    if params[:place_id].present?
       @pageable = Place.find(params[:place_id])
+    elsif params[:map_id].present?
+      begin
+        @pageable = Map.by_user(current_user).friendly.find(params[:map_id])
+      rescue ActiveRecord::RecordNotFound
+        @pageable = nil
+      end
     end
   end
 

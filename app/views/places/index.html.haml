@@ -1,6 +1,5 @@
 - content_for(:title) { "Places of #{@layer.title}" }
 
-
 #table-wrapper
   %p.text-right.close_link_wrapper
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
@@ -177,13 +176,19 @@
               = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button alert small" do
                 %i.fi-trash.fi-21
                 Destroy
+
+
+            - if place.pages&.size > 0
+              %p Related pages;
+              %ul
+                - place.pages.each do |page|
+                  %li
+                    = link_to map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page) do
+                      = page.title
+                    = link_to edit_map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page) do
+                      %i.fi-pencil.fi-18
             %p
               = link_to new_map_layer_place_page_path(map_id: place.layer.map.id, layer_id: place.layer.id, place_id: place.id), class: "button small" do
                 %i.fi-plus.fi-18          
-                Create a page
-              %br
-              - if place.pages&.size > 0
-                %ul
-                  - place.pages.each do |page|
-                    %li= page.title
+                Create a page                      
   %p.text-right= paginate @places

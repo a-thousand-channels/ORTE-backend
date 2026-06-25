@@ -19,6 +19,7 @@ RSpec.describe 'pages/show', type: :view do
                      published: false,
                      pageable: @map
                    ))
+    assign(:pageable, @map)
   end
 
   it 'renders attributes in <p>' do

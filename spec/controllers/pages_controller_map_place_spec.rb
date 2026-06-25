@@ -143,11 +143,13 @@ RSpec.describe PagesController, type: :controller do
       let(:page) { FactoryBot.create(:page, pageable: map) }
 
       it 'destroys the requested page' do
+        # Pre-create the page before the expect block
+        test_page = page
         expect do
           delete :destroy, params: {
             locale: I18n.default_locale,
             map_id: map.id,
-            id: page.id
+            id: test_page.id
           }, session: valid_session
         end.to change(Page, :count).by(-1)
       end
@@ -250,11 +252,13 @@ RSpec.describe PagesController, type: :controller do
       let(:page) { FactoryBot.create(:page, pageable: place) }
 
       it 'destroys the requested page' do
+        # Pre-create the page before the expect block
+        test_page = page
         expect do
           delete :destroy, params: {
             locale: I18n.default_locale,
             place_id: place.id,
-            id: page.id
+            id: test_page.id
           }, session: valid_session
         end.to change(Page, :count).by(-1)
       end
