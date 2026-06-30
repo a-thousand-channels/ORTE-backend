@@ -19,6 +19,11 @@ json.map do
           json.lat place.public_lat
           json.lon place.public_lon
           json.tags place.tags.map(&:name).sort
+          json.pages place.pages do |page|
+            next unless page.published
+
+            json.extract! page, :id, :title, :subtitle, :text, :teaser, :footer, :created_at, :updated_at, :published
+          end
           json.annotations place.annotations do |annotation|
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
@@ -48,6 +53,13 @@ json.map do
           end
         end
       end
+    end
+  end
+  json.pages do
+    json.array! @map.pages do |page|
+      next unless page.published
+
+      json.call(page, :id, :title, :subtitle, :text, :teaser, :footer, :created_at, :updated_at, :published)
     end
   end
 end

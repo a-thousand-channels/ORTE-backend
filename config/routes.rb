@@ -80,7 +80,18 @@ Rails.application.routes.draw do
     resources :groups
   end
 
-  
+  # Public JSON API - must come before locale scope to avoid :locale matching "public"
+  namespace :public do
+    resources :maps, only: [:show, :allplaces, :index], :defaults => { :format => :json } do
+      resources :layers, only: [:show], :defaults => { :format => :json } do
+        resources :places, only: [:show], :defaults => { :format => :json }
+      end
+      resources :tags, only: [:index], :defaults => { :format => :json }
+      member do
+        get :allplaces
+      end
+    end
+  end
 
   scope "/:locale" do
     resources :maps do
@@ -120,19 +131,6 @@ Rails.application.routes.draw do
           get :finished, :controller => "public/submissions", :action => 'finished'
         end
       end
-    end
-  end
-
-  namespace :public do
-    resources :maps, only: [:show, :allplaces, :index], :defaults => { :format => :json } do
-      resources :layers, only: [:show], :defaults => { :format => :json } do
-        resources :places, only: [:show], :defaults => { :format => :json }
-      end
-      resources :tags, only: [:index], :defaults => { :format => :json }
-      member do
-        get :allplaces
-      end
-
     end
   end
 end
