@@ -1,0 +1,71 @@
+#form-wrapper
+  %p#notice= notice
+  %p
+    - if @audio.file.attached?
+      = audio_tag url_for(@audio.file), controls: true
+    - else
+      No Audio
+  %p
+    %b Place:
+    = link_to map_path(@audio.audioable.layer.map) do
+      = @audio.audioable.layer.map.title
+    \>
+    = link_to map_layer_path(@audio.audioable.layer.map,@audio.audioable.layer) do
+      = @audio.audioable.layer.title
+    \>
+    = link_to map_layer_place_path(@audio.audioable.layer.map,@audio.audioable.layer,@audio.audioable)  do
+      = @audio.audioable.title
+
+  - if @audio.title
+    %h3= @audio.title
+  .card.card-audio-info
+    %p
+      - if @audio.file.attached?
+        %b File:
+        = link_to url_for(@audio.file) do
+          %tt= @audio.file.filename
+    - if @audio.alt.present?
+      %p
+        %b Alt:
+        = @audio.alt
+    - if @audio.caption.present?
+      %p
+        %b Caption:
+        = @audio.caption
+    - if @audio.source.present?
+      %p
+        %b Source:
+        = link_to @audio.source do
+          = @audio.source
+    %p
+      %b Creator:
+      - if @audio.creator.present?
+        = @audio.creator
+      - else
+        Unknown
+      \|
+      %b Licence:
+      - if @audio.licence.present?
+        = @audio.licence
+      - else
+        Unknown
+    %p
+      - if @audio.sorting.present?
+        %b Sorting:
+        = @audio.sorting
+      - if @audio.sorting.present? && @audio.preview.present?
+        \|
+      - if @audio.preview
+        %b Preview:
+        %i.fi-star.fi-24
+
+  = link_to edit_map_layer_place_audio_path(@place.layer.map,@place.layer,@place,@audio), class: "button"  do
+    %i.fi.fi-pencil
+    Edit
+  &nbsp;
+  = link_to map_layer_place_audio_path(@place.layer.map,@place.layer,@place,@audio), method: :delete, data: { confirm: 'Are you sure to delete this audio?' }, :class => 'button warning' do
+    %i.fi.fi-trash
+    Delete
+  &nbsp;
+  = link_to edit_map_layer_place_path(@place.layer.map,@place.layer,@place), class: "button"  do
+    Back to place

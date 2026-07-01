@@ -229,7 +229,7 @@ RSpec.describe Public::LayersController, type: :controller do
         @layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
         # Create 6 places with relations between them
         3.times do
-          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+          place1 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
           place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[bbb ccc ddd], published: true)
           FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
         end
@@ -258,7 +258,7 @@ RSpec.describe Public::LayersController, type: :controller do
 
         # Create 3 additional places with relations between them
         3.times do
-          place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+          place1 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
           place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[ccc ddd], published: true)
           FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
         end
@@ -280,7 +280,7 @@ RSpec.describe Public::LayersController, type: :controller do
 
           # Create 3 additional places with relations between them
           3.times do
-            place1 = FactoryBot.create(:place, :with_audio, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
+            place1 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[aaa bbb ccc], published: true)
             place2 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[ccc ddd], published: true)
             FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
           end

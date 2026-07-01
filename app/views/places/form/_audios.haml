@@ -1,0 +1,23 @@
+- audios = Audio.where(audioable_type: 'Place', audioable_id: @place.id)
+- if audios.count > 0
+  %hr
+  %p
+    Audios:
+  .grid-x
+    - audios.order('sorting ASC').each_with_index do |audio,i|
+      .audio.ui-state-default{id: "audio_#{audio.id}"}
+        .audio-toolbar
+          = link_to map_layer_place_audio_path(@place.layer.map,@place.layer,@place,audio), class: "button button-right button-show tiny", title: 'See details'  do
+            %i.fi-eye
+          = link_to edit_map_layer_place_audio_path(@place.layer.map,@place.layer,@place,audio), class: "button button-right button-edit tiny", title: 'Edit audio'  do
+            %i.fi-pencil
+        - if audio.file.attached?
+          = audio_tag url_for(audio.file), controls: true
+          %br
+          = audio.title
+        - else
+          = link_to edit_map_layer_place_audio_path(@place.layer.map,@place.layer,@place,audio), class: "thumbnail" do
+            %p
+              Oups, audio file is missing.
+              %br
+              Please click here to upload an audio file.

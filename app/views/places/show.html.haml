@@ -110,10 +110,11 @@
         - if @place.link
           = link_to @place.link, target: '_blank' do
             = @place.link
-      - if @place.audio.attached?
+      - @place.audios.each do |audio|
         %p
-          = audio_tag rails_blob_url(@place.audio), autoplay: true, controls: true
-          = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
+          - if audio.file.attached?
+            = audio_tag rails_blob_url(audio.file), autoplay: false, controls: true
+            = link_to audio.file.filename, rails_blob_path(audio.file, disposition: "attachment")
 
       - if @place.tag_list
         %hr.small

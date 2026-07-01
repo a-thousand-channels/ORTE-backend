@@ -18,7 +18,7 @@ class Annotation < ApplicationRecord
   end
 
   def audiolink
-    ApplicationController.helpers.audio_link(audio) if audio
+    ApplicationController.helpers.audio_linktag(audio) if audio
   end
 
   private

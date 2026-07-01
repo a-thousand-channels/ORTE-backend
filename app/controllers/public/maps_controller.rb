@@ -29,7 +29,7 @@ class Public::MapsController < ActionController::Base
       @map_layers = @map.layers.published if @map&.layers
       if @map_layers.present?
         @map_layers = @map_layers
-                      .includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
+                      .includes(:image_attachment, places: [:icon, :annotations, :tags, :audios, { images: { file_attachment: :blob }, relations_froms: %i[relation_from relation_to] }])
 
         if params[:filter_by_tags]
           tags = params[:filter_by_tags].split(',')
@@ -81,14 +81,14 @@ class Public::MapsController < ActionController::Base
                                end
 
           @allplaces = Place.includes(:icon, :annotations, :tags, :layer,
+                                      :audios,
                                       images: { file_attachment: :blob },
-                                      audio_attachment: :blob,
                                       relations_froms: %i[relation_from relation_to])
                             .where(id: filtered_place_ids)
         else
           @allplaces = Place.includes(:icon, :annotations, :tags, :layer,
+                                      :audios,
                                       images: { file_attachment: :blob },
-                                      audio_attachment: :blob,
                                       relations_froms: %i[relation_from relation_to])
                             .joins(:layer)
                             .where(layers: { map_id: @map.id, published: true })

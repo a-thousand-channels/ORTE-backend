@@ -56,16 +56,6 @@ FactoryBot.define do
         place.save
       end
     end
-
-    trait :with_audio do
-      after(:build) do |place|
-        place.audio.attach(
-          io: StringIO.new(File.read(Rails.root.join('spec/support/files/test.mp3'))),
-          filename: 'test.mp3',
-          content_type: 'audio/mpeg'
-        )
-      end
-    end
     trait :with_images do
       published { true }
 
