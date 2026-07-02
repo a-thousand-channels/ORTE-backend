@@ -9,6 +9,13 @@ class Audio < ApplicationRecord
   validate :check_file_presence
   validate :check_file_format
 
+  extend Mobility
+
+  translates :title,   type: :string
+  translates :source,  type: :string
+  translates :creator, type: :string
+  translates :caption, type: :string
+
   scope :sorted, -> { order(sorting: :asc) }
   scope :sorted_by_place, ->(place_id) { where(audioable_type: 'Place', audioable_id: place_id).order(sorting: :asc) }
 
