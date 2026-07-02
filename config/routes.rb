@@ -104,17 +104,22 @@ Rails.application.routes.draw do
         resources :images
         resources :videos
       end
-    end
-    resources :places do
-      resources :pages do
-        member do
-          get :images, path: 'images_overview'
-          post :sort
+      resources :layers do
+        resources :places do
+          resources :pages do
+            member do
+              get :images, path: 'images_overview'
+              post :sort
+            end
+          end
+          resources :images
+          resources :videos
+          resources :audios
         end
-        resources :images
-        resources :videos
       end
     end
+    
+
     namespace :public do
       resources :maps do
         resources :pages, only: [:index], :defaults => { :format => :json } 

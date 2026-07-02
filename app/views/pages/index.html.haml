@@ -1,5 +1,4 @@
 - content_for(:title) { "Pages of #{@pageable.title}" }
-- current_locale = I18n.locale || I18n.default_locale
 - public_json_locales = (@pageable.respond_to?(:available_languages) ? Array(@pageable.available_languages) : []).uniq.select do |locale|
   - accessor = :"title_#{locale}"
   - @pages.select(&:published).any? { |page| page.respond_to?(accessor) && page.public_send(accessor).present? }
@@ -7,24 +6,24 @@
 #table-wrapper
   %p.text-right.close_link_wrapper
     - if @pageable.is_a?(Map)
-      = link_to map_path(@pageable, locale: current_locale), :class=>'close_link' do
+      = link_to map_path(@pageable, locale: I18n.locale), :class=>'close_link' do
         %i.fi.fi-x
     - else
-      = link_to map_layer_place_path(@pageable.layer.map, @pageable.layer, @pageable, locale: current_locale), :class=>'close_link' do
+      = link_to map_layer_place_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale), :class=>'close_link' do
         %i.fi.fi-x
   %h1
     = @pageable.class.to_s
     = ":"
     
     - if @pageable.is_a?(Map)
-      = link_to polymorphic_path(@pageable, locale: current_locale) do
+      = link_to polymorphic_path(@pageable, locale: I18n.locale) do
         = @pageable.title
-      = link_to edit_polymorphic_path(@pageable), locale: current_locale do
+      = link_to edit_polymorphic_path(@pageable), locale: I18n.locale do
         %i.fi-pencil.fi-24
     - else  
-      = link_to map_layer_place_pages_path(@pageable.layer.map, @pageable.layer, @pageable, locale: current_locale) do
+      = link_to map_layer_place_pages_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale) do
         = @pageable.title
-      = link_to edit_map_layer_place_path(@pageable.layer.map, @pageable.layer, @pageable, locale: current_locale) do
+      = link_to edit_map_layer_place_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale) do
         %i.fi-pencil.fi-24
 
 
@@ -84,10 +83,17 @@
           %td
             %h4
               - if page.pageable.is_a?(Map)
-                = link_to map_page_path(page.pageable, page, locale: current_locale) do
-                  = page.title
+                = link_to map_page_path(page.pageable, page, locale: I18n.locale) do
+                  - if page.title
+                    = page.title
+                  - else 
+                    %tt 
+                      No 
+                      = I18n.t("languages.en", locale: locale)
+                      translation yet for 
+                      "#{Mobility.with_locale(@map&.primary_language) { page.title }}"
               - else
-                = link_to map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page, locale: current_locale) do
+                = link_to map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page, locale: I18n.locale) do
                   = page.title
               - if page.published
                 %i.fi-eye.fi-24{title: 'Page is published'}
@@ -131,27 +137,27 @@
                     = image_tag i.variant(resize: "120x120").processed, class: "thumbnail", title: i.title
           %td
             - if @pageable.is_a?(Map)
-              = link_to edit_map_page_path(@pageable, page, locale: current_locale), :class=>"button" do
+              = link_to edit_map_page_path(@pageable, page, locale: I18n.locale), :class=>"button" do
                 %i.fi-pencil.fi-24
               &nbsp;
-              = link_to map_page_path(@pageable, page, locale: current_locale), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+              = link_to map_page_path(@pageable, page, locale: I18n.locale), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
                 %i.fi-trash.fi-24
             - else
-              = link_to edit_map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, page, locale: current_locale), :class=>"button" do
+              = link_to edit_map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, page, locale: I18n.locale), :class=>"button" do
                 %i.fi-pencil.fi-24
               &nbsp;
-              = link_to map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, page, locale: current_locale), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+              = link_to map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, page, locale: I18n.locale), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
                 %i.fi-trash.fi-24
 
   .grid-x.grid-padding-x
     .cell.medium-6
       %p
         - if @pageable.is_a?(Map)
-          = link_to new_map_page_path(@pageable, locale: current_locale), :class=>'button small' do
+          = link_to new_map_page_path(@pageable, locale: I18n.locale), :class=>'button small' do
             %i.fi-plus.fi-18
             New Page
         - else
-          = link_to new_map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, locale: current_locale), :class=>'button small' do
+          = link_to new_map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale), :class=>'button small' do
             %i.fi-plus.fi-18
             New Page
       %p.shy

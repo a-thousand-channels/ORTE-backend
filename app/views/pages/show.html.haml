@@ -139,3 +139,7 @@
         \|
         %b Last edit:
         = l(@page.updated_at)
+        \|
+        %b 
+          Language:
+          = I18n.t("languages.#{I18n.locale}", locale: 'en')

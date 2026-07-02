@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_01_100001) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_02_180920) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -66,6 +66,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_01_100001) do
     t.bigint "audioable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "locale", null: false
     t.index ["audioable_type", "audioable_id"], name: "index_audios_on_audioable_type_and_audioable_id"
   end
 

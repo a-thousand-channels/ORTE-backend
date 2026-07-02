@@ -123,13 +123,24 @@
 
   .grid-x
     .medium-6.cell
-      Showing #{@places.count} of total of #{@layer.places.count} Placves
+      Showing #{@places.count} of total of #{@layer.places.count} Places
     .medium-6.call
       = paginate @places
   %table
     %thead
       %tr
-        %th Place
+        %th 
+          %h5 Places
+          - if @map.respond_to?(:available_languages) && @map.available_languages.present?
+            %p.shy
+              Available languages:
+              - @map.available_languages.each do |locale|
+                = link_to map_layer_places_path(@map, @layer, locale: locale) do
+                  - if I18n.locale.to_s == locale.to_s
+                    %span.badge.secondary.active
+                      = I18n.t("languages.#{locale}", locale: locale)
+                  - else
+                    %span.badge.secondary= I18n.t("languages.#{locale}", locale: locale)
         %th
           &nbsp;
 
@@ -138,6 +149,23 @@
         %tr.place{"data-startyear":(place.startdate ? place.startdate.year : ''),"data-endyear":(place.enddate ? place.enddate.year : '')}
           %td
             = render 'places/list/place', place: place
+            - available_langs = (@map.respond_to?(:available_languages) ? Array(@map.available_languages) : [])
+            - translated_locales = available_langs.select do |locale|
+              - accessor = :"localized_title_#{locale}"
+              - place.respond_to?(accessor) && place.public_send(accessor).present?
+            %p
+              Versions:
+              - available_langs.each do |locale|
+                - if translated_locales.include?(locale)
+                  = link_to edit_map_layer_place_path(place.layer.map, place.layer, place, locale: locale), class: 'button small' do  
+                    %i.fi-pencil.fi-18
+                    = I18n.t("languages.#{locale}", locale: locale)
+                - else
+                  = link_to edit_map_layer_place_path(place.layer.map, place.layer, place, locale: locale), class: 'button small secondary' do  
+                    %i.fi-plus.fi-18
+                    = I18n.t("languages.#{locale}", locale: locale)
+
+
           %td
             %p
               = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
@@ -183,9 +211,9 @@
               %ul
                 - place.pages.each do |page|
                   %li
-                    = link_to map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page) do
+                    = link_to map_layer_place_page_path(place.layer.map, place.layer, place, page) do
                       = page.title
-                    = link_to edit_map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page) do
+                    = link_to edit_map_layer_place_page_path(place.layer.map, place.layer, place, page) do
                       %i.fi-pencil.fi-18
             %p
               = link_to new_map_layer_place_page_path(map_id: place.layer.map.id, layer_id: place.layer.id, place_id: place.id), class: "button small" do

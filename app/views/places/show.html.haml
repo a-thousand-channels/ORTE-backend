@@ -165,11 +165,16 @@
       %p.hint.text-left
         %b Coordinates:
         #{@place.lat[0..5]}, #{@place.lon[0..5]}
+        %br
         %b Published:
         - if @place.published
-          %i.fi-check.fi-18
+          %i.fi-check.fi-16
         - else
-          %i.fi-lock.fi-18
+          %i.fi-lock.fi-16
         \|
-        %b Last edit:
+        %b Last edited:
         = l(@place.updated_at)
+        %br
+        %b Language:
+        = I18n.t("languages.#{I18n.locale}", locale: 'en')
+

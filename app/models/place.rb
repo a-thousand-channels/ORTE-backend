@@ -10,6 +10,16 @@ class Place < ApplicationRecord
 
   acts_as_taggable_on :tags
 
+  extend Mobility
+
+  # using Mobility with these extra fields, since we want to keep the original fields content for the default language, and only use the localized fields for translations
+  # check the fallbacks on the end of this file!
+  translates :localized_title,    type: :string
+  translates :localized_subtitle, type: :string
+  translates :localized_teaser,   type: :text
+  translates :localized_text,     type: :text
+  translates :localized_sources,  type: :text
+
   has_many :audios, as: :audioable, dependent: :destroy
 
   has_many :relations_tos, foreign_key: 'relation_to_id',
@@ -241,6 +251,26 @@ class Place < ApplicationRecord
       end
     end
   end
+
+  # def localized_title(**)
+  #   super.presence || title
+  # end
+
+  # def localized_subtitle(**)
+  #   super.presence || subtitle
+  # end
+
+  # def localized_teaser(**)
+  #   super.presence || teaser
+  # end
+
+  # def localized_text(**)
+  #   super.presence || text
+  # end
+
+  # def localized_sources(**)
+  #   super.presence || sources
+  # end
 
   private
 
