@@ -59,10 +59,10 @@
                 - if @pageable.is_a?(Map)
                   = link_to map_pages_path(@pageable, locale: locale) do
                     - if I18n.locale.to_s == locale.to_s
-                      %span.active
+                      %span.active.badge.secondary.small
                         = I18n.t("languages.#{locale}", locale: locale)
                     - else
-                      %span= I18n.t("languages.#{locale}", locale: locale)
+                      %span.badge.secondary.small= I18n.t("languages.#{locale}", locale: locale)
                 - else
                   = link_to map_layer_place_pages_path(@pageable.layer.map, @pageable.layer, @pageable, locale: locale) do
                     - if I18n.locale.to_s == locale.to_s
