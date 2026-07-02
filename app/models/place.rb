@@ -34,6 +34,7 @@ class Place < ApplicationRecord
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :audios, allow_destroy: true
 
   has_many :images, as: :imageable, dependent: :destroy
   has_many :videos, as: :videoable, dependent: :destroy
@@ -82,6 +83,10 @@ class Place < ApplicationRecord
     ActsAsTaggableOn::Tag.joins(:taggings)
                          .where(taggings: { taggable_type: 'Place' })
                          .distinct
+  end
+
+  def audio_for(locale = Mobility.locale)
+    audios.find_by(locale: locale.to_s)
   end
 
   def title_and_location

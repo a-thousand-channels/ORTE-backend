@@ -28,7 +28,7 @@ json.map do
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
           json.audios place.audios do |audio|
-            json.extract! audio, :id, :title, :source, :creator, :alt, :sorting, :audio_url, :audio_linktag
+            json.extract! audio, :id, :title, :source, :creator, :alt, :sorting, :audio_url, :audio_linktag, :locale
           end
           json.images do
             json.array!(place.images.sort_by { |image| [image.sorting ? 0 : 1, image.sorting] }) do |image|

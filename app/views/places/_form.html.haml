@@ -249,7 +249,7 @@
         = render 'places/form/videos'
         - if params[:action] == 'edit'
           %label Audios
-          = link_to new_map_layer_place_audio_path(@place.layer.map,@place.layer,@place), class: 'button' do
+          = link_to new_map_layer_place_audio_path(@place.layer.map,@place.layer,@place, params[:locale] ? {locale: params[:locale]} : {}), class: 'button' do
             %i.fi.fi-plus
             Add audio
           %p.hint

@@ -58,4 +58,8 @@ module PlacesHelper
       ''
     end
   end
+
+  def audio_for(locale = Mobility.locale)
+    audios.find_by(locale: locale.to_s)
+  end
 end

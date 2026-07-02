@@ -82,7 +82,7 @@ class AudiosController < ApplicationController
   end
 
   def audio_params
-    params.require(:audio).permit(:title, :licence, :source, :creator, :alt, :caption, :sorting, :preview, :file, :audioable_type, :audioable_id)
+    params.require(:audio).permit(:title, :licence, :source, :creator, :alt, :caption, :sorting, :preview, :file, :locale, :audioable_type, :audioable_id)
   end
 
   def handle_record_not_found

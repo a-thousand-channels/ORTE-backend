@@ -4,6 +4,7 @@
       = f.error_notification
       = f.input :audioable_id, as: :hidden, input_html: { value: @place.id }
       = f.input :audioable_type, as: :hidden, input_html: { value: 'Place' }
+      = f.input :locale, as: :hidden, input_html: { value: params[:locale] || I18n.locale }
 
 
   .grid-x
@@ -16,11 +17,15 @@
         .grid-x.grid-padding-x
           .large-6.medium-6.cell
             = f.input :file, as: :file, input_html: { accept: 'audio/mpeg,audio/x-m4a,audio/mp4', multiple: false }, label: "Audio (MP3 or M4A)"
-            - if params[:action] == 'edit' && @audio.file.attached?
-              = link_to url_for(@audio.file) do
-                = audio_tag url_for(@audio.file), controls: true
             %p.shy
               Please upload only MP3 or M4A files
+            - if params[:action] == 'edit' && @audio.file.attached?
+              Existing audio:
+              = link_to url_for(@audio.file) do
+                = audio_tag url_for(@audio.file), controls: true
+              %p.shy
+                = @audio.file.filename.to_s
+
           .large-6.medium-6.cell
             .grid-x.grid-padding-x
               .large-7.medium-7.cell
