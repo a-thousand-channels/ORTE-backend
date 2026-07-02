@@ -9,7 +9,7 @@ set :db_password, Rails.application.credentials.dig(:mysql, :staging, :password)
 
 set :application, Rails.application.credentials.dig(:deploy, :orte, :application)
 
-server Rails.application.credentials.dig(:deploy, :staging, :server), roles: %w(app web db), user: 'orte-deploy', port: 4242
+server Rails.application.credentials.dig(:deploy, :staging, :server), roles: %w(app web db), user: 'orte-deploy', port: Rails.application.credentials.dig(:deploy, :staging, :port)
 
 # role-based syntax
 # ==================
