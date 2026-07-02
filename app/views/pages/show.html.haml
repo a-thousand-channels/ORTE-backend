@@ -12,7 +12,6 @@
 
   .grid-x.grid-padding-x
     - images = Image.sorted_by_page(@page.id)
-    = images.size
     - if images.size > 0
       - textcol = 8
       .cell.small-12.medium-12
@@ -89,10 +88,22 @@
       %p.hint.text-left
         - if @pageable.is_a?(Map)
           = link_to map_url(@page.map) do
+            Map:
             = @page.map.title 
           \—          
           = link_to map_pages_url(locale: current_locale, map_id: @page.map) do
             Pages
+          \—
+          = @page.title
+        - else
+          = link_to map_layer_place_url(@pageable.layer.map, @pageable.layer, @pageable) do
+            Map:
+            = @pageable.layer.map.title
+          \—
+          = link_to map_layer_place_pages_url(locale: current_locale, map_id: @pageable.layer.map, layer_id: @pageable.layer, place_id: @pageable) do
+            Pages
+          \—
+          = @page.title
 
 
       %h1

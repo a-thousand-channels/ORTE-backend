@@ -3,10 +3,10 @@
 class PagesController < ApplicationController
   include ImportContextHelper
 
-  before_action :set_locale
   before_action :set_pageable_context, only: %i[index show new create]
   before_action :set_page, only: %i[show edit update destroy images]
   before_action :set_pageable_from_page, only: %i[edit update destroy]
+  before_action :set_locale
   before_action :redirect_to_friendly_id, only: %i[show]
 
   protect_from_forgery except: :show
@@ -144,7 +144,9 @@ class PagesController < ApplicationController
   private
 
   def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+    I18n.locale = params[:locale] || @map&.primary_language || I18n.default_locale
+    # @pageable.is_a?(Map)
+    # I18n.locale = params[:locale] || I18n.default_locale
     @locale = I18n.locale
   end
 

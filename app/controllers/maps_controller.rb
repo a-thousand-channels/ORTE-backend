@@ -6,6 +6,7 @@ class MapsController < ApplicationController
   include ImportContextHelper
 
   before_action :set_map, only: %i[show edit update destroy import import_preview importing]
+  before_action :set_locale
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -180,6 +181,10 @@ class MapsController < ApplicationController
   end
 
   private
+
+  def set_locale
+    I18n.locale = params[:locale] || @map&.primary_language || I18n.default_locale
+  end
 
   def redirect_to_friendly_id
     # If an old id or a numeric id was used to find the record, then
