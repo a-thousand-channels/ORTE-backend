@@ -15,12 +15,20 @@ json.map do
         json.array! layer.places do |place|
           next unless place.published
 
-          json.call(place, :id, :uid, :title, :subtitle, :teaser, :text, :sources, :link, :imagelink, :imagelink2, :audiolink, :published, :date_with_qualifier, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
+          json.call(place, :id, :uid, :title, :subtitle, :teaser, :text, :sources, :link, :imagelink, :imagelink2, :audiolink, :audiolinks, :published, :date_with_qualifier, :startdate, :enddate, :location, :address, :zip, :city, :text, :country, :featured, :shy, :layer_id, :icon_link, :icon_class, :icon_name)
           json.lat place.public_lat
           json.lon place.public_lon
           json.tags place.tags.map(&:name).sort
+          json.pages place.pages do |page|
+            next unless page.published
+
+            json.extract! page, :id, :title, :subtitle, :text, :teaser, :footer, :created_at, :updated_at, :published
+          end
           json.annotations place.annotations do |annotation|
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
+          end
+          json.audios place.audios do |audio|
+            json.extract! audio, :id, :title, :source, :creator, :alt, :sorting, :audio_url, :audio_linktag
           end
           json.images do
             json.array!(place.images.sort_by { |image| [image.sorting ? 0 : 1, image.sorting] }) do |image|
@@ -48,6 +56,13 @@ json.map do
           end
         end
       end
+    end
+  end
+  json.pages do
+    json.array! @map.pages do |page|
+      next unless page.published
+
+      json.call(page, :id, :title, :subtitle, :text, :teaser, :footer, :created_at, :updated_at, :published)
     end
   end
 end

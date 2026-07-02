@@ -16,15 +16,15 @@ RSpec.describe PagesController, type: :controller do
     end
 
     let(:page) do
-      FactoryBot.create(:page, map_id: @map.id)
+      FactoryBot.create(:page, :with_map, pageable: @map)
     end
 
     let(:valid_attributes) do
-      FactoryBot.attributes_for(:page, map_id: @map.id)
+      FactoryBot.attributes_for(:page, pageable_id: @map.id, pageable_type: 'Map')
     end
 
     let(:invalid_attributes) do
-      FactoryBot.attributes_for(:page, :invalid, map_id: @map.id)
+      FactoryBot.attributes_for(:page, :invalid, pageable_id: @map.id, pageable_type: 'Map')
     end
 
     let(:valid_session) { {} }
@@ -59,7 +59,7 @@ RSpec.describe PagesController, type: :controller do
       it 'returns a no success response (for a non-accesible map)' do
         another_group = FactoryBot.create(:group)
         map = FactoryBot.create(:map, group_id: another_group.id)
-        page = FactoryBot.create(:page, map_id: map.id)
+        page = FactoryBot.create(:page, pageable: map)
         get :show, params: { locale: I18n.default_locale, map_id: map.friendly_id, id: page.friendly_id }, session: valid_session
         expect(response).to have_http_status(302)
         expect(flash[:notice]).to match 'Sorry, this map could not be found.'
@@ -74,7 +74,7 @@ RSpec.describe PagesController, type: :controller do
       end
 
       it 'a page w/title for a published page' do
-        page = FactoryBot.create(:page, map_id: @map.id, published: true)
+        page = FactoryBot.create(:page, pageable: @map, published: true)
         get :show, params: { locale: I18n.default_locale, id: page.friendly_id, map_id: @map.friendly_id }, session: valid_session, format: 'json'
         json = JSON.parse(response.body)
         expect(json['title']).to eq page.title
@@ -122,7 +122,7 @@ RSpec.describe PagesController, type: :controller do
 
     describe 'PUT #update' do
       let(:image_page) do
-        FactoryBot.create(:page, :with_images, map_id: @map.id)
+        FactoryBot.create(:page, :with_images, pageable: @map)
       end
 
       let(:images_files) do
@@ -135,7 +135,7 @@ RSpec.describe PagesController, type: :controller do
 
       context 'with valid params' do
         let(:new_attributes) do
-          FactoryBot.attributes_for(:page, :changed, map_id: @map.id)
+          FactoryBot.attributes_for(:page, :changed, pageable_id: @map.id, pageable_type: 'Map')
         end
 
         it 'updates the requested page' do
@@ -177,7 +177,7 @@ RSpec.describe PagesController, type: :controller do
     end
     describe 'POST #sort' do
       it 'updates image sorting order and returns empty JSON' do
-        page = create(:page, map_id: @map.id)
+        page = create(:page, :with_map, pageable: @map)
         image1 = create(:image, imageable: page)
         image2 = create(:image, imageable: page)
         image3 = create(:image, imageable: page)
@@ -197,7 +197,7 @@ RSpec.describe PagesController, type: :controller do
       end
 
       it 'sets sorting starting at 1 regardless of previous values' do
-        page = create(:page, map_id: @map.id)
+        page = create(:page, :with_map, pageable: @map)
         image1 = create(:image, imageable: page, sorting: 99)
         image2 = create(:image, imageable: page, sorting: 5)
 
@@ -215,19 +215,19 @@ RSpec.describe PagesController, type: :controller do
 
     describe '#find_page_with_locale_fallback' do
       it 'finds a page by friendly_id in the current locale' do
-        page = create(:page, map_id: @map.id)
+        page = create(:page, :with_map, pageable: @map)
         get :edit, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.friendly_id }, session: valid_session
         expect(assigns(:page)).to eq(page)
       end
 
       it 'falls back to numeric id when no slug matches in current locale' do
-        page = create(:page, map_id: @map.id)
+        page = create(:page, :with_map, pageable: @map)
         get :edit, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.id }, session: valid_session
         expect(assigns(:page)).to eq(page)
       end
 
       it 'falls back to another locale slug when current locale has no match' do
-        page = I18n.with_locale(:en) { create(:page, map_id: @map.id, title: 'English slug page') }
+        page = I18n.with_locale(:en) { create(:page, pageable: @map, title: 'English slug page') }
         de_slug = I18n.with_locale(:de) do
           page.update!(title: 'Deutscher Slug Seite')
           page.friendly_id

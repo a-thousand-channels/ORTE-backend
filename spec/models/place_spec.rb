@@ -12,26 +12,6 @@ RSpec.describe Place, type: :model do
     expect(build(:place, sensitive: true)).to be_valid
   end
 
-  describe 'Audio attachment' do
-    it '(mp3) is attached' do
-      subject.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
-      expect(subject.audio).to be_attached
-    end
-    it '(m4a) is attached' do
-      subject.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.m4a')), filename: 'test.m4a', content_type: 'audio/x-m4a')
-      expect(subject.audio).to be_attached
-    end
-    it '(mp4) is not attached' do
-      subject.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp4')), filename: 'test.mp4', content_type: 'video/mpeg')
-      expect(subject).not_to be_valid
-    end
-    it 'is invalid' do
-      subject.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp4')), filename: 'test.ogg', content_type: 'audio/mpeg')
-      expect(subject).not_to be_valid
-      # expect(subject.errors.full_messages).to include('Format must be MP3 or M4')
-    end
-  end
-
   describe 'Fulldates w/before_save handling' do
     it 'updates full date' do
       p = FactoryBot.create(:place, startdate: '2018-01-01', enddate: '2018-01-02')
@@ -150,8 +130,9 @@ RSpec.describe Place, type: :model do
     m = FactoryBot.create(:map)
     l = FactoryBot.create(:layer, map: m)
     p = FactoryBot.create(:place, layer: l)
-    p.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
-    expect(p.audiolink).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(p.audio)}\"></audio>")
+    audio = FactoryBot.create(:audio, audioable: p)
+    audio.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
+    expect(p.audiolink).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(audio.file)}\"></audio>")
   end
 
   it 'random_loc' do

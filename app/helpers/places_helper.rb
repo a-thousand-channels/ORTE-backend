@@ -58,10 +58,4 @@ module PlacesHelper
       ''
     end
   end
-
-  def audio_link(audio)
-    return '' unless audio.attached?
-
-    audio_tag rails_blob_url(audio), autoplay: false, controls: true
-  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_01_100001) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -51,6 +51,22 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["person_id"], name: "fk_rails_adeffa1c70"
     t.index ["place_id"], name: "fk_rails_51dbcfe977"
+  end
+
+  create_table "audios", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "licence"
+    t.text "source"
+    t.string "creator"
+    t.string "alt"
+    t.string "caption"
+    t.integer "sorting"
+    t.boolean "preview"
+    t.string "audioable_type"
+    t.bigint "audioable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audioable_type", "audioable_id"], name: "index_audios_on_audioable_type_and_audioable_id"
   end
 
   create_table "build_logs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -244,10 +260,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.string "slug"
     t.boolean "published"
     t.string "state"
-    t.bigint "map_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["map_id"], name: "index_pages_on_map_id"
+    t.bigint "pageable_id"
+    t.string "pageable_type"
+    t.index ["pageable_id", "pageable_type"], name: "index_pages_on_pageable_id_and_pageable_type"
   end
 
   create_table "people", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -414,7 +431,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
-  add_foreign_key "pages", "maps"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"

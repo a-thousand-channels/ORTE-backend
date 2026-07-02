@@ -9,7 +9,7 @@ RSpec.describe 'pages/show', type: :view do
     sign_in user
 
     @map = FactoryBot.create(:map, group_id: group.id)
-    @page = FactoryBot.create(:page, map_id: @map.id)
+    @page = FactoryBot.create(:page, :with_map, pageable: @map)
     @maps = FactoryBot.create_list(:map, 3)
     @map_pages = @map.pages
     @page = assign(:page,
@@ -17,8 +17,9 @@ RSpec.describe 'pages/show', type: :view do
                      title: 'Title',
                      text: 'Text',
                      published: false,
-                     map: @map
+                     pageable: @map
                    ))
+    assign(:pageable, @map)
   end
 
   it 'renders attributes in <p>' do

@@ -137,7 +137,7 @@ class LayersController < ApplicationController
         @layer.basemap_attribution = @layer.map.basemap_attribution
         @layer.background_color = @layer.map.background_color
       end
-      @places = @layer.places.includes(:images, :annotations, :tags, :icon, audio_attachment: :blob, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
+      @places = @layer.places.includes(:images, :annotations, :tags, :icon, :audios, relations_froms: { relation_from: [:layer], relation_to: [:layer] })
       if params[:search] && !params[:search].empty?
         @search = params[:search]
         @places = @places.where('places.title LIKE :query OR places.teaser LIKE :query OR places.text LIKE :query', query: "%#{@search}%")

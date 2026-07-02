@@ -7,8 +7,28 @@ RSpec.describe Page, type: :model do
     expect(build(:page)).to be_valid
   end
 
+  describe 'associations' do
+    it { is_expected.to belong_to(:pageable) }
+  end
+
   it 'is invalid without a title' do
     expect(build(:page, title: nil)).not_to be_valid
+  end
+
+  describe 'polymorphic ownership' do
+    it 'can belong to a map' do
+      map = create(:map)
+      page = create(:page, pageable: map)
+      expect(page.pageable).to eq(map)
+      expect(page.pageable_type).to eq('Map')
+    end
+
+    it 'can belong to a place' do
+      place = create(:place)
+      page = create(:page, pageable: place)
+      expect(page.pageable).to eq(place)
+      expect(page.pageable_type).to eq('Place')
+    end
   end
 
   describe 'translations' do
