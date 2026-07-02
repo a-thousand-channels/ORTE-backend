@@ -23,7 +23,8 @@
             "updated_at",
             "published",
             "owner",
-            "layer"
+            "layer",
+            "pages"
          ],
          "properties":{
             "id":{
@@ -124,6 +125,16 @@
                ],
                "pattern":"^(.*)$"
             },
+            "pages":{
+               "$id":"#/properties/map/properties/pages",
+               "type":"array",
+               "title":"The Pages Schema",
+               "default":"",
+               "examples":[
+                  ""
+               ],
+               "pattern":[]
+            },            
             "layer":{
                "$id":"#/properties/map/properties/layer",
                "type":"array",
@@ -563,6 +574,15 @@
                                     true
                                  ]
                               },
+                              "pages":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/items/properties/pages",
+                                 "type":"array",
+                                 "title":"The Published Schema",
+                                 "default":false,
+                                 "examples":[
+                                    true
+                                 ]
+                              },                              
                               "images":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/properties/images",
                                  "type":"array",
