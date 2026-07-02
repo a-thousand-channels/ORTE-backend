@@ -19,6 +19,8 @@ class Place < ApplicationRecord
                              class_name: 'Relation',
                              dependent: :destroy
   has_many :annotations
+  has_many :pages, as: :pageable, dependent: :destroy
+
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true

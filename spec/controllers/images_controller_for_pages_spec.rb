@@ -9,7 +9,7 @@ RSpec.describe ImagesController, type: :controller do
       user = FactoryBot.create(:admin_user, group_id: @group.id)
       sign_in user
       @map = FactoryBot.create(:map, group_id: @group.id)
-      @page = FactoryBot.create(:page, map_id: @map.id)
+      @page = FactoryBot.create(:page, :with_map, pageable: @map)
     end
 
     let(:image) do
@@ -43,7 +43,7 @@ RSpec.describe ImagesController, type: :controller do
         @another_group = FactoryBot.create(:group)
         @another_map = FactoryBot.create(:map, group_id: @another_group.id)
         @another_layer = FactoryBot.create(:layer, map_id: @another_map.id, title: 'Another layer title')
-        @another_page = FactoryBot.create(:page, map_id: @another_map.id)
+        @another_page = FactoryBot.create(:page, pageable: @another_map)
         get :index, params: { locale: I18n.default_locale, map_id: @another_map.id, page_id: @another_page.id }, session: valid_session
         expect(response).to have_http_status(302)
       end
@@ -60,7 +60,7 @@ RSpec.describe ImagesController, type: :controller do
         user = FactoryBot.create(:user, group_id: @another_group.id)
         sign_in user
         @another_map = FactoryBot.create(:map, group_id: @another_group.id)
-        @another_page = FactoryBot.create(:page, map_id: @another_map.id)
+        @another_page = FactoryBot.create(:page, pageable: @another_map)
         image = Image.create! valid_attributes
         get :show, params: { locale: I18n.default_locale, id: image.to_param, map_id: @another_map.id, page_id: @another_page.id }, session: valid_session
         expect(response).to have_http_status(302)

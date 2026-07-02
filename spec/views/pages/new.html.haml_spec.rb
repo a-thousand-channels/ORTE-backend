@@ -12,7 +12,7 @@ RSpec.describe 'pages/new', type: :view do
                     title: 'MyString',
                     text: 'MyString',
                     published: false,
-                    map: @map
+                    pageable: @map
                   ))
   end
 

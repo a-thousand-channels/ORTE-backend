@@ -10,7 +10,7 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'returns pages for a published map looked up by id' do
       map = create(:map, published: true)
-      page = create(:page, map: map, published: true)
+      page = create(:page, pageable: map, published: true)
 
       get :index, params: { locale: I18n.default_locale, map_id: map.id, format: 'json' }, session: valid_session
 
@@ -20,7 +20,7 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'returns pages for a published map looked up by slug' do
       map = create(:map, published: true, title: 'Visible public map')
-      page = create(:page, map: map, published: true)
+      page = create(:page, pageable: map, published: true)
 
       get :index, params: { locale: I18n.default_locale, map_id: map.friendly_id, format: 'json' }, session: valid_session
 
@@ -30,8 +30,8 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'returns only published pages for a published map' do
       map = create(:map, published: true)
-      published_page = create(:page, map: map, published: true, title: 'Published page')
-      unpublished_page = create(:page, map: map, published: false, title: 'Draft page')
+      published_page = create(:page, pageable: map, published: true, title: 'Published page')
+      unpublished_page = create(:page, pageable: map, published: false, title: 'Draft page')
 
       get :index, params: { locale: I18n.default_locale, map_id: map.id, format: 'json' }, session: valid_session
 
@@ -46,7 +46,7 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'returns 403 when map is not published' do
       map = create(:map, published: false)
-      create(:page, map: map, published: true)
+      create(:page, pageable: map, published: true)
 
       get :index, params: { locale: I18n.default_locale, map_id: map.id, format: 'json' }, session: valid_session
 
@@ -56,7 +56,7 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'returns 403 when a published map has no published pages' do
       map = create(:map, published: true)
-      create(:page, map: map, published: false)
+      create(:page, pageable: map, published: false)
 
       get :index, params: { locale: I18n.default_locale, map_id: map.id, format: 'json' }, session: valid_session
 
@@ -66,8 +66,8 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'returns published pages ordered by created_at' do
       map = create(:map, published: true)
-      older_page = create(:page, map: map, published: true, title: 'Older page')
-      newer_page = create(:page, map: map, published: true, title: 'Newer page')
+      older_page = create(:page, pageable: map, published: true, title: 'Older page')
+      newer_page = create(:page, pageable: map, published: true, title: 'Newer page')
 
       older_page.update_column(:created_at, 2.days.ago)
       newer_page.update_column(:created_at, 1.day.ago)
@@ -81,7 +81,7 @@ RSpec.describe Public::PagesController, type: :controller do
     it 'returns translated page content for the requested locale' do
       map = create(:map, published: true)
       page = I18n.with_locale(:en) do
-        create(:page, map: map, published: true,
+        create(:page, pageable: map, published: true,
                       title: 'English title', subtitle: 'English subtitle',
                       text: 'English text', footer: 'English footer')
       end
@@ -112,7 +112,7 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'includes page images in the JSON response' do
       map = create(:map, published: true)
-      page = create(:page, map: map, published: true)
+      page = create(:page, pageable: map, published: true)
       image = create(:image, imageable: page)
 
       get :index, params: { locale: I18n.default_locale, map_id: map.id, format: 'json' }, session: valid_session
@@ -134,7 +134,7 @@ RSpec.describe Public::PagesController, type: :controller do
 
     it 'sets CORS headers on the response' do
       map = create(:map, published: true)
-      create(:page, map: map, published: true)
+      create(:page, pageable: map, published: true)
 
       get :index, params: { locale: I18n.default_locale, map_id: map.id, format: 'json' }, session: valid_session
 

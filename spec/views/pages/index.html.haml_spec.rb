@@ -13,15 +13,16 @@ RSpec.describe 'pages/index', type: :view do
                title: 'Title1',
                text: 'Text',
                published: false,
-               map: @map
+               pageable: @map
              ),
              Page.create!(
                title: 'Title2',
                text: 'Text',
                published: false,
-               map: @map
+               pageable: @map
              )
            ])
+    assign(:pageable, @map)
   end
 
   it 'renders a list of pages' do

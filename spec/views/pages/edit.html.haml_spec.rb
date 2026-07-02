@@ -12,7 +12,7 @@ RSpec.describe 'pages/edit', type: :view do
                             title: 'MyString',
                             text: 'MyString',
                             published: false,
-                            map: @map
+                            pageable: @map
                           ))
     @colors_selectable = %w[aaa bbb ccc]
   end

@@ -12,15 +12,20 @@
       %i.fi-pencil.fi-24
 
   %p.shy.hint
+    - if @map.primary_language.present?
+      This maps primary locale:
+      %span.badge.secondary
+        = I18n.t("languages.#{@map.primary_language}", locale: @map.primary_language)
+  %p.shy.hint
     - if @map.available_languages.present?
-      Available languages:
-      = @map.available_languages.each do |locale|
-        = link_to map_pages_path(locale: locale, map_id: @map) do
+      Available languages for pages:
+      - @map.available_languages.each do |locale|
+        = link_to map_pages_path(locale: locale, map: @map) do
           - if I18n.locale.to_s == locale.to_s
-            %span.active
+            %span.active.badge.secondary.small
               = I18n.t("languages.#{locale}", locale: locale)
           - else
-            %span= I18n.t("languages.#{locale}", locale: locale)
+            %span.badge.secondary.small= I18n.t("languages.#{locale}", locale: locale)
     - else 
       No alternative languages defined. 
       Default locale #{I18n.locale} will be used for all content.
@@ -62,6 +67,7 @@
             %i.fi-upload.fi-18          
             Import/update places from CSV 
         %li
+
           = link_to new_map_page_path(locale: I18n.locale, map_id: @map.id), class: "button small" do
             %i.fi-plus.fi-18          
             Create a page

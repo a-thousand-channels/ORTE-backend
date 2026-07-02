@@ -29,7 +29,8 @@ class Public::MapsController < ActionController::Base
       @map_layers = @map.layers.published if @map&.layers
       if @map_layers.present?
         @map_layers = @map_layers
-                      .includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
+                      .includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, pages: {}, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
+                      .where(places: { published: true })
 
         if params[:filter_by_tags]
           tags = params[:filter_by_tags].split(',')
