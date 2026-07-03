@@ -4,9 +4,9 @@
 - if pageable
   - if @page.new_record?
     - if pageable.is_a?(Map)
-      - page_url = map_pages_path(pageable, locale: current_locale)
+      - page_url = polymorphic_path([pageable, @page], locale: current_locale)
     - else
-      - page_url = map_layer_place_pages_path([pageable.layer.map, pageable.layer, pageable, @page], locale: current_locale)
+      - page_url = polymorphic_path([pageable.layer.map, pageable.layer, pageable, @page], locale: current_locale)
   - else
     - if pageable.is_a?(Map)
       - page_url = polymorphic_path([pageable, @page], locale: current_locale)
