@@ -11,6 +11,7 @@ FactoryBot.define do
     caption { Faker::Commerce.department }
     sorting { Faker::Number.between(from: 1, to: 10) }
     preview { false }
+    locale { Faker::Nation.language }
     trait :with_file do
       after(:build) do |audio|
         audio.file.attach(

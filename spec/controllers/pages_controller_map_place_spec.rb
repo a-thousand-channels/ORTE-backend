@@ -170,7 +170,7 @@ RSpec.describe PagesController, type: :controller do
     describe 'GET #index' do
       it 'returns a success response' do
         FactoryBot.create(:page, pageable: place)
-        get :index, params: { locale: I18n.default_locale, place_id: place.id }, session: valid_session
+        get :index, params: { locale: I18n.default_locale, place_id: place.id, layer_id: place.layer.id, map_id: place.layer.map.id }, session: valid_session
         expect(response).to have_http_status(200)
         expect(assigns(:pageable)).to eq(place)
         expect(assigns(:pages)).to eq(place.pages)
@@ -179,7 +179,7 @@ RSpec.describe PagesController, type: :controller do
 
     describe 'GET #new' do
       it 'returns a success response with @pageable set to place' do
-        get :new, params: { locale: I18n.default_locale, place_id: place.id }, session: valid_session
+        get :new, params: { locale: I18n.default_locale, place_id: place.id, layer_id: place.layer.id, map_id: place.layer.map.id }, session: valid_session
         expect(response).to have_http_status(200)
         expect(assigns(:pageable)).to eq(place)
         expect(assigns(:page)).to be_a_new(Page)
@@ -193,6 +193,8 @@ RSpec.describe PagesController, type: :controller do
             post :create, params: {
               locale: I18n.default_locale,
               place_id: place.id,
+              layer_id: place.layer.id,
+              map_id: place.layer.map.id,
               page: page_attrs.merge(title: 'Place Page')
             }, session: valid_session
           end.to change(Page, :count).by(1)
@@ -207,11 +209,13 @@ RSpec.describe PagesController, type: :controller do
           post :create, params: {
             locale: I18n.default_locale,
             place_id: place.id,
+            layer_id: place.layer.id,
+            map_id: place.layer.map.id,
             page: page_attrs
           }, session: valid_session
 
           page = Page.last
-          expect(response).to redirect_to(place_page_path(place, page, locale: I18n.default_locale))
+          expect(response).to redirect_to(map_layer_place_page_path(place.layer.map, place.layer, place, page, locale: I18n.default_locale))
         end
       end
     end
@@ -222,6 +226,8 @@ RSpec.describe PagesController, type: :controller do
       it 'returns a success response' do
         get :edit, params: {
           locale: I18n.default_locale,
+          map_id: place.layer.map.id,
+          layer_id: place.layer.id,
           place_id: place.id,
           id: page.id
         }, session: valid_session
@@ -237,6 +243,8 @@ RSpec.describe PagesController, type: :controller do
       it 'updates the requested page and redirects using polymorphic path' do
         patch :update, params: {
           locale: I18n.default_locale,
+          map_id: place.layer.map.id,
+          layer_id: place.layer.id,
           place_id: place.id,
           id: page.id,
           page: page_attrs.merge(title: 'Updated Title')
@@ -244,7 +252,7 @@ RSpec.describe PagesController, type: :controller do
 
         page.reload
         expect(page.title).to eq('Updated Title')
-        expect(response).to redirect_to(place_page_path(place, page, locale: I18n.default_locale))
+        expect(response).to redirect_to(map_layer_place_page_path(place.layer.map, place.layer, place, page, locale: I18n.default_locale))
       end
     end
 
@@ -257,6 +265,8 @@ RSpec.describe PagesController, type: :controller do
         expect do
           delete :destroy, params: {
             locale: I18n.default_locale,
+            map_id: place.layer.map.id,
+            layer_id: place.layer.id,
             place_id: place.id,
             id: test_page.id
           }, session: valid_session
@@ -266,11 +276,13 @@ RSpec.describe PagesController, type: :controller do
       it 'redirects to the place using polymorphic path' do
         delete :destroy, params: {
           locale: I18n.default_locale,
+          map_id: place.layer.map.id,
+          layer_id: place.layer.id,
           place_id: place.id,
           id: page.id
         }, session: valid_session
 
-        expect(response).to redirect_to(place_path(place, locale: I18n.default_locale))
+        expect(response).to redirect_to(map_layer_place_path(place.layer.map, place.layer, place, locale: I18n.default_locale))
       end
     end
   end

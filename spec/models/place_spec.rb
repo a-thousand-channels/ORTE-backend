@@ -132,7 +132,7 @@ RSpec.describe Place, type: :model do
     p = FactoryBot.create(:place, layer: l)
     audio = FactoryBot.create(:audio, audioable: p)
     audio.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
-    expect(p.audiolink).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(audio.file)}\"></audio>")
+    expect(p.audiolink).to eq("<audio controls=\"controls\" preload=\"metadata\" src=\"#{Rails.application.routes.url_helpers.url_for(audio.file)}\"></audio>")
   end
 
   it 'random_loc' do

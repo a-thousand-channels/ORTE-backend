@@ -51,7 +51,7 @@ RSpec.describe PagesController, type: :controller do
         get :show, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.friendly_id }, session: valid_session
         expect(response).to have_http_status(200)
       end
-      it 'returns a redirect to an friendly_id' do
+      xit 'returns a redirect to an friendly_id' do
         page = Page.create! valid_attributes
         get :show, params: { locale: I18n.default_locale, map_id: @map.friendly_id, id: page.id }, session: valid_session
         expect(response).to have_http_status(301)

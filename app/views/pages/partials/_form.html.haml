@@ -6,9 +6,12 @@
     - if pageable.is_a?(Map)
       - page_url = map_pages_path(pageable, locale: current_locale)
     - else
-      - page_url = place_pages_path(pageable, locale: current_locale)
+      - page_url = map_layer_place_pages_path([pageable.layer.map, pageable.layer, pageable, @page], locale: current_locale)
   - else
-    - page_url = polymorphic_path([pageable, @page], locale: current_locale)
+    - if pageable.is_a?(Map)
+      - page_url = polymorphic_path([pageable, @page], locale: current_locale)
+    - else
+      - page_url = polymorphic_path([pageable.layer.map, pageable.layer, pageable, @page], locale: current_locale)
 - else
   - page_url = '#'
 = simple_form_for(@page, url: page_url) do |f|
@@ -36,7 +39,10 @@
               - else
                 = pageable.class.to_s
                 = ":"
-                = link_to pageable.title, polymorphic_path(pageable, locale: current_locale)
+                - if pageable.is_a?(Map)
+                  = link_to pageable.title, polymorphic_path(pageable, locale: current_locale)
+                - elsif pageable.is_a?(Place)
+                  = link_to pageable.title, polymorphic_path([pageable.layer.map, pageable.layer, pageable], locale: current_locale)
                 = f.input :pageable_id, as: :hidden, :input_html => { :value => pageable.id }
                 = f.input :pageable_type, as: :hidden, :input_html => { :value => pageable.class.to_s }
         .grid-x.grid-padding-x
@@ -55,7 +61,7 @@
                   %i.fi.fi-plus
                   Add image
               - elsif pageable.is_a?(Place)
-                = link_to new_place_page_image_path(pageable, @page, locale: current_locale), class: 'button' do
+                = link_to new_map_layer_place_page_image_path(pageable.layer.map, pageable.layer, pageable, @page, locale: current_locale), class: 'button' do
                   %i.fi.fi-plus
                   Add image
               %p.hint
@@ -73,7 +79,7 @@
                   %i.fi.fi-plus
                   Add video
               - elsif pageable.is_a?(Place)
-                = link_to new_place_page_video_path(pageable, @page, locale: current_locale), class: 'button' do
+                = link_to new_map_layer_place_page_video_path(pageable.layer.map, pageable.layer, pageable, @page, locale: current_locale), class: 'button' do
                   %i.fi.fi-plus
                   Add video
               %p.hint

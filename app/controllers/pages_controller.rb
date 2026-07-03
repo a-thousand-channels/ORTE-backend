@@ -69,7 +69,11 @@ class PagesController < ApplicationController
 
     respond_to do |format|
       if @page.save
-        format.html { redirect_to polymorphic_path([@pageable, @page], locale: @locale), notice: 'Page was created.' }
+        if @pageable.is_a?(Map)
+          format.html { redirect_to polymorphic_path([@pageable, @page], locale: @locale), notice: 'Page was created.' }
+        elsif @pageable.is_a?(Place)
+          format.html { redirect_to polymorphic_path([@pageable.layer.map, @pageable.layer, @pageable, @page], locale: @locale), notice: 'Page was created.' }
+        end
         format.json { render :show, status: :created, location: @page }
       else
         format.html { render :new }
@@ -84,8 +88,12 @@ class PagesController < ApplicationController
     pageable = @page.pageable
     respond_to do |format|
       if @page.update(page_params)
-        format.html { redirect_to polymorphic_path([pageable, @page], locale: @locale), notice: 'Page was successfully updated.' }
-        format.json { render :show, status: :ok, location: @page }
+        if pageable.is_a?(Map)
+          format.html { redirect_to polymorphic_path([pageable, @page], locale: @locale), notice: 'Page was successfully updated.' }
+        elsif pageable.is_a?(Place)
+          format.html { redirect_to polymorphic_path([pageable.layer.map, pageable.layer, pageable, @page], locale: @locale), notice: 'Page was successfully updated.' }
+        end
+        format.json { render :show, status: ok, location: @page }
       else
         format.html { render :edit }
         format.json { render json: @page.errors, status: :unprocessable_entity }
@@ -111,7 +119,7 @@ class PagesController < ApplicationController
         redirect_path = if pageable.is_a?(Map)
                           map_path(pageable, locale: @locale)
                         elsif pageable.is_a?(Place)
-                          place_path(pageable, locale: @locale)
+                          map_layer_place_path(pageable.layer.map, pageable.layer, pageable, locale: @locale)
                         else
                           root_path
                         end
@@ -175,7 +183,11 @@ class PagesController < ApplicationController
     # the request path will not match the post_path, and we should do
     # a 301 redirect that uses the current friendly id.
     pageable = @page.pageable
-    redirect_to polymorphic_path([pageable, @page], locale: @locale), status: :moved_permanently if @page && request.path != polymorphic_path([pageable, @page], locale: @locale) && request.format == 'html'
+    if pageable.is_a?(Map)
+      # redirect_to polymorphic_path([pageable, @page], locale: @locale), status: :moved_permanently if @page && request.path != polymorphic_path([pageable, @page], locale: @locale) && request.format == 'html'
+    elsif pageable.is_a?(Place)
+      # redirect_to polymorphic_path([pageable.layer.map, pageable.layer, pageable, @page], locale: @locale), status: :moved_permanently if @page && request.path != polymorphic_path([pageable.layer.map, pageable.layer, pageable, @page], locale: @locale) && request.format == 'html'
+    end
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -201,6 +213,8 @@ class PagesController < ApplicationController
       page = I18n.with_locale(locale) { Page.friendly.find_by(slug: identifier) }
       return page if page
     end
+
+    nil
   end
 
   def translation_missing_for_current_locale?(page)

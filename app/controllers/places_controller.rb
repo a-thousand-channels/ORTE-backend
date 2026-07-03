@@ -115,14 +115,14 @@ class PlacesController < ApplicationController
 
     saved =
       if params[:locale].present?
-        puts "Updating place with locale #{params[:locale]}"
+        # puts "Updating place with locale #{params[:locale]}"
         Mobility.with_locale(params[:locale]) do
           result = @place.update(place_params_localized)
           sync_legacy_fields! if result && default_locale?(params[:locale])
           result
         end
       else
-        puts 'Updating place without locale'
+        # puts 'Updating place without locale'
         @place.update(place_params)
       end
     @place.update({ 'published' => params[:place][:published] })
