@@ -11,7 +11,8 @@ class MigratePlaceAudioToAudios < ActiveRecord::Migration[7.2]
         audioable_type: 'Place',
         audioable_id: place.id,
         sorting: 1,
-        preview: false
+        preview: false,
+        locale: 'de'
       )
 
       attachment.update_columns(

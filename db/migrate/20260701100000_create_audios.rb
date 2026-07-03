@@ -13,6 +13,7 @@ class CreateAudios < ActiveRecord::Migration[7.2]
       t.boolean :preview
       t.string :audioable_type
       t.bigint :audioable_id
+      t.string :locale
 
       t.timestamps
     end
