@@ -111,6 +111,8 @@ Rails.application.routes.draw do
               get :images, path: 'images_overview'
               post :sort
             end
+            resources :images
+            resources :videos            
           end
           resources :images
           resources :videos
