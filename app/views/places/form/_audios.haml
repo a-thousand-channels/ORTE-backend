@@ -1,6 +1,10 @@
 
-- locale = params[:locale].presence || I18n.default_locale.to_s
-- audios = Audio.where(locale: "#{locale}").where(audioable_type: 'Place', audioable_id: @place.id)
+- locale = params[:locale].presence || nil
+- if locale
+  - audios = Audio.where(locale: "#{locale}").where(audioable_type: 'Place', audioable_id: @place.id)
+- else
+  - audios = Audio.where(audioable_type: 'Place', audioable_id: @place.id)  
+= locale
 - if audios&.count > 0
   %hr
   %p
@@ -18,8 +22,11 @@
             %i.fi-pencil
         - if audio.file.attached?
           = audio_tag url_for(audio.file), controls: true
-          %br
-          = audio.title
+          %p
+            = audio.title
+            %br
+            %small
+              (#{audio.file.filename}, #{number_to_human_size(audio.file.byte_size)}, #{audio.file.content_type}, #{audio.locale})
         - else
           = link_to edit_map_layer_place_audio_path(@place.layer.map,@place.layer,@place,audio), class: "thumbnail" do
             %p
