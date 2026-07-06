@@ -1,5 +1,5 @@
 - images = Image.where(place_id: @place.id)
-- if images.count > 0
+- if @place && images.count > 0
   %p
     Images
   .grid-x#sortable{data: { map: @place.layer.map.id, layer: @place.layer.id, place: @place.id }}

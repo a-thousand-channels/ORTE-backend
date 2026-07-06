@@ -2,7 +2,7 @@
 
 class PlacesController < ApplicationController
   before_action :set_place, only: %i[show edit clone edit_clone update_clone update destroy]
-
+  before_action :set_locale
   # GET /places
   # GET /places.json
   def index
@@ -112,9 +112,23 @@ class PlacesController < ApplicationController
     params[:place][:published] = default_checkbox?(params[:place][:published])
     params[:place][:featured] = default_checkbox?(params[:place][:featured])
     params[:place][:sensitive] = default_checkbox?(params[:place][:sensitive])
+
+    saved =
+      if params[:locale].present?
+        # puts "Updating place with locale #{params[:locale]}"
+        Mobility.with_locale(params[:locale]) do
+          result = @place.update(place_params_localized)
+          sync_legacy_fields! if result && default_locale?(params[:locale])
+          result
+        end
+      else
+        # puts 'Updating place without locale'
+        @place.update(place_params)
+      end
+    @place.update({ 'published' => params[:place][:published] })
+
     respond_to do |format|
-      if @place.update(place_params)
-        @place.update({ 'published' => params[:place][:published] })
+      if saved
         format.html { redirect_to map_layer_url(@map.id, @place.layer.id), notice: "#{view_context.link_to(@place.title, map_layer_place_path(@map, @layer, @place))} was successfully updated." }
         format.json { render :show, status: :ok, location: @place }
       else
@@ -158,6 +172,11 @@ class PlacesController < ApplicationController
 
   private
 
+  def set_locale
+    I18n.locale = params[:locale] || @map&.primary_language || I18n.default_locale
+    # I18n.locale = params[:locale]
+  end
+
   # Use callbacks to share common setup or constraints between actions.
   def set_place
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
@@ -165,8 +184,34 @@ class PlacesController < ApplicationController
     @place = Place.find(params[:id])
   end
 
+  def default_locale?(locale)
+    locale.to_s == I18n.default_locale.to_s
+  end
+
+  # if default_locale update the legacy fields
+  def sync_legacy_fields!
+    @place.update_columns(
+      title: @place.localized_title,
+      subtitle: @place.localized_subtitle,
+      teaser: @place.localized_teaser,
+      text: @place.localized_text,
+      sources: @place.localized_sources,
+      updated_at: Time.current
+    )
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :uid, :subtitle, :teaser, :text, :sources, :link, :startdate, :startdate_date, :startdate_time, :startdate_qualifier, :enddate, :enddate_date, :enddate_time, :enddate_qualifier, :lat, :lon, :direction, :location, :address, :zip, :city, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :audio, :relations_tos, :relations_froms, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :uid, :subtitle, :teaser, :text, :sources, :link, :startdate, :startdate_date, :startdate_time, :startdate_qualifier, :enddate, :enddate_date, :enddate_time, :enddate_qualifier, :lat, :lon, :direction, :location, :address, :zip, :city, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :relations_tos, :relations_froms, :locale, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
+  end
+
+  def place_params_localized
+    place_params.merge(
+      localized_title: params[:place][:localized_title],
+      localized_subtitle: params[:place][:localized_subtitle],
+      localized_teaser: params[:place][:localized_teaser],
+      localized_text: params[:place][:localized_text],
+      localized_sources: params[:place][:localized_sources]
+    )
   end
 end

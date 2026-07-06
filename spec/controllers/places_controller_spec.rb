@@ -82,7 +82,7 @@ RSpec.describe PlacesController, type: :controller do
 
         # ActiveStorage::Attachment, :count still not working
         xit 'attaches an uploaded audio' do
-          valid_attributes_with_audio = FactoryBot.build(:place, :with_audio, layer_id: @layer.id).attributes
+          valid_attributes_with_audio = FactoryBot.build(:place, layer_id: @layer.id).attributes
           expect do
             post :create, params: { place: valid_attributes_with_audio, layer_id: @layer.id, map_id: @map.id }, session: valid_session
           end.to change(ActiveStorage::Attachment, :count).by(1)

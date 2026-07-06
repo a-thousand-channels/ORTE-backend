@@ -1,16 +1,17 @@
-- content_for(:title) { "#{@page.title} — #{@page.map.title}" }
+- if @pageable && @page
+  - content_for(:title) { "#{@pageable.title} — #{@page.title}" }
 - current_locale = I18n.locale || I18n.default_locale
 
 #info-wrapper{}
 
   %p.text-right.close_link_wrapper
-    = link_to map_pages_url(locale: current_locale, map_id: @page.map), :class=>"close-link", "aria-label"=>"Close back" do
-      %span{"aria-hidden"=>"true"}
-        %i.fi.fi-x
+    - if @pageable.is_a?(Map)
+      = link_to map_pages_url(locale: current_locale, map_id: @page.map), :class=>"close-link", "aria-label"=>"Close back" do
+        %span{"aria-hidden"=>"true"}
+          %i.fi.fi-x
 
   .grid-x.grid-padding-x
     - images = Image.sorted_by_page(@page.id)
-    = images.size
     - if images.size > 0
       - textcol = 8
       .cell.small-12.medium-12
@@ -85,17 +86,34 @@
       - textcol = 12
     .cell{class: "small-#{textcol} medium-#{textcol}"}
       %p.hint.text-left
-        = link_to map_url(@page.map) do
-          = @page.map.title 
-        \—          
-        = link_to map_pages_url(locale: current_locale, map_id: @page.map) do
-          Pages
+        - if @pageable.is_a?(Map)
+          = link_to map_url(@page.map) do
+            Map:
+            = @page.map.title 
+          \—          
+          = link_to map_pages_url(locale: current_locale, map_id: @page.map) do
+            Pages
+          \—
+          = @page.title
+        - else
+          = link_to map_layer_place_url(@pageable.layer.map, @pageable.layer, @pageable) do
+            Map:
+            = @pageable.layer.map.title
+          \—
+          = link_to map_layer_place_pages_url(locale: current_locale, map_id: @pageable.layer.map, layer_id: @pageable.layer, place_id: @pageable) do
+            Pages
+          \—
+          = @page.title
 
 
       %h1
         = @page.title
-        = link_to edit_map_page_path(locale: current_locale, map_id: @page.map, id: @page) do
-          %i.fi.fi-pencil.fi-24
+        - if @pageable.is_a?(Map)
+          = link_to edit_map_page_path(locale: current_locale, map_id: @page.map, id: @page) do
+            %i.fi.fi-pencil.fi-24
+        - else
+          = link_to edit_map_layer_place_page_path(locale: current_locale, map_id: @pageable.layer.map, layer_id: @pageable.layer, place_id: @pageable, id: @page) do
+            %i.fi.fi-pencil.fi-24
       - if @page.subtitle.present?
         %p
           = @page.subtitle
@@ -121,3 +139,7 @@
         \|
         %b Last edit:
         = l(@page.updated_at)
+        \|
+        %b 
+          Language:
+          = I18n.t("languages.#{I18n.locale}", locale: 'en')

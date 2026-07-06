@@ -1,54 +1,74 @@
-- content_for(:title) { "Pages of #{@map.title}" }
-- current_locale = I18n.locale || I18n.default_locale
-- public_json_locales = (Array(@map.available_languages)).uniq.select do |locale|
+- content_for(:title) { "Pages of #{@pageable.title}" }
+- public_json_locales = (@pageable.respond_to?(:available_languages) ? Array(@pageable.available_languages) : []).uniq.select do |locale|
   - accessor = :"title_#{locale}"
   - @pages.select(&:published).any? { |page| page.respond_to?(accessor) && page.public_send(accessor).present? }
 
 #table-wrapper
   %p.text-right.close_link_wrapper
-    =link_to map_path(@map), :class=>'close_link' do
-      %i.fi.fi-x
+    - if @pageable.is_a?(Map)
+      = link_to map_path(@pageable, locale: I18n.locale), :class=>'close_link' do
+        %i.fi.fi-x
+    - else
+      = link_to map_layer_place_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale), :class=>'close_link' do
+        %i.fi.fi-x
   %h1
-    Map:
-    = link_to map_path(@map) do
-      = @map.title
-    = link_to edit_map_path(@map) do
-      %i.fi-pencil.fi-24
+    = @pageable.class.to_s
+    = ":"
+    
+    - if @pageable.is_a?(Map)
+      = link_to polymorphic_path(@pageable, locale: I18n.locale) do
+        = @pageable.title
+      = link_to edit_polymorphic_path(@pageable), locale: I18n.locale do
+        %i.fi-pencil.fi-24
+    - else  
+      = link_to map_layer_place_pages_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale) do
+        = @pageable.title
+      = link_to edit_map_layer_place_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale) do
+        %i.fi-pencil.fi-24
 
 
   .grid-x.grid-padding-x
-    .cell.medium-7
-      %p.text-right.hint
+    - if @pageable.is_a?(Map)
+      .cell.medium-7
+        %p.text-right.hint
 
-        = link_to map_layers_path(@map) do
-          Layers of this map
-          (#{@map.layers.size})
+          = link_to map_layers_path(@pageable) do
+            Layers of this map
+            (#{@pageable.layers.size})
 
-    .cell.medium-5
-      %p.text-right.hint
-        = link_to map_people_path(@map) do
-          Persons of this map
-          (#{@map.people.size})
-      %p.text-right.hint
-        = link_to map_relations_path(@map) do
-          Relations in this map
-        %hr
+      .cell.medium-5
+        %p.text-right.hint
+          = link_to map_people_path(@pageable) do
+            Persons of this map
+            (#{@pageable.people.size})
+        %p.text-right.hint
+          = link_to map_relations_path(@pageable) do
+            Relations in this map
+          %hr
 
   %table
     %thead
       %tr
         %th 
           %h5 Pages
-          - if @map.available_languages.present?
+          - if @pageable.respond_to?(:available_languages) && @pageable.available_languages.present?
             %p.shy
               Available languages:
-              - @map.available_languages.each do |locale|
-                = link_to map_pages_path(locale: locale, map_id: @map) do
-                  - if I18n.locale.to_s == locale.to_s
-                    %span.active
-                      = I18n.t("languages.#{locale}", locale: locale)
-                  - else
-                    %span= I18n.t("languages.#{locale}", locale: locale)
+              - @pageable.available_languages.each do |locale|
+                - if @pageable.is_a?(Map)
+                  = link_to map_pages_path(@pageable, locale: locale) do
+                    - if I18n.locale.to_s == locale.to_s
+                      %span.active.badge.secondary.small
+                        = I18n.t("languages.#{locale}", locale: locale)
+                    - else
+                      %span.badge.secondary.small= I18n.t("languages.#{locale}", locale: locale)
+                - else
+                  = link_to map_layer_place_pages_path(@pageable.layer.map, @pageable.layer, @pageable, locale: locale) do
+                    - if I18n.locale.to_s == locale.to_s
+                      %span.active
+                        = I18n.t("languages.#{locale}", locale: locale)
+                    - else
+                      %span= I18n.t("languages.#{locale}", locale: locale)
 
              
 
@@ -62,29 +82,51 @@
         %tr
           %td
             %h4
-              = link_to map_page_url(locale: current_locale, map_id: page.map, id: page) do
-                = page.title
+              - if page.pageable.is_a?(Map)
+                = link_to map_page_path(page.pageable, page, locale: I18n.locale) do
+                  - if page.title
+                    = page.title
+                  - else 
+                    %tt 
+                      No 
+                      = I18n.t("languages.en", locale: locale)
+                      translation yet for 
+                      "#{Mobility.with_locale(@map&.primary_language) { page.title }}"
+              - else
+                = link_to map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page, locale: I18n.locale) do
+                  = page.title
               - if page.published
                 %i.fi-eye.fi-24{title: 'Page is published'}
               - else
                 %i.fi-lock.fi-21{title: 'Page is hidden'}
             - if page.subtitle.present?
               %p= page.subtitle
-            - translated_locales = Array(@map.available_languages).select do |locale|
+            - available_langs = (page.pageable.respond_to?(:available_languages) ? Array(page.pageable.available_languages) : [])
+            - translated_locales = available_langs.select do |locale|
               - accessor = :"title_#{locale}"
               - page.respond_to?(accessor) && page.public_send(accessor).present?
-            - if @map.available_languages.present?
+            - if available_langs.present?
               %p.shy
                 Versions:
-                - @map.available_languages.each do |locale|
-                  - if translated_locales.include?(locale)
-                    = link_to edit_map_page_path(locale: locale, map_id: page.map_id, id: page.id), class: 'button small' do  
-                      %i.fi-pencil.fi-21
-                      = I18n.t("languages.#{locale}", locale: locale)
+                - available_langs.each do |locale|
+                  - if page.pageable.is_a?(Map)
+                    - if translated_locales.include?(locale)
+                      = link_to edit_map_page_path(page.pageable, page, locale: locale), class: 'button small' do  
+                        %i.fi-pencil.fi-21
+                        = I18n.t("languages.#{locale}", locale: locale)
+                    - else
+                      = link_to edit_map_page_path(page.pageable, page, locale: locale), class: 'button small secondary' do  
+                        %i.fi-plus.fi-21
+                        = I18n.t("languages.#{locale}", locale: locale)
                   - else
-                    = link_to edit_map_page_path(locale: locale, map_id: page.map_id, id: page.id), class: 'button small secondary' do  
-                      %i.fi-plus.fi-21
-                      = I18n.t("languages.#{locale}", locale: locale)
+                    - if translated_locales.include?(locale)
+                      = link_to edit_map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page, locale: locale), class: 'button small' do  
+                        %i.fi-pencil.fi-21
+                        = I18n.t("languages.#{locale}", locale: locale)
+                    - else
+                      = link_to edit_map_layer_place_page_path(page.pageable.layer.map, page.pageable.layer, page.pageable, page, locale: locale), class: 'button small secondary' do  
+                        %i.fi-plus.fi-21
+                        = I18n.t("languages.#{locale}", locale: locale)
                     
 
           %td.show-for-medium
@@ -94,25 +136,40 @@
                   = link_to url_for(i) do
                     = image_tag i.variant(resize: "120x120").processed, class: "thumbnail", title: i.title
           %td
-            = link_to edit_map_page_path(locale: current_locale, map_id: @map, id: page), :class=>"button" do
-              %i.fi-pencil.fi-24
-            &nbsp;
-            = link_to map_page_path(locale: current_locale, map_id: @map, id: page), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
-              %i.fi-trash.fi-24
+            - if @pageable.is_a?(Map)
+              = link_to edit_map_page_path(@pageable, page, locale: I18n.locale), :class=>"button" do
+                %i.fi-pencil.fi-24
+              &nbsp;
+              = link_to map_page_path(@pageable, page, locale: I18n.locale), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+                %i.fi-trash.fi-24
+            - else
+              = link_to edit_map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, page, locale: I18n.locale), :class=>"button" do
+                %i.fi-pencil.fi-24
+              &nbsp;
+              = link_to map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, page, locale: I18n.locale), method: :delete, data: { confirm: 'Are you sure?' }, :class=>"button alert" do
+                %i.fi-trash.fi-24
 
   .grid-x.grid-padding-x
     .cell.medium-6
       %p
-        = link_to new_map_page_path(locale: current_locale, map_id: @map), :class=>'button small' do
-          %i.fi-plus.fi-18
-          New Page
-      %p.shy Create a page for this map
+        - if @pageable.is_a?(Map)
+          = link_to new_map_page_path(@pageable, locale: I18n.locale), :class=>'button small' do
+            %i.fi-plus.fi-18
+            New Page
+        - else
+          = link_to new_map_layer_place_page_path(@pageable.layer.map, @pageable.layer, @pageable, locale: I18n.locale), :class=>'button small' do
+            %i.fi-plus.fi-18
+            New Page
+      %p.shy
+        Create a page for this
+        = @pageable.class.to_s.downcase
     .cell.medium-6
       %p.text-right
         - if public_json_locales.any?
           Public JSON:
           - public_json_locales.each do |locale|
-            = link_to public_map_pages_path(locale: locale, map_id: @map, format: :json), class: 'button small' do
-              %i.fi-download.fi-18
-              = I18n.t("languages.#{locale}", locale: locale)
+            - if @pageable.is_a?(Map)
+              = link_to public_map_pages_path(locale: locale, map_id: @pageable, format: :json), class: 'button small' do
+                %i.fi-download.fi-18
+                = I18n.t("languages.#{locale}", locale: locale)
 

@@ -1,17 +1,33 @@
 - content_for(:title) { "Page: #{@page.title} (Edit)" }
 - current_locale = I18n.locale || I18n.default_locale
+- pageable = @page.pageable
 
 #form-wrapper
   %p.text-right.close_link_wrapper
-    = link_to map_pages_path(locale: current_locale, map_id: @map), :class=>'close_link' do
-      %i.fi.fi-x
+    - if pageable.is_a?(Map)
+      = link_to polymorphic_path(pageable, locale: current_locale), :class=>'close_link' do
+        %i.fi.fi-x
+    - elsif pageable.is_a?(Place)
+      = link_to polymorphic_path([pageable.layer.map, pageable.layer, pageable], locale: current_locale), :class=>'close_link' do
+        %i.fi.fi-x
+      
   %p
-    Map:
-    = link_to map_pages_path(locale: current_locale, map_id: @map) do
-      = @map.title
+    = pageable.class.to_s
+    = ":"
+    - if pageable.is_a?(Map)
+      = link_to polymorphic_path(pageable, locale: current_locale) do
+        = pageable.title
+    - elsif pageable.is_a?(Place)
+      = link_to polymorphic_path([pageable.layer.map, pageable.layer, pageable], locale: current_locale) do
+        = pageable.title
+    
     > Page:
-    = link_to map_page_path(locale: current_locale, map_id: @map, id: @page) do
-      = @page.title
+    - if pageable.is_a?(Map)
+      = link_to polymorphic_path([pageable, @page], locale: current_locale) do
+        = @page.title
+    - elsif pageable.is_a?(Place)
+      = link_to polymorphic_path([pageable.layer.map, pageable.layer, pageable, @page], locale: current_locale) do
+        = @page.title
     - if @translation_missing_for_locale
       .callout.notice
         %strong Translation missing:
@@ -21,10 +37,16 @@
       %h1
         =@page.title
     .large-6.medium-6.small-6.cell
-      - if @page && @page.created_at
-        %p.shy
-          Created:
-          = l(@page.created_at)
+      - if @page && @page.updated_at
+        %p.hint
+          %b Last edit:
+          = l(@page.updated_at)
+          %br
+          %b Language:
+          = I18n.t("languages.#{I18n.locale}", locale: 'en')
 
   = render 'pages/partials/form'
-  = link_to 'View Page', map_page_path(locale: current_locale, map_id: @map, id: @page), :class => 'button secondary'
+  - if pageable.is_a?(Map)
+    = link_to 'View Page', polymorphic_path([pageable, @page], locale: current_locale), :class => 'button secondary'
+  - elsif pageable.is_a?(Place)
+    = link_to 'View Page', polymorphic_path([pageable.layer.map, pageable.layer, pageable, @page], locale: current_locale), :class => 'button secondary'  

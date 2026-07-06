@@ -9,15 +9,7 @@ FactoryBot.define do
     source { Faker::Artist.name }
     place
     person
-    trait :with_audio do
-      after(:build) do |annotation|
-        annotation.audio.attach(
-          io: File.open(Rails.root.join('spec/support/files/test.mp3')),
-          filename: 'test.mp3',
-          content_type: 'audio/mpeg'
-        )
-      end
-    end
+
     trait :invalid do
       text { nil }
     end

@@ -1,0 +1,57 @@
+#table-wrapper
+
+  %h1 Audios
+
+  %table
+    %thead
+      %tr
+        %th Audio
+        %th Metadata
+        %th Sorting + Preview?
+        %th
+
+    %tbody
+      - @audios.each do |audio|
+        - place = audio.audioable
+        %tr
+          %td.img_col{style: 'width: 200px'}
+            %p.shy
+              =link_to map_layer_place_path(place.layer.map.id, place.layer.id, place.id) do
+                = place.title
+            - if audio.title.present?
+              %h4
+                = audio.title
+            - elsif audio.file.attached?
+              %p
+                %tt= audio.file.filename
+            - else
+              %h4
+                No Name
+            - if audio.file.attached?
+              = audio_tag url_for(audio.file), controls: true
+            = audio.alt
+            %br
+            = audio.caption
+          %td
+            - if audio.creator.present?
+              %strong Creator:
+              = audio.creator
+              %br
+            - if audio.licence.present?
+              %strong Licence:
+              = audio.licence
+              %br
+            - if audio.source.present?
+              %string Source
+              = audio.source
+            - if audio.preview
+              Preview audio
+              %i.fi-star.fi-24
+            = audio.sorting
+          %td
+            = link_to edit_map_layer_place_audio_path(place.layer.map, place.layer, place, audio), :class => 'button' do
+              %i.fi.fi-pencil
+              Edit
+            = link_to map_layer_place_audio_path(place.layer.map, place.layer, place, audio), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'button warning' do
+              %i.fi.fi-x
+              Destroy

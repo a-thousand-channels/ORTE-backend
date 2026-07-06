@@ -6,6 +6,7 @@ class MapsController < ApplicationController
   include ImportContextHelper
 
   before_action :set_map, only: %i[show edit update destroy import import_preview importing]
+  before_action :set_locale
 
   before_action :redirect_to_friendly_id, only: %i[show]
 
@@ -21,7 +22,7 @@ class MapsController < ApplicationController
     @maps = Map.sorted.by_user(current_user)
 
     if @map&.layers
-      @map_layers = @map.layers.includes(:image_attachment, places: [:icon, :annotations, :tags, { images: { file_attachment: :blob }, audio_attachment: :blob, relations_froms: %i[relation_from relation_to] }])
+      @map_layers = @map.layers.includes(:image_attachment, places: [:icon, :annotations, :tags, :audios, { images: { file_attachment: :blob }, relations_froms: %i[relation_from relation_to] }])
       # @map_layers = @map.layers
       @places = Place.where(id: @map_layers.flat_map(&:places).map(&:id))
       @tags = @places.all_tags
@@ -180,6 +181,10 @@ class MapsController < ApplicationController
   end
 
   private
+
+  def set_locale
+    I18n.locale = params[:locale] || @map&.primary_language || I18n.default_locale
+  end
 
   def redirect_to_friendly_id
     # If an old id or a numeric id was used to find the record, then

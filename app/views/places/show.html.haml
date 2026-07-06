@@ -110,10 +110,19 @@
         - if @place.link
           = link_to @place.link, target: '_blank' do
             = @place.link
-      - if @place.audio.attached?
-        %p
-          = audio_tag rails_blob_url(@place.audio), autoplay: true, controls: true
-          = link_to @place.audio.filename, rails_blob_path(@place.audio, disposition: "attachment")
+      - @place.audios.each do |audio|
+        %p.hint
+          - if audio.file.attached?
+            = audio_tag rails_blob_url(audio.file), autoplay: false, controls: true
+            %br
+            Language: 
+            - if audio.locale.present?
+              = I18n.t("languages.#{audio.locale}", locale: 'en')
+            - else
+              No locale defined
+            %br
+            Download: 
+            = link_to audio.file.filename, rails_blob_path(audio.file, disposition: "attachment")
 
       - if @place.tag_list
         %hr.small
@@ -164,11 +173,16 @@
       %p.hint.text-left
         %b Coordinates:
         #{@place.lat[0..5]}, #{@place.lon[0..5]}
+        %br
         %b Published:
         - if @place.published
-          %i.fi-check.fi-18
+          %i.fi-check.fi-16
         - else
-          %i.fi-lock.fi-18
+          %i.fi-lock.fi-16
         \|
-        %b Last edit:
+        %b Last edited:
         = l(@place.updated_at)
+        %br
+        %b Language:
+        = I18n.t("languages.#{I18n.locale}", locale: 'en')
+

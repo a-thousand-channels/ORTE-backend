@@ -8,11 +8,23 @@ FactoryBot.define do
     text { 'MyText' }
     published { false }
     state { 'MyString' }
-    map
 
     # Ensure locale is set before saving
     before(:create) { I18n.locale = I18n.default_locale }
 
+    # Default to map for backward compatibility
+    association :pageable, factory: :map
+
+    trait :with_map do
+      association :pageable, factory: :map
+    end
+    trait :with_place do
+      association :pageable, factory: :place
+    end
+    # Default to map for backward compatibility
+    trait :default do
+      association :pageable, factory: :map
+    end
     trait :invalid do
       title { nil }
     end

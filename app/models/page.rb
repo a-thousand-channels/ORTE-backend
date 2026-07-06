@@ -3,7 +3,7 @@
 class Page < ApplicationRecord
   include HasImages
 
-  belongs_to :map
+  belongs_to :pageable, polymorphic: true
 
   has_many :images, as: :imageable, dependent: :destroy
   has_many :videos, as: :videoable, dependent: :destroy
@@ -24,4 +24,21 @@ class Page < ApplicationRecord
   friendly_id :title, use: %i[mobility slugged]
 
   scope :published, -> { where(published: true) }
+
+  # Convenience methods for backward compatibility with views
+  def map
+    pageable if pageable_type == 'Map'
+  end
+
+  def place
+    pageable if pageable_type == 'Place'
+  end
+
+  def map_id
+    pageable_id if pageable_type == 'Map'
+  end
+
+  def place_id
+    pageable_id if pageable_type == 'Place'
+  end
 end

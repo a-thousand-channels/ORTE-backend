@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_01_100001) do
   create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,7 +39,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "annotations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "annotations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "title"
     t.text "text"
     t.bigint "place_id"
@@ -53,7 +53,24 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["place_id"], name: "fk_rails_51dbcfe977"
   end
 
-  create_table "build_logs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "audios", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "licence"
+    t.text "source"
+    t.string "creator"
+    t.string "alt"
+    t.string "caption"
+    t.integer "sorting"
+    t.boolean "preview"
+    t.string "audioable_type"
+    t.bigint "audioable_id"
+    t.string "locale"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["audioable_type", "audioable_id"], name: "index_audios_on_audioable_type_and_audioable_id"
+  end
+
+  create_table "build_logs", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.bigint "map_id"
     t.bigint "layer_id"
     t.string "output"
@@ -103,12 +120,11 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.string "class_name"
   end
 
-  create_table "images", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "images", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
@@ -116,6 +132,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "itype", default: "image"
+    t.bigint "place_id"
     t.string "imageable_type"
     t.bigint "imageable_id"
     t.index ["imageable_type", "imageable_id"], name: "index_images_on_imageable_type_and_imageable_id"
@@ -211,7 +228,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["slug"], name: "index_maps_on_slug", unique: true
   end
 
-  create_table "mobility_string_translations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "mobility_string_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "locale", null: false
     t.string "key", null: false
     t.string "value"
@@ -221,9 +238,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.datetime "updated_at", precision: nil, null: false
     t.index ["translatable_id", "translatable_type", "key"], name: "index_mobility_string_translations_on_translatable_attribute"
     t.index ["translatable_id", "translatable_type", "locale", "key"], name: "index_mobility_string_translations_on_keys", unique: true
+    t.index ["translatable_type", "key", "value", "locale"], name: "index_mobility_string_translations_on_query_keys"
   end
 
-  create_table "mobility_text_translations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "mobility_text_translations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "locale", null: false
     t.string "key", null: false
     t.text "value"
@@ -244,13 +262,14 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.string "slug"
     t.boolean "published"
     t.string "state"
-    t.bigint "map_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["map_id"], name: "index_pages_on_map_id"
+    t.bigint "pageable_id"
+    t.string "pageable_type"
+    t.index ["pageable_id", "pageable_type"], name: "index_pages_on_pageable_id_and_pageable_type"
   end
 
-  create_table "people", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "people", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name"
     t.text "info"
     t.datetime "created_at", precision: nil, null: false
@@ -280,6 +299,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.string "imagelink"
     t.integer "icon_id"
     t.boolean "featured", default: false
+    t.string "ptype", default: "info"
     t.boolean "shy", default: false
     t.boolean "sensitive", default: false
     t.integer "sensitive_radius", default: 100
@@ -293,7 +313,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["layer_id"], name: "index_places_on_layer_id"
   end
 
-  create_table "relations", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "relations", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.integer "relation_from_id"
     t.integer "relation_to_id"
     t.string "rtype"
@@ -310,7 +330,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "submission_configs", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "submission_configs", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "title_intro"
     t.string "subtitle_intro"
     t.text "intro"
@@ -326,7 +346,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["layer_id"], name: "index_submission_configs_on_layer_id"
   end
 
-  create_table "submissions", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "submissions", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.boolean "rights"
@@ -339,7 +359,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["place_id"], name: "index_submissions_on_place_id"
   end
 
-  create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "taggings", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -358,7 +378,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "tags", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "name", collation: "utf8mb3_bin"
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
@@ -379,32 +399,31 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
     t.string "last_sign_in_ip"
     t.string "role", default: "user"
     t.bigint "group_id"
-    t.datetime "created_at", precision: nil, default: "2021-07-26 21:10:00", null: false
-    t.datetime "updated_at", precision: nil, default: "2021-07-26 21:10:00", null: false
+    t.datetime "created_at", precision: nil, default: "2021-09-03 18:29:24", null: false
+    t.datetime "updated_at", precision: nil, default: "2021-09-03 18:29:24", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["group_id"], name: "index_users_on_group_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "videos", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+  create_table "videos", charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.string "title"
     t.string "licence"
     t.text "source"
     t.string "creator"
-    t.bigint "place_id"
     t.string "alt"
     t.string "caption"
     t.integer "sorting"
     t.boolean "preview"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
+    t.bigint "place_id"
     t.string "videoable_type"
     t.bigint "videoable_id"
     t.index ["place_id"], name: "index_videos_on_place_id"
     t.index ["videoable_type", "videoable_id"], name: "index_videos_on_videoable_type_and_videoable_id"
   end
 
-  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "annotations", "people"
   add_foreign_key "annotations", "places"
@@ -414,7 +433,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_04_19_153132) do
   add_foreign_key "images", "places"
   add_foreign_key "layers", "maps"
   add_foreign_key "maps", "groups"
-  add_foreign_key "pages", "maps"
   add_foreign_key "people", "maps"
   add_foreign_key "places", "layers"
   add_foreign_key "submission_configs", "layers"

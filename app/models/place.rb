@@ -10,7 +10,17 @@ class Place < ApplicationRecord
 
   acts_as_taggable_on :tags
 
-  has_one_attached :audio, dependent: :destroy
+  extend Mobility
+
+  # using Mobility with these extra fields, since we want to keep the original fields content for the default language, and only use the localized fields for translations
+  # check the fallbacks on the end of this file!
+  translates :localized_title,    type: :string
+  translates :localized_subtitle, type: :string
+  translates :localized_teaser,   type: :text
+  translates :localized_text,     type: :text
+  translates :localized_sources,  type: :text
+
+  has_many :audios, as: :audioable, dependent: :destroy
 
   has_many :relations_tos, foreign_key: 'relation_to_id',
                            class_name: 'Relation',
@@ -19,15 +29,17 @@ class Place < ApplicationRecord
                              class_name: 'Relation',
                              dependent: :destroy
   has_many :annotations
+  has_many :pages, as: :pageable, dependent: :destroy
+
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :audios, allow_destroy: true
 
   has_many :images, as: :imageable, dependent: :destroy
   has_many :videos, as: :videoable, dependent: :destroy
   has_many :submissions, dependent: :destroy
 
-  validate :check_audio_format
   validates :title, presence: true
   validates :lat, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid latitude value' }
   validates :lon, presence: true, format: { with: /\A-?\d+(\.\d+)?\z/, message: 'should be a valid longitude value' }
@@ -71,6 +83,10 @@ class Place < ApplicationRecord
     ActsAsTaggableOn::Tag.joins(:taggings)
                          .where(taggings: { taggable_type: 'Place' })
                          .distinct
+  end
+
+  def audio_for(locale = Mobility.locale)
+    audios.find_by(locale: locale.to_s)
   end
 
   def title_and_location
@@ -178,7 +194,13 @@ class Place < ApplicationRecord
   end
 
   def audiolink
-    ApplicationController.helpers.audio_link(audio) if audio
+    return '' if audios.empty?
+
+    ApplicationController.helpers.audio_linktag(audios.first.file)
+  end
+
+  def audiolinks
+    audios.map { |a| ApplicationController.helpers.audio_linktag(a.file) }
   end
 
   def full_address
@@ -235,14 +257,27 @@ class Place < ApplicationRecord
     end
   end
 
+  # def localized_title(**)
+  #   super.presence || title
+  # end
+
+  # def localized_subtitle(**)
+  #   super.presence || subtitle
+  # end
+
+  # def localized_teaser(**)
+  #   super.presence || teaser
+  # end
+
+  # def localized_text(**)
+  #   super.presence || text
+  # end
+
+  # def localized_sources(**)
+  #   super.presence || sources
+  # end
+
   private
-
-  def check_audio_format
-    return unless audio.attached? && !audio.content_type.in?(%w[audio/mpeg audio/x-m4a audio/mp4])
-
-    errors.add(:audio, 'Format must be MP3 or M4A')
-    audio.purge
-  end
 
   def clean_text_fields
     self.text = remove_4byte_characters(text) if text

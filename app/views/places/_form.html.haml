@@ -1,7 +1,15 @@
 = simple_form_for([@map,@layer,@place]) do |f|
+  = hidden_field_tag :locale, params[:locale] if params[:locale]
   .grid-x.grid-padding-x
     .large-2.medium-3.cell
       %h1 Place
+      
+      %p.hint
+        %b Language:
+        = I18n.t("languages.#{I18n.locale}", locale: 'en')
+        (#{params[:locale]})
+        - unless params[:locale]
+          (Stored as legacy data)
     .large-4.medium-4.cell
       %div#layer_change
         - if @place.layer && @place.layer.title && params[:action] == 'new'
@@ -99,11 +107,17 @@
             %i.fi.fi-info{"data-tooltip"=>true, :title=>"Identification number, reference "}
           = f.input :uid, :label => false
           
-        .small-10.cell                
-          = f.input :title
+        .small-10.cell    
+          - if params[:locale].present?
+            = f.input :localized_title, as: :string
+          - else
+            = f.input :title
       .grid-x.grid-padding-x
         .small-12.cell
-          = f.input :subtitle
+          - if params[:locale].present?
+            = f.input :localized_subtitle, as: :string
+          - else
+            = f.input :subtitle
       %hr
 
   .grid-x.grid-padding-x
@@ -149,8 +163,14 @@
               = f.input :enddate_qualifier, :label => false, :collection => qualifier_for_select, include_blank: ' ',  :selected => @place.enddate_qualifier            
         %hr
         = tinymce
-        = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 8, class: 'large-text tinymce' }
-        = f.input :text, :label => 'Text', :input_html => {:rows => 16, class: 'large-text tinymce'}
+        - if params[:locale].present?
+          = f.input :localized_teaser, as: :text, :label => 'Localized Teaser', :input_html => {:rows => 8, class: 'large-text tinymce' }
+        - else
+          = f.input :teaser, :label => 'Teaser', :input_html => {:rows => 8, class: 'large-text tinymce' }
+        - if params[:locale].present?
+          = f.input :localized_text, as: :text, :label => 'Localized Text', :input_html => {:rows => 16, class: 'large-text tinymce'}
+        - else
+          = f.input :text, :label => 'Text', :input_html => {:rows => 16, class: 'large-text tinymce'}
 
         %hr
         = f.input :tag_list, input_html: { class: 'tags', multiple: "multiple",  placeholder: 'Type a tag or select from list' }, collection: @map.places.all_tags, value_method: :name, label: 'Tags'
@@ -166,7 +186,11 @@
           = f.association :icon, :collection => @map.iconset.icons, :label_method => lambda { |icon| ("#{icon.title}".html_safe) if icon.title }, :value_method => :id, label: false, include_blank: true
           %p.hint Select one item from list
         %hr
-        = f.input :sources, :label => 'Sources', :input_html => {:rows => 8, class: 'large-text tinymce'}        
+        - if params[:locale].present?
+          = f.input :localized_sources, as: :text, :label => 'Localized Sources', :input_html => {:rows => 8, class: 'large-text tinymce'}
+        - else 
+          = f.input :sources, :label => 'Sources', :input_html => {:rows => 8, class: 'large-text tinymce'}     
+
         %p.hint.text-left
           Add sources and references to your entry if applicable. 
         - if @place.submissions.count > 0
@@ -213,24 +237,32 @@
         - else
           %p.hint.text-left
             You have to save this place, before you can add images
-        = render 'places/form/images'
-        %hr
         - if params[:action] == 'edit'
-          %label Videos
+          = render 'places/form/images'
+        %hr
+        %label Videos
+        - if params[:action] == 'edit'
           = link_to new_map_layer_place_video_path(@place.layer.map,@place.layer,@place), class: 'button' do
             %i.fi.fi-plus
             Add video
           %p.hint
             Please upload one video and describe its content and metadata. You can repeat this to add multiple videos to this place.
-        = render 'places/form/videos'
-        %label Audio
-        - if @place.audio.attached? && @place.persisted?
-          %p
-            = link_to rails_blob_path(@place.audio, disposition: 'attachment') do
-              = @place.audio.filename
-          %p.shy Upload a new file:
-        = f.input :audio, as: :file, label: false, required: false, accept: 'audio/mpeg,audio/x-m4a,audio/mp4'
-        %p.hint Please upload only MP3 or M4A files
+          = render 'places/form/videos'
+        - else
+          %p.hint.text-left
+            You have to save this place, before you can add videos          
+        %hr
+        %label Audios
+        - if params[:action] == 'edit'
+          = link_to new_map_layer_place_audio_path(@place.layer.map,@place.layer,@place, params[:locale] ? {locale: params[:locale]} : {}), class: 'button' do
+            %i.fi.fi-plus
+            Add audio
+          %p.hint
+            Please upload one audio file and describe its content and metadata. You can repeat this to add multiple audios to this place.
+          = render 'places/form/audios'
+        - else
+          %p.hint.text-left
+            You have to save this place, before you can add audios
         %hr
         - if admin?
           = f.input :shy, label: "Hide on map level (w/all layers)"

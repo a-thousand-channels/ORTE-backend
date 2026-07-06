@@ -53,11 +53,12 @@ RSpec.describe PlacesHelper, type: :helper do
 
   describe 'audio_link' do
     it 'it returns an polymorphic audio link' do
-      p = build(:place)
-      uploaded = Rack::Test::UploadedFile.new(Rails.root.join('spec', 'support', 'files', 'test.mp3'), 'audio/mpeg')
-      p.audio.attach(uploaded)
-      p.save!
-      expect(helper.audio_link(p.audio)).to eq("<audio controls=\"controls\" src=\"http://test.host#{rails_blob_path(p.audio)}\"></audio>")
+      m = create(:map)
+      l = create(:layer, map: m)
+      p = create(:place, layer: l)
+      audio = create(:audio, audioable: p)
+      audio.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
+      expect(helper.audio_linktag(audio.file)).to eq("<audio controls=\"controls\" src=\"http://test.host#{rails_blob_path(audio.file)}\"></audio>")
     end
   end
 end

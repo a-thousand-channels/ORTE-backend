@@ -1,6 +1,5 @@
 - content_for(:title) { "Places of #{@layer.title}" }
 
-
 #table-wrapper
   %p.text-right.close_link_wrapper
     = link_to map_layer_url(@map,@layer), :class=>"close-link", "aria-label"=>"Close back" do
@@ -124,13 +123,24 @@
 
   .grid-x
     .medium-6.cell
-      Showing #{@places.count} of total of #{@layer.places.count} Placves
+      Showing #{@places.count} of total of #{@layer.places.count} Places
     .medium-6.call
       = paginate @places
   %table
     %thead
       %tr
-        %th Place
+        %th 
+          %h5 Places
+          - if @map.respond_to?(:available_languages) && @map.available_languages.present?
+            %p.shy
+              Available languages:
+              - @map.available_languages.each do |locale|
+                = link_to map_layer_places_path(@map, @layer, locale: locale) do
+                  - if I18n.locale.to_s == locale.to_s
+                    %span.badge.secondary.active
+                      = I18n.t("languages.#{locale}", locale: locale)
+                  - else
+                    %span.badge.secondary= I18n.t("languages.#{locale}", locale: locale)
         %th
           &nbsp;
 
@@ -139,41 +149,74 @@
         %tr.place{"data-startyear":(place.startdate ? place.startdate.year : ''),"data-endyear":(place.enddate ? place.enddate.year : '')}
           %td
             = render 'places/list/place', place: place
+            - available_langs = (@map.respond_to?(:available_languages) ? Array(@map.available_languages) : [])
+            - translated_locales = available_langs.select do |locale|
+              - accessor = :"localized_title_#{locale}"
+              - place.respond_to?(accessor) && place.public_send(accessor).present?
+            %p
+              Versions:
+              - available_langs.each do |locale|
+                - if translated_locales.include?(locale)
+                  = link_to edit_map_layer_place_path(place.layer.map, place.layer, place, locale: locale), class: 'button small' do  
+                    %i.fi-pencil.fi-18
+                    = I18n.t("languages.#{locale}", locale: locale)
+                - else
+                  = link_to edit_map_layer_place_path(place.layer.map, place.layer, place, locale: locale), class: 'button small secondary' do  
+                    %i.fi-plus.fi-18
+                    = I18n.t("languages.#{locale}", locale: locale)
+
+
           %td
-            = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
-              %i.fi-pencil.fi-21
-              Edit
-            %br
-            - images = Image.where(place_id: place.id)
-            - if images.count > 0
-              %i.fi-photo.fi-21
-              = images.count
-              Images
+            %p
+              = link_to edit_map_layer_place_path(place.layer.map,place.layer,place), :class => "button small" do
+                %i.fi-pencil.fi-21
+                Edit
               %br
-            - videos = Video.where(place_id: place.id)
-            - if videos.count > 0
-              %i.fi-projection-screen.fi-21
-              = videos.count
-              Videos
+              - images = Image.where(place_id: place.id)
+              - if images.count > 0
+                %i.fi-photo.fi-21
+                = images.count
+                Images
+                %br
+              - videos = Video.where(place_id: place.id)
+              - if videos.count > 0
+                %i.fi-projection-screen.fi-21
+                = videos.count
+                Videos
+                %br
+              = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
+                %i.fi-plus.fi-21
+                Image
               %br
-            = link_to new_map_layer_place_image_path(place.layer.map,place.layer,place), :class => "button small" do
-              %i.fi-plus.fi-21
-              Image
-            %br
-            = link_to new_map_layer_place_video_path(place.layer.map,place.layer,place), :class => "button small" do
-              %i.fi-plus.fi-21
-              Video
-            - if admin? && current_user.group.title == 'Admins'
+              = link_to new_map_layer_place_video_path(place.layer.map,place.layer,place), :class => "button small" do
+                %i.fi-plus.fi-21
+                Video
+              - if admin? && current_user.group.title == 'Admins'
+                %br
+                = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small secondary', :title=>'Make a copy of this place and edit' do
+                  %i.fi-page-copy.fi-21
+                  Copy
               %br
-              = link_to clone_map_layer_place_path(place.layer.map,place.layer,place), :class => 'button small secondary', :title=>'Make a copy of this place and edit' do
-                %i.fi-page-copy.fi-21
-                Copy
-            %br
-            - if place.images.count > 0 || place.videos.count > 0
-              - warning = 'Are you sure to delete this place and all attached images and/or videos?'
-            - else
-              - warning = 'Are you sure to delete this place?'
-            = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button alert small" do
-              %i.fi-trash.fi-21
-              Destroy
+              - if place.images.count > 0 || place.videos.count > 0
+                - warning = 'Are you sure to delete this place and all attached images and/or videos?'
+              - else
+                - warning = 'Are you sure to delete this place?'
+              = link_to map_layer_place_path(place.layer.map,place.layer,place), method: :delete, data: { confirm:warning }, :class => "button alert small" do
+                %i.fi-trash.fi-21
+                Destroy
+
+
+            - if place.pages&.size > 0
+              %p Related pages;
+              %ul
+                - place.pages.each do |page|
+                  %li
+                    = link_to map_layer_place_page_path(place.layer.map, place.layer, place, page) do
+                      = page.title
+                    = link_to edit_map_layer_place_page_path(place.layer.map, place.layer, place, page) do
+                      %i.fi-pencil.fi-18
+            %p
+              = link_to new_map_layer_place_page_path(map_id: place.layer.map.id, layer_id: place.layer.id, place_id: place.id), class: "button small" do
+                %i.fi-plus.fi-18          
+                Create a page                      
   %p.text-right= paginate @places
