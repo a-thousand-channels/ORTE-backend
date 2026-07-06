@@ -237,24 +237,32 @@
         - else
           %p.hint.text-left
             You have to save this place, before you can add images
-        = render 'places/form/images'
-        %hr
         - if params[:action] == 'edit'
-          %label Videos
+          = render 'places/form/images'
+        %hr
+        %label Videos
+        - if params[:action] == 'edit'
           = link_to new_map_layer_place_video_path(@place.layer.map,@place.layer,@place), class: 'button' do
             %i.fi.fi-plus
             Add video
           %p.hint
             Please upload one video and describe its content and metadata. You can repeat this to add multiple videos to this place.
-        = render 'places/form/videos'
+          = render 'places/form/videos'
+        - else
+          %p.hint.text-left
+            You have to save this place, before you can add videos          
+        %hr
+        %label Audios
         - if params[:action] == 'edit'
-          %label Audios
           = link_to new_map_layer_place_audio_path(@place.layer.map,@place.layer,@place, params[:locale] ? {locale: params[:locale]} : {}), class: 'button' do
             %i.fi.fi-plus
             Add audio
           %p.hint
             Please upload one audio file and describe its content and metadata. You can repeat this to add multiple audios to this place.
-        = render 'places/form/audios'
+          = render 'places/form/audios'
+        - else
+          %p.hint.text-left
+            You have to save this place, before you can add audios
         %hr
         - if admin?
           = f.input :shy, label: "Hide on map level (w/all layers)"

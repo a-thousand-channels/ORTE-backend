@@ -1,7 +1,7 @@
 
 - locale = params[:locale].presence || I18n.default_locale.to_s
 - audios = Audio.where(locale: "#{locale}").where(audioable_type: 'Place', audioable_id: @place.id)
-- if audios.count > 0
+- if audios&.count > 0
   %hr
   %p
     Audios:
