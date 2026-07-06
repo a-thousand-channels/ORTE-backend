@@ -275,7 +275,7 @@ RSpec.describe Public::MapsController, type: :controller do
           3.times do
             layer = FactoryBot.create(:layer, map_id: @map.id, published: true)
             3.times do
-          place1 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[aaa bbb], published: true)
+              place1 = FactoryBot.create(:place, layer_id: @layer.id, tag_list: %w[aaa bbb], published: true)
               place2 = FactoryBot.create(:place, layer_id: layer.id, tag_list: %w[ccc], published: true)
               FactoryBot.create(:relation, relation_from: place1, relation_to: place2)
             end
