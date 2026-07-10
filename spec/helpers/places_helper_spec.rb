@@ -58,7 +58,7 @@ RSpec.describe PlacesHelper, type: :helper do
       p = create(:place, layer: l)
       audio = create(:audio, audioable: p)
       audio.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
-      expect(helper.audio_linktag(audio.file)).to eq("<audio controls=\"controls\" src=\"http://test.host#{rails_blob_path(audio.file)}\"></audio>")
+      expect(helper.audio_linktag(audio.file)).to eq("<audio controls=\"controls\" preload=\"metadata\" src=\"http://test.host#{rails_blob_path(audio.file)}\"></audio>")
     end
   end
 end

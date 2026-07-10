@@ -17,8 +17,6 @@
           = link_to map_layer_place_audio_path(@place.layer.map,@place.layer,@place,audio), class: "button button-right button-show tiny", title: 'See details'  do
             %i.fi-eye
           = link_to edit_map_layer_place_audio_path(@place.layer.map,@place.layer,@place,audio,params[:locale] ? {locale: params[:locale]} : {}), class: "button button-right button-edit tiny", title: 'Edit audio'  do
-
-
             %i.fi-pencil
         - if audio.file.attached?
           = audio_tag url_for(audio.file), controls: true
@@ -27,6 +25,10 @@
             %br
             %small
               (#{audio.file.filename}, #{number_to_human_size(audio.file.byte_size)}, #{audio.file.content_type}, #{audio.locale})
+            - if audio.transcription.present?
+              %br
+              %small
+                Audio with Transcription
         - else
           = link_to edit_map_layer_place_audio_path(@place.layer.map,@place.layer,@place,audio), class: "thumbnail" do
             %p

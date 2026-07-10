@@ -111,18 +111,27 @@
           = link_to @place.link, target: '_blank' do
             = @place.link
       - @place.audios.each do |audio|
-        %p.hint
-          - if audio.file.attached?
+        - if audio.file.attached?
+          %p
             = audio_tag rails_blob_url(audio.file), autoplay: false, controls: true
+          %p
+            = audio.title
             %br
-            Language: 
-            - if audio.locale.present?
-              = I18n.t("languages.#{audio.locale}", locale: 'en')
-            - else
-              No locale defined
+            %small
+              Language: 
+              - if audio.locale.present?
+                = I18n.t("languages.#{audio.locale}", locale: 'en')
+              - else
+                No locale defined
+              - if audio.transcription.present?
+                \, Audio with Transcription
             %br
-            Download: 
-            = link_to audio.file.filename, rails_blob_path(audio.file, disposition: "attachment")
+            %small
+              Download: 
+              = link_to audio.file.filename, rails_blob_path(audio.file, disposition: "attachment")
+              %br 
+              (#{audio.file.filename}, #{number_to_human_size(audio.file.byte_size)}, #{audio.file.content_type}, #{audio.locale})
+            
 
       - if @place.tag_list
         %hr.small

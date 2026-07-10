@@ -3,12 +3,12 @@
 FactoryBot.define do
   factory :audio do
     title { Faker::GreekPhilosophers.name }
+    subtitle { Faker::GreekPhilosophers.quote }
     licence { Faker::Hipster.word }
     source { Faker::Book.publisher }
     creator { Faker::Book.author }
+    transcription { Faker::GreekPhilosophers.quote }
     association :audioable, factory: :place
-    alt { Faker::Commerce.material }
-    caption { Faker::Commerce.department }
     sorting { Faker::Number.between(from: 1, to: 10) }
     preview { false }
     locale { Faker::Nation.language }
