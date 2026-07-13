@@ -80,7 +80,7 @@ Rails.application.configure do
   # config.i18n.fallbacks = [:en, :de]
   # 
   config.i18n.default_locale = :en
-  config.i18n.fallbacks = true
+  config.i18n.fallbacks = [:de, :en]
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true

@@ -119,7 +119,9 @@ class PlacesController < ApplicationController
         # puts "Updating place with locale #{params[:locale]}"
         Mobility.with_locale(params[:locale]) do
           result = @place.update(place_params_localized)
-          sync_legacy_fields! if result && default_locale?(params[:locale])
+
+          # disabled for now, i want a more defensive way working with translatations
+          # sync_legacy_fields! if result && default_locale?(params[:locale])
           result
         end
       else
