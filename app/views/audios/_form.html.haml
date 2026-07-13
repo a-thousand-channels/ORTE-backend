@@ -13,6 +13,7 @@
     .large-8.medium-12.cell
       .form-inputs
         = f.input :title
+        = f.input :subtitle
         %hr
         .grid-x.grid-padding-x
           .large-6.medium-6.cell
@@ -39,8 +40,11 @@
                     %span.switch-inactive{:aria-hidden=>"true"} Preview
                 %p.shy.hide Show this audio in the popup and in listings?
               .large-5.medium-5.cell
-                = f.input :sorting, size: 4
-                %p.shy Sorting order (1-99)
+                %p
+                  = f.input :locale, as: :select, collection: I18n.available_locales.map { |l| [l.to_s.upcase, l] }, include_blank: false
+                %p
+                  = f.input :sorting, size: 4
+                  %p.shy Sorting order (1-99)
 
 
         %hr
@@ -48,18 +52,19 @@
           .large-6.medium-6.cell
             = f.input :creator
             %p.shy Who is the creator of this audio?
+            = f.input :source
+            %p.shy Origin of this audio            
+              
+          .large-6.medium-6.cell
             = f.input :licence
             %p.shy Under which licence the audio is and/or shall be published? (CC, Public Domain, Rights reserved)
-            = f.input :source
-            %p.shy Origin of this audio
-          .large-6.medium-6.cell
-            = f.input :alt, label: "Alternate Text"
-            %p.shy Please provide a short description for screenreader
-
-            = f.input :caption
-            %p.shy Do you want to add a caption?
-
-
+            
+        %hr
+        .grid-x.grid-padding-x
+          .large-12.medium-12.cell
+            = tinymce
+            = f.input :transcription, label: "Transcription", input_html: { rows: 5, class: 'large-text tinymce' }
+            %p.shy Provide a transcription of the audio for accessibility
       .form-actions
         = f.button :submit, :class => "button"
     .large-2.cell

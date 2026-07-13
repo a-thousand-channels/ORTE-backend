@@ -28,12 +28,17 @@ json.map do
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
           json.audios place.audios do |audio|
-            json.extract! audio, :id, :title, :source, :creator, :alt, :sorting, :audio_url, :audio_linktag, :locale
+            json.extract! audio, :id, :title, :subtitle, :transcription, :source, :creator, :sorting, :audio_url, :audio_linktag, :locale
           end
           json.images do
             json.array!(place.images.sort_by { |image| [image.sorting ? 0 : 1, image.sorting] }) do |image|
               json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
             end
+          end
+          json.videos place.videos do |video|
+            json.extract! video, :id, :title, :source, :creator, :alt, :sorting
+            json.image_url video.video_url
+            json.image_linktag video.video_linktag
           end
           if @map.primary_language.present?
             locales = if @map.available_languages.present?

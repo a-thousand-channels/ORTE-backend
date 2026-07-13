@@ -24,6 +24,6 @@ RSpec.describe Audio, type: :model do
 
   it 'audio_linktag' do
     audio.file.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
-    expect(audio.audio_linktag).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(audio.file)}\"></audio>")
+    expect(audio.audio_linktag).to eq("<audio controls=\"controls\" preload=\"metadata\" src=\"#{Rails.application.routes.url_helpers.url_for(audio.file)}\"></audio>")
   end
 end
