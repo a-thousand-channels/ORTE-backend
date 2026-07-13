@@ -8,6 +8,7 @@ class PlacesController < ApplicationController
   def index
     @layer = Layer.friendly.find(params[:layer_id])
     @map = @layer.map
+    set_locale
     @places = @layer.places.page params[:page]
   end
 
@@ -174,7 +175,6 @@ class PlacesController < ApplicationController
 
   def set_locale
     I18n.locale = params[:locale] || @map&.primary_language || I18n.default_locale
-    # I18n.locale = params[:locale]
   end
 
   # Use callbacks to share common setup or constraints between actions.
@@ -206,7 +206,7 @@ class PlacesController < ApplicationController
   end
 
   def place_params_localized
-    place_params.merge(
+    params.require(:place).permit(:startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :published, :featured, :sensitive, :lat, :lon, :layer_id, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: []).merge(
       localized_title: params[:place][:localized_title],
       localized_subtitle: params[:place][:localized_subtitle],
       localized_teaser: params[:place][:localized_teaser],

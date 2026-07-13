@@ -257,25 +257,25 @@ class Place < ApplicationRecord
     end
   end
 
-  # def localized_title(**)
-  #   super.presence || title
-  # end
+  def localized_title(**)
+    super.presence || title
+  end
 
-  # def localized_subtitle(**)
-  #   super.presence || subtitle
-  # end
+  def localized_subtitle(**)
+    super.presence || subtitle
+  end
 
-  # def localized_teaser(**)
-  #   super.presence || teaser
-  # end
+  def localized_teaser(**)
+    super.presence || teaser
+  end
 
-  # def localized_text(**)
-  #   super.presence || text
-  # end
+  def localized_text(**)
+    super.presence || text
+  end
 
-  # def localized_sources(**)
-  #   super.presence || sources
-  # end
+  def localized_sources(**)
+    super.presence || sources
+  end
 
   private
 
