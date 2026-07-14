@@ -156,6 +156,7 @@
             %p
               Versions:
               - available_langs.each do |locale|
+                - next if locale == @map.primary_language
                 - if translated_locales.include?(locale)
                   = link_to edit_map_layer_place_path(place.layer.map, place.layer, place, locale: locale), class: 'button small' do  
                     %i.fi-pencil.fi-18
