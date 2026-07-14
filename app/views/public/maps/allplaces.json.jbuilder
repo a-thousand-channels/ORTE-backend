@@ -23,6 +23,28 @@ json.map do
           json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url)
         end
       end
+      if @map.primary_language.present?
+        locales = if @map.available_languages.present?
+                    langs = @map.available_languages.is_a?(Array) ? @map.available_languages : @map.available_languages.split(',')
+                    langs.map { |l| l.is_a?(String) ? l.strip : l }
+                  else
+                    I18n.available_locales
+                  end
+
+        json.localized_versions do
+          locales.each do |locale|
+            Mobility.with_locale(locale) do
+              json.set! locale do
+                json.title place.localized_title
+                json.subtitle place.localized_subtitle
+                json.teaser place.localized_teaser
+                json.text place.localized_text
+                json.sources place.localized_sources
+              end
+            end
+          end
+        end
+      end
       if place.relations_froms.size.positive?
         json.relations place.relations_froms do |relation|
           json.id relation.id

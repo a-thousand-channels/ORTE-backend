@@ -23,6 +23,19 @@ json.layer do
           json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename, :image_on_disk)
         end
       end
+      json.localized_versions do
+        I18n.available_locales.each do |locale|
+          Mobility.with_locale(locale) do
+            json.set! locale do
+              json.title place.localized_title
+              json.subtitle place.localized_subtitle
+              json.teaser place.localized_teaser
+              json.text place.localized_text
+              json.sources place.localized_sources
+            end
+          end
+        end
+      end
     end
   end
   json.places_with_relations places do |place|

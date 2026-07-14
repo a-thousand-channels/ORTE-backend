@@ -32,7 +32,7 @@ RSpec.describe Annotation, type: :model do
       p = FactoryBot.create(:person, map: m)
       a = FactoryBot.create(:annotation, person: p)
       a.audio.attach(io: File.open(Rails.root.join('spec', 'support', 'files', 'test.mp3')), filename: 'test.mp3', content_type: 'audio/mpeg')
-      expect(a.audiolink).to eq("<audio controls=\"controls\" src=\"#{Rails.application.routes.url_helpers.url_for(a.audio)}\"></audio>")
+      expect(a.audiolink).to eq("<audio controls=\"controls\" preload=\"metadata\" src=\"#{Rails.application.routes.url_helpers.url_for(a.audio)}\"></audio>")
     end
   end
 end

@@ -44,7 +44,7 @@ class Public::LayersController < ActionController::Base
       end
 
       @places = @places.includes(:images, :annotations, :tags, :icon,
-                                 :audios,
+                                 :audios, :videos, :pages,
                                  relations_froms: { relation_from: [:layer], relation_to: [:layer] })
     end
 
