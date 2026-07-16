@@ -52,6 +52,9 @@ module PlacesHelper
       else
         polymorphic_url(image.file.variant(resize: '800x800').processed)
       end
+    rescue ActiveStorage::IntegrityError, ActiveStorage::FileNotFoundError => e
+      Rails.logger.error("Broken attachment for image #{image.id}: #{e.message}")
+      ''
     rescue Errno::ENOENT => e
       ''
     rescue ActiveStorage::FileNotFoundError => e
