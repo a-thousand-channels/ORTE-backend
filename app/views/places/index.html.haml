@@ -151,8 +151,7 @@
             = render 'places/list/place', place: place
             - available_langs = (@map.respond_to?(:available_languages) ? Array(@map.available_languages) : [])
             - translated_locales = available_langs.select do |locale|
-              - accessor = :"localized_title_#{locale}"
-              - place.respond_to?(accessor) && place.public_send(accessor).present? && place.public_send(accessor) != place.title
+              - place.translation_exists_for?(:title, locale)
             %p
               Versions:
               - available_langs.each do |locale|

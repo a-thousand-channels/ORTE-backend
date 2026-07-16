@@ -277,6 +277,29 @@ class Place < ApplicationRecord
     super.presence || sources
   end
 
+  def translation_exists_for?(attribute, locale)
+    locale_str = locale.to_s
+    key = "localized_#{attribute}"
+
+    # Check string translations
+    string_sql = ActiveRecord::Base.sanitize_sql_array([
+                                                         'SELECT COUNT(*) FROM mobility_string_translations WHERE translatable_type = ? AND translatable_id = ? AND locale = ? AND `key` = ?',
+                                                         self.class.name, id, locale_str, key
+                                                       ])
+    string_count = ActiveRecord::Base.connection.select_value(string_sql)
+
+    return true if string_count.to_i > 0
+
+    # Check text translations
+    text_sql = ActiveRecord::Base.sanitize_sql_array([
+                                                       'SELECT COUNT(*) FROM mobility_text_translations WHERE translatable_type = ? AND translatable_id = ? AND locale = ? AND `key` = ?',
+                                                       self.class.name, id, locale_str, key
+                                                     ])
+    text_count = ActiveRecord::Base.connection.select_value(text_sql)
+
+    text_count.to_i > 0
+  end
+
   private
 
   def clean_text_fields
