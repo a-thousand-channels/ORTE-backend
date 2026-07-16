@@ -66,9 +66,10 @@ Mobility.configure do
     #
     # Uncomment line below to enable fallbacks, using +I18n.fallbacks+.
     # fallbacks
-    # 
+    #
     # this will fallback to de in any case
-    fallbacks { |locale| locale.to_sym == :de ? [] : :de }
+    # disabled, since we want to use the default field content as fallback, not the de translation!
+    # fallbacks { |locale| locale.to_sym == :de ? [] : :de }
     
     #
     # Or uncomment this line to enable fallbacks with a global default.
