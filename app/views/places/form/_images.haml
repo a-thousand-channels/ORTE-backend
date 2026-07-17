@@ -1,7 +1,5 @@
-- images = Image.where(place_id: @place.id)
+- images = Image.where(imageable_id: @place.id)
 - if @place && images.count > 0
-  %p
-    Images
   .grid-x#sortable{data: { map: @place.layer.map.id, layer: @place.layer.id, place: @place.id }}
     - images.order('sorting ASC').each_with_index do |img,i|
       .image.ui-state-default{id: "image_#{img.id}"}
@@ -29,3 +27,4 @@
               Please click here to upload a new file.
         %small
           = img.title      
+  %br

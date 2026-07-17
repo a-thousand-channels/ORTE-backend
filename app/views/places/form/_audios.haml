@@ -6,9 +6,6 @@
   - audios = Audio.where(audioable_type: 'Place', audioable_id: @place.id)  
 = locale
 - if audios&.count > 0
-  %hr
-  %p
-    Audios:
   .grid-x
 
     - audios.order('sorting ASC').each_with_index do |audio,i|
