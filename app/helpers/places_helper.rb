@@ -57,8 +57,6 @@ module PlacesHelper
       ''
     rescue Errno::ENOENT => e
       ''
-    rescue ActiveStorage::FileNotFoundError => e
-      ''
     end
   end
 

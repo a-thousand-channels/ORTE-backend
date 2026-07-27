@@ -288,7 +288,7 @@ class Place < ApplicationRecord
                                                        ])
     string_count = ActiveRecord::Base.connection.select_value(string_sql)
 
-    return true if string_count.to_i > 0
+    return true if string_count.to_i.positive?
 
     # Check text translations
     text_sql = ActiveRecord::Base.sanitize_sql_array([
@@ -297,7 +297,7 @@ class Place < ApplicationRecord
                                                      ])
     text_count = ActiveRecord::Base.connection.select_value(text_sql)
 
-    text_count.to_i > 0
+    text_count.to_i.positive?
   end
 
   private
