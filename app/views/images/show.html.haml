@@ -5,7 +5,7 @@
       = link_to url_for(@image.file) do
         - if @image.place && @image.place.layer.rasterize_images && @image.itype == 'image'
           = image_tag @image.file.variant(resize: "800x800\>", "ordered-dither": "h8x8a").processed
-        - elsif @image.page.map.rasterize_images && @image.itype == 'image'
+        - elsif @image.page && @image.page.map.rasterize_images && @image.itype == 'image'
           = image_tag @image.file.variant(resize: "800x800\>", "ordered-dither": "h8x8a").processed
         - else
           = image_tag @image.file.variant(resize: "800x800\>").processed

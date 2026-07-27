@@ -90,6 +90,29 @@ json.map do
       next unless page.published
 
       json.call(page, :id, :title, :subtitle, :text, :teaser, :footer, :created_at, :updated_at, :published)
+
+      if @map.primary_language.present?
+        locales = if @map.available_languages.present?
+                    langs = @map.available_languages.is_a?(Array) ? @map.available_languages : @map.available_languages.split(',')
+                    langs.map { |l| l.is_a?(String) ? l.strip : l }
+                  else
+                    I18n.available_locales
+                  end
+
+        json.localized_versions do
+          locales.each do |locale|
+            Mobility.with_locale(locale) do
+              json.set! locale do
+                json.title page.title
+                json.subtitle page.subtitle
+                json.teaser page.teaser
+                json.text page.text
+                json.footer page.footer
+              end
+            end
+          end
+        end
+      end
     end
   end
 end
