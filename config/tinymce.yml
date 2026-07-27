@@ -10,3 +10,6 @@ plugins:
 branding: false
 menubar: false
 statusbar: true
+relative_urls: false
+remove_script_host: false
+convert_urls: true
