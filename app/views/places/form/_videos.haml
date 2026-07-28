@@ -22,6 +22,10 @@
               = video_tag url_for(video.file), controls: true, width:200
           %br
           = video.title
+          - if video.published?
+            %i.fi-eye.fi-21
+          - else
+            %i.fi-lock.fi-21              
 
         - else
           = link_to edit_map_layer_place_video_path(@place.layer.map,@place.layer,@place,video), class: "thumbnail" do

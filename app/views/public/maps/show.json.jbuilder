@@ -10,7 +10,7 @@ json.map do
     json.array! @map_layers do |layer|
       next unless layer.published
 
-      json.call(layer, :id, :title, :subtitle, :text, :teaser, :credits, :image_link, :color, :created_at, :updated_at, :published)
+      json.call(layer, :id, :title, :slug, :subtitle, :text, :teaser, :credits, :image_link, :color, :created_at, :updated_at, :published)
       json.places do
         json.array! layer.places do |place|
           next unless place.published
@@ -28,17 +28,23 @@ json.map do
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
           json.audios place.audios do |audio|
+            next unless audio.published
+
             json.extract! audio, :id, :title, :subtitle, :transcription, :source, :creator, :licence, :sorting, :audio_url, :audio_linktag, :locale
           end
           json.images do
             json.array!(place.images.sort_by { |image| [image.sorting ? 0 : 1, image.sorting] }) do |image|
+              next unless image.published
+
               json.call(image, :id, :title, :source, :creator, :alt, :licence, :sorting, :image_linktag, :image_url)
             end
           end
           json.videos place.videos do |video|
+            next unless video.published
+
             json.extract! video, :id, :title, :source, :creator, :alt, :licence, :sorting
-            json.image_url video.video_url
-            json.image_linktag video.video_linktag
+            json.video_url video.video_url
+            json.video_linktag video.video_linktag
           end
           if @map.primary_language.present?
             locales = if @map.available_languages.present?
@@ -89,7 +95,7 @@ json.map do
     json.array! @map.pages do |page|
       next unless page.published
 
-      json.call(page, :id, :title, :subtitle, :text, :teaser, :footer, :created_at, :updated_at, :published)
+      json.call(page, :id, :title, :slug, :subtitle, :text, :teaser, :footer, :created_at, :updated_at, :published)
 
       if @map.primary_language.present?
         locales = if @map.available_languages.present?

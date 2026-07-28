@@ -89,7 +89,7 @@ class VideosController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def video_params
-    params.require(:video).permit(:title, :licence, :source, :creator, :alt, :caption, :sorting, :preview, :file, :videoable_type, :videoable_id)
+    params.require(:video).permit(:title, :licence, :source, :creator, :alt, :caption, :sorting, :preview, :file, :published, :videoable_type, :videoable_id)
   end
 
   def handle_record_not_found

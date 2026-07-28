@@ -18,6 +18,6 @@ RSpec.describe 'places/show', type: :view do
     expect(rendered).to match(@place.address)
     expect(rendered).to match(@place.zip)
     expect(rendered).to match(@place.city)
-    expect(rendered).to match('<i class="fi-lock fi-18"></i>')
+    expect(rendered).to match('<i class="fi-lock fi-16"></i>')
   end
 end

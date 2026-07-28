@@ -221,6 +221,16 @@
                            null
                         ]
                      },
+                     "slug":{
+                        "$id":"#/properties/map/properties/layer/items/properties/slug",
+                        "type":"string",
+                        "title":"The Slug Schema",
+                        "default":"",
+                        "examples":[
+                           "my-layer"
+                        ],
+                        "pattern":"^(.*)$"
+                     },
                     "color": {
                       "$id": "#/properties/map/properties/layer/items/properties/color",
                       "type": "string",

@@ -48,8 +48,11 @@
                     %span.switch-inactive{:aria-hidden=>"true"} Preview
                 %p.shy Show this image in the popup and in listings?
               .large-5.medium-5.cell
-                = f.input :sorting, size: 4
-                %p.shy Sorting order (1-99)
+                %p
+                  = f.input :published, :label => 'Publish&nbsp;<i class="fi-eye fi-21"></i>'.html_safe
+                %p              
+                  = f.input :sorting, size: 4
+                  %p.shy Sorting (1-99)
             .grid-x.grid-padding-x
               .medium-12
                 %hr

@@ -141,7 +141,7 @@ class ImagesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def image_params
-    params.require(:image).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file, :itype, :imageable_id, :imageable_type)
+    params.require(:image).permit(:title, :licence, :source, :creator, :place_id, :alt, :caption, :sorting, :preview, :file, :itype, :published, :imageable_id, :imageable_type)
   end
 
   def handle_record_not_found

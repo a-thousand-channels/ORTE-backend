@@ -41,10 +41,12 @@
                 %p.shy.hide Show this audio in the popup and in listings?
               .large-5.medium-5.cell
                 %p
+                  = f.input :published, :label => 'Publish&nbsp;<i class="fi-eye fi-21"></i>'.html_safe
+                %p
                   = f.input :locale, as: :select, collection: I18n.available_locales.map { |l| [l.to_s.upcase, l] }, include_blank: false
                 %p
                   = f.input :sorting, size: 4
-                  %p.shy Sorting order (1-99)
+                  %p.shy Sorting (1-99)
 
 
         %hr

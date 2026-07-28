@@ -3,7 +3,7 @@
 json.layer do
   next unless layer.published
 
-  json.call(layer, :id, :title, :subtitle, :text, :teaser, :credits, :image_link, :image_filename, :backgroundimage_link, :backgroundimage_filename, :favicon_link, :favicon_filename, :color, :style, :basemap_url, :basemap_attribution, :background_color, :tooltip_display_mode, :mapcenter_lat, :mapcenter_lon, :zoom, :relations_bending, :relations_coloring, :created_at, :updated_at, :published)
+  json.call(layer, :id, :title, :slug, :subtitle, :text, :teaser, :credits, :image_link, :image_filename, :backgroundimage_link, :backgroundimage_filename, :favicon_link, :favicon_filename, :color, :style, :basemap_url, :basemap_attribution, :background_color, :tooltip_display_mode, :mapcenter_lat, :mapcenter_lon, :zoom, :relations_bending, :relations_coloring, :created_at, :updated_at, :published)
   json.places do
     json.array! places do |place|
       next unless place.published
@@ -16,10 +16,14 @@ json.layer do
         json.extract! annotation, :id, :title, :text, :person_name, :audiolink
       end
       json.audios place.audios do |audio|
+        next unless audio.published
+
         json.extract! audio, :id, :title, :subtitle, :transcription, :source, :creator, :sorting, :audio_url, :audio_linktag, :locale
       end
       json.images do
         json.array!(place.images.sort_by { |image| [image.sorting ? 0 : 1, image.sorting] }) do |image|
+          next unless image.published
+
           json.call(image, :id, :title, :source, :creator, :alt, :sorting, :image_linktag, :image_url, :image_path, :image_filename, :image_on_disk)
         end
       end

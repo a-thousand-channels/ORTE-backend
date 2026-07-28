@@ -19,6 +19,10 @@
           = audio_tag url_for(audio.file), controls: true
           %p
             = audio.title
+            - if audio.published?
+              %i.fi-eye.fi-21
+            - else
+              %i.fi-lock.fi-21
             %br
             %small
               (#{audio.file.filename}, #{number_to_human_size(audio.file.byte_size)}, #{audio.file.content_type}, #{audio.locale})

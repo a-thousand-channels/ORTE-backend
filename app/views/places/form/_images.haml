@@ -26,5 +26,9 @@
               %br
               Please click here to upload a new file.
         %small
-          = img.title      
+          = img.title     
+          - if img.published?
+            %i.fi-eye.fi-21
+          - else
+            %i.fi-lock.fi-21           
   %br
