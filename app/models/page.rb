@@ -12,7 +12,6 @@ class Page < ApplicationRecord
 
   extend Mobility
 
-  translates :slug,     type: :string
   translates :title,    type: :string
   translates :subtitle, type: :string
   translates :teaser,   type: :text
@@ -21,7 +20,7 @@ class Page < ApplicationRecord
 
   extend FriendlyId
 
-  friendly_id :title, use: %i[mobility slugged]
+  friendly_id :title, use: :slugged
 
   scope :published, -> { where(published: true) }
 
