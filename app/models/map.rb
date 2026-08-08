@@ -56,4 +56,19 @@ class Map < ApplicationRecord
       end
     end
   end
+
+  def to_zip(output_filename = nil)
+    # Usecase: Manual backup of map data and assets, e.g. for migration to another server
+    # Usecase: Semiautomatic fallback at the frontend client, where the data is put into the public/fallback data. The JSON is used, but the fileurls has to be reconstructed to local urls (with the filename only, not the full path)
+
+    # TODO: catt this from MapController
+    # TODO: add link to view
+    # TODO: test function and valid result
+
+    # TODO: call MapAssetsCollector.prepare
+    # provide output_filename as argument to prepare method
+    #
+    # TODO: check output
+    #
+  end
 end
