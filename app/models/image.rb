@@ -52,7 +52,7 @@ class Image < ApplicationRecord
   end
 
   def image_linktag
-    ApplicationController.helpers.image_linktag(file, title)
+    ApplicationController.helpers.image_linktag(file, title, alt)
   end
 
   def image_on_disk
