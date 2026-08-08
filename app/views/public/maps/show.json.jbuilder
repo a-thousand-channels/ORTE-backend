@@ -28,20 +28,16 @@ json.map do
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
           json.audios place.audios do |audio|
-            next unless audio.published
-
-            json.extract! audio, :id, :title, :subtitle, :transcription, :source, :creator, :licence, :sorting, :audio_url, :audio_linktag, :locale
+            json.extract! audio, :id, :locale, :title, :subtitle, :transcription, :source, :creator, :licence, :sorting, :audio_linktag, :audio_url, :audio_format, :audio_filename, :audio_on_disk
           end
           json.images do
             json.array!(place.images.sort_by { |image| [image.sorting ? 0 : 1, image.sorting] }) do |image|
               next unless image.published
 
-              json.call(image, :id, :title, :source, :creator, :alt, :licence, :sorting, :image_linktag, :image_url)
+              json.call(image, :id, :title, :source, :creator, :alt, :licence, :sorting, :image_linktag, :image_url, :image_path, :image_filename, :image_on_disk)
             end
           end
           json.videos place.videos do |video|
-            next unless video.published
-
             json.extract! video, :id, :title, :source, :creator, :alt, :licence, :sorting
             json.video_url video.video_url
             json.video_linktag video.video_linktag
