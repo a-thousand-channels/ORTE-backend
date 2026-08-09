@@ -84,4 +84,7 @@
             Export map:
             = link_to public_map_path(@map,:format => :json ), :title => "Public link for this map as JSON", class: 'small' do
               JSON
+            \::              
+            = link_to map_path(@map,:format => :zip), :title => "Export this map as ZIP archive (JSON & assets)", class: 'small' do
+              JSON & Assets
 

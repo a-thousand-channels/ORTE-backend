@@ -14,21 +14,19 @@ class MapAssetsCollector
     @map = map
   end
 
-  def prepare
-    today = Date.current.strftime('%Y-%m-%d--%H-%M')
-    filename = "#{@map.friendly_id}_data_and_assets_export_#{today}"
-    assets_tmp_folder = "tmp/#{filename}_assets"
-    output_file = "public/#{filename}.zip"
+  def prepare(output_filename)
+    puts "Preparing map #{@map.title} (#{@map.id}) for export to #{output_filename}"
+    return unless @map.published
 
-    map_data, assets_on_disc = generate_map_json
-    puts "Map data and assets collected for map #{@map.title} (#{@map.id})"
-    puts assets_on_disc.inspect
-    puts '##########################'
-    tmp_file = "#{assets_tmp_folder}/#{@map.friendly_id}.json"
-    File.write(tmp_file, JSON.generate(map_data))
+    assets_tmp_folder = "tmp/#{output_filename}_assets"
+    output_file = "public/#{output_filename}"
 
     FileUtils.mkdir_p assets_tmp_folder
     return unless Dir.exist?(assets_tmp_folder)
+
+    map_data, assets_on_disc = generate_map_json
+    tmp_file = "#{assets_tmp_folder}/#{@map.friendly_id}.json"
+    File.write(tmp_file, JSON.generate(map_data))
 
     assets_on_disc.each do |file_hash|
       puts "Copying asset #{file_hash[:filename]} to #{assets_tmp_folder}"
@@ -43,13 +41,14 @@ class MapAssetsCollector
     filesize = number_to_human_size(File.size(Pathname.new(output_file)))
 
     FileUtils.rm_rf(assets_tmp_folder)
+    output_file
   end
 
   def generate_map_json(assets_path = '/assets/')
     puts "Generating JSON for map #{@map.title} (#{@map.id}) #{@map.published ? 'published' : 'not published'}"
     controller = ApplicationController.new
     controller.instance_variable_set(:@map, @map)
-    controller.instance_variable_set(:@map_layers, @map.layers.published)
+    controller.instance_variable_set(:@map_layers, map_layers_with_published_places)
     json_data = controller.render_to_string(template: 'public/maps/show', formats: :json)
 
     map_data = JSON.parse(json_data, { symbolize_names: true })
@@ -57,13 +56,63 @@ class MapAssetsCollector
     # layer assets
     # TODO: enable this after full implementation in the layer model
 
-    # places and places pages assets
-    assets_on_disc = @map.layers.published.flat_map { |layer| collect_places_assets(layer.places, assets_path) }
+    # places and places pages assets - an unpublished map renders as `{ map: {} }` above
+    # (see public/maps/show.json.jbuilder), so don't bundle real files for it either
+    assets_on_disc = @map.published ? @map.layers.published.flat_map { |layer| collect_places_assets(layer.places, assets_path) } : []
+
+    # per-map filename collisions (e.g. two places both attaching "photo.jpg") would otherwise
+    # overwrite each other once copied into the flat assets folder, so make them unique here and
+    # keep the rendered JSON in sync with the names actually used in the export
+    assets_on_disc = dedupe_and_patch_filenames(map_data, assets_on_disc)
 
     [map_data, assets_on_disc]
   end
 
   private
+
+  # Mirrors Public::MapsController#show, which drops layers that end up with no
+  # published places once the places join filter is applied - kept in sync so the
+  # export JSON matches what the public map endpoint actually renders.
+  def map_layers_with_published_places
+    layers = @map.layers.published
+    return layers unless layers.present?
+
+    layers
+      .includes(:image_attachment, places: [:icon, :annotations, :tags, :audios, :videos, { images: { file_attachment: :blob }, pages: {}, relations_froms: %i[relation_from relation_to] }])
+      .where(places: { published: true })
+  end
+
+  def dedupe_and_patch_filenames(map_data, assets_on_disc)
+    assets_on_disc = dedupe_filenames(assets_on_disc)
+    patch_json_filenames!(map_data, assets_on_disc)
+    assets_on_disc
+  end
+
+  def dedupe_filenames(assets_on_disc)
+    deduper = AssetFilenameDeduper.new
+    assets_on_disc.sort_by { |asset| asset[:id] }.each do |asset|
+      asset[:filename] = deduper.unique_name_for(asset[:filename])
+    end
+  end
+
+  def patch_json_filenames!(map_data, assets_on_disc)
+    filenames_by_atype_and_id = assets_on_disc.to_h { |asset| [[asset[:atype], asset[:id]], asset[:filename]] }
+
+    map_data.dig(:map, :layer)&.each do |layer|
+      layer[:places]&.each { |place| patch_place_filenames!(place, filenames_by_atype_and_id) }
+    end
+  end
+
+  def patch_place_filenames!(place, filenames_by_atype_and_id)
+    place[:images]&.each do |image|
+      new_filename = filenames_by_atype_and_id[['image', image[:id]]]
+      image[:image_filename] = new_filename if new_filename
+    end
+    place[:audios]&.each do |audio|
+      new_filename = filenames_by_atype_and_id[['audio', audio[:id]]]
+      audio[:audio_filename] = new_filename if new_filename
+    end
+  end
 
   def collect_places_assets(places, assets_path)
     places.each_with_object([]) do |place, assets|
@@ -109,13 +158,13 @@ class MapAssetsCollector
   def read_audio(audio, assets_path = '/assets/')
     return nil unless audio.audio_on_disk.present?
 
-    { atype: 'audio', filename: audio.audio_filename.to_s, disk: Rails.root.to_s + audio.audio_on_disk }
+    { atype: 'audio', id: audio.id, filename: audio.audio_filename.to_s, disk: Rails.root.to_s + audio.audio_on_disk }
   end
 
   def read_image(image, assets_path = '/assets/')
     return nil unless image.image_on_disk.present?
 
-    { atype: 'image', filename: image.image_filename.to_s, disk: Rails.root.to_s + image.image_on_disk }
+    { atype: 'image', id: image.id, filename: image.image_filename.to_s, disk: Rails.root.to_s + image.image_on_disk }
   end
 
   def generate_tgz(file)
