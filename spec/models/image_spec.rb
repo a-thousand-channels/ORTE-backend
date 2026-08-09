@@ -46,7 +46,7 @@ RSpec.describe Image, type: :model do
       expect(@i.image_path).to eq(Rails.application.routes.url_helpers.url_for(polymorphic_path(@i.file.variant(resize: '800x800').processed)))
     end
     it 'image_linktag' do
-      expect(@i.image_linktag).to eq("<img src=\"http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(@i.file.variant(resize: '800x800').processed))}\" title=\"#{@i.title}\">")
+      expect(@i.image_linktag).to eq("<img src=\"http://127.0.0.1:3000#{Rails.application.routes.url_helpers.url_for(polymorphic_path(@i.file.variant(resize: '800x800').processed))}\" title=\"#{@i.title}\" alt=\"#{@i.alt}\">")
     end
     it 'image_on_disk' do
       variant = @i.file.variant(resize: '1200x1200').processed
