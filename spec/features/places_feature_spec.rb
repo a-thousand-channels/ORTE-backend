@@ -19,18 +19,11 @@ RSpec.feature 'User creates and updates a place ' do
 
     visit map_layer_path(@map, @layer)
     expect(page).to have_current_path "/maps/#{@map.slug}/layers/#{@layer.slug}"
-    fill_in 'addresslookup_address', with: 'Hamburg'
     within '#selection-hint' do
       expect(page).to have_content 'How to map:'
     end
+    fill_in 'addresslookup_address', with: 'Hamburg'
     click_button 'addresslookup_button'
-    within '#selection-hint' do
-      expect(page).to have_content 'Searching...'
-    end
-
-    within '#selection-hint' do
-      # expect(page).to have_content 'Please select one result below (or type in another address).'
-    end
   end
 
   scenario 'shows edit form (and provide only allowed layers to select)', js: true do

@@ -2,7 +2,7 @@
 
 require 'capybara'
 require 'capybara/rspec'
-require 'webdrivers/chromedriver'
+require 'capybara/cuprite'
 require 'webmock/rspec'
 require 'active_support/testing/time_helpers'
 
@@ -19,32 +19,32 @@ WebMock.disable_net_connect!(allow: [
 # special setup to make feature tests run on ubuntu 20.4 LTS
 if ENV['UBUNTU']
   puts 'Running Rspecs on Ubuntu'
-  # Webdrivers.logger.level = :debug
   # On Ubuntu >= 20 Chrome is installed via snap, so provide the path here
-  Selenium::WebDriver::Chrome.path = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
+  CHROME_PATH = '/snap/chromium/current/usr/lib/chromium-browser/chrome'
   # Webdrivers::Chromedriver.required_version = '114.0.5735.90'
 else
   puts 'Running Rspecs on Linux (If you use Ubuntu and encounter problems you might try to call this with "UBUNTU=true")'
+  CHROME_PATH = nil
 end
 
-Capybara.register_driver :headless_chrome do |app|
-  options = Selenium::WebDriver::Chrome::Options.new
-
-  options.add_argument('--headless')
-  options.add_argument('--no-sandbox')
-  options.add_argument('--disable-dev-shm-usage')
-  options.add_argument('--window-size=1400,1400')
-  options.add_argument('--disable-features=VizDisplayCompositor')
-  options.add_argument('--enable-logging') # Enables logging
-  options.add_argument('--log-level=0') # Enables all logging
-  Capybara::Selenium::Driver.new app,
-                                 browser: :chrome,
-                                 options: options
+Capybara.register_driver(:cuprite) do |app|
+  Capybara::Cuprite::Driver.new(
+    app,
+    browser_path: CHROME_PATH,
+    window_size: [1400, 1400],
+    browser_options: {
+      'no-sandbox' => nil,
+      'disable-dev-shm-usage' => nil,
+      'disable-features' => 'VizDisplayCompositor',
+      'enable-logging' => nil,
+      'log-level' => '0'
+    }
+  )
 end
 
 Capybara.configure do |config|
   config.default_max_wait_time = 5 # seconds
-  config.default_driver        = :headless_chrome
+  config.default_driver        = :cuprite
 end
 
 RSpec.configure do |config|
@@ -54,7 +54,7 @@ RSpec.configure do |config|
 
   config.include Capybara::DSL
   Capybara.server = :puma, { Silent: true }
-  Capybara.javascript_driver = :headless_chrome
+  Capybara.javascript_driver = :cuprite
   Capybara.server_host = '0.0.0.0' # universal IP
   # Capybara.asset_host = '0.0.0.0:3000' # will not work in github actions
 

@@ -74,6 +74,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'capybara'
   gem 'capybara-chromedriver-logger'
+  gem 'cuprite'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'faker'
@@ -86,8 +87,6 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'simplecov'
   gem 'simplecov-small-badge', require: false
-  gem 'webdrivers', '~> 5'
-
   gem 'webmock'
 end
 
