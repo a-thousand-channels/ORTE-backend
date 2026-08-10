@@ -155,13 +155,13 @@ class MapAssetsCollector
     end
   end
 
-  def read_audio(audio, assets_path = '/assets/')
+  def read_audio(audio, _assets_path = '/assets/')
     return nil unless audio.audio_on_disk.present?
 
     { atype: 'audio', id: audio.id, filename: audio.audio_filename.to_s, disk: Rails.root.to_s + audio.audio_on_disk }
   end
 
-  def read_image(image, assets_path = '/assets/')
+  def read_image(image, _assets_path = '/assets/')
     return nil unless image.image_on_disk.present?
 
     { atype: 'image', id: image.id, filename: image.image_filename.to_s, disk: Rails.root.to_s + image.image_on_disk }
