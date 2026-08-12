@@ -6,4 +6,5 @@
 %span.show-for-large.small
   = Rails.application.config_for(:settings).app_tagline
   \&mdash;
-  = "#{DEPLOY_REVISION} #{DEPLOY_DATE.strftime("%d.%m.%y")}"
+  %span{title: 'Revision + date'}
+    = "#{DEPLOY_REVISION} #{DEPLOY_DATE.strftime("%d.%m.%y")}"
