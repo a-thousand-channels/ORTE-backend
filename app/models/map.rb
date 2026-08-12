@@ -56,4 +56,11 @@ class Map < ApplicationRecord
       end
     end
   end
+
+  def to_zip(output_filename)
+    # Usecase: Manual backup of map data and assets, e.g. for migration to another server
+    # Usecase: Semiautomatic fallback at the frontend client, where the data is put into the public/fallback data. The JSON is used, but the fileurls has to be reconstructed to local urls (with the filename only, not the full path)
+
+    MapAssetsCollector.new(self).prepare(output_filename)
+  end
 end

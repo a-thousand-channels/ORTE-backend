@@ -13,12 +13,30 @@ class Audio < ApplicationRecord
   scope :sorted, -> { order(sorting: :asc) }
   scope :sorted_by_place, ->(place_id) { where(audioable_type: 'Place', audioable_id: place_id).order(sorting: :asc) }
 
+  def audio_filename
+    file.filename if file&.attached?
+  end
+
+  def audio_format
+    file.content_type if file&.attached?
+  end
+
   def audio_url
     ApplicationController.helpers.audio_url(file)
   end
 
   def audio_linktag
     ApplicationController.helpers.audio_linktag(file)
+  end
+
+  def audio_on_disk
+    return unless file&.attached?
+    return unless ActiveStorage::Blob.service.exist?(file.blob.key)
+
+    full_path = ActiveStorage::Blob.service.path_for(file.key)
+    return unless File.exist?(full_path)
+
+    full_path.gsub(Rails.root.to_s, '')
   end
 
   private

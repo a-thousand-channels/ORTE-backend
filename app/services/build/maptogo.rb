@@ -5,6 +5,9 @@ require 'fileutils'
 include ActionView::Helpers::DateHelper
 include ActionView::Helpers::NumberHelper
 
+# MapToGo Feature
+# Exports a layer with all its places and related images and then builds a working webmap client
+
 class Build::Maptogo
   def initialize(current_user, map, layer)
     @current_user = current_user
