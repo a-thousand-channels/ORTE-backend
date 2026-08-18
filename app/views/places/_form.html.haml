@@ -224,8 +224,17 @@
             = f.input :city
         = f.input :country, :input_html => {:placeholder => 'Land' }
         %hr
-        = f.input :link, :label => 'Weblink', :placeholder => 'https://'
+        = f.input :link, :label => 'Weblink (Identifier)', :placeholder => 'https://'
         %p.hint Does this place (or location) has a website?
+        %br
+        %label Multiple weblinks
+        #hyperlinks
+          = f.fields_for :hyperlinks do |hyperlink|
+            = render 'places/form/hyperlink_fields', f: hyperlink
+        %a#add-hyperlink{ href: "#" } 
+          %i.fi.fi-plus
+          Add Hyperlink
+        %p.hint Links for further or related informations.
         %hr
         %label Images
         - if params[:action] == 'edit'

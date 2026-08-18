@@ -24,6 +24,51 @@ jQuery(function ($) {
         console.log($(this).val());
         $('#enddate_qualifier_preview').html('<span class="label small">'+translateQualifierDate(d,$(this).val())+'</span>');
     })
+
+    // Add a new Hyperlink field
+    document.getElementById('add-hyperlink').addEventListener('click', function(e) {
+        e.preventDefault();
+        const hyperlinksContainer = document.getElementById('hyperlinks');
+        const newId = new Date().getTime(); // Unique ID for the new field
+
+        // Create a new nested field HTML
+        const newFieldHTML = `
+            <div class="nested-fields">
+            <label for="place_hyperlinks_attributes_${newId}_url">URL</label>
+            <input type="text" name="place[hyperlinks_attributes][${newId}][url]" id="place_hyperlinks_attributes_${newId}_url">
+
+            <label for="place_hyperlinks_attributes_${newId}_linktext">Link Text</label>
+            <input type="text" name="place[hyperlinks_attributes][${newId}][linktext]" id="place_hyperlinks_attributes_${newId}_linktext">
+
+            <label for="place_hyperlinks_attributes_${newId}_note">Note</label>
+            <textarea name="place[hyperlinks_attributes][${newId}][note]" id="place_hyperlinks_attributes_${newId}_note"></textarea>
+
+            <input type="hidden" name="place[hyperlinks_attributes][${newId}][_destroy]" value="false">
+            <a href="#" class="remove-hyperlink" data-target="${newId}">Remove</a>
+            </div>
+        `;
+
+        hyperlinksContainer.insertAdjacentHTML('beforeend', newFieldHTML);
+    });
+
+    // Remove a Hyperlink field
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-hyperlink')) {
+            e.preventDefault();
+            const fieldToRemove = e.target.closest('.nested-fields');
+
+            // Mark the field for destruction (Rails will delete it)
+            const destroyInput = fieldToRemove.querySelector('input[name*="[_destroy]"]');
+            if (destroyInput) {
+            destroyInput.value = 'true';
+            }
+
+            // Hide the field visually
+            fieldToRemove.style.display = 'none';
+        }
+    });
+
+    
 });
 
 function translateQualifierDate(d,qualifier) {

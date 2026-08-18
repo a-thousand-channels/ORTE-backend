@@ -30,11 +30,13 @@ class Place < ApplicationRecord
                              dependent: :destroy
   has_many :annotations
   has_many :pages, as: :pageable, dependent: :destroy
+  has_many :hyperlinks, dependent: :destroy
 
   accepts_nested_attributes_for :relations_tos, allow_destroy: true
   accepts_nested_attributes_for :relations_froms, allow_destroy: true
   accepts_nested_attributes_for :annotations, reject_if: ->(a) { a[:title].blank? }, allow_destroy: true
   accepts_nested_attributes_for :audios, allow_destroy: true
+  accepts_nested_attributes_for :hyperlinks, reject_if: ->(h) { h[:url].blank? }, allow_destroy: true
 
   has_many :images, as: :imageable, dependent: :destroy
   has_many :videos, as: :videoable, dependent: :destroy

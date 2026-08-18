@@ -1,0 +1,13 @@
+.nested-fields
+  = f.label :url, "URL"
+  = f.text_field :url
+
+  = f.label :linktext, "Link Text"
+  = f.text_field :linktext
+
+  = f.label :note, "Note"
+  = f.text_area :note
+
+  = f.hidden_field :_destroy
+  %a.remove-hyperlink{ href: "#", "data-target" => f.index } Remove
+  %hr

@@ -26,6 +26,7 @@ class PlacesController < ApplicationController
     @place.lat = params[:lat]
     @place.lon = params[:lon]
     @place.layer_id = params[:layer_id]
+    @place.hyperlinks.build
     @map = Map.by_user(current_user).friendly.find(params[:map_id])
     @layer = Layer.friendly.find(params[:layer_id])
   end
@@ -41,6 +42,8 @@ class PlacesController < ApplicationController
       @place.enddate_date = @place.enddate.to_date
       @place.enddate_time = @place.enddate.to_time
     end
+
+    @place.hyperlinks.build
 
     return unless params[:lat].present?
 
@@ -204,11 +207,11 @@ class PlacesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def place_params
-    params.require(:place).permit(:title, :uid, :subtitle, :teaser, :text, :sources, :link, :startdate, :startdate_date, :startdate_time, :startdate_qualifier, :enddate, :enddate_date, :enddate_time, :enddate_qualifier, :lat, :lon, :direction, :location, :address, :zip, :city, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :relations_tos, :relations_froms, :locale, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [])
+    params.require(:place).permit(:title, :uid, :subtitle, :teaser, :text, :sources, :link, :startdate, :startdate_date, :startdate_time, :startdate_qualifier, :enddate, :enddate_date, :enddate_time, :enddate_qualifier, :lat, :lon, :direction, :location, :address, :zip, :city, :country, :published, :featured, :sensitive, :sensitive_radius, :shy, :imagelink, :layer_id, :icon_id, :relations_tos, :relations_froms, :locale, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [], hyperlinks_attributes: %i[id url note linktext _destroy])
   end
 
   def place_params_localized
-    params.require(:place).permit(:startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :published, :featured, :sensitive, :lat, :lon, :layer_id, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: []).merge(
+    params.require(:place).permit(:startdate, :startdate_date, :startdate_time, :enddate, :enddate_date, :enddate_time, :published, :featured, :sensitive, :lat, :lon, :layer_id, annotations_attributes: %i[title text person_id source], tag_list: [], images: [], videos: [], hyperlinks_attributes: %i[id url note linktext _destroy]).merge(
       localized_title: params[:place][:localized_title],
       localized_subtitle: params[:place][:localized_subtitle],
       localized_teaser: params[:place][:localized_teaser],

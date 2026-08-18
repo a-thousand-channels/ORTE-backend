@@ -308,6 +308,7 @@
                               "videos",
                               "audios",
                               "annotations",
+                              "hyperlinks",
                               "tags"
                            ],
                            "properties":{
@@ -794,7 +795,7 @@
                                        }
                                     }
                                  }
-                              },                                                        
+                              },                  
                               "annotations":{
                                  "$id":"#/properties/map/properties/layer/items/properties/places/properties/annotations",
                                  "type":"array",
@@ -839,6 +840,63 @@
                                           ],
                                           "pattern":"^(.*)$"
                                        }
+                                    }
+                                 }
+                              },
+                              "hyperlinks":{
+                                 "$id":"#/properties/map/properties/layer/items/properties/places/properties/hyperlinks",
+                                 "type":"array",
+                                 "title":"The Hyperlinks Schema",
+                                 "items":{
+                                    "$id":"#/properties/map/properties/layer/items/properties/places/items/hyperlinks/item",
+                                    "type":"object",
+                                    "title":"The Items Schema",
+                                    "required":[
+                                       "id",
+                                       "url",
+                                       "linktext",
+                                       "note"
+                                    ],
+                                    "properties":{
+                                       "id":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/hyperlinks/properties/id",
+                                          "type":"integer",
+                                          "title":"The Id Schema",
+                                          "default":0,
+                                          "examples":[
+                                             4
+                                          ]
+                                       },
+                                       "url":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/hyperlinks/properties/url",
+                                          "type":"string",
+                                          "title":"The Url Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "https://example.com"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "linktext":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/hyperlinks/properties/linktext",
+                                          "type":"string",
+                                          "title":"The Linktext Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "Session am Deich"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       },
+                                       "note":{
+                                          "$id":"#/properties/map/properties/layer/items/properties/places/hyperlinks/properties/note",
+                                          "type":"string",
+                                          "title":"The Note Schema",
+                                          "default":"",
+                                          "examples":[
+                                             "Viel Text zur Session am Deich"
+                                          ],
+                                          "pattern":"^(.*)$"
+                                       }                                       
                                     }
                                  }
                               },

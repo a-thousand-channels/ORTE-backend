@@ -27,7 +27,12 @@ json.map do
           json.annotations place.annotations do |annotation|
             json.extract! annotation, :id, :title, :text, :person_name, :audiolink
           end
+          json.hyperlinks place.hyperlinks do |hyperlink|
+            json.extract! hyperlink, :id, :url, :linktext, :note
+          end
           json.audios place.audios do |audio|
+            next unless audio.published
+
             json.extract! audio, :id, :locale, :title, :subtitle, :transcription, :source, :creator, :licence, :sorting, :audio_linktag, :audio_url, :audio_format, :audio_filename, :audio_on_disk
           end
           json.images do
