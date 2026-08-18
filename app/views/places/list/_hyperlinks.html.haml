@@ -1,0 +1,15 @@
+- if @place.hyperlinks.count > 0
+  %ul#saved_hyperlinks
+    - @place.hyperlinks.each do |hyperlink|
+      %li 
+        %p
+          - if hyperlink.linktext.present?
+            = link_to hyperlink.url do
+              = hyperlink.linktext
+          - else
+            = link_to hyperlink.url do
+              = hyperlink.url
+              
+        - if hyperlink.note
+          %p.shy.hyperlink_note
+            =h hyperlink.note.html_safe

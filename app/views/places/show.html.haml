@@ -149,7 +149,12 @@
       - if @place.sources.present?
         %label Sources
         %hr.small
-        =h @place.sources.html_safe               
+        =h @place.sources.html_safe      
+      - if @place.hyperlinks.present?
+        %label Hyperlinks
+        %hr.small
+        = render 'places/list/hyperlinks'
+        %hr
       %label Annotations
       %hr.small
       = render 'places/list/annotations'
