@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Hyperlink < ApplicationRecord
   belongs_to :place
 
