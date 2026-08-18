@@ -15,7 +15,7 @@ class MapAssetsCollector
   end
 
   def prepare(output_filename)
-    puts "Preparing map #{@map.title} (#{@map.id}) for export to #{output_filename}"
+    # puts "Preparing map #{@map.title} (#{@map.id}) for export to #{output_filename}"
     return unless @map.published
 
     assets_tmp_folder = "tmp/#{output_filename}_assets"
@@ -29,7 +29,7 @@ class MapAssetsCollector
     File.write(tmp_file, JSON.generate(map_data))
 
     assets_on_disc.each do |file_hash|
-      puts "Copying asset #{file_hash[:filename]} to #{assets_tmp_folder}"
+      # puts "Copying asset #{file_hash[:filename]} to #{assets_tmp_folder}"
       dest_file = "#{assets_tmp_folder}/#{file_hash[:filename]}"
       FileUtils.cp(file_hash[:disk], dest_file)
     end
@@ -45,7 +45,7 @@ class MapAssetsCollector
   end
 
   def generate_map_json(assets_path = '/assets/')
-    puts "Generating JSON for map #{@map.title} (#{@map.id}) #{@map.published ? 'published' : 'not published'}"
+    # puts "Generating JSON for map #{@map.title} (#{@map.id}) #{@map.published ? 'published' : 'not published'}"
     controller = ApplicationController.new
     controller.instance_variable_set(:@map, @map)
     controller.instance_variable_set(:@map_layers, map_layers_with_published_places)

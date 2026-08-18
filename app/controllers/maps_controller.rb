@@ -62,7 +62,6 @@ class MapsController < ApplicationController
         format.json { render :show, filename: "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.json" }
         format.zip do
           zip_file = "orte-map-#{@map.title.parameterize}-#{I18n.l Date.today}.zip"
-          puts "Exporting map #{@map.title} (#{@map.id}) to #{zip_file}"
           @map.to_zip(zip_file)
           send_file "#{Rails.root}/public/#{zip_file}"
         end
