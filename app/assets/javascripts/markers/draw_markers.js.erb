@@ -97,8 +97,13 @@ function drawMarkers(map,layer_id,layer_type,level,show_annotations_on_map,text_
       var text_angle = ( Math.random() * 35) - 55;
       //       text_angle = 0;
 
+
+      var uid = '';
+      if ( place.uid ) {
+        uid = place.uid + ' — ';
+      }
       var texticon= L.divIcon({
-          html: '<div class="text_inner" style="transform: rotate('+text_angle+'deg)">'+place.title+'</div>',
+          html: '<div class="text_inner" style="transform: rotate('+text_angle+'deg)">'+uid+place.title+'</div>',
           iconAnchor:[-5,25],
           iconSize:null,
           popupAnchor:[0,0] });

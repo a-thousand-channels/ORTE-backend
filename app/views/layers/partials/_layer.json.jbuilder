@@ -10,7 +10,7 @@ places_query = places_query.tagged_with(tag_names) if tag_names.present?
 
 json.places do
   json.array! places_query do |place|
-    json.extract! place, :id, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :layer_id, :layer_type, :layer_title, :layer_color, :color, :created_at, :updated_at, :date, :date_with_qualifier, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name
+    json.extract! place, :id, :uid, :title, :subtitle, :teaser, :text, :sources, :link, :startdate, :enddate, :full_address, :location, :address, :zip, :city, :country, :published, :featured, :layer_id, :layer_type, :layer_title, :layer_color, :color, :created_at, :updated_at, :date, :date_with_qualifier, :url, :edit_link, :show_link, :imagelink2, :imagelink, :icon_link, :icon_class, :icon_name
     json.lat place.public_lat
     json.lon place.public_lon
     if place.layer.map.show_annotations_on_map

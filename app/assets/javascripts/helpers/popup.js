@@ -64,6 +64,10 @@ function PopupFullContent(place) {
         content += "</p>";
     }
     content += "<h4>";
+    if (place.uid) {
+        content += place.uid;
+        content += " — ";
+    }
     if (place.show_link) {
         content += place.show_link;
         if (place.published !== true) {
